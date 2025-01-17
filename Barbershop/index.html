@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharp Cuts Barbershop</title>
+    <link rel="stylesheet" href="barber-styles.css">
+    <script src="barber-script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <h1 class="logo">Sharp Cuts</h1>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#booking">Book Now</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h2>Welcome to Sharp Cuts</h2>
+                <p>Premium Grooming for the Modern Gentleman</p>
+                <a href="#booking" class="cta-button">Book Appointment</a>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2>Our Services</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <img src="/api/placeholder/300/200" alt="Classic Haircut">
+                        <h3>Classic Haircut</h3>
+                        <p>Traditional cut with modern styling</p>
+                        <span class="price">$30</span>
+                    </div>
+                    <div class="service-card">
+                        <img src="/api/placeholder/300/200" alt="Beard Trim">
+                        <h3>Beard Trim</h3>
+                        <p>Professional beard grooming and shaping</p>
+                        <span class="price">$20</span>
+                    </div>
+                    <div class="service-card">
+                        <img src="/api/placeholder/300/200" alt="Hot Towel Shave">
+                        <h3>Hot Towel Shave</h3>
+                        <p>Luxurious straight razor shave</p>
+                        <span class="price">$35</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery">
+            <div class="container">
+                <h2>Our Work</h2>
+                <div class="gallery-grid">
+                    <img src="/api/placeholder/300/300" alt="Haircut Style 1">
+                    <img src="/api/placeholder/300/300" alt="Haircut Style 2">
+                    <img src="/api/placeholder/300/300" alt="Haircut Style 3">
+                    <img src="/api/placeholder/300/300" alt="Haircut Style 4">
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="booking">
+            <div class="container">
+                <h2>Book an Appointment</h2>
+                <form id="booking-form" class="booking-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service:</label>
+                        <select id="service" required>
+                            <option value="">Select a service</option>
+                            <option value="haircut">Classic Haircut</option>
+                            <option value="beard">Beard Trim</option>
+                            <option value="shave">Hot Towel Shave</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time:</label>
+                        <input type="time" id="time" required>
+                    </div>
+                    <button type="submit" class="cta-button">Book Now</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Location</h3>
+                    <p>123 Main Street</p>
+                    <p>Downtown, City 12345</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Mon-Fri: 9am - 8pm</p>
+                    <p>Sat: 10am - 6pm</p>
+                    <p>Sun: Closed</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Email: info@sharpcuts.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sharp Cuts Barbershop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
