@@ -3,10 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Site</title>
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Hello, Everyone</h1>
-    <p>Welcome to my GitHub Pages site!</p>
+    <header>
+        <nav>
+            <div class="nav-content">
+                <a href="#" class="logo">Portfolio</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>Welcome to My Portfolio</h1>
+                <p>Web Developer & Designer</p>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>I'm a passionate web developer focused on creating beautiful and functional websites. With expertise in HTML, CSS, and JavaScript, I bring ideas to life through code.</p>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>My Projects</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <img src="/api/placeholder/400/300" alt="Project 1">
+                        <h3>Project Name</h3>
+                        <p>Description of your project goes here. Explain what technologies you used and what problems you solved.</p>
+                        <a href="#" class="button">View Project</a>
+                    </div>
+                    <!-- Add more project cards as needed -->
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <p>Let's work together! Reach out to me at:</p>
+                <div class="contact-info">
+                    <a href="mailto:your.email@example.com" class="button">Email Me</a>
+                    <a href="https://github.com/yourusername" class="button">GitHub</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Your Name. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
-</html>
