@@ -179,3 +179,18 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* Add these to your existing styles.css file */
+.min-h-screen { min-height: 100vh; }
+.bg-black { background-color: #000; }
+.text-white { color: #fff; }
+.border-gray-800 { border-color: #1f2937; }
+.bg-red-600 { background-color: #dc2626; }
+.text-gray-400 { color: #9ca3af; }
+.bg-gray-800 { background-color: #1f2937; }
+.text-gray-300 { color: #d1d5db; }
+.hover\:bg-red-700:hover { background-color: #b91c1c; }
+.transition-colors { transition-property: background-color, border-color, color, fill, stroke; }
+.duration-200 { transition-duration: 200ms; }
+
+/* Add more utility classes as needed */
