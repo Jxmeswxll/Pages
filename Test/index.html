@@ -3,182 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Tracking Portal</title>
-    
-    <!-- Add Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Add React and ReactDOM -->
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-    
-    <!-- Add Babel for JSX -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-    
-    <!-- Add Framer Motion -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/6.3.16/framer-motion.js"></script>
-
+    <title>Member Portal</title>
     <style>
-        /* Reset and base styles */
-        * {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #ffffff;
-            background-color: #000000;
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 32px;
         }
-
-        /* Container */
+        .button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 16px 0;
+        }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 16px;
         }
-
-        /* Navigation */
-        nav {
-            background-color: #000000;
-            border-bottom: 1px solid #333333;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-links {
+        .flex {
             display: flex;
-            list-style: none;
-            gap: 2rem;
         }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: color 0.3s ease;
+        .justify-between {
+            justify-content: space-between;
         }
-
-        .nav-links a:hover {
-            color: #ff0000;
+        .items-center {
+            align-items: center;
         }
-
-        /* Custom styles for React components */
-        .card {
-            background-color: #111111 !important;
-            border: 1px solid #333333;
+        .mb-4 {
+            margin-bottom: 16px;
         }
-
-        .progress-bar {
-            background-color: #ff0000;
+        .text-center {
+            text-align: center;
         }
-
-        .progress-bar-bg {
-            background-color: #333333;
+        .relative {
+            position: relative;
         }
-
-        .stage-icon {
-            color: #ffffff;
+        .absolute {
+            position: absolute;
         }
-
-        .stage-icon-inactive {
-            color: #666666;
+        .w-full {
+            width: 100%;
         }
-
-        .button-primary {
-            background-color: #ff0000;
-            color: #ffffff;
+        .h-1 {
+            height: 4px;
         }
-
-        .button-primary:hover {
-            background-color: #cc0000;
-        }
-
-        .button-secondary {
-            background-color: #333333;
-            color: #ffffff;
-        }
-
-        .button-secondary:hover {
-            background-color: #444444;
-        }
-
-        /* Override Tailwind colors for dark theme */
-        .bg-white {
-            background-color: #111111 !important;
-        }
-
-        .text-gray-800 {
-            color: #ffffff !important;
-        }
-
-        .text-gray-500 {
-            color: #999999 !important;
-        }
-
-        .text-gray-600 {
-            color: #cccccc !important;
-        }
-
-        .text-gray-400 {
-            color: #999999 !important;
-        }
-
-        .border-gray-300 {
-            border-color: #333333 !important;
-        }
-
         .bg-gray-200 {
-            background-color: #333333 !important;
+            background-color: #e5e7eb;
         }
-
-        .bg-gray-100 {
-            background-color: #000000 !important;
+        .bg-blue-500 {
+            background-color: #3b82f6;
         }
-
-        .shadow-sm {
-            box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05) !important;
+        .text-white {
+            color: white;
         }
-
-        /* Animation override for dark theme */
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .text-gray-400 {
+            color: #9ca3af;
         }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: .5;
-            }
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        .font-bold {
+            font-weight: bold;
+        }
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+        .text-xl {
+            font-size: 1.25rem;
+        }
+        .gap-4 {
+            gap: 16px;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#members-area">Members Area</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div id="root"></div>
 
-    <div id="root" class="pt-16"></div>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-        // [Previous React code remains the same, just updating the color classes]
-        const { motion } = window.Motion;
-        const { useState } = React;
-
-        // Mock data remains the same...
+        // Mock ClickUp data
         const clickUpOrders = {
             'ORD001': {
                 status: 'ordered',
@@ -197,6 +121,7 @@
             }
         };
 
+        // Mock user data
         const users = {
             'USER001': {
                 name: 'John Smith',
@@ -208,72 +133,152 @@
             }
         };
 
-        // Update component styles to match dark theme
-        const Card = ({ children, className }) => (
-            <div className={`card rounded-lg shadow-lg ${className}`}>{children}</div>
-        );
-
-        const CardContent = ({ children }) => (
-            <div className="p-6">{children}</div>
-        );
-
-        const Button = ({ children, onClick, variant = 'default' }) => {
-            const className = variant === 'default' ? 'button-primary' : 'button-secondary';
-            return (
-                <button 
-                    onClick={onClick} 
-                    className={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${className}`}
-                >
-                    {children}
-                </button>
-            );
-        };
-
-        // OrderTracker component with updated colors
         const OrderTracker = ({ orderNumber }) => {
-            // [Previous stages array remains the same]
-            const stages = [/* ... */];
+            const stages = [
+                {
+                    tag: 'ordered',
+                    title: 'Order Received',
+                    description: 'Order has been confirmed',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'picked',
+                    title: 'Items Picked',
+                    description: 'Components gathered',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M20 6L9 17L4 12" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'build',
+                    title: 'In Production',
+                    description: 'Building in progress',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'test',
+                    title: 'Testing',
+                    description: 'Quality assurance',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'packed',
+                    title: 'Packed',
+                    description: 'Ready for shipping',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    )
+                }
+            ];
 
             const order = clickUpOrders[orderNumber];
             const currentStageIndex = stages.findIndex(stage => stage.tag === order.status);
 
             return (
-                <Card className="w-full max-w-4xl mx-auto mb-8">
-                    <CardContent>
-                        <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold">Track Your Order</h2>
-                            <p className="text-gray-500">Order #{orderNumber}</p>
+                <div className="card">
+                    <div className="text-center mb-4">
+                        <h2 className="text-2xl font-bold text-gray-800">Track Your Order</h2>
+                        <p className="text-gray-500">Order #{orderNumber}</p>
+                    </div>
+
+                    <div className="relative mb-8">
+                        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200">
+                            <div 
+                                className="h-full bg-blue-500"
+                                style={{ width: `${(currentStageIndex / (stages.length - 1)) * 100}%` }}
+                            />
                         </div>
 
-                        <div className="relative mb-8">
-                            <div className="absolute top-1/2 left-0 w-full h-1 progress-bar-bg -translate-y-1/2">
-                                <motion.div 
-                                    className="h-full progress-bar"
-                                    initial={{ width: '0%' }}
-                                    animate={{ width: `${(currentStageIndex / (stages.length - 1)) * 100}%` }}
-                                    transition={{ duration: 0.5 }}
-                                />
-                            </div>
+                        <div className="relative flex justify-between">
+                            {stages.map((stage, index) => (
+                                <div 
+                                    key={index} 
+                                    className="flex flex-col items-center"
+                                    style={{ width: '120px' }}
+                                >
+                                    <div
+                                        className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 mb-2 ${
+                                            index <= currentStageIndex 
+                                                ? 'bg-blue-500 border-blue-500 text-white' 
+                                                : 'bg-white border-gray-300 text-gray-400'
+                                        }`}
+                                    >
+                                        {stage.icon}
+                                    </div>
 
-                            {/* Rest of the OrderTracker JSX remains the same */}
+                                    <div className="text-center">
+                                        <h3 className={`font-semibold text-sm mb-1 ${
+                                            index <= currentStageIndex ? 'text-blue-500' : 'text-gray-400'
+                                        }`}>
+                                            {stage.title}
+                                        </h3>
+                                        <p className={`text-xs ${
+                                            index <= currentStageIndex ? 'text-gray-600' : 'text-gray-400'
+                                        }`}>
+                                            {stage.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
             );
         };
 
-        // MemberPortal component with dark theme
         const MemberPortal = () => {
-            const [currentUser, setCurrentUser] = useState('USER001');
+            const [currentUser, setCurrentUser] = React.useState('USER001');
             
             return (
-                <div className="min-h-screen">
-                    <main className="max-w-7xl mx-auto px-4 py-8">
-                        <div className="mb-8">
-                            <h2 className="text-xl font-semibold mb-4">Your Orders</h2>
+                <div className="min-h-screen bg-gray-100">
+                    <header className="header">
+                        <div className="container">
+                            <div className="flex justify-between items-center">
+                                <h1 className="text-2xl font-bold text-gray-900">Member Portal</h1>
+                                <div className="flex items-center gap-4">
+                                    <span className="text-gray-600">Logged in as: {users[currentUser].name}</span>
+                                    <div className="flex gap-4">
+                                        {Object.keys(users).map((userId) => (
+                                            <button
+                                                key={userId}
+                                                onClick={() => setCurrentUser(userId)}
+                                                className={`button ${
+                                                    currentUser === userId 
+                                                        ? 'bg-blue-500 text-white' 
+                                                        : 'bg-gray-200 text-gray-700'
+                                                }`}
+                                            >
+                                                {users[userId].name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4">Your Orders</h2>
                         </div>
                         
-                        <div className="space-y-8">
+                        <div>
                             {users[currentUser].orders.map((orderNumber) => (
                                 <OrderTracker key={orderNumber} orderNumber={orderNumber} />
                             ))}
@@ -283,7 +288,6 @@
             );
         };
 
-        // Render the app
         ReactDOM.render(<MemberPortal />, document.getElementById('root'));
     </script>
 </body>
