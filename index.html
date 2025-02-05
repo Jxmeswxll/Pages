@@ -5,254 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- React & Babel (for JSX) -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@6.3.16/dist/framer-motion.js"></script>
-    <script src="https://unpkg.com/@radix-ui/react-icons@1.3.0/index.umd.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div id="root"></div>
-
-    <!-- React Script -->
-    <script type="text/babel">
-    // Mock data
-    const clickUpOrders = {
-        'ORDER001': { status: 'build' },
-        'ORDER002': { status: 'test' },
-        'ORDER003': { status: 'packed' }
-    };
-    const users = {
-        'USER001': { name: 'John Doe', orders: ['ORDER001', 'ORDER002'] },
-        'USER002': { name: 'Jane Smith', orders: ['ORDER003'] }
-    };
-
-    // UI Components (simplified versions)
-    const Card = ({ children, className }) => (
-        <div className={`card ${className}`}>{children}</div>
-    );
-    const CardContent = ({ children }) => (
-        <div className="card-content">{children}</div>
-    );
-    const Button = ({ children, onClick, className }) => (
-        <button onClick={onClick} className={`button ${className}`}>{children}</button>
-    );
-
-    const OrderTracker = ({ orderNumber }) => {
-        const stages = [
-            {
-                tag: 'ordered',
-                title: 'Order Received',
-                description: 'Order has been confirmed',
-                icon: '📋'
-            },
-            {
-                tag: 'picked',
-                title: 'Items Picked',
-                description: 'Components gathered',
-                icon: '✅'
-            },
-            {
-                tag: 'build',
-                title: 'In Production',
-                description: 'Building in progress',
-                icon: '🔧'
-            },
-            {
-                tag: 'test',
-                title: 'Testing',
-                description: 'Quality assurance',
-                icon: '🔍'
-            },
-            {
-                tag: 'packed',
-                title: 'Packed',
-                description: 'Ready for shipping',
-                icon: '📦'
-            }
-        ];
-
-        const order = clickUpOrders[orderNumber];
-        const currentStageIndex = stages.findIndex(stage => stage.tag === order.status);
-
-        return (
-            <Card className="w-full max-w-4xl mx-auto bg-black mb-8 rounded-none">
-                <CardContent className="p-6">
-                    <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold text-white">Track Your Order</h2>
-                        <p className="text-gray-400">Order #{orderNumber}</p>
-                    </div>
-
-                    <div className="relative mb-8">
-                        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-700 -translate-y-1/2">
-                            <motion.div 
-                                className="h-full bg-red-600"
-                                initial={{ width: '0%' }}
-                                animate={{ width: `${(currentStageIndex / (stages.length - 1)) * 100}%` }}
-                                transition={{ duration: 0.5 }}
-                            />
-                        </div>
-
-                        <div className="relative flex justify-between">
-                            {stages.map((stage, index) => (
-                                <div 
-                                    key={index} 
-                                    className="flex flex-col items-center"
-                                    style={{ width: '120px' }}
-                                >
-                                    <motion.div
-                                        className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 mb-2
-                                            ${index <= currentStageIndex 
-                                            ? 'bg-red-600 border-red-600 text-white' 
-                                            : 'bg-black border-gray-700 text-gray-400'
-                                            }`}
-                                        animate={{
-                                            scale: index === currentStageIndex ? [1, 1.1, 1] : 1,
-                                        }}
-                                        transition={{
-                                            duration: 0.5,
-                                            repeat: index === currentStageIndex ? Infinity : 0,
-                                            repeatType: "reverse"
-                                        }}
-                                    >
-                                        {stage.icon}
-                                    </motion.div>
-
-                                    <div className="text-center">
-                                        <h3 className={`font-semibold text-sm mb-1 
-                                            ${index <= currentStageIndex ? 'text-red-600' : 'text-gray-400'}`}>
-                                            {stage.title}
-                                        </h3>
-                                        <p className={`text-xs 
-                                            ${index <= currentStageIndex ? 'text-gray-300' : 'text-gray-500'}`}>
-                                            {stage.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        );
-    };
-
-    const MemberPortal = () => {
-        const [currentUser, setCurrentUser] = React.useState('USER001');
-        
-        return (
-            <div className="min-h-screen bg-black text-white">
-                <header className="bg-black border-b border-gray-800">
-                    <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-                        <div className="flex justify-between items-center">
-                            <h1 className="text-2xl font-bold text-white">Member Portal</h1>
-                            <div className="flex items-center gap-4">
-                                <span className="text-gray-400">Logged in as: {users[currentUser].name}</span>
-                                <div className="flex gap-2">
-                                    {Object.keys(users).map((userId) => (
-                                        <Button
-                                            key={userId}
-                                            onClick={() => setCurrentUser(userId)}
-                                            className={`${
-                                                currentUser === userId 
-                                                    ? 'bg-red-600 text-white' 
-                                                    : 'bg-gray-800 text-gray-300'
-                                            } hover:bg-red-700 transition-colors duration-200`}
-                                        >
-                                            {users[userId].name}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-                    <div className="mb-8">
-                        <h2 className="text-xl font-semibold text-white mb-4">Your Orders</h2>
-                    </div>
-                    
-                    <div className="space-y-8">
-                        {users[currentUser].orders.map((orderNumber) => (
-                            <OrderTracker key={orderNumber} orderNumber={orderNumber} />
-                        ))}
-                    </div>
-                </main>
+    <header>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#members-area">Members Area</a></li>
+                </ul>
             </div>
-        );
-    };
+        </nav>
+    </header>
 
-    function App() {
-        return (
-            <>
-                <header>
-                    <nav>
-                        <div className="container">
-                            <ul>
-                                <li><a href="#about">About</a></li>
-                                <li><a href="#projects">Projects</a></li>
-                                <li><a href="#contact">Contact</a></li>
-                                <li><a href="#members-area">Members Area</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                </header>
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>Welcome to My Portfolio</h1>
+                <p>Web Developer & Designer</p>
+            </div>
+        </section>
 
-                <main>
-                    <section id="about">
-                        <div className="container">
-                            <h2>About Me</h2>
-                            <p>Your about content here...</p>
-                        </div>
-                    </section>
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>I'm a passionate web developer focused on creating beautiful and functional websites. With expertise in HTML, CSS, and JavaScript, I bring ideas to life through code.</p>
+            </div>
+        </section>
 
-                    <section id="projects">
-                        <div className="container">
-                            <h2>My Projects</h2>
-                            <div className="project-card">
-                                <h3>Project 1</h3>
-                                <p>Project 1 description...</p>
-                            </div>
-                            <div className="project-card">
-                                <h3>Project 2</h3>
-                                <p>Project 2 description...</p>
-                            </div>
-                        </div>
-                    </section>
 
-                    <section id="contact">
-                        <div className="container">
-                            <h2>Contact Me</h2>
-                            <form>
-                                <input type="text" placeholder="Name" />
-                                <input type="email" placeholder="Email" />
-                                <textarea placeholder="Message"></textarea>
-                                <button type="submit">Send</button>
-                            </form>
-                        </div>
-                    </section>
+        <section id="TEST">
+            <div class="container">
+                <h2>My Projects</h2>
+                </div>
+                <div class="project-card">
+                    <img src="" alt="TEST">
+                    <h3>TEST</h3>
+                    <p>Testing Member function and order tracking.</p>
+                    <a href="./Test/index.html" class="button">View Test Project</a>
+                </div>
+            </div>
+        </section>
 
-                    <section id="members-area">
-                        <div className="container">
-                            <h2>Members Area</h2>
-                            <MemberPortal />
-                        </div>
-                    </section>
-                </main>
+        <section id="projects">
+            <div class="container">
+                <h2>My Projects</h2>
+                </div>
+                <div class="project-card">
+                    <img src="./Barbershop/images/logo.jpg" alt="Barbershop Website">
+                    <h3>Sharp Cuts Barbershop</h3>
+                    <p>A modern, responsive website for a premium barbershop featuring online booking, service showcase, and gallery. Built with HTML5, CSS3, and JavaScript.</p>
+                    <a href="Barbershop/index.html" class="button">View Project</a>
+                </div>
+                <div class="project-card">
+                    <img src="./Gym/images/gym.jpg" alt="GYM">
+                    <h3>GYM</h3>
+                    <p>A modern, responsive website for a premium GYM. Built with HTML5, CSS3, and JavaScript.</p>
+                    <a href="Gym/index.html" class="button">View Project</a>
+                </div>
+            </div>
+        </section>
 
-                <footer>
-                    <div className="container">
-                        <p>&copy; 2025 Your Name. All rights reserved.</p>
-                    </div>
-                </footer>
-            </>
-        );
-    }
-
-    ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <p>Let's work together! Reach out to me at:</p>
+                <div class="contact-info">
+                    <a href="mailto:your.email@example.com" class="button">Email Me</a>
+                    <a href="https://github.com/yourusername" class="button">GitHub</a>
+                </div>
+            </div>
+        </section>
