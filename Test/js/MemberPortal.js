@@ -1,28 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import OrderTracker from './OrderTracker';
-import { clickUpOrders } from './data/orders';
-
 const MemberPortal = () => {
-    const { memberId } = useParams();
-    const [orders, setOrders] = useState([]);
-
-    useEffect(() => {
-        // Simple order fetching without filtering
-        setOrders(Object.keys(clickUpOrders).slice(0, 3)); // Just get first 3 orders for testing
-    }, []);
-
+    const [currentUser, setCurrentUser] = React.useState('USER001');
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6">Member Portal</h1>
-            <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
-                {orders.length > 0 ? (
-                    <OrderTracker orders={orders} />
-                ) : (
-                    <p>No orders found.</p>
-                )}
-            </div>
+        <div className="min-h-screen bg-gray-100">
+            <header className="header">
+                <div className="container">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-2xl font-bold text-gray-900">Member Portal</h1>
+                        <div className="flex items-center gap-4">
+                            <span className="text-gray-600">Logged in as: {users[currentUser].name}</span>
+                            <div className="flex gap-4">
+                                {Object.keys(users).map((userId) => (
+                                    <button
+                                        key={userId}
+                                        onClick={() => setCurrentUser(userId)}
+                                        className={`button ${
+                                            currentUser === userId 
+                                                ? 'bg-blue-500 text-white' 
+                                                : 'bg-gray-200 text-gray-700'
+                                        }`}
+                                    >
+                                        {users[userId].name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main className="container" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
+                <div className="mb-4">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4">Your Orders</h2>
+                </div>
+                
+                <div>
+                    {users[currentUser].orders.map((orderNumber) => (
+                        <OrderTracker key={orderNumber} orderNumber={orderNumber} />
+                    ))}
+                </div>
+            </main>
         </div>
     );
 };
