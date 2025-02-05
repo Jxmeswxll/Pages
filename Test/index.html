@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+
+    <!-- React & Babel (for JSX) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-content">
+                <a href="#" class="logo">Portfolio</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#members-area">Members Area</a></li> <!-- New Tab -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Members Area (React Component) -->
+        <section id="members-area">
+            <div class="container">
+                <h2>Members Area</h2>
+                <p>This section is powered by React.</p>
+                <div id="react-root"></div> <!-- React will be rendered here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 James Wall. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- React Script -->
+    <script type="text/babel">
+        function MembersDashboard() {
+            return (
+                <div>
+                    <h3>Welcome to the Members Area</h3>
+                    <p>Here you can access exclusive content.</p>
+                    <button onClick={() => alert('Feature Coming Soon!')}>Explore</button>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('react-root'));
+        root.render(<MembersDashboard />);
+    </script>
+
+</body>
+</html>
