@@ -1,7 +1,4 @@
-import React from 'react';
-import { clickUpOrders } from './data/orders';
-
-const OrderTracker = ({ orders }) => {
+const OrderTracker = ({ orderNumber }) => {
     const stages = [
         {
             tag: 'ordered',
@@ -35,20 +32,14 @@ const OrderTracker = ({ orders }) => {
         }
     ];
 
-    const getMaxStageIndex = (orders) => {
-        return Math.max(...orders.map(orderNumber => {
-            const order = clickUpOrders[orderNumber];
-            return stages.findIndex(stage => stage.tag === order.status);
-        }));
-    };
-
-    const currentStageIndex = getMaxStageIndex(orders);
+    const order = clickUpOrders[orderNumber];
+    const currentStageIndex = stages.findIndex(stage => stage.tag === order.status);
 
     return (
         <div className="card p-6">
             <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold text-gray-800">Track Your Orders</h2>
-                <p className="text-gray-500">Orders: {orders.join(', ')}</p>
+                <p className="text-gray-500">Order: {orderNumber}</p>
             </div>
 
             <div className="relative mb-8">
@@ -94,5 +85,3 @@ const OrderTracker = ({ orders }) => {
         </div>
     );
 };
-
-export default OrderTracker;

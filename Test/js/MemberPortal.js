@@ -9,19 +9,19 @@ const MemberPortal = () => {
                         <div className="flex items-center gap-4">
                             <span className="text-gray-600">Logged in as: {users[currentUser].name}</span>
                             <div className="flex gap-4">
-                                {Object.keys(users).map((userId) => (
-                                    <button
-                                        key={userId}
-                                        onClick={() => setCurrentUser(userId)}
-                                        className={`button ${
-                                            currentUser === userId 
-                                                ? 'bg-blue-500 text-white' 
-                                                : 'bg-gray-200 text-gray-700'
-                                        }`}
-                                    >
-                                        {users[userId].name}
-                                    </button>
-                                ))}
+                        {Object.keys(users).map((userId) => (
+                            <button
+                                key={userId}
+                                onClick={() => setCurrentUser(userId)}
+                                className={`px-4 py-2 rounded-md ${
+                                    currentUser === userId 
+                                        ? 'bg-blue-500 text-white' 
+                                        : 'bg-gray-200 text-gray-700'
+                                }`}
+                            >
+                                {users[userId].name}
+                            </button>
+                        ))}
                             </div>
                         </div>
                     </div>
@@ -42,5 +42,3 @@ const MemberPortal = () => {
         </div>
     );
 };
-
-export default MemberPortal;
