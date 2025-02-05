@@ -3,112 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Order Tracking Portal</title>
     
-    <!-- Add Tailwind CSS for the utility classes being used -->
+    <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Updated React & ReactDOM to use production builds -->
+    <!-- Add React and ReactDOM -->
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    
+    <!-- Add Babel for JSX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    
+    <!-- Add Framer Motion -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/6.3.16/framer-motion.js"></script>
 </head>
 <body>
     <div id="root"></div>
 
-    <!-- Separate your React components into a new script tag -->
     <script type="text/babel">
-        // Import motion from framer-motion
         const { motion } = window.Motion;
-        
-        // Your existing components here (Card, CardContent, Button, OrderTracker, MemberPortal)
+        const { useState } = React;
+
+        // Mock data
+        const clickUpOrders = {
+            'ORD001': {
+                status: 'ordered',
+                tags: ['ordered'],
+                customer_id: 'USER001'
+            },
+            'ORD002': {
+                status: 'build',
+                tags: ['ordered', 'picked', 'build'],
+                customer_id: 'USER001'
+            },
+            'ORD003': {
+                status: 'packed',
+                tags: ['ordered', 'picked', 'build', 'test', 'packed'],
+                customer_id: 'USER002'
+            }
+        };
+
+        const users = {
+            'USER001': {
+                name: 'John Smith',
+                orders: ['ORD001', 'ORD002']
+            },
+            'USER002': {
+                name: 'Sarah Johnson',
+                orders: ['ORD003']
+            }
+        };
+
+        // Basic UI components
         const Card = ({ children, className }) => (
-            <div className={`card ${className}`}>{children}</div>
+            <div className={`rounded-lg shadow-lg ${className}`}>{children}</div>
         );
 
-        const CardContent = ({ children }) => (
-            <div className="card-content">{children}</div>
+        const CardContent = ({ children, className }) => (
+            <div className={`p-6 ${className}`}>{children}</div>
         );
 
-        const Button = ({ children, onClick, className }) => (
-            <button onClick={onClick} className={`button ${className}`}>{children}</button>
-        );
-
-        // Rest of your component code remains the same...
-        // (OrderTracker, MemberPortal components)
-
-        // Move App component definition here
-        function App() {
+        const Button = ({ children, onClick, variant = 'default', className = '' }) => {
+            const baseClasses = 'px-4 py-2 rounded-md font-medium transition-colors duration-200';
+            const variantClasses = variant === 'default' 
+                ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300';
+            
             return (
-                <>
-                    <header>
-                        <nav>
-                            <div className="container">
-                                <ul>
-                                    <li><a href="#about">About</a></li>
-                                    <li><a href="#projects">Projects</a></li>
-                                    <li><a href="#contact">Contact</a></li>
-                                    <li><a href="#members-area">Members Area</a></li>
-                                </ul>
+                <button 
+                    onClick={onClick} 
+                    className={`${baseClasses} ${variantClasses} ${className}`}
+                >
+                    {children}
+                </button>
+            );
+        };
+
+        const OrderTracker = ({ orderNumber }) => {
+            const stages = [
+                {
+                    tag: 'ordered',
+                    title: 'Order Received',
+                    description: 'Order has been confirmed',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'picked',
+                    title: 'Items Picked',
+                    description: 'Components gathered',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M20 6L9 17L4 12" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'build',
+                    title: 'In Production',
+                    description: 'Building in progress',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'test',
+                    title: 'Testing',
+                    description: 'Quality assurance',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    )
+                },
+                {
+                    tag: 'packed',
+                    title: 'Packed',
+                    description: 'Ready for shipping',
+                    icon: (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    )
+                }
+            ];
+
+            const order = clickUpOrders[orderNumber];
+            const currentStageIndex = stages.findIndex(stage => stage.tag === order.status);
+
+            return (
+                <Card className="w-full max-w-4xl mx-auto bg-white mb-8">
+                    <CardContent>
+                        <div className="text-center mb-8">
+                            <h2 className="text-2xl font-bold text-gray-800">Track Your Order</h2>
+                            <p className="text-gray-500">Order #{orderNumber}</p>
+                        </div>
+
+                        <div className="relative mb-8">
+                            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2">
+                                <motion.div 
+                                    className="h-full bg-blue-500"
+                                    initial={{ width: '0%' }}
+                                    animate={{ width: `${(currentStageIndex / (stages.length - 1)) * 100}%` }}
+                                    transition={{ duration: 0.5 }}
+                                />
                             </div>
-                        </nav>
+
+                            <div className="relative flex justify-between">
+                                {stages.map((stage, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="flex flex-col items-center"
+                                        style={{ width: '120px' }}
+                                    >
+                                        <motion.div
+                                            className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 mb-2
+                                                ${index <= currentStageIndex 
+                                                    ? 'bg-blue-500 border-blue-500 text-white' 
+                                                    : 'bg-white border-gray-300 text-gray-400'
+                                                }`}
+                                            animate={{
+                                                scale: index === currentStageIndex ? [1, 1.1, 1] : 1,
+                                            }}
+                                            transition={{
+                                                duration: 0.5,
+                                                repeat: index === currentStageIndex ? Infinity : 0,
+                                                repeatType: "reverse"
+                                            }}
+                                        >
+                                            {stage.icon}
+                                        </motion.div>
+
+                                        <div className="text-center">
+                                            <h3 className={`font-semibold text-sm mb-1 
+                                                ${index <= currentStageIndex ? 'text-blue-500' : 'text-gray-400'}`}>
+                                                {stage.title}
+                                            </h3>
+                                            <p className={`text-xs 
+                                                ${index <= currentStageIndex ? 'text-gray-600' : 'text-gray-400'}`}>
+                                                {stage.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            );
+        };
+
+        const MemberPortal = () => {
+            const [currentUser, setCurrentUser] = useState('USER001');
+            
+            return (
+                <div className="min-h-screen bg-gray-100">
+                    <header className="bg-white shadow-sm">
+                        <div className="max-w-7xl mx-auto px-4 py-4">
+                            <div className="flex justify-between items-center">
+                                <h1 className="text-2xl font-bold text-gray-900">Member Portal</h1>
+                                <div className="flex items-center gap-4">
+                                    <span className="text-gray-600">Logged in as: {users[currentUser].name}</span>
+                                    <div className="flex gap-2">
+                                        {Object.keys(users).map((userId) => (
+                                            <Button
+                                                key={userId}
+                                                onClick={() => setCurrentUser(userId)}
+                                                variant={currentUser === userId ? 'default' : 'secondary'}
+                                            >
+                                                {users[userId].name}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </header>
 
-                    <main>
-                        <section id="about">
-                            <div className="container">
-                                <h2>About Me</h2>
-                                <p>Your about content here...</p>
-                            </div>
-                        </section>
-
-                        <section id="projects">
-                            <div className="container">
-                                <h2>My Projects</h2>
-                                <div className="project-card">
-                                    <h3>Project 1</h3>
-                                    <p>Project 1 description...</p>
-                                </div>
-                                <div className="project-card">
-                                    <h3>Project 2</h3>
-                                    <p>Project 2 description...</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section id="contact">
-                            <div className="container">
-                                <h2>Contact Me</h2>
-                                <form>
-                                    <input type="text" placeholder="Name" />
-                                    <input type="email" placeholder="Email" />
-                                    <textarea placeholder="Message"></textarea>
-                                    <button type="submit">Send</button>
-                                </form>
-                            </div>
-                        </section>
-
-                        <section id="members-area">
-                            <div className="container">
-                                <h2>Members Area</h2>
-                                <MemberPortal />
-                            </div>
-                        </section>
-                    </main>
-
-                    <footer>
-                        <div className="container">
-                            <p>&copy; 2025 Your Name. All rights reserved.</p>
+                    <main className="max-w-7xl mx-auto px-4 py-8">
+                        <div className="mb-8">
+                            <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Orders</h2>
                         </div>
-                    </footer>
-                </>
+                        
+                        <div className="space-y-8">
+                            {users[currentUser].orders.map((orderNumber) => (
+                                <OrderTracker key={orderNumber} orderNumber={orderNumber} />
+                            ))}
+                        </div>
+                    </main>
+                </div>
             );
-        }
+        };
 
-        // Move the ReactDOM.render call to a separate script tag
-        ReactDOM.render(<App />, document.getElementById('root'));
+        // Render the app
+        ReactDOM.render(<MemberPortal />, document.getElementById('root'));
     </script>
 </body>
 </html>
