@@ -2,7 +2,7 @@
   "name": "delivery-tracker",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jxmeswxll.github.io/Pages",
+  "homepage": "https://jxmeswxll.github.io/deliery-tracker",
   "dependencies": {
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
