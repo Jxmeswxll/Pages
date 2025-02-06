@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracker</title>
+    <!-- Load CSS files -->
+    <link rel="stylesheet" href="css/tracker.css">
+    <link rel="stylesheet" href="css/tracker-mobile.css">
+</head>
+<body>
+    <!-- Load the tracker template -->
+    <div class="order-tracker">
+        <div class="order-header">
+            <h2 class="order-number">Order #<span id="orderNumberDisplay">12345</span></h2>
+            <p class="estimated-delivery">Estimated Delivery: <span id="estimatedDeliveryDisplay">March 10, 2025</span></p>
+        </div>
+
+        <div class="stages-container">
+            <div class="progress-line">
+                <div class="progress-line-fill"></div>
+            </div>
+
+            <div class="stages" id="stages">
+                <!-- Stages will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script type="module">
+        import { OrderTracker } from './js/OrderTracker.js';
+        import { fetchOrderDetails, fetchOrderStatus } from './js/api.js';
+
+        // Initialize the tracker with a default status
+        const tracker = new OrderTracker('stages', 'picked');
+
+        // Example: Update status every 30 seconds
+        setInterval(async () => {
+            try {
+                const status = await fetchOrderStatus('12345');
+                tracker.updateStatus(status);
+            } catch (error) {
+                console.error('Error updating status:', error);
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
