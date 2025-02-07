@@ -1,1 +1,0 @@
-ReactDOM.render(<MemberPortal />, document.getElementById('root'));
