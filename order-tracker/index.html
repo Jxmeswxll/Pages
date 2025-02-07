@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Tracker</title>
-    <!-- Load CSS files -->
-    <link rel="stylesheet" href="./css/tracker.css">
-    <link rel="stylesheet" href=./css/tracker-mobile.css">
+    <!-- Update CSS paths to use absolute paths from repository root -->
+    <link rel="stylesheet" href="/Pages/order-tracker/css/tracker.css">
+    <link rel="stylesheet" href="/Pages/order-tracker/css/tracker-mobile.css">
 </head>
 <body>
-    <!-- Load the tracker template -->
     <div class="order-tracker">
         <div class="order-header">
             <h2 class="order-number">Order #<span id="orderNumberDisplay">12345</span></h2>
@@ -27,10 +26,10 @@
         </div>
     </div>
 
-    <!-- Load JavaScript modules -->
+    <!-- Update JavaScript module imports to use absolute paths -->
     <script type="module">
-        import { OrderTracker } from './js/OrderTracker.js';
-        import { fetchOrderDetails, fetchOrderStatus } from './js/api.js';
+        import { OrderTracker } from '/Pages/order-tracker/js/OrderTracker.js';
+        import { fetchOrderDetails, fetchOrderStatus } from '/Pages/order-tracker/js/api.js';
 
         // Initialize the tracker with a default status
         const tracker = new OrderTracker('stages', 'picked');
