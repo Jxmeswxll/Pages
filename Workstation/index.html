@@ -266,19 +266,21 @@
     .solutions {
       padding: var(--section-padding);
       background-color: var(--dark-bg);
+      position: relative;
     }
-
+    
     .solutions-tabs {
       display: flex;
       justify-content: center;
       margin-bottom: 3rem;
       overflow-x: auto;
       padding-bottom: 0.5rem;
+      gap: 1rem;
     }
-
+    
     .tab-button {
       padding: 0.8rem 1.5rem;
-      background-color: transparent;
+      background-color: rgba(255, 255, 255, 0.05);
       color: white;
       border: none;
       cursor: pointer;
@@ -286,37 +288,54 @@
       position: relative;
       text-transform: uppercase;
       font-size: 0.9rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
     }
-
+    
+    .tab-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
     .tab-button.active {
-      color: var(--primary-color);
-    }
-
-    .tab-button.active::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 3px;
+      color: white;
       background-color: var(--primary-color);
     }
-
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: grid;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     .solutions-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
     }
-
+    
     .solution-card {
       background-color: var(--darker-bg);
       position: relative;
-      border-radius: 4px;
+      border-radius: 8px;
       overflow: hidden;
-      height: 350px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 420px;
     }
-
+    
+    .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
     .solution-tag {
       position: absolute;
       top: 0;
@@ -334,37 +353,99 @@
       align-items: center;
       justify-content: center;
     }
-
+    
     .solution-content {
       padding: 2rem;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding-right: 3rem;
     }
-
-    .solution-content h3 {
+    
+    .solution-header {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .solution-badge {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      background-color: #FFD700;
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    
+    .solution-header h3 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+      color: white;
     }
-
+    
     .solution-specs {
       margin-top: 1.5rem;
     }
-
+    
+    .solution-specs ul {
+      margin-bottom: 1.5rem;
+    }
+    
     .solution-specs li {
       font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.7rem;
       list-style-type: none;
       position: relative;
       padding-left: 1.2rem;
+      line-height: 1.4;
     }
-
+    
     .solution-specs li:before {
       content: '•';
       color: var(--primary-color);
       position: absolute;
       left: 0;
+      top: 0;
+    }
+    
+    .solution-specs li strong {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .solution-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    
+    .solutions-cta {
+      margin-top: 4rem;
+    }
+    
+    .cta-box {
+      background-color: rgba(228, 37, 41, 0.15);
+      border-radius: 8px;
+      padding: 2.5rem;
+      text-align: center;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .cta-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .cta-box p {
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Case Studies Section */
@@ -779,11 +860,16 @@
       }
       
       .solutions-tabs {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
         padding-bottom: 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
       
       .tab-button {
-        padding: 0.8rem 1rem;
+        flex: 0 0 auto;
+        padding: 0.7rem 1rem;
         font-size: 0.8rem;
       }
     }
@@ -891,6 +977,42 @@
         font-size: 0.9rem;
       }
     }
+    
+    /* Animation styles */
+    .animate-in {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Menu open body state */
+    body.menu-open {
+      overflow: hidden;
+    }
+    
+    /* Form success message */
+    .form-success {
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .form-success svg {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-success h3 {
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -968,428 +1090,497 @@
           <p>Dedicated business support team with guaranteed response times, service options, and account managers.</p>
           <div class="feature-stats">Priority response guaranteed</div>
         </div>
-      </div>
     </div>
-  </section>
+</div>
+</section>
 
-  <!-- Solutions Section -->
-  <section class="solutions" id="solutions">
-    <div class="container">
-      <h2 class="section-title">Enterprise Solutions</h2>
-      <p style="text-align: center; margin-bottom: 3rem;">Powerful custom hardware solutions engineered for your specific business requirements</p>
-      
-      <div class="solutions-tabs">
-        <button class="tab-button active">Data Analysis</button>
-        <button class="tab-button">Creative Prod</button>
-        <button class="tab-button">Engineering</button>
-        <button class="tab-button">Server Solutions</button>
-      </div>
-      
-      <div class="solutions-grid">
-        <div class="solution-card">
-          <div class="solution-tag">Workstation</div>
-          <div class="solution-content">
-            <div>
-              <h3>Data Analysis Powerhouses</h3>
-              <p>Designed for businesses handling large datasets and complex analytics</p>
-            </div>
-            
-            <div class="solution-specs">
-              <ul>
-                <li>AMD Threadripper Pro or Intel Xeon W processors</li>
-                <li>Up to 256GB ECC memory</li>
-                <li>Enterprise SSD storage arrays</li>
-                <li>Optional GPU acceleration for data science</li>
-              </ul>
-              <a href="#" class="btn" style="margin-top: 1.5rem;">Configure Solution</a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="solution-card">
-          <div class="solution-tag">Workstation</div>
-          <div class="solution-content">
-            <div>
-              <h3>AI Development Workstations</h3>
-              <p>Specialized systems for machine learning and AI model development</p>
-            </div>
-            
-            <div class="solution-specs">
-              <ul>
-                <li>Multiple NVIDIA RTX A-series GPUs</li>
-                <li>High-core count processors</li>
-                <li>NVMe storage for fast data access</li>
-                <li>Custom cooling solutions</li>
-              </ul>
-              <a href="#" class="btn" style="margin-top: 1.5rem;">Configure Solution</a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="solution-card">
-          <div class="solution-tag">Server</div>
-          <div class="solution-content">
-            <div>
-              <h3>Business Intelligence Servers</h3>
-              <p>Centralized computing resources for database management and BI applications</p>
-            </div>
-            
-            <div class="solution-specs">
-              <ul>
-                <li>Dual Intel Xeon processors</li>
-                <li>Redundant power supplies</li>
-                <li>RAID storage configurations</li>
-                <li>Advanced cooling systems</li>
-              </ul>
-              <a href="#" class="btn" style="margin-top: 1.5rem;">Configure Solution</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Case Studies Section -->
-  <section class="case-studies" id="case-studies">
-    <div class="container">
-      <h2 class="section-title">Success Stories</h2>
-      <p style="text-align: center; margin-bottom: 3rem;">See how Australian businesses have transformed their operations with Aftershock PC enterprise solutions</p>
-      
-      <div class="featured-case">
-        <div class="featured-case-content">
-          <h3 class="featured-case-title">How Imaginary Client Reduced Rendering Times By 67%</h3>
-          <p>This imaginary architectural visualisation firm struggled with lengthy render times that limited client revisions and project capacity. Aftershock PC delivered a custom solution with 12 specialized workstations featuring optimized GPUs.</p>
-          
-          <div class="featured-case-metrics">
-            <div class="metric">
-              <div class="metric-value">67%</div>
-              <div class="metric-label">Rendering Time Reduction</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value">30%</div>
-              <div class="metric-label">Project Capacity Increase</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value">9mo</div>
-              <div class="metric-label">ROI Achievement</div>
-            </div>
-          </div>
-          
-          <div class="testimonial">
-            "The Aftershock team took the time to understand our specific workflow challenges. The custom solution they designed has transformed our business capabilities and significantly improved our competitive edge."
-            <div class="testimonial-author">— Imaginary CEO,</div>
-          </div>
-          
-          <a href="#" class="btn">Read Full Case Study</a>
-        </div>
-      </div>
-      
-      <h3 style="margin: 3rem 0 1.5rem;">More Success Stories</h3>
-      <div class="other-cases">
-        <div class="case-card">
-          <h3>Imaginary Financial</h3>
-          <p>40% faster financial projections for financial services firm</p>
-          <a href="#">Read More</a>
-        </div>
-        
-        <div class="case-card">
-          <h3>Imaginary Engineering</h3>
-          <p>Complex simulations reducing project timelines by 35%</p>
-          <a href="#">Read More</a>
-        </div>
-        
-        <div class="case-card">
-          <h3>Imaginary Imaging</h3>
-          <p>Improved diagnostic speed and research capabilities</p>
-          <a href="#">Read More</a>
-        </div>
-        
-        <div class="case-card">
-          <h3>Imaginary Media</h3>
-          <p>4K video production with faster turnaround times</p>
-          <a href="#">Read More</a>
-        </div>
-        
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">Ready To Transform Your Business?</h2>
-      <p style="text-align: center; margin-bottom: 3rem;">Our enterprise team is ready to discuss your specific needs and design a tailored solution</p>
-      
-      <div class="contact-container">
-        <div class="contact-info">
-          <h3>Why Consult With Us?</h3>
-          <ul class="contact-benefits">
-            <li>
-              <i>✓</i>
-              <div>A detailed needs assessment by technical specialists</div>
-            </li>
-            <li>
-              <i>✓</i>
-              <div>Custom solution recommendations for your workflows</div>
-            </li>
-            <li>
-              <i>✓</i>
-              <div>Transparent pricing with component breakdowns</div>
-            </li>
-            <li>
-              <i>✓</i>
-              <div>Implementation timeline and support plan</div>
-            </li>
-          </ul>
-          
-          <h3>Industry Expertise</h3>
-          <div class="industry-tags">
-            <span class="industry-tag">Architecture</span>
-            <span class="industry-tag">Engineering</span>
-            <span class="industry-tag">Data Science</span>
-            <span class="industry-tag">Creative Production</span>
-            <span class="industry-tag">Financial Services</span>
-            <span class="industry-tag">Healthcare</span>
-            <span class="industry-tag">Education</span>
-          </div>
-        </div>
-        
-        <div class="contact-form">
-          <h3>Request A Consultation</h3>
-          <p style="text-align: center; margin-bottom: 2rem;">Our specialists will contact you within 1 business day</p>
-          
-          <form>
-            <div class="form-group">
-              <label for="fullName">Full Name*</label>
-              <input type="text" id="fullName" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="businessEmail">Business Email*</label>
-              <input type="email" id="businessEmail" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="companyName">Company Name*</label>
-              <input type="text" id="companyName" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="projectRequirements">Project Requirements</label>
-              <textarea id="projectRequirements" class="form-control" rows="5"></textarea>
-            </div>
-            
-            <div class="form-submit">
-              <button type="submit" class="btn">Schedule Consultation</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Partners Section -->
-  <section class="partners">
-    <div class="container">
-      <h4>Trusted Technology Partners</h4>
-      <div class="partners-grid">
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-        <div class="partner">
-          <img src="/api/placeholder/120/60" alt="Partner Logo">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container footer-container">
-      <div class="footer-col">
-        <h4>Enterprise Solutions</h4>
-        <ul class="footer-links">
-          <li><a href="#">Data Analysis Workstations</a></li>
-          <li><a href="#">Creative Production Systems</a></li>
-          <li><a href="#">Engineering Workstations</a></li>
-          <li><a href="#">Server Solutions</a></li>
-          <li><a href="#">Custom Enterprise Builds</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-col">
-        <h4>Resources</h4>
-        <ul class="footer-links">
-          <li><a href="#">Case Studies</a></li>
-          <li><a href="#">White Papers</a></li>
-          <li><a href="#">Hardware Guides</a></li>
-          <li><a href="#">Support Documentation</a></li>
-          <li><a href="#">Enterprise Blog</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul class="footer-links">
-          <li><a href="#">About Aftershock PC</a></li>
-          <li><a href="#">Our Enterprise Team</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="footer-bottom">
-      <p>&copy; 2025 Aftershock PC. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- JavaScript -->
-  <script>
-    // Mobile menu functionality
-    const menuToggle = document.getElementById('menuToggle');
-    const mainNav = document.getElementById('mainNav');
-    const mobileNavLinks = document.querySelectorAll('#mainNav a');
-    
-    menuToggle.addEventListener('click', () => {
-      mainNav.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
-      
-      // Toggle between hamburger and X icon
-      if (mainNav.classList.contains('active')) {
-        menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-      } else {
-        menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
-      }
-    });
-    
-    // Close mobile menu when a link is clicked
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mainNav.classList.remove('active');
-        document.body.classList.remove('menu-open');
-        menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
-      });
-    });
-    
-    // Tab functionality
-    const tabButtons = document.querySelectorAll('.tab-button');
-    
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        // Here you would normally show/hide content based on the selected tab
-        // For demo purposes, we're just switching the active state
-      });
-    });
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        if (this.getAttribute('href') === '#') return;
-        
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        
-        if (targetElement) {
-          // Adjust scroll position based on screen size
-          const headerOffset = window.innerWidth <= 768 ? 60 : 80;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-    
-    // Intersection Observer for scroll animations
-    const observeElements = document.querySelectorAll('.feature-card, .solution-card, .case-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-    
-    observeElements.forEach(element => {
-      observer.observe(element);
-    });
-    
-    // Handle form submission
-    const contactForm = document.querySelector('.contact-form form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Here you would handle the form submission
-        // For demo, just show a success message
-        this.innerHTML = '<div class="form-success"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><h3>Thanks for reaching out!</h3><p>We\'ll contact you within 1 business day to discuss your requirements.</p></div>';
-      });
-    }
-  </script>
+<!-- Solutions Section -->
+<section class="solutions" id="solutions">
+<div class="container">
+  <h2 class="section-title">Enterprise Solutions</h2>
+  <p style="text-align: center; margin-bottom: 3rem;">Cutting-edge hardware solutions custom-engineered for your unique business challenges</p>
   
-  <style>
-    /* Animation styles */
-    .animate-in {
-      animation: fadeInUp 0.6s ease forwards;
-    }
+  <div class="solutions-tabs">
+    <button class="tab-button active" data-tab="data-analysis">Data & Analytics</button>
+    <button class="tab-button" data-tab="creative">Creative Production</button>
+    <button class="tab-button" data-tab="engineering">Engineering</button>
+    <button class="tab-button" data-tab="server">Server Solutions</button>
+  </div>
+  
+  <!-- Data Analysis Tab Content -->
+  <div class="solutions-grid tab-content active" id="data-analysis">
+    <div class="solution-card">
+      <div class="solution-tag">Workstation</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <span class="solution-badge">Most Popular</span>
+          <h3>Data Analysis Powerhouses</h3>
+          <p>Accelerate insights with systems designed for massive datasets and complex analytics workflows</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>CPU:</strong> AMD Threadripper Pro (up to 64 cores) or Intel Xeon W processors</li>
+            <li><strong>Memory:</strong> Up to 256GB ECC DDR5 RAM</li>
+            <li><strong>Storage:</strong> Enterprise NVMe SSD arrays with up to 8TB capacity</li>
+            <li><strong>GPU:</strong> Optional NVIDIA RTX A-series for data science acceleration</li>
+            <li><strong>Expansion:</strong> PCIe Gen 4 with multiple full-length slots</li>
+          </ul>
+          <div class="solution-price">Starting from $3,499</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
     
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    <div class="solution-card">
+      <div class="solution-tag">Workstation</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <h3>AI Development Workstations</h3>
+          <p>Purpose-built for machine learning frameworks and AI model development</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>GPU:</strong> Multiple NVIDIA RTX A-series GPUs (up to 4x A6000)</li>
+            <li><strong>CPU:</strong> High-core count AMD/Intel processors optimized for ML workflows</li>
+            <li><strong>Memory:</strong> Up to 512GB DDR5 RAM</li>
+            <li><strong>Storage:</strong> High-speed NVMe arrays for dataset access (up to 16TB)</li>
+            <li><strong>Cooling:</strong> Liquid cooling with dedicated GPU loops</li>
+          </ul>
+          <div class="solution-price">Starting from $5,999</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
     
-    /* Menu open body state */
-    body.menu-open {
-      overflow: hidden;
-    }
+    <div class="solution-card">
+      <div class="solution-tag">Server</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <h3>Business Intelligence Servers</h3>
+          <p>Centralized computing resources optimized for database management and BI applications</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>CPU:</strong> Dual Intel Xeon Scalable processors (up to 56 cores total)</li>
+            <li><strong>Redundancy:</strong> Hot-swappable power supplies with N+1 redundancy</li>
+            <li><strong>Storage:</strong> RAID configurations with hot-swappable drive bays</li>
+            <li><strong>Network:</strong> 10Gb/25Gb Ethernet with dedicated iLO management</li>
+            <li><strong>Support:</strong> 24/7 monitoring and next business day service</li>
+          </ul>
+          <div class="solution-price">Starting from $7,499</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Creative Production Tab Content (initially hidden) -->
+  <div class="solutions-grid tab-content" id="creative" style="display: none;">
+    <div class="solution-card">
+      <div class="solution-tag">Workstation</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <span class="solution-badge">Most Popular</span>
+          <h3>Video Production Powerhouses</h3>
+          <p>Professional-grade systems for video editing, color grading and VFX work</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>CPU:</strong> Intel Core i9 or AMD Ryzen 9 with high single-core performance</li>
+            <li><strong>GPU:</strong> NVIDIA RTX 4090 or AMD Radeon Pro W7900</li>
+            <li><strong>Memory:</strong> 128GB DDR5 high-frequency RAM</li>
+            <li><strong>Storage:</strong> Multi-tier storage with 8TB NVMe + 32TB SATA SSD arrays</li>
+            <li><strong>I/O:</strong> Thunderbolt 4 connectivity for external devices</li>
+          </ul>
+          <div class="solution-price">Starting from $4,299</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
     
-    /* Form success message */
-    .form-success {
-      text-align: center;
-      padding: 2rem;
-    }
+    <div class="solution-card">
+      <div class="solution-tag">Workstation</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <h3>3D & Animation Workstations</h3>
+          <p>Specialized systems for 3D modeling, animation, and rendering workloads</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>CPU:</strong> AMD Threadripper or Intel Core-X series</li>
+            <li><strong>GPU:</strong> Dual NVIDIA RTX A5000 or higher professional GPUs</li>
+            <li><strong>Memory:</strong> 256GB ECC memory</li>
+            <li><strong>Storage:</strong> 4TB NVMe primary + 16TB secondary storage</li>
+            <li><strong>Display:</strong> Support for multiple professional-grade monitors</li>
+          </ul>
+          <div class="solution-price">Starting from $6,499</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
     
-    .form-success svg {
-      color: var(--primary-color);
-      margin-bottom: 1.5rem;
-    }
+    <div class="solution-card">
+      <div class="solution-tag">Server</div>
+      <div class="solution-content">
+        <div class="solution-header">
+          <h3>Render Farm Solutions</h3>
+          <p>Compact and powerful rendering solutions for distributed rendering workloads</p>
+        </div>
+        
+        <div class="solution-specs">
+          <ul>
+            <li><strong>Nodes:</strong> Multiple high-density compute nodes in 2U/4U form factors</li>
+            <li><strong>CPU:</strong> AMD EPYC or Intel Xeon processors with high core counts</li>
+            <li><strong>GPU Options:</strong> NVIDIA RTX A-series GPU acceleration available</li>
+            <li><strong>Network:</strong> 10GbE/25GbE networking for fast data transfer</li>
+            <li><strong>Management:</strong> Centralized render farm management software</li>
+          </ul>
+          <div class="solution-price">Starting from $9,999</div>
+          <a href="#contact" class="btn" style="margin-top: 1.5rem;">Configure Your Solution</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Engineering Tab Content (initially hidden) -->
+  <div class="solutions-grid tab-content" id="engineering" style="display: none;">
+    <!-- Engineering solutions would go here -->
+  </div>
+  
+  <!-- Server Solutions Tab Content (initially hidden) -->
+  <div class="solutions-grid tab-content" id="server" style="display: none;">
+    <!-- Server solutions would go here -->
+  </div>
+</div>
+
+<div class="solutions-cta">
+  <div class="container">
+    <div class="cta-box">
+      <h3>Not sure which solution fits your needs?</h3>
+      <p>Our technical specialists can help design a custom configuration for your exact workflow requirements.</p>
+      <a href="#contact" class="btn">Schedule a Consultation</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Case Studies Section -->
+<section class="case-studies" id="case-studies">
+<div class="container">
+  <h2 class="section-title">Success Stories</h2>
+  <p style="text-align: center; margin-bottom: 3rem;">See how Australian businesses have transformed their operations with Aftershock PC enterprise solutions</p>
+  
+  <div class="featured-case">
+    <div class="featured-case-content">
+      <h3 class="featured-case-title">How Imaginary Client Reduced Rendering Times By 67%</h3>
+      <p>This imaginary architectural visualisation firm struggled with lengthy render times that limited client revisions and project capacity. Aftershock PC delivered a custom solution with 12 specialized workstations featuring optimized GPUs.</p>
+      
+      <div class="featured-case-metrics">
+        <div class="metric">
+          <div class="metric-value">67%</div>
+          <div class="metric-label">Rendering Time Reduction</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">30%</div>
+          <div class="metric-label">Project Capacity Increase</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">9mo</div>
+          <div class="metric-label">ROI Achievement</div>
+        </div>
+      </div>
+      
+      <div class="testimonial">
+        "The Aftershock team took the time to understand our specific workflow challenges. The custom solution they designed has transformed our business capabilities and significantly improved our competitive edge."
+        <div class="testimonial-author">— Imaginary CEO,</div>
+      </div>
+      
+      <a href="#" class="btn">Read Full Case Study</a>
+    </div>
+  </div>
+  
+  <h3 style="margin: 3rem 0 1.5rem;">More Success Stories</h3>
+  <div class="other-cases">
+    <div class="case-card">
+      <h3>Imaginary Financial</h3>
+      <p>40% faster financial projections for financial services firm</p>
+      <a href="#">Read More</a>
+    </div>
     
-    .form-success h3 {
-      margin-bottom: 1rem;
+    <div class="case-card">
+      <h3>Imaginary Engineering</h3>
+      <p>Complex simulations reducing project timelines by 35%</p>
+      <a href="#">Read More</a>
+    </div>
+    
+    <div class="case-card">
+      <h3>Imaginary Imaging</h3>
+      <p>Improved diagnostic speed and research capabilities</p>
+      <a href="#">Read More</a>
+    </div>
+    
+    <div class="case-card">
+      <h3>Imaginary Media</h3>
+      <p>4K video production with faster turnaround times</p>
+      <a href="#">Read More</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+<div class="container">
+  <h2 class="section-title">Ready To Transform Your Business?</h2>
+  <p style="text-align: center; margin-bottom: 3rem;">Our enterprise team is ready to discuss your specific needs and design a tailored solution</p>
+  
+  <div class="contact-container">
+    <div class="contact-info">
+      <h3>Why Consult With Us?</h3>
+      <ul class="contact-benefits">
+        <li>
+          <i>✓</i>
+          <div>A detailed needs assessment by technical specialists</div>
+        </li>
+        <li>
+          <i>✓</i>
+          <div>Custom solution recommendations for your workflows</div>
+        </li>
+        <li>
+          <i>✓</i>
+          <div>Transparent pricing with component breakdowns</div>
+        </li>
+        <li>
+          <i>✓</i>
+          <div>Implementation timeline and support plan</div>
+        </li>
+      </ul>
+      
+      <h3>Industry Expertise</h3>
+      <div class="industry-tags">
+        <span class="industry-tag">Architecture</span>
+        <span class="industry-tag">Engineering</span>
+        <span class="industry-tag">Data Science</span>
+        <span class="industry-tag">Creative Production</span>
+        <span class="industry-tag">Financial Services</span>
+        <span class="industry-tag">Healthcare</span>
+        <span class="industry-tag">Education</span>
+      </div>
+    </div>
+    
+    <div class="contact-form">
+      <h3>Request A Consultation</h3>
+      <p style="text-align: center; margin-bottom: 2rem;">Our specialists will contact you within 1 business day</p>
+      
+      <form>
+        <div class="form-group">
+          <label for="fullName">Full Name*</label>
+          <input type="text" id="fullName" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="businessEmail">Business Email*</label>
+          <input type="email" id="businessEmail" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="companyName">Company Name*</label>
+          <input type="text" id="companyName" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="projectRequirements">Project Requirements</label>
+          <textarea id="projectRequirements" class="form-control" rows="5"></textarea>
+        </div>
+        
+        <div class="form-submit">
+          <button type="submit" class="btn">Schedule Consultation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners">
+<div class="container">
+  <h4>Trusted Technology Partners</h4>
+  <div class="partners-grid">
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+    <div class="partner">
+      <img src="/api/placeholder/120/60" alt="Partner Logo">
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="container footer-container">
+  <div class="footer-col">
+    <h4>Enterprise Solutions</h4>
+    <ul class="footer-links">
+      <li><a href="#">Data Analysis Workstations</a></li>
+      <li><a href="#">Creative Production Systems</a></li>
+      <li><a href="#">Engineering Workstations</a></li>
+      <li><a href="#">Server Solutions</a></li>
+      <li><a href="#">Custom Enterprise Builds</a></li>
+    </ul>
+  </div>
+  
+  <div class="footer-col">
+    <h4>Resources</h4>
+    <ul class="footer-links">
+      <li><a href="#">Case Studies</a></li>
+      <li><a href="#">White Papers</a></li>
+      <li><a href="#">Hardware Guides</a></li>
+      <li><a href="#">Support Documentation</a></li>
+      <li><a href="#">Enterprise Blog</a></li>
+    </ul>
+  </div>
+  
+  <div class="footer-col">
+    <h4>Company</h4>
+    <ul class="footer-links">
+      <li><a href="#">About Aftershock PC</a></li>
+      <li><a href="#">Our Enterprise Team</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer-bottom">
+  <p>&copy; 2025 Aftershock PC. All rights reserved.</p>
+</div>
+</footer>
+
+<!-- JavaScript -->
+<script>
+// Mobile menu functionality
+const menuToggle = document.getElementById('menuToggle');
+const mainNav = document.getElementById('mainNav');
+const mobileNavLinks = document.querySelectorAll('#mainNav a');
+
+menuToggle.addEventListener('click', () => {
+  mainNav.classList.toggle('active');
+  document.body.classList.toggle('menu-open');
+  
+  // Toggle between hamburger and X icon
+  if (mainNav.classList.contains('active')) {
+    menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+  } else {
+    menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+  }
+});
+
+// Close mobile menu when a link is clicked
+mobileNavLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    mainNav.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+  });
+});
+
+// Tab functionality
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Remove active class from all buttons and contents
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+      content.style.display = 'none';
+    });
+    
+    // Add active class to clicked button
+    button.classList.add('active');
+    
+    // Show the corresponding tab content
+    const tabId = button.getAttribute('data-tab');
+    const activeContent = document.getElementById(tabId);
+    if (activeContent) {
+      activeContent.classList.add('active');
+      activeContent.style.display = 'grid';
     }
-  </style>
+  });
+});
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    if (this.getAttribute('href') === '#') return;
+    
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    
+    if (targetElement) {
+      // Adjust scroll position based on screen size
+      const headerOffset = window.innerWidth <= 768 ? 60 : 80;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+// Intersection Observer for scroll animations
+const observeElements = document.querySelectorAll('.feature-card, .solution-card, .case-card');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+});
+
+observeElements.forEach(element => {
+  observer.observe(element);
+});
+
+// Handle form submission
+const contactForm = document.querySelector('.contact-form form');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Here you would handle the form submission
+    // For demo, just show a success message
+    this.innerHTML = '<div class="form-success"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><h3>Thanks for reaching out!</h3><p>We\'ll contact you within 1 business day to discuss your requirements.</p></div>';
+  });
+}
+</script>
 </body>
 </html>
