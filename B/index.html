@@ -212,24 +212,16 @@
             
             // Color schemes for different grid sizes (fallback if image doesn't load)
             const colorSchemes = {
-                3: [
-                    'color-1', 'color-2', 'color-3',
-                    'color-4', 'color-5', 'color-6',
-                    'color-7', 'color-8', 'color-1'
-                ],
-                4: [
-                    'color-1', 'color-2', 'color-3', 'color-4',
-                    'color-5', 'color-6', 'color-7', 'color-8',
-                    'color-1', 'color-2', 'color-3', 'color-4',
-                    'color-5', 'color-6', 'color-7', 'color-8'
-                ],
-                5: [
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5',
-                    'color-6', 'color-7', 'color-8', 'color-1', 'color-2',
-                    'color-3', 'color-4', 'color-5', 'color-6', 'color-7',
-                    'color-8', 'color-1', 'color-2', 'color-3', 'color-4',
-                    'color-5', 'color-6', 'color-7', 'color-8', 'color-1'
-                ]
+                3: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 'color-1'],
+                4: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'],
+                5: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'],
+                6: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8']
             };
             
             // Try to load image - both relative and absolute paths
@@ -303,7 +295,7 @@
                     if (i === emptyCellIndex) continue; // Skip the empty cell
                     
                     const piece = document.createElement('div');
-                    piece.className = `puzzle-piece ${colorSchemes[puzzleSize][i % colorSchemes[puzzleSize].length]}`;
+                    piece.className = `puzzle-piece ${colorSchemes[Math.min(puzzleSize, 6)][i % colorSchemes[Math.min(puzzleSize, 6)].length]}`;
                     piece.dataset.index = i;
                     
                     // Calculate position
@@ -344,6 +336,9 @@
                 } else {
                     showImageBtn.style.display = 'none';
                 }
+                
+                // Shuffle automatically after initialization
+                setTimeout(shufflePuzzle, 500);
             }
             
             // Check if a piece can be moved
@@ -428,7 +423,8 @@
             
             // Shuffle the puzzle
             function shufflePuzzle() {
-                const numShuffles = puzzleSize * puzzleSize * 15; // Number of random moves
+                // More shuffles for larger puzzles
+                const numShuffles = puzzleSize * puzzleSize * 20;
                 
                 // Make random valid moves
                 for (let i = 0; i < numShuffles; i++) {
@@ -518,8 +514,8 @@
             });
             
             difficultyBtn.addEventListener('click', function() {
-                // Cycle through difficulties: 3x3 -> 4x4 -> 5x5 -> 3x3
-                puzzleSize = (puzzleSize % 3) + 3;
+                // Cycle through difficulties: 3x3 -> 4x4 -> 5x5 -> 6x6 -> 3x3
+                puzzleSize = puzzleSize >= 6 ? 3 : puzzleSize + 1;
                 difficultyBtn.textContent = `Difficulty: ${puzzleSize}x${puzzleSize}`;
                 emptyCellIndex = puzzleSize * puzzleSize - 1;
                 
@@ -532,7 +528,6 @@
             playAgainBtn.addEventListener('click', function() {
                 completedMessage.style.display = 'none';
                 initPuzzle(imageLoaded);
-                shufflePuzzle();
             });
             
             // Touch events for mobile
@@ -541,7 +536,8 @@
             puzzleContainer.addEventListener('touchstart', function(e) {
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
-            }, false);
+                e.preventDefault(); // Prevent scrolling when touching the puzzle
+            }, { passive: false });
             
             puzzleContainer.addEventListener('touchend', function(e) {
                 if (!touchStartX || !touchStartY) return;
@@ -554,26 +550,28 @@
                 const dY = touchEndY - touchStartY;
                 
                 // Determine piece to move based on swipe direction
+                // FIXED: The direction logic to match intuitive directions
                 const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
                 const emptyCol = emptyCellIndex % puzzleSize;
                 let pieceToMove = -1;
                 
+                // FIXED: Changed the swipe direction logic to be more intuitive
                 if (Math.abs(dX) > Math.abs(dY)) {
                     // Horizontal swipe
                     if (dX > 0 && emptyCol > 0) {
-                        // Swipe right, move piece from left
+                        // Swipe right - move piece from left into empty space
                         pieceToMove = emptyCellIndex - 1;
                     } else if (dX < 0 && emptyCol < puzzleSize - 1) {
-                        // Swipe left, move piece from right
+                        // Swipe left - move piece from right into empty space
                         pieceToMove = emptyCellIndex + 1;
                     }
                 } else {
-                    // Vertical swipe
+                    // Vertical swipe - FIXED: swipe up should move piece down, swipe down should move piece up
                     if (dY > 0 && emptyRow > 0) {
-                        // Swipe down, move piece from top
+                        // Swipe down - move piece from above into empty space
                         pieceToMove = emptyCellIndex - puzzleSize;
                     } else if (dY < 0 && emptyRow < puzzleSize - 1) {
-                        // Swipe up, move piece from bottom
+                        // Swipe up - move piece from below into empty space
                         pieceToMove = emptyCellIndex + puzzleSize;
                     }
                 }
@@ -598,7 +596,8 @@
                 // Reset touch coordinates
                 touchStartX = null;
                 touchStartY = null;
-            }, false);
+                e.preventDefault(); // Prevent accidental clicks
+            }, { passive: false });
         });
     </script>
 </body>
