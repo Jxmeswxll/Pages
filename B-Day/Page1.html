@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Car Sliding Puzzle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 15px;
+        }
+        
+        .puzzle-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 20px;
+            border: 2px solid #333;
+            background-color: #ddd;
+        }
+        
+        .puzzle-piece {
+            position: absolute;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+        
+        .puzzle-piece .piece-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            pointer-events: none;
+        }
+        
+        .puzzle-piece .piece-number {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 12px;
+            z-index: 1;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #e10600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #c00500;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .completed-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none;
+        }
+        
+        .completed-message h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .original-image {
+            width: 300px;
+            height: auto;
+            max-height: 300px;
+            margin: 20px auto;
+            border: 2px solid #333;
+            display: block;
+        }
+        
+        .show-image-btn {
+            background-color: #0b2142;
+        }
+        
+        .upload-container {
+            margin: 20px 0;
+            display: none;
+        }
+        
+        @media (max-width: 350px) {
+            .puzzle-container, .original-image {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>F1 Car Sliding Puzzle</h1>
+    
+    <div class="stats">
+        <div>Moves: <span id="moves">0</span></div>
+        <div>Time: <span id="time">00:00</span></div>
+    </div>
+    
+    <div class="puzzle-container" id="puzzle-container"></div>
+    
+    <div class="buttons-container">
+        <button id="shuffle-btn">Shuffle</button>
+        <button id="show-image-btn" class="show-image-btn">Show Original</button>
+        <button id="difficulty-btn">Difficulty: 3x3</button>
+        <button id="number-toggle-btn">Hide Numbers</button>
+    </div>
+    
+    <img id="original-image" class="original-image" src="f1car.jpg" alt="F1 Car" style="display:none;">
+    
+    <div class="completed-message" id="completed-message">
+        <h2>Puzzle Completed!</h2>
+        <p>Moves: <span id="final-moves">0</span></p>
+        <p>Time: <span id="final-time">00:00</span></p>
+        <button id="play-again-btn">Play Again</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let puzzleSize = 3; // Default 3x3
+            let moves = 0;
+            let seconds = 0;
+            let timerInterval;
+            let isPlaying = false;
+            let emptyCellIndex = puzzleSize * puzzleSize - 1; // Last cell is empty
+            let showNumbers = true;
+            
+            const puzzleContainer = document.getElementById('puzzle-container');
+            const movesDisplay = document.getElementById('moves');
+            const timeDisplay = document.getElementById('time');
+            const finalMovesDisplay = document.getElementById('final-moves');
+            const finalTimeDisplay = document.getElementById('final-time');
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            const showImageBtn = document.getElementById('show-image-btn');
+            const originalImage = document.getElementById('original-image');
+            const difficultyBtn = document.getElementById('difficulty-btn');
+            const numberToggleBtn = document.getElementById('number-toggle-btn');
+            const completedMessage = document.getElementById('completed-message');
+            const playAgainBtn = document.getElementById('play-again-btn');
+            
+            // F1 car image - change this to your GitHub Pages URL
+            // Replace "f1car.jpg" with your image filename
+            // If using GitHub Pages, the URL would be:
+            // https://yourusername.github.io/yourrepository/f1car.jpg
+            const imageUrl = "f1car.jpg";
+            originalImage.src = imageUrl;
+            
+            // Preload the image to ensure it's ready before initializing the puzzle
+            const img = new Image();
+            img.src = imageUrl;
+            img.onload = function() {
+                // Adjust puzzle container aspect ratio to match the image
+                const aspectRatio = img.height / img.width;
+                const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
+                puzzleContainer.style.height = `${containerWidth * aspectRatio}px`;
+                
+                // Initialize puzzle
+                initPuzzle();
+            };
+            
+            // Initialize the puzzle
+            function initPuzzle() {
+                // Clear any existing pieces
+                puzzleContainer.innerHTML = '';
+                
+                // Reset stats
+                moves = 0;
+                seconds = 0;
+                movesDisplay.textContent = moves;
+                timeDisplay.textContent = '00:00';
+                
+                // Calculate piece size
+                const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
+                const containerHeight = parseInt(getComputedStyle(puzzleContainer).height);
+                const pieceWidth = containerWidth / puzzleSize;
+                const pieceHeight = containerHeight / puzzleSize;
+                
+                // Create puzzle pieces
+                for (let i = 0; i < puzzleSize * puzzleSize; i++) {
+                    if (i === emptyCellIndex) continue; // Skip the empty cell
+                    
+                    const piece = document.createElement('div');
+                    piece.className = 'puzzle-piece';
+                    piece.dataset.index = i;
+                    
+                    // Calculate position
+                    const row = Math.floor(i / puzzleSize);
+                    const col = i % puzzleSize;
+                    
+                    // Position the piece
+                    piece.style.width = `${pieceWidth}px`;
+                    piece.style.height = `${pieceHeight}px`;
+                    piece.style.transform = `translate(${col * pieceWidth}px, ${row * pieceHeight}px)`;
+                    
+                    // Create piece content (background image)
+                    const pieceContent = document.createElement('div');
+                    pieceContent.className = 'piece-content';
+                    pieceContent.style.backgroundImage = `url(${imageUrl})`;
+                    pieceContent.style.backgroundSize = `${containerWidth}px ${containerHeight}px`;
+                    pieceContent.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                    
+                    // Add piece number
+                    const pieceNumber = document.createElement('div');
+                    pieceNumber.className = 'piece-number';
+                    pieceNumber.textContent = i + 1;
+                    pieceNumber.style.display = showNumbers ? 'block' : 'none';
+                    
+                    piece.appendChild(pieceContent);
+                    piece.appendChild(pieceNumber);
+                    
+                    // Add click event
+                    piece.addEventListener('click', () => movePiece(i));
+                    
+                    puzzleContainer.appendChild(piece);
+                }
+            }
+            
+            // Check if a piece can be moved
+            function canMovePiece(index) {
+                const row = Math.floor(index / puzzleSize);
+                const col = index % puzzleSize;
+                const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
+                const emptyCol = emptyCellIndex % puzzleSize;
+                
+                // Check if the piece is adjacent to the empty cell
+                return (
+                    (row === emptyRow && Math.abs(col - emptyCol) === 1) ||
+                    (col === emptyCol && Math.abs(row - emptyRow) === 1)
+                );
+            }
+            
+            // Move a piece
+            function movePiece(index) {
+                if (!isPlaying) startGame();
+                
+                if (canMovePiece(index)) {
+                    // Get the clicked piece
+                    const piece = document.querySelector(`.puzzle-piece[data-index="${index}"]`);
+                    
+                    // Calculate new position
+                    const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
+                    const containerHeight = parseInt(getComputedStyle(puzzleContainer).height);
+                    const pieceWidth = containerWidth / puzzleSize;
+                    const pieceHeight = containerHeight / puzzleSize;
+                    const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
+                    const emptyCol = emptyCellIndex % puzzleSize;
+                    
+                    // Update piece position
+                    piece.style.transform = `translate(${emptyCol * pieceWidth}px, ${emptyRow * pieceHeight}px)`;
+                    
+                    // Update empty cell index and piece index
+                    const tempIndex = emptyCellIndex;
+                    emptyCellIndex = index;
+                    piece.dataset.index = tempIndex;
+                    
+                    // Increment moves
+                    moves++;
+                    movesDisplay.textContent = moves;
+                    
+                    // Check if puzzle is solved
+                    checkPuzzleComplete();
+                }
+            }
+            
+            // Check if puzzle is completed
+            function checkPuzzleComplete() {
+                let isComplete = true;
+                
+                document.querySelectorAll('.puzzle-piece').forEach(piece => {
+                    // Get the original index from the piece number
+                    const pieceNum = parseInt(piece.querySelector('.piece-number').textContent) - 1;
+                    const currentIndex = parseInt(piece.dataset.index);
+                    
+                    // If original index and current position don't match, puzzle isn't complete
+                    if (pieceNum !== currentIndex) {
+                        isComplete = false;
+                    }
+                });
+                
+                // If the puzzle is in initial state (not shuffled yet)
+                if (emptyCellIndex === puzzleSize * puzzleSize - 1 && moves === 0) {
+                    isComplete = false;
+                }
+                
+                if (isComplete && isPlaying && moves > 0) {
+                    clearInterval(timerInterval);
+                    isPlaying = false;
+                    
+                    // Show completion message
+                    finalMovesDisplay.textContent = moves;
+                    finalTimeDisplay.textContent = timeDisplay.textContent;
+                    completedMessage.style.display = 'flex';
+                }
+                
+                return isComplete;
+            }
+            
+            // Shuffle the puzzle
+            function shufflePuzzle() {
+                const numShuffles = puzzleSize * puzzleSize * 15; // Number of random moves
+                
+                // Make random valid moves
+                for (let i = 0; i < numShuffles; i++) {
+                    const movablePieces = [];
+                    
+                    // Find all pieces that can be moved
+                    document.querySelectorAll('.puzzle-piece').forEach(piece => {
+                        const pieceIndex = parseInt(piece.dataset.index);
+                        if (canMovePiece(pieceIndex)) {
+                            movablePieces.push(pieceIndex);
+                        }
+                    });
+                    
+                    // Move a random piece
+                    if (movablePieces.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * movablePieces.length);
+                        const pieceToMove = movablePieces[randomIndex];
+                        
+                        // Get the piece
+                        const piece = document.querySelector(`.puzzle-piece[data-index="${pieceToMove}"]`);
+                        
+                        // Calculate new position
+                        const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
+                        const containerHeight = parseInt(getComputedStyle(puzzleContainer).height);
+                        const pieceWidth = containerWidth / puzzleSize;
+                        const pieceHeight = containerHeight / puzzleSize;
+                        const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
+                        const emptyCol = emptyCellIndex % puzzleSize;
+                        
+                        // Update piece position
+                        piece.style.transform = `translate(${emptyCol * pieceWidth}px, ${emptyRow * pieceHeight}px)`;
+                        
+                        // Update empty cell index and piece index
+                        const tempIndex = emptyCellIndex;
+                        emptyCellIndex = pieceToMove;
+                        piece.dataset.index = tempIndex;
+                    }
+                }
+                
+                // Reset moves counter
+                moves = 0;
+                movesDisplay.textContent = moves;
+                
+                // Start game
+                startGame();
+            }
+            
+            // Start the game
+            function startGame() {
+                if (!isPlaying) {
+                    isPlaying = true;
+                    // Reset timer
+                    seconds = 0;
+                    timeDisplay.textContent = '00:00';
+                    
+                    // Start timer
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(() => {
+                        seconds++;
+                        const mins = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }, 1000);
+                }
+            }
+            
+            // Event listeners
+            shuffleBtn.addEventListener('click', shufflePuzzle);
+            
+            showImageBtn.addEventListener('click', function() {
+                if (originalImage.style.display === 'none') {
+                    originalImage.style.display = 'block';
+                    showImageBtn.textContent = 'Hide Original';
+                } else {
+                    originalImage.style.display = 'none';
+                    showImageBtn.textContent = 'Show Original';
+                }
+            });
+            
+            numberToggleBtn.addEventListener('click', function() {
+                showNumbers = !showNumbers;
+                numberToggleBtn.textContent = showNumbers ? 'Hide Numbers' : 'Show Numbers';
+                
+                document.querySelectorAll('.piece-number').forEach(number => {
+                    number.style.display = showNumbers ? 'block' : 'none';
+                });
+            });
+            
+            difficultyBtn.addEventListener('click', function() {
+                // Cycle through difficulties: 3x3 -> 4x4 -> 5x5 -> 3x3
+                puzzleSize = (puzzleSize % 3) + 3;
+                difficultyBtn.textContent = `Difficulty: ${puzzleSize}x${puzzleSize}`;
+                emptyCellIndex = puzzleSize * puzzleSize - 1;
+                
+                // Reinitialize puzzle
+                clearInterval(timerInterval);
+                isPlaying = false;
+                initPuzzle();
+            });
+            
+            playAgainBtn.addEventListener('click', function() {
+                completedMessage.style.display = 'none';
+                initPuzzle();
+                shufflePuzzle();
+            });
+            
+            // Touch events for mobile
+            let touchStartX, touchStartY;
+            
+            puzzleContainer.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, false);
+            
+            puzzleContainer.addEventListener('touchend', function(e) {
+                if (!touchStartX || !touchStartY) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                // Calculate direction swipe
+                const dX = touchEndX - touchStartX;
+                const dY = touchEndY - touchStartY;
+                
+                // Determine piece to move based on swipe direction
+                const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
+                const emptyCol = emptyCellIndex % puzzleSize;
+                let pieceToMove = -1;
+                
+                if (Math.abs(dX) > Math.abs(dY)) {
+                    // Horizontal swipe
+                    if (dX > 0 && emptyCol > 0) {
+                        // Swipe right, move piece from left
+                        pieceToMove = emptyCellIndex - 1;
+                    } else if (dX < 0 && emptyCol < puzzleSize - 1) {
+                        // Swipe left, move piece from right
+                        pieceToMove = emptyCellIndex + 1;
+                    }
+                } else {
+                    // Vertical swipe
+                    if (dY > 0 && emptyRow > 0) {
+                        // Swipe down, move piece from top
+                        pieceToMove = emptyCellIndex - puzzleSize;
+                    } else if (dY < 0 && emptyRow < puzzleSize - 1) {
+                        // Swipe up, move piece from bottom
+                        pieceToMove = emptyCellIndex + puzzleSize;
+                    }
+                }
+                
+                // Move the piece if valid
+                if (pieceToMove >= 0) {
+                    const allPieces = document.querySelectorAll('.puzzle-piece');
+                    let pieceElement = null;
+                    
+                    for (let i = 0; i < allPieces.length; i++) {
+                        if (parseInt(allPieces[i].dataset.index) === pieceToMove) {
+                            pieceElement = allPieces[i];
+                            break;
+                        }
+                    }
+                    
+                    if (pieceElement) {
+                        movePiece(pieceToMove);
+                    }
+                }
+                
+                // Reset touch coordinates
+                touchStartX = null;
+                touchStartY = null;
+            }, false);
+        });
+    </script>
+</body>
+</html>
