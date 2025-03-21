@@ -74,6 +74,16 @@
             z-index: 1;
         }
         
+        /* Fallback colors for pieces in case image doesn't load */
+        .puzzle-piece.color-1 { background-color: #0600E1; } /* Blue */
+        .puzzle-piece.color-2 { background-color: #0600E1; } /* Blue */
+        .puzzle-piece.color-3 { background-color: #FFCC00; } /* Yellow */
+        .puzzle-piece.color-4 { background-color: #E10600; } /* Red */
+        .puzzle-piece.color-5 { background-color: #E10600; } /* Red */
+        .puzzle-piece.color-6 { background-color: #0600E1; } /* Blue */
+        .puzzle-piece.color-7 { background-color: #FFCC00; } /* Yellow */
+        .puzzle-piece.color-8 { background-color: #E10600; } /* Red */
+        
         button {
             padding: 10px 20px;
             background-color: #e10600;
@@ -130,8 +140,12 @@
             background-color: #0b2142;
         }
         
-        .upload-container {
-            margin: 20px 0;
+        .error-message {
+            color: #e10600;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #ffeeee;
+            border-radius: 5px;
             display: none;
         }
         
@@ -152,6 +166,8 @@
     </div>
     
     <div class="puzzle-container" id="puzzle-container"></div>
+    
+    <div class="error-message" id="error-message"></div>
     
     <div class="buttons-container">
         <button id="shuffle-btn">Shuffle</button>
@@ -178,6 +194,7 @@
             let isPlaying = false;
             let emptyCellIndex = puzzleSize * puzzleSize - 1; // Last cell is empty
             let showNumbers = true;
+            let imageLoaded = false;
             
             const puzzleContainer = document.getElementById('puzzle-container');
             const movesDisplay = document.getElementById('moves');
@@ -191,29 +208,81 @@
             const numberToggleBtn = document.getElementById('number-toggle-btn');
             const completedMessage = document.getElementById('completed-message');
             const playAgainBtn = document.getElementById('play-again-btn');
+            const errorMessage = document.getElementById('error-message');
             
-            // F1 car image - change this to your GitHub Pages URL
-            // Replace "f1car.jpg" with your image filename
-            // If using GitHub Pages, the URL would be:
-            // https://yourusername.github.io/yourrepository/f1car.jpg
-            const imageUrl = "f1car.jpg";
-            originalImage.src = imageUrl;
-            
-            // Preload the image to ensure it's ready before initializing the puzzle
-            const img = new Image();
-            img.src = imageUrl;
-            img.onload = function() {
-                // Adjust puzzle container aspect ratio to match the image
-                const aspectRatio = img.height / img.width;
-                const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
-                puzzleContainer.style.height = `${containerWidth * aspectRatio}px`;
-                
-                // Initialize puzzle
-                initPuzzle();
+            // Color schemes for different grid sizes (fallback if image doesn't load)
+            const colorSchemes = {
+                3: [
+                    'color-1', 'color-2', 'color-3',
+                    'color-4', 'color-5', 'color-6',
+                    'color-7', 'color-8', 'color-1'
+                ],
+                4: [
+                    'color-1', 'color-2', 'color-3', 'color-4',
+                    'color-5', 'color-6', 'color-7', 'color-8',
+                    'color-1', 'color-2', 'color-3', 'color-4',
+                    'color-5', 'color-6', 'color-7', 'color-8'
+                ],
+                5: [
+                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5',
+                    'color-6', 'color-7', 'color-8', 'color-1', 'color-2',
+                    'color-3', 'color-4', 'color-5', 'color-6', 'color-7',
+                    'color-8', 'color-1', 'color-2', 'color-3', 'color-4',
+                    'color-5', 'color-6', 'color-7', 'color-8', 'color-1'
+                ]
             };
             
+            // Try to load image - both relative and absolute paths
+            const imagePaths = [
+                // Try direct file in same directory
+                "f1car.jpg",
+                // Try with full path from repo root
+                "/f1car.jpg"
+            ];
+            
+            // Function to try loading images from different paths
+            function tryLoadingImage(paths, index) {
+                if (index >= paths.length) {
+                    // All paths failed, use fallback
+                    console.log("Failed to load image from all paths, using fallback colors");
+                    errorMessage.textContent = "Could not load image. Using colored tiles instead.";
+                    errorMessage.style.display = "block";
+                    
+                    // Set puzzle container to square
+                    puzzleContainer.style.height = puzzleContainer.style.width;
+                    initPuzzle(false);
+                    return;
+                }
+                
+                const img = new Image();
+                img.onload = function() {
+                    console.log("Image loaded successfully from: " + paths[index]);
+                    imageLoaded = true;
+                    originalImage.src = paths[index];
+                    
+                    // Adjust puzzle container aspect ratio to match the image
+                    const aspectRatio = img.height / img.width;
+                    const containerWidth = parseInt(getComputedStyle(puzzleContainer).width);
+                    puzzleContainer.style.height = `${containerWidth * aspectRatio}px`;
+                    
+                    // Initialize puzzle with image
+                    initPuzzle(true);
+                };
+                
+                img.onerror = function() {
+                    console.log("Failed to load image from: " + paths[index]);
+                    // Try next path
+                    tryLoadingImage(paths, index + 1);
+                };
+                
+                img.src = paths[index];
+            }
+            
+            // Start trying to load the image
+            tryLoadingImage(imagePaths, 0);
+            
             // Initialize the puzzle
-            function initPuzzle() {
+            function initPuzzle(useImage) {
                 // Clear any existing pieces
                 puzzleContainer.innerHTML = '';
                 
@@ -234,7 +303,7 @@
                     if (i === emptyCellIndex) continue; // Skip the empty cell
                     
                     const piece = document.createElement('div');
-                    piece.className = 'puzzle-piece';
+                    piece.className = `puzzle-piece ${colorSchemes[puzzleSize][i % colorSchemes[puzzleSize].length]}`;
                     piece.dataset.index = i;
                     
                     // Calculate position
@@ -246,26 +315,34 @@
                     piece.style.height = `${pieceHeight}px`;
                     piece.style.transform = `translate(${col * pieceWidth}px, ${row * pieceHeight}px)`;
                     
-                    // Create piece content (background image)
-                    const pieceContent = document.createElement('div');
-                    pieceContent.className = 'piece-content';
-                    pieceContent.style.backgroundImage = `url(${imageUrl})`;
-                    pieceContent.style.backgroundSize = `${containerWidth}px ${containerHeight}px`;
-                    pieceContent.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                    if (useImage) {
+                        // Create piece content (background image)
+                        const pieceContent = document.createElement('div');
+                        pieceContent.className = 'piece-content';
+                        pieceContent.style.backgroundImage = `url(${originalImage.src})`;
+                        pieceContent.style.backgroundSize = `${containerWidth}px ${containerHeight}px`;
+                        pieceContent.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                        piece.appendChild(pieceContent);
+                    }
                     
                     // Add piece number
                     const pieceNumber = document.createElement('div');
                     pieceNumber.className = 'piece-number';
                     pieceNumber.textContent = i + 1;
                     pieceNumber.style.display = showNumbers ? 'block' : 'none';
-                    
-                    piece.appendChild(pieceContent);
                     piece.appendChild(pieceNumber);
                     
                     // Add click event
                     piece.addEventListener('click', () => movePiece(i));
                     
                     puzzleContainer.appendChild(piece);
+                }
+                
+                // Update show/hide image button
+                if (useImage) {
+                    showImageBtn.style.display = 'inline-block';
+                } else {
+                    showImageBtn.style.display = 'none';
                 }
             }
             
@@ -449,12 +526,12 @@
                 // Reinitialize puzzle
                 clearInterval(timerInterval);
                 isPlaying = false;
-                initPuzzle();
+                initPuzzle(imageLoaded);
             });
             
             playAgainBtn.addEventListener('click', function() {
                 completedMessage.style.display = 'none';
-                initPuzzle();
+                initPuzzle(imageLoaded);
                 shufflePuzzle();
             });
             
