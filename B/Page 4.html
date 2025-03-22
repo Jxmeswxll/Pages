@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aimee, With Love</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        @keyframes fadeInBackground {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(0,0,0,1) 100%);
+            animation: fadeInBackground 2s ease-in;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .slide-image {
+            max-width: 80%;
+            max-height: 60vh;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            transform: rotate(-1deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .slide-image:hover {
+            transform: rotate(1deg) scale(1.02);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        p {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .message {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            font-style: italic;
+            margin: 25px 0;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .message::before, .message::after {
+            content: '"';
+            font-size: 3rem;
+            position: absolute;
+            opacity: 0.5;
+        }
+        
+        .message::before {
+            top: -20px;
+            left: -10px;
+        }
+        
+        .message::after {
+            bottom: -40px;
+            right: -10px;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 100, 100, 0.3);
+            z-index: -1;
+            animation: float 10s ease-in-out infinite;
+        }
+        
+        .final-message {
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-top: 30px;
+            text-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
+            opacity: 0;
+            animation: fadeIn 3s forwards;
+            animation-delay: 1s;
+        }
+        
+        .ring-message {
+            font-size: 2rem;
+            line-height: 1.6;
+            max-width: 80%;
+            margin: 0 auto;
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .button-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+        }
+        
+        .start-button {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .start-button:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="" type="audio/mpeg">
+        <!-- You'll need to add your music file here -->
+    </audio>
+    
+    <div class="button-overlay" id="startOverlay">
+        <button class="start-button">Click to Begin Our Journey</button>
+    </div>
+    
+    <div class="container" id="slideshow">
+        <!-- First Slide -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1>For Aimee</h1>
+                <p class="message">Every moment with you is a gift I cherish</p>
+            </div>
+        </div>
+        
+        <!-- Beginning -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="Early days" class="slide-image">
+                <p class="message">From classmates to something more, you've had my heart since that first Nando's dinner</p>
+            </div>
+        </div>
+        
+        <!-- Manchester -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="Manchester memories" class="slide-image">
+                <p class="message">Manchester became our canvas, painting memories across the city that became our first home</p>
+            </div>
+        </div>
+        
+        <!-- Adventures -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="Adventures together" class="slide-image">
+                <p class="message">Whether in Spain under summer skies or exploring the streets of Berlin, every adventure is better with you</p>
+            </div>
+        </div>
+        
+        <!-- Home Together -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="Our place" class="slide-image">
+                <p class="message">Our little sanctuary on Collier Street - where we learned that home isn't a place, it's a person</p>
+            </div>
+        </div>
+        
+        <!-- Growth -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="Growing together" class="slide-image">
+                <p class="message">From climbing walls to climbing mountains, watching you grow has been the greatest privilege</p>
+            </div>
+        </div>
+        
+        <!-- World Travelers -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="World travels" class="slide-image">
+                <p class="message">Taking on the world together, one adventure at a time, all the way to Australia</p>
+            </div>
+        </div>
+        
+        <!-- What I Love -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>What I Love About You</h2>
+                <p>Your kindness lights up rooms</p>
+                <p>Your laughter is my favorite sound</p>
+                <p>Your strength inspires me daily</p>
+                <p>Your heart holds the map to mine</p>
+            </div>
+        </div>
+        
+        <!-- Inside Jokes -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Our Little World</h2>
+                <p class="message">A little bit of pickleball, a whole lot of love</p>
+            </div>
+        </div>
+        
+        <!-- Dreams -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Dreaming With You</h2>
+                <p>A house that becomes our home</p>
+                <p>A family we'll build together</p>
+                <p>New flavors waiting to be discovered</p>
+                <p>Adventures yet to be written</p>
+            </div>
+        </div>
+        
+        <!-- Final Slide - The Ring -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1>The Ring</h1>
+                <p class="ring-message">This ring is more than gold and stone</p>
+                <p class="ring-message">It's every promise we've made</p>
+                <p class="ring-message">Every time you look at it, remember:</p>
+                <p class="ring-message">You are deeply, completely, endlessly loved</p>
+                <p class="ring-message">It symbolizes not just my commitment</p>
+                <p class="ring-message">But the endless circle of joy you bring to my life</p>
+                <p class="final-message">All my love, James</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create background hearts
+        function createHearts() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.fontSize = Math.random() * 30 + 15 + 'px';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.animationDuration = Math.random() * 8 + 5 + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.innerHTML = '❤';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Slideshow functionality
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[index].classList.add('active');
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            // Show first slide
+            showSlide(0);
+            
+            // Change slides every 9 seconds for a more relaxed pace
+            setInterval(nextSlide, 9000);
+        }
+        
+        // Start everything when user clicks the button
+        document.querySelector('.start-button').addEventListener('click', function() {
+            // Hide the overlay
+            document.getElementById('startOverlay').classList.add('hidden');
+            
+            // Start playing music
+            const music = document.getElementById('bgMusic');
+            music.play();
+            
+            // Create hearts and start slideshow
+            createHearts();
+            startSlideshow();
+        });
+    </script>
+</body>
+</html>
