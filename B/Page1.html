@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Car Sliding Puzzle</title>
+    <title>Aimee's Birthday</title>
     <style>
         * {
             margin: 0;
@@ -18,15 +18,19 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #e8f4d9;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54 22c0-12-18-8-18 4 0 1 0 3 2 4-4 0-3 6 0 7-3 0-2 6 0 7-1 2-1 4 1 5 0 2 2 3 4 2 5 0 9-3 10-8 1-4-2-8-6-9 1-1 3-2 3-5 2 0 4-3 4-7zm-38 16c2 0 3-2 3-3 0-5-8-3-8 0 0 2 2 3 5 3zm24-9c0-9-13-5-13 3 0 1 0 2 2 3-3 0-2 5 0 5-2 0-2 5 0 5-1 2-1 3 0 4 1 1 2 2 3 1 4 0 7-3 8-6 1-3-1-7-4-7 0-1 1-2 2-4 1 0 2-2 2-4zm-32-7c2 0 3-1 3-3s-3-4-5-3c-1 1-2 2-1 3 0 2 1 3 3 3zm12-13c1 0 2-1 2-2s-2-3-4-2c0 0-1 1 0 2 0 1 1 2 2 2zm-6 3c2 0 3-1 3-3s-2-4-5-3c-1 1-1 2-1 3 1 2 2 3 3 3zm-4 4c1 0 2-1 2-2s-2-3-3-2c-1 0-2 1-1 2 0 1 1 2 2 2z' fill='%23a4c686' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
             padding: 20px;
             text-align: center;
+            color: #5a7247;
         }
         
         h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
+            color: #7c9a64;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         
         .stats {
@@ -35,6 +39,10 @@
             width: 100%;
             max-width: 400px;
             margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .puzzle-container {
@@ -42,15 +50,17 @@
             width: 300px;
             height: 300px;
             margin: 0 auto 20px;
-            border: 2px solid #333;
-            background-color: #ddd;
+            border: 3px solid #7c9a64;
+            background-color: #f7f9ed;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .puzzle-piece {
             position: absolute;
             transition: transform 0.2s ease;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(124, 154, 100, 0.5);
             overflow: hidden;
         }
         
@@ -66,7 +76,7 @@
             position: absolute;
             top: 5px;
             left: 5px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(124, 154, 100, 0.7);
             color: white;
             padding: 2px 6px;
             border-radius: 10px;
@@ -75,28 +85,31 @@
         }
         
         /* Fallback colors for pieces in case image doesn't load */
-        .puzzle-piece.color-1 { background-color: #0600E1; } /* Blue */
-        .puzzle-piece.color-2 { background-color: #0600E1; } /* Blue */
-        .puzzle-piece.color-3 { background-color: #FFCC00; } /* Yellow */
-        .puzzle-piece.color-4 { background-color: #E10600; } /* Red */
-        .puzzle-piece.color-5 { background-color: #E10600; } /* Red */
-        .puzzle-piece.color-6 { background-color: #0600E1; } /* Blue */
-        .puzzle-piece.color-7 { background-color: #FFCC00; } /* Yellow */
-        .puzzle-piece.color-8 { background-color: #E10600; } /* Red */
+        .puzzle-piece.color-1 { background-color: #a4c686; }
+        .puzzle-piece.color-2 { background-color: #c9e0b0; }
+        .puzzle-piece.color-3 { background-color: #edf4e6; }
+        .puzzle-piece.color-4 { background-color: #b8d1a0; }
+        .puzzle-piece.color-5 { background-color: #d6e9c6; }
+        .puzzle-piece.color-6 { background-color: #96ba6f; }
+        .puzzle-piece.color-7 { background-color: #e2efd6; }
+        .puzzle-piece.color-8 { background-color: #7c9a64; }
         
         button {
             padding: 10px 20px;
-            background-color: #e10600;
+            background-color: #7c9a64;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             margin: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
         }
         
         button:hover {
-            background-color: #c00500;
+            background-color: #96ba6f;
+            transform: translateY(-2px);
         }
         
         .buttons-container {
@@ -125,40 +138,46 @@
         .completed-message h2 {
             font-size: 32px;
             margin-bottom: 20px;
+            color: #e2efd6;
         }
         
-        .original-image {
+        .completed-message p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .clue-image {
             width: 300px;
             height: auto;
             max-height: 300px;
             margin: 20px auto;
-            border: 2px solid #333;
-            display: block;
-        }
-        
-        .show-image-btn {
-            background-color: #0b2142;
+            border: 3px solid #7c9a64;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
         .error-message {
-            color: #e10600;
+            color: #7c9a64;
             margin: 10px 0;
             padding: 10px;
-            background-color: #ffeeee;
+            background-color: #f7f9ed;
             border-radius: 5px;
             display: none;
         }
         
         @media (max-width: 350px) {
-            .puzzle-container, .original-image {
+            .puzzle-container {
                 width: 280px;
                 height: 280px;
+            }
+            .clue-image {
+                width: 280px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>F1 Car Sliding Puzzle</h1>
+    <h1>Aimee's Birthday</h1>
     
     <div class="stats">
         <div>Moves: <span id="moves">0</span></div>
@@ -171,23 +190,22 @@
     
     <div class="buttons-container">
         <button id="shuffle-btn">Shuffle</button>
-        <button id="show-image-btn" class="show-image-btn">Show Original</button>
-        <button id="difficulty-btn">Difficulty: 3x3</button>
         <button id="number-toggle-btn">Hide Numbers</button>
     </div>
-    
-    <img id="original-image" class="original-image" src="f1car.jpg" alt="F1 Car" style="display:none;">
     
     <div class="completed-message" id="completed-message">
         <h2>Puzzle Completed!</h2>
         <p>Moves: <span id="final-moves">0</span></p>
         <p>Time: <span id="final-time">00:00</span></p>
+        <img id="clue-image" class="clue-image" src="clue-location.jpg" alt="Treasure Location">
+        <p>Your present is hidden here! Go find it!</p>
         <button id="play-again-btn">Play Again</button>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let puzzleSize = 3; // Default 3x3
+            // Fixed size: 4x4 grid
+            let puzzleSize = 4;
             let moves = 0;
             let seconds = 0;
             let timerInterval;
@@ -202,26 +220,16 @@
             const finalMovesDisplay = document.getElementById('final-moves');
             const finalTimeDisplay = document.getElementById('final-time');
             const shuffleBtn = document.getElementById('shuffle-btn');
-            const showImageBtn = document.getElementById('show-image-btn');
-            const originalImage = document.getElementById('original-image');
-            const difficultyBtn = document.getElementById('difficulty-btn');
             const numberToggleBtn = document.getElementById('number-toggle-btn');
             const completedMessage = document.getElementById('completed-message');
             const playAgainBtn = document.getElementById('play-again-btn');
             const errorMessage = document.getElementById('error-message');
+            const clueImage = document.getElementById('clue-image');
             
             // Color schemes for different grid sizes (fallback if image doesn't load)
             const colorSchemes = {
-                3: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 'color-1'],
                 4: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
                     'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'],
-                5: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'],
-                6: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8',
-                    'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8']
             };
             
             // Try to load image - both relative and absolute paths
@@ -250,7 +258,6 @@
                 img.onload = function() {
                     console.log("Image loaded successfully from: " + paths[index]);
                     imageLoaded = true;
-                    originalImage.src = paths[index];
                     
                     // Adjust puzzle container aspect ratio to match the image
                     const aspectRatio = img.height / img.width;
@@ -258,7 +265,7 @@
                     puzzleContainer.style.height = `${containerWidth * aspectRatio}px`;
                     
                     // Initialize puzzle with image
-                    initPuzzle(true);
+                    initPuzzle(true, paths[index]);
                 };
                 
                 img.onerror = function() {
@@ -270,11 +277,38 @@
                 img.src = paths[index];
             }
             
-            // Start trying to load the image
+            // Try to load clue image
+            function tryLoadingClueImage(paths, index) {
+                if (index >= paths.length) {
+                    // All paths failed, use placeholder
+                    console.log("Failed to load clue image");
+                    clueImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='100%25' height='100%25' fill='%23f7f9ed'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' text-anchor='middle' fill='%237c9a64'%3ELook under the couch!%3C/text%3E%3C/svg%3E";
+                    return;
+                }
+                
+                const img = new Image();
+                img.onload = function() {
+                    console.log("Clue image loaded successfully from: " + paths[index]);
+                    clueImage.src = paths[index];
+                };
+                
+                img.onerror = function() {
+                    console.log("Failed to load clue image from: " + paths[index]);
+                    // Try next path
+                    tryLoadingClueImage(paths, index + 1);
+                };
+                
+                img.src = paths[index];
+            }
+            
+            // Try to load clue image
+            tryLoadingClueImage(["clue-location.jpg", "/clue-location.jpg"], 0);
+            
+            // Start trying to load the main puzzle image
             tryLoadingImage(imagePaths, 0);
             
             // Initialize the puzzle
-            function initPuzzle(useImage) {
+            function initPuzzle(useImage, imageSrc) {
                 // Clear any existing pieces
                 puzzleContainer.innerHTML = '';
                 
@@ -295,7 +329,7 @@
                     if (i === emptyCellIndex) continue; // Skip the empty cell
                     
                     const piece = document.createElement('div');
-                    piece.className = `puzzle-piece ${colorSchemes[Math.min(puzzleSize, 6)][i % colorSchemes[Math.min(puzzleSize, 6)].length]}`;
+                    piece.className = `puzzle-piece ${colorSchemes[puzzleSize][i % colorSchemes[puzzleSize].length]}`;
                     piece.dataset.index = i;
                     
                     // Calculate position
@@ -311,7 +345,7 @@
                         // Create piece content (background image)
                         const pieceContent = document.createElement('div');
                         pieceContent.className = 'piece-content';
-                        pieceContent.style.backgroundImage = `url(${originalImage.src})`;
+                        pieceContent.style.backgroundImage = `url(${imageSrc})`;
                         pieceContent.style.backgroundSize = `${containerWidth}px ${containerHeight}px`;
                         pieceContent.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                         piece.appendChild(pieceContent);
@@ -328,13 +362,6 @@
                     piece.addEventListener('click', () => movePiece(i));
                     
                     puzzleContainer.appendChild(piece);
-                }
-                
-                // Update show/hide image button
-                if (useImage) {
-                    showImageBtn.style.display = 'inline-block';
-                } else {
-                    showImageBtn.style.display = 'none';
                 }
                 
                 // Shuffle automatically after initialization
@@ -494,16 +521,6 @@
             // Event listeners
             shuffleBtn.addEventListener('click', shufflePuzzle);
             
-            showImageBtn.addEventListener('click', function() {
-                if (originalImage.style.display === 'none') {
-                    originalImage.style.display = 'block';
-                    showImageBtn.textContent = 'Hide Original';
-                } else {
-                    originalImage.style.display = 'none';
-                    showImageBtn.textContent = 'Show Original';
-                }
-            });
-            
             numberToggleBtn.addEventListener('click', function() {
                 showNumbers = !showNumbers;
                 numberToggleBtn.textContent = showNumbers ? 'Hide Numbers' : 'Show Numbers';
@@ -511,18 +528,6 @@
                 document.querySelectorAll('.piece-number').forEach(number => {
                     number.style.display = showNumbers ? 'block' : 'none';
                 });
-            });
-            
-            difficultyBtn.addEventListener('click', function() {
-                // Cycle through difficulties: 3x3 -> 4x4 -> 5x5 -> 6x6 -> 3x3
-                puzzleSize = puzzleSize >= 6 ? 3 : puzzleSize + 1;
-                difficultyBtn.textContent = `Difficulty: ${puzzleSize}x${puzzleSize}`;
-                emptyCellIndex = puzzleSize * puzzleSize - 1;
-                
-                // Reinitialize puzzle
-                clearInterval(timerInterval);
-                isPlaying = false;
-                initPuzzle(imageLoaded);
             });
             
             playAgainBtn.addEventListener('click', function() {
@@ -550,12 +555,10 @@
                 const dY = touchEndY - touchStartY;
                 
                 // Determine piece to move based on swipe direction
-                // FIXED: The direction logic to match intuitive directions
                 const emptyRow = Math.floor(emptyCellIndex / puzzleSize);
                 const emptyCol = emptyCellIndex % puzzleSize;
                 let pieceToMove = -1;
                 
-                // FIXED: Changed the swipe direction logic to be more intuitive
                 if (Math.abs(dX) > Math.abs(dY)) {
                     // Horizontal swipe
                     if (dX > 0 && emptyCol > 0) {
@@ -566,7 +569,7 @@
                         pieceToMove = emptyCellIndex + 1;
                     }
                 } else {
-                    // Vertical swipe - FIXED: swipe up should move piece down, swipe down should move piece up
+                    // Vertical swipe
                     if (dY > 0 && emptyRow > 0) {
                         // Swipe down - move piece from above into empty space
                         pieceToMove = emptyCellIndex - puzzleSize;
