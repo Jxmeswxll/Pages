@@ -165,6 +165,18 @@
             display: none;
         }
         
+        .next-puzzle-btn {
+            margin-top: 15px;
+            background-color: #8a6cb6;
+            font-weight: bold;
+            padding: 12px 25px;
+            font-size: 18px;
+        }
+        
+        .next-puzzle-btn:hover {
+            background-color: #7559a3;
+        }
+        
         @media (max-width: 350px) {
             .puzzle-container {
                 width: 280px;
@@ -194,12 +206,16 @@
     </div>
     
     <div class="completed-message" id="completed-message">
-        <h2>Puzzle Completed!</h2>
+        <h2>Congratulations!</h2>
+        <p>Puzzle Completed!</p>
         <p>Moves: <span id="final-moves">0</span></p>
         <p>Time: <span id="final-time">00:00</span></p>
         <img id="clue-image" class="clue-image" src="clue-location.jpg" alt="Treasure Location">
         <p>Your present is hidden here! Go find it!</p>
-        <button id="play-again-btn">Play Again</button>
+        <div class="buttons-container">
+            <button id="play-again-btn">Play Again</button>
+            <button id="next-puzzle-btn" class="next-puzzle-btn">Next Puzzle</button>
+        </div>
     </div>
     
     <script>
@@ -223,8 +239,14 @@
             const numberToggleBtn = document.getElementById('number-toggle-btn');
             const completedMessage = document.getElementById('completed-message');
             const playAgainBtn = document.getElementById('play-again-btn');
+            const nextPuzzleBtn = document.getElementById('next-puzzle-btn');
             const errorMessage = document.getElementById('error-message');
             const clueImage = document.getElementById('clue-image');
+            
+            // Add event listener for next puzzle button
+            nextPuzzleBtn.addEventListener('click', function() {
+                window.location.href = 'https://www.gggg.com';
+            });
             
             // Color schemes for different grid sizes (fallback if image doesn't load)
             const colorSchemes = {
@@ -235,9 +257,9 @@
             // Try to load image - both relative and absolute paths
             const imagePaths = [
                 // Try direct file in same directory
-                "f1car.jpg",
+                "f1car.PNG",
                 // Try with full path from repo root
-                "/f1car.jpg"
+                "/f1car.PNG"
             ];
             
             // Function to try loading images from different paths
