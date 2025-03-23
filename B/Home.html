@@ -164,6 +164,11 @@
             flex-direction: column;
             justify-content: center;
         }
+        
+        /* Fix for missing images */
+        .no-image .text-container {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -186,7 +191,7 @@
         <!-- Beginning -->
         <div class="slide">
             <div class="slide-content">
-                <img src="slide1.JPG" alt="Early days" class="slide-image">
+                <img src="slide1.JPG" alt="Early days" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">From classmates to something more, you've had my heart since that first night in the Casino.</p>
                 </div>
@@ -195,7 +200,7 @@
 
         <div class="slide">
             <div class="slide-content">
-                <img src="Slide2.JPG" alt="Manchester memories" class="slide-image">
+                <img src="Slide2.JPG" alt="Manchester memories" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">Southport saw our late night laughs, endless talks, and a bond growing stronger everyday.</p>
                 </div>
@@ -205,7 +210,7 @@
         <!-- Manchester -->
         <div class="slide">
             <div class="slide-content">
-                <img src="slide3.HEIC" alt="Manchester memories" class="slide-image">
+                <img src="slide3.HEIC" alt="Manchester memories" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">Then Manchester became our canvas, painting countless memories across the city.</p>
                 </div>
@@ -214,90 +219,89 @@
 
         <div class="slide">
             <div class="slide-content">
-                <img src="slide6.heic" alt="Winter nights" class="slide-image">
+                <img src="slide6.heic" alt="Winter nights" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">From Those winter evenings spent wrapped in Oodies.</p>
                 </div>
             </div>
         </div>
 
-
-                        <!-- Berlin -->
-                        <div class="slide">
-                            <div class="slide-content">
-                                <img src="slide5.JPG" alt="Berlin adventures" class="slide-image">
-                                <div class="text-container">
-                                    <p class="message">To Birthday Trips getting lost in Berlin's streets</p>
-                                </div>
-                            </div>
-
-       <!-- Added more Manchester memory slides -->
-       <div class="slide">
-        <div class="slide-content">
-            <img src="" alt="More Manchester memories" class="slide-image">
-            <div class="text-container">
-                <p class="message">Manchester has seen our love story unfold day by day.</p>
+        <!-- Berlin -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="slide5.JPG" alt="Berlin adventures" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">To Birthday Trips getting lost in Berlin's streets</p>
+                </div>
             </div>
         </div>
-    </div>                            
+
+        <!-- Added more Manchester memory slides -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="/api/placeholder/800/600" alt="More Manchester memories" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">Manchester has seen our love story unfold day by day.</p>
+                </div>
+            </div>
+        </div>                            
 
         <!-- Home Together -->
         <div class="slide">
             <div class="slide-content">
-                <img src="Slide4.heic" alt="Our place" class="slide-image">
+                <img src="Slide4.heic" alt="Our place" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">Our little sanctuary on Collier Street - where I learned home isn't a place, it's a person.</p>
                 </div>
             </div>
         </div>        
-                   
-        
- 
-        
+                
         <div class="slide">
             <div class="slide-content">
-                <img src="" alt="Home memories" class="slide-image">
+                <img src="/api/placeholder/800/600" alt="Home memories" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
                 <div class="text-container">
                     <p class="message">The simple moments at home - cooking dinner, watching movies, just being us - those are my favorite.</p>
                 </div>
             </div>
         </div>
-
         
         <!-- World Travelers -->
         <div class="slide">
             <div class="slide-content">
-                <img src="/api/placeholder/800/600" alt="World travels" class="slide-image">
-                <p class="message">Then we took on the world together, one adventure at a time, all the way to Australia</p>
+                <img src="/api/placeholder/800/600" alt="World travels" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">Then we took on the world together, one adventure at a time, all the way to Australia</p>
+                </div>
             </div>
         </div>
-
         
         <!-- Growth -->
         <div class="slide">
             <div class="slide-content">
-                <img src="" alt="Growing together" class="slide-image">
-                <p class="message">From Climbing walls to climbing mountains</p>
+                <img src="/api/placeholder/800/600" alt="Growing together" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">From Climbing walls to climbing mountains</p>
+                </div>
             </div>
         </div>        
 
-                         <!-- Adventures -->
-                         <div class="slide">
-                            <div class="slide-content">
-                                <img src="slide 7.PNG" alt="Bali adventures" class="slide-image">
-                                <div class="text-container">
-                                    <p class="message">Exploring the depths of Bali together, discovering new worlds beneath the waves.</p>
-                                </div>
-                            </div>
-                        </div>        
+        <!-- Adventures -->
+        <div class="slide">
+            <div class="slide-content">
+                <img src="slide 7.PNG" alt="Bali adventures" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">Exploring the depths of Bali together, discovering new worlds beneath the waves.</p>
+                </div>
+            </div>
+        </div>        
                 
-
-        
         <!-- Growth -->
         <div class="slide">
             <div class="slide-content">
-                <img src="/api/placeholder/800/600" alt="Growing together" class="slide-image">
-                <p class="message">But Growing with you has been my greatest adventure</p>
+                <img src="/api/placeholder/800/600" alt="Growing together" class="slide-image" onerror="this.style.display='none'; this.parentNode.classList.add('no-image');">
+                <div class="text-container">
+                    <p class="message">But Growing with you has been my greatest adventure</p>
+                </div>
             </div>
         </div>
         
@@ -340,7 +344,7 @@
             // Slide times in seconds relative to music start
             const slideTimesInSeconds = [
                 0,      // Title slide (starts immediately)
-                8,      // First photo slide (starts at 8 seconds as requested)
+                8,      // First photo slide (starts at 8 seconds)
                 17,     // Regular intervals for most slides
                 26,
                 35,
@@ -356,13 +360,29 @@
                 128
             ];
             
+            // Make sure we have enough time intervals for all slides
+            if (slides.length > slideTimesInSeconds.length) {
+                // Add additional time intervals if needed
+                const lastTime = slideTimesInSeconds[slideTimesInSeconds.length - 1];
+                const interval = 9; // 9 seconds between slides
+                for (let i = slideTimesInSeconds.length; i < slides.length; i++) {
+                    slideTimesInSeconds.push(lastTime + (i - slideTimesInSeconds.length + 1) * interval);
+                }
+            }
+            
             function showSlide(index) {
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[index].classList.add('active');
+                // Error handling to prevent crashes
+                if (index >= 0 && index < slides.length) {
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    slides[index].classList.add('active');
+                }
             }
             
             // Play the music and start the slideshow timing
-            music.play();
+            music.play().catch(error => {
+                console.error("Music playback error:", error);
+                // Continue with slideshow even if music fails
+            });
             
             // Schedule each slide at the specified time relative to music start
             for (let i = 1; i < slides.length; i++) {
@@ -379,6 +399,12 @@
             
             // Start slideshow
             startSlideshow();
+        });
+
+        // Add error handling for audio
+        document.getElementById('bgMusic').addEventListener('error', function(e) {
+            console.error("Audio error:", e);
+            alert("Warning: Music file could not be loaded. The slideshow will continue without music.");
         });
     </script>
 </body>
