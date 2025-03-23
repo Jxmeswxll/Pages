@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle 3: Word Unscramble</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #e8e4f3;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54 22c0-12-18-8-18 4 0 1 0 3 2 4-4 0-3 6 0 7-3 0-2 6 0 7-1 2-1 4 1 5 0 2 2 3 4 2 5 0 9-3 10-8 1-4-2-8-6-9 1-1 3-2 3-5 2 0 4-3 4-7zm-38 16c2 0 3-2 3-3 0-5-8-3-8 0 0 2 2 3 5 3zm24-9c0-9-13-5-13 3 0 1 0 2 2 3-3 0-2 5 0 5-2 0-2 5 0 5-1 2-1 3 0 4 1 1 2 2 3 1 4 0 7-3 8-6 1-3-1-7-4-7 0-1 1-2 2-4 1 0 2-2 2-4zm-32-7c2 0 3-1 3-3s-3-4-5-3c-1 1-2 2-1 3 0 2 1 3 3 3zm12-13c1 0 2-1 2-2s-2-3-4-2c0 0-1 1 0 2 0 1 1 2 2 2zm-6 3c2 0 3-1 3-3s-2-4-5-3c-1 1-1 2-1 3 1 2 2 3 3 3zm-4 4c1 0 2-1 2-2s-2-3-3-2c-1 0-2 1-1 2 0 1 1 2 2 2z' fill='%23b6a8d6' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            padding: 20px;
+            text-align: center;
+            color: #55456b;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 90%;
+            width: 500px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(85, 69, 107, 0.2);
+        }
+
+        .instructions {
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .scramble-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .letter-tile {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #b6a8d6;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, background-color 0.2s;
+            text-transform: uppercase;
+        }
+
+        .letter-tile:hover {
+            transform: translateY(-3px);
+            background-color: #9985c9;
+        }
+
+        .letter-tile.selected {
+            background-color: #73648d;
+        }
+
+        .solution-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .word-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .solution-box {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #b6a8d6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #55456b;
+            background-color: #f5f2fa;
+            text-transform: uppercase;
+        }
+
+        .solution-word {
+            margin-right: 15px;
+        }
+
+        .hint-btn, .reset-btn, .check-btn {
+            background-color: #73648d;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.2s;
+        }
+
+        .hint-btn:hover, .reset-btn:hover, .check-btn:hover {
+            background-color: #55456b;
+        }
+
+        .hint-btn:active, .reset-btn:active, .check-btn:active {
+            background-color: #483a5c;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            max-width: 80%;
+            width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: #55456b;
+        }
+
+        .modal p {
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .next-btn {
+            background-color: #73648d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .next-btn:hover {
+            background-color: #55456b;
+        }
+
+        .hint-text {
+            margin-top: 15px;
+            font-style: italic;
+            color: #73648d;
+            min-height: 20px;
+        }
+
+        .word-separator {
+            font-size: 20px;
+            font-weight: bold;
+            color: #b6a8d6;
+            margin: 0 8px;
+            align-self: center;
+        }
+
+        @media (max-width: 500px) {
+            .letter-tile {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .solution-box {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+            
+            .hint-btn, .reset-btn, .check-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+                margin: 0 5px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .instructions {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Puzzle 3: Word Unscramble</h1>
+    
+    <div class="container">
+        <div class="instructions">
+            <p>Unscramble the letters to reveal the hidden phrase. Drag or click letters to place them in the correct positions.</p>
+        </div>
+        
+        <div class="scramble-area" id="scrambleArea">
+            <!-- Letters will be dynamically added here -->
+        </div>
+        
+        <div class="solution-area" id="solutionArea">
+            <!-- Solution boxes will be dynamically added here -->
+        </div>
+        
+        <div class="controls">
+            <button class="hint-btn" id="hintBtn">Hint</button>
+            <button class="reset-btn" id="resetBtn">Reset</button>
+            <button class="check-btn" id="checkBtn">Check Answer</button>
+        </div>
+        
+        <div class="hint-text" id="hintText"></div>
+    </div>
+    
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>Congratulations!</h2>
+            <p>You've successfully solved the puzzle!</p>
+            <button class="next-btn" id="nextBtn">Puzzle 4 Click Here</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define the puzzle phrase
+            const phrase = "little bit of pickleball";
+            const words = phrase.split(" ");
+            
+            // Create scrambled letters
+            let allLetters = phrase.replace(/\s/g, '').split('');
+            shuffleArray(allLetters);
+            
+            const scrambleArea = document.getElementById('scrambleArea');
+            const solutionArea = document.getElementById('solutionArea');
+            
+            // Create solution area with correct word spaces
+            words.forEach((word, wordIndex) => {
+                const wordContainer = document.createElement('div');
+                wordContainer.className = 'word-container';
+                wordContainer.dataset.wordIndex = wordIndex;
+                
+                for (let i = 0; i < word.length; i++) {
+                    const solutionBox = document.createElement('div');
+                    solutionBox.className = 'solution-box';
+                    solutionBox.dataset.letterIndex = i;
+                    solutionBox.dataset.wordIndex = wordIndex;
+                    
+                    // Make solution boxes droppable
+                    solutionBox.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                    });
+                    
+                    solutionBox.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        const draggedLetterIndex = e.dataTransfer.getData('text');
+                        const letterTile = document.querySelector(`.letter-tile[data-original-index="${draggedLetterIndex}"]`);
+                        
+                        if (letterTile && letterTile.dataset.used !== 'true') {
+                            placeLetterInBox(letterTile, solutionBox);
+                        }
+                    });
+                    
+                    wordContainer.appendChild(solutionBox);
+                }
+                
+                solutionArea.appendChild(wordContainer);
+                
+                // Add space between words (except after the last word)
+                if (wordIndex < words.length - 1) {
+                    const separator = document.createElement('div');
+                    separator.className = 'word-separator';
+                    separator.textContent = ' ';
+                    solutionArea.appendChild(separator);
+                }
+            });
+            
+            // Create letter tiles
+            allLetters.forEach((letter, index) => {
+                const letterTile = document.createElement('div');
+                letterTile.className = 'letter-tile';
+                letterTile.textContent = letter.toUpperCase();
+                letterTile.dataset.letter = letter;
+                letterTile.dataset.originalIndex = index;
+                letterTile.dataset.used = 'false';
+                
+                // Make letter tiles draggable
+                letterTile.draggable = true;
+                letterTile.addEventListener('dragstart', function(e) {
+                    if (letterTile.dataset.used !== 'true') {
+                        e.dataTransfer.setData('text', letterTile.dataset.originalIndex);
+                    } else {
+                        e.preventDefault();
+                    }
+                });
+                
+                letterTile.addEventListener('click', function() {
+                    handleLetterClick(letterTile);
+                });
+                
+                scrambleArea.appendChild(letterTile);
+            });
+            
+            // Handle letter selection and placement
+            function handleLetterClick(letterTile) {
+                if (letterTile.dataset.used === 'true') {
+                    // Letter is already used, return it to the scramble area
+                    returnLetterToScramble(letterTile);
+                } else {
+                    // Place the letter in the first available solution box
+                    const emptyBox = document.querySelector('.solution-box:not([data-filled="true"])');
+                    if (emptyBox) {
+                        placeLetterInBox(letterTile, emptyBox);
+                    }
+                }
+            }
+            
+            function placeLetterInBox(letterTile, solutionBox) {
+                // If the box is already filled, return that letter to scramble area
+                if (solutionBox.dataset.filled === 'true') {
+                    const currentLetter = document.querySelector(`.letter-tile[data-placed-word="${solutionBox.dataset.wordIndex}"][data-placed-letter="${solutionBox.dataset.letterIndex}"]`);
+                    if (currentLetter) {
+                        returnLetterToScramble(currentLetter);
+                    }
+                }
+                
+                // Place the letter in this box
+                solutionBox.textContent = letterTile.textContent;
+                solutionBox.dataset.filled = 'true';
+                solutionBox.dataset.letterValue = letterTile.dataset.letter;
+                
+                // Mark the letter as used
+                letterTile.dataset.used = 'true';
+                letterTile.dataset.placedWord = solutionBox.dataset.wordIndex;
+                letterTile.dataset.placedLetter = solutionBox.dataset.letterIndex;
+                letterTile.style.visibility = 'hidden';
+                
+                // Check if the puzzle is complete
+                checkPuzzleCompletion();
+            }
+            
+            // Handle click on solution boxes to remove letters
+            document.querySelectorAll('.solution-box').forEach(box => {
+                box.addEventListener('click', function() {
+                    if (box.dataset.filled === 'true') {
+                        // If the box is filled, return that letter to scramble area
+                        const letterTile = document.querySelector(`.letter-tile[data-placed-word="${box.dataset.wordIndex}"][data-placed-letter="${box.dataset.letterIndex}"]`);
+                        if (letterTile) {
+                            returnLetterToScramble(letterTile);
+                        }
+                    }
+                });
+            });
+            
+            function returnLetterToScramble(letterTile) {
+                // Find the solution box this letter is in
+                const solutionBox = document.querySelector(`.solution-box[data-word-index="${letterTile.dataset.placedWord}"][data-letter-index="${letterTile.dataset.placedLetter}"]`);
+                
+                if (solutionBox) {
+                    // Clear the solution box
+                    solutionBox.textContent = '';
+                    solutionBox.dataset.filled = 'false';
+                    delete solutionBox.dataset.letterValue;
+                }
+                
+                // Mark the letter as not used
+                letterTile.dataset.used = 'false';
+                delete letterTile.dataset.placedWord;
+                delete letterTile.dataset.placedLetter;
+                letterTile.style.visibility = 'visible';
+            }
+            
+            // Reset button functionality
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                resetPuzzle();
+            });
+            
+            function resetPuzzle() {
+                // Clear all solution boxes
+                document.querySelectorAll('.solution-box').forEach(box => {
+                    box.textContent = '';
+                    box.dataset.filled = 'false';
+                    delete box.dataset.letterValue;
+                });
+                
+                // Reset all letter tiles
+                document.querySelectorAll('.letter-tile').forEach(tile => {
+                    tile.dataset.used = 'false';
+                    delete tile.dataset.placedWord;
+                    delete tile.dataset.placedLetter;
+                    tile.style.visibility = 'visible';
+                });
+                
+                // Clear hint text
+                document.getElementById('hintText').textContent = '';
+            }
+            
+            // Check button functionality
+            document.getElementById('checkBtn').addEventListener('click', function() {
+                checkAnswer();
+            });
+            
+            function checkAnswer() {
+                let isCorrect = true;
+                let filledBoxes = 0;
+                const totalBoxes = phrase.replace(/\s/g, '').length;
+                
+                // Check each word
+                words.forEach((word, wordIndex) => {
+                    const wordBoxes = document.querySelectorAll(`.solution-box[data-word-index="${wordIndex}"]`);
+                    
+                    // Create a string from the current solution
+                    let currentWord = '';
+                    wordBoxes.forEach(box => {
+                        if (box.dataset.filled === 'true') {
+                            currentWord += box.dataset.letterValue;
+                            filledBoxes++;
+                        }
+                    });
+                    
+                    if (currentWord !== word) {
+                        isCorrect = false;
+                    }
+                });
+                
+                // Check if all boxes are filled
+                if (filledBoxes < totalBoxes) {
+                    isCorrect = false;
+                }
+                
+                if (isCorrect) {
+                    // Show success modal
+                    document.getElementById('successModal').style.display = 'flex';
+                } else if (filledBoxes === totalBoxes) {
+                    // All boxes are filled but the answer is incorrect
+                    document.getElementById('hintText').textContent = "Not quite right. Try rearranging some letters.";
+                } else {
+                    // Not all boxes are filled
+                    document.getElementById('hintText').textContent = "Please fill in all the boxes.";
+                }
+            }
+            
+            // Check if the puzzle is complete as letters are placed
+            function checkPuzzleCompletion() {
+                let allFilled = true;
+                
+                document.querySelectorAll('.solution-box').forEach(box => {
+                    if (box.dataset.filled !== 'true') {
+                        allFilled = false;
+                    }
+                });
+                
+                if (allFilled) {
+                    // Auto-check the answer
+                    checkAnswer();
+                }
+            }
+            
+            // Hint button functionality - auto-fills a random letter
+            document.getElementById('hintBtn').addEventListener('click', function() {
+                provideHint();
+            });
+            
+            function provideHint() {
+                // Collection of empty solution boxes and their correct letters
+                const emptyBoxes = [];
+                
+                words.forEach((word, wordIndex) => {
+                    for (let i = 0; i < word.length; i++) {
+                        const box = document.querySelector(`.solution-box[data-word-index="${wordIndex}"][data-letter-index="${i}"]`);
+                        
+                        if (box && box.dataset.filled !== 'true') {
+                            emptyBoxes.push({
+                                box: box,
+                                correctLetter: word[i]
+                            });
+                        }
+                    }
+                });
+                
+                if (emptyBoxes.length > 0) {
+                    // Pick a random empty box
+                    const randomBoxIndex = Math.floor(Math.random() * emptyBoxes.length);
+                    const targetBox = emptyBoxes[randomBoxIndex].box;
+                    const correctLetter = emptyBoxes[randomBoxIndex].correctLetter;
+                    
+                    // Find the correct letter in the scramble area
+                    const correctLetterTiles = Array.from(document.querySelectorAll(`.letter-tile[data-letter="${correctLetter}"]`))
+                        .filter(tile => tile.dataset.used !== 'true');
+                    
+                    if (correctLetterTiles.length > 0) {
+                        // Use the first available letter tile with the correct letter
+                        placeLetterInBox(correctLetterTiles[0], targetBox);
+                        
+                        // Show hint message
+                        document.getElementById('hintText').textContent = `Hint: Placed letter '${correctLetter.toUpperCase()}' for you.`;
+                    } else {
+                        // Fallback text hint
+                        document.getElementById('hintText').textContent = "Try to find words related to a popular paddle sport.";
+                    }
+                } else {
+                    // All boxes are filled, offer a different hint
+                    document.getElementById('hintText').textContent = "All letters are placed. Try rearranging them if needed.";
+                }
+            }
+            
+            // Next button functionality
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                // Redirect to puzzle 4 (update this with the actual URL)
+                window.location.href = 'puzzle4.html';
+            });
+            
+            // Helper function to shuffle an array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        });
+    </script>
+</body>
+</html>
