@@ -49,16 +49,21 @@
         .slide-content {
             max-width: 800px;
             text-align: center;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .slide-image {
             max-width: 80%;
-            max-height: 60vh;
+            max-height: 50vh; /* Reduced height to make room for text */
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             transform: rotate(-1deg);
             transition: transform 0.5s ease;
+            align-self: center;
         }
         
         .slide-image:hover {
@@ -82,24 +87,25 @@
         
         p {
             font-size: 1.6rem;
-            line-height: 1.8;
+            line-height: 1.6;
             margin-bottom: 15px;
             font-weight: 300;
             opacity: 0.9;
         }
         
         .message {
-            font-size: 1.8rem;
-            line-height: 1.5;
+            font-size: 1.6rem; /* Reduced slightly */
+            line-height: 1.4;
             font-style: italic;
-            margin: 25px 0;
+            margin: 15px 0;
             padding: 0 20px;
             position: relative;
+            overflow: visible; /* Ensures quotes don't get cut off */
         }
         
         .message::before, .message::after {
             content: '"';
-            font-size: 3rem;
+            font-size: 2.5rem;
             position: absolute;
             opacity: 0.5;
         }
@@ -110,7 +116,7 @@
         }
         
         .message::after {
-            bottom: -40px;
+            bottom: -30px;
             right: -10px;
         }
         
@@ -148,6 +154,16 @@
         .hidden {
             display: none !important;
         }
+        
+        /* Text container to ensure text is fully visible */
+        .text-container {
+            width: 100%;
+            min-height: 120px; /* Minimum height for text */
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -171,14 +187,18 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide1.JPG" alt="Early days" class="slide-image">
-                <p class="message">From classmates to something more, you've had my heart since that first night in the Casino.</p>
+                <div class="text-container">
+                    <p class="message">From classmates to something more, you've had my heart since that first night in the Casino.</p>
+                </div>
             </div>
         </div>
 
         <div class="slide">
             <div class="slide-content">
                 <img src="Slide2.JPG" alt="Manchester memories" class="slide-image">
-                <p class="message">Southport saw us being ourselves, late night laughs, endless talks, and a bond growing stronger everyday.</p>
+                <div class="text-container">
+                    <p class="message">Southport saw us being ourselves, late night laughs, endless talks, and a bond growing stronger everyday.</p>
+                </div>
             </div>
         </div>
         
@@ -186,7 +206,9 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide3.HEIC" alt="Manchester memories" class="slide-image">
-                <p class="message">Manchester became our canvas, painting countless memories across the city.</p>
+                <div class="text-container">
+                    <p class="message">Manchester became our canvas, painting countless memories across the city.</p>
+                </div>
             </div>
         </div>
 
@@ -194,7 +216,9 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="Slide4.heic" alt="Our place" class="slide-image">
-                <p class="message">Our little sanctuary on Collier Street - where I learned home isn't a place, it's a person.</p>
+                <div class="text-container">
+                    <p class="message">Our little sanctuary on Collier Street - where I learned home isn't a place, it's a person.</p>
+                </div>
             </div>
         </div>        
         
@@ -202,14 +226,18 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide5.JPG" alt="Adventures together" class="slide-image">
-                <p class="message">Every corner of Manchester holds a memory of us, from cozy cafés to midnight walks.</p>
+                <div class="text-container">
+                    <p class="message">Every corner of Manchester holds a memory of us, from cozy cafés to midnight walks.</p>
+                </div>
             </div>
         </div>
         
         <div class="slide">
             <div class="slide-content">
                 <img src="slide6.heic" alt="Winter nights" class="slide-image">
-                <p class="message">Those winter evenings wrapped in blankets, your warmth better than any fireplace could ever be.</p>
+                <div class="text-container">
+                    <p class="message">Those winter evenings wrapped in blankets, your warmth better than any fireplace could ever be.</p>
+                </div>
             </div>
         </div>
         
@@ -217,7 +245,9 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide 7.PNG" alt="Bali adventures" class="slide-image">
-                <p class="message">Exploring the depths of Bali together, discovering new worlds beneath the waves.</p>
+                <div class="text-container">
+                    <p class="message">Exploring the depths of Bali together, discovering new worlds beneath the waves.</p>
+                </div>
             </div>
         </div>        
 
@@ -225,7 +255,9 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide5.JPG" alt="Berlin adventures" class="slide-image">
-                <p class="message">Getting lost in Berlin's streets, finding ourselves in each other.</p>
+                <div class="text-container">
+                    <p class="message">Getting lost in Berlin's streets, finding ourselves in each other.</p>
+                </div>
             </div>
         </div>
         
@@ -233,14 +265,18 @@
         <div class="slide">
             <div class="slide-content">
                 <img src="slide3.HEIC" alt="More Manchester memories" class="slide-image">
-                <p class="message">From city lights to morning coffees, Manchester has seen our love story unfold day by day.</p>
+                <div class="text-container">
+                    <p class="message">From city lights to morning coffees, Manchester has seen our love story unfold day by day.</p>
+                </div>
             </div>
         </div>
         
         <div class="slide">
             <div class="slide-content">
                 <img src="Slide4.heic" alt="Home memories" class="slide-image">
-                <p class="message">The simple moments at home - cooking dinner, watching movies, just being us - those are my favorites.</p>
+                <div class="text-container">
+                    <p class="message">The simple moments at home - cooking dinner, watching movies, just being us - those are my favorites.</p>
+                </div>
             </div>
         </div>
         
@@ -248,21 +284,27 @@
         <div class="slide">
             <div class="slide-content">
                 <h2>To Our Little World</h2>
-                <p class="message">Every moment with you feels like coming home, no matter where we are.</p>
+                <div class="text-container">
+                    <p class="message">Every moment with you feels like coming home, no matter where we are.</p>
+                </div>
             </div>
         </div>
         
         <div class="slide">
             <div class="slide-content">
                 <h2>Our Inside Jokes</h2>
-                <p class="message">"A little bit of pickleball, A whole lot of love"</p>
+                <div class="text-container">
+                    <p class="message">"A little bit of pickleball, A whole lot of love"</p>
+                </div>
             </div>
         </div>
         
         <div class="slide">
             <div class="slide-content">
                 <h2>Forever Yours</h2>
-                <p class="message">All my Love - James</p>
+                <div class="text-container">
+                    <p class="message">All my Love - James</p>
+                </div>
             </div>
         </div>
     </div>
