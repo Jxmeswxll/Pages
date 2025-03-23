@@ -283,6 +283,16 @@
             line-height: 1.5;
         }
         
+        .important-message {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #ff6b6b;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
         .confetti {
             position: absolute;
             width: 10px;
@@ -338,7 +348,6 @@
         <p>You've successfully matched all the important moments in our journey together!</p>
         <p>Time: <span id="final-time">00:00</span></p>
         <div class="buttons-container" style="max-width: 250px;">
-            <button id="view-timeline-complete-btn">View Full Timeline</button>
             <button id="play-again-btn">Play Again</button>
             <button id="next-puzzle-btn" class="next-puzzle-btn">Continue to Next Puzzle</button>
         </div>
@@ -348,7 +357,11 @@
         <div id="confetti-container"></div>
         <h2>You've Completed This Challenge!</h2>
         <p>Ready for the next adventure? I've prepared more puzzles for you to solve.</p>
-        <p>Click below to continue our journey together!</p>
+        
+        <div class="important-message">
+            BEFORE CLICKING THE NEXT PUZZLE PUT ON AIRPODS
+        </div>
+        
         <a href="https://jxmeswxll.github.io/Pages/B/Home.html">
             <button class="next-puzzle-btn">Go to Next Puzzle</button>
         </a>
@@ -391,7 +404,6 @@
             const viewTimelineBtn = document.getElementById('view-timeline-btn');
             const completedMessage = document.getElementById('completed-message');
             const playAgainBtn = document.getElementById('play-again-btn');
-            const viewTimelineCompleteBtn = document.getElementById('view-timeline-complete-btn');
             const timelineVisualization = document.getElementById('timeline-visualization');
             const timelineContainer = document.getElementById('timeline-container');
             const nextPuzzleBtn = document.getElementById('next-puzzle-btn');
@@ -726,12 +738,6 @@
             playAgainBtn.addEventListener('click', function() {
                 completedMessage.style.display = 'none';
                 initGame();
-            });
-            
-            viewTimelineCompleteBtn.addEventListener('click', function() {
-                completedMessage.style.display = 'none';
-                timelineVisualization.classList.add('visible');
-                viewTimelineBtn.textContent = 'Hide Timeline';
             });
             
             nextPuzzleBtn.addEventListener('click', showNextPuzzleScreen);

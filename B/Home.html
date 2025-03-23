@@ -72,52 +72,52 @@
         }
         
         h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-            font-weight: 300;
-            letter-spacing: 3px;
-        }
-        
-        h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
             font-weight: 300;
             letter-spacing: 2px;
         }
         
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
         p {
-            font-size: 1.6rem;
-            line-height: 1.8;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
             font-weight: 300;
             opacity: 0.9;
         }
         
         .message {
-            font-size: 1.8rem;
-            line-height: 1.5;
+            font-size: 1.3rem;
+            line-height: 1.4;
             font-style: italic;
-            margin: 25px 0;
+            margin: 20px 0;
             padding: 0 20px;
             position: relative;
         }
         
         .message::before, .message::after {
             content: '"';
-            font-size: 3rem;
+            font-size: 2rem;
             position: absolute;
             opacity: 0.5;
         }
         
         .message::before {
-            top: -20px;
-            left: -10px;
+            top: -15px;
+            left: -5px;
         }
         
         .message::after {
-            bottom: -40px;
-            right: -10px;
+            bottom: -30px;
+            right: -5px;
         }
         
         .heart {
@@ -128,9 +128,9 @@
         }
         
         .final-message {
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             font-weight: 400;
-            margin-top: 30px;
+            margin-top: 25px;
             text-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
             opacity: 0;
             animation: fadeIn 3s forwards;
@@ -138,21 +138,21 @@
         }
         
         .ring-message {
-            font-size: 2rem;
-            line-height: 1.6;
-            max-width: 80%;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            max-width: 90%;
             margin: 0 auto;
             animation: glow 3s infinite alternate;
         }
         
         @keyframes glow {
             from { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            to { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
         }
         
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
             100% { transform: translateY(0) rotate(0deg); }
         }
         
@@ -179,8 +179,8 @@
             background-color: transparent;
             border: 2px solid white;
             color: white;
-            padding: 15px 30px;
-            font-size: 1.5rem;
+            padding: 12px 24px;
+            font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -194,6 +194,40 @@
         
         .hidden {
             display: none;
+        }
+        
+        /* Media queries for better mobile experience */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+            
+            .message::before, .message::after {
+                font-size: 1.6rem;
+            }
+            
+            .start-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .slide-image {
+                max-height: 50vh;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -315,6 +349,7 @@
                 </div>
             </div>
         </div>
+    </div>
     
     <script>
         // Create background hearts
@@ -323,7 +358,7 @@
             for (let i = 0; i < 15; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
-                heart.style.fontSize = Math.random() * 30 + 15 + 'px';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.top = Math.random() * 100 + 'vh';
                 heart.style.animationDuration = Math.random() * 8 + 5 + 's';
