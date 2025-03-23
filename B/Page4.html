@@ -3,359 +3,743 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Aimee, With Love</title>
+    <title>Our Relationship Timeline</title>
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #000;
-            color: #fff;
-            overflow: hidden;
-        }
-        
-        @keyframes fadeInBackground {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(0,0,0,1) 100%);
-            animation: fadeInBackground 2s ease-in;
-        }
-        
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
             box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.6);
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .slide.active {
-            opacity: 1;
-        }
-        
-        .slide-content {
-            max-width: 800px;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5e6f8;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54 22c0-12-18-8-18 4 0 1 0 3 2 4-4 0-3 6 0 7-3 0-2 6 0 7-1 2-1 4 1 5 0 2 2 3 4 2 5 0 9-3 10-8 1-4-2-8-6-9 1-1 3-2 3-5 2 0 4-3 4-7zm-38 16c2 0 3-2 3-3 0-5-8-3-8 0 0 2 2 3 5 3zm24-9c0-9-13-5-13 3 0 1 0 2 2 3-3 0-2 5 0 5-2 0-2 5 0 5-1 2-1 3 0 4 1 1 2 2 3 1 4 0 7-3 8-6 1-3-1-7-4-7 0-1 1-2 2-4 1 0 2-2 2-4zm-32-7c2 0 3-1 3-3s-3-4-5-3c-1 1-2 2-1 3 0 2 1 3 3 3zm12-13c1 0 2-1 2-2s-2-3-4-2c0 0-1 1 0 2 0 1 1 2 2 2zm-6 3c2 0 3-1 3-3s-2-4-5-3c-1 1-1 2-1 3 1 2 2 3 3 3zm-4 4c1 0 2-1 2-2s-2-3-3-2c-1 0-2 1-1 2 0 1 1 2 2 2z' fill='%23d0a0d0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            padding: 15px;
             text-align: center;
-        }
-        
-        .slide-image {
-            max-width: 80%;
-            max-height: 60vh;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            margin-bottom: 30px;
-            transform: rotate(-1deg);
-            transition: transform 0.5s ease;
-        }
-        
-        .slide-image:hover {
-            transform: rotate(1deg) scale(1.02);
+            color: #4a3c54;
         }
         
         h1 {
-            font-size: 3rem;
+            color: #8a4f9e;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            padding: 5px;
+        }
+        
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-            font-weight: 300;
-            letter-spacing: 3px;
         }
         
-        h2 {
-            font-size: 2.2rem;
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
             margin-bottom: 15px;
-            font-weight: 300;
-            letter-spacing: 2px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 12px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 16px;
         }
         
-        p {
-            font-size: 1.6rem;
-            line-height: 1.8;
+        .cards-section {
+            width: 100%;
             margin-bottom: 15px;
-            font-weight: 300;
-            opacity: 0.9;
         }
         
-        .message {
-            font-size: 1.8rem;
-            line-height: 1.5;
-            font-style: italic;
-            margin: 25px 0;
-            padding: 0 20px;
+        .section-title {
+            font-weight: 600;
+            color: #8a4f9e;
+            text-align: left;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .card {
             position: relative;
+            min-height: 60px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            word-wrap: break-word;
         }
         
-        .message::before, .message::after {
-            content: '"';
-            font-size: 3rem;
-            position: absolute;
-            opacity: 0.5;
+        .card:active {
+            transform: scale(0.98);
         }
         
-        .message::before {
-            top: -20px;
-            left: -10px;
+        .year-card {
+            background-color: #d3a5e0;
+            color: #fff;
+            font-weight: bold;
+            font-size: 22px;
         }
         
-        .message::after {
-            bottom: -40px;
-            right: -10px;
+        .event-card {
+            background-color: #9f83c9;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.3;
         }
         
-        .heart {
-            position: absolute;
-            color: rgba(255, 100, 100, 0.3);
-            z-index: -1;
-            animation: float 10s ease-in-out infinite;
+        .card.selected {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            border: 2px solid #ffcc00;
         }
         
-        .final-message {
-            font-size: 2.2rem;
-            font-weight: 400;
-            margin-top: 30px;
-            text-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
-            opacity: 0;
-            animation: fadeIn 3s forwards;
-            animation-delay: 1s;
+        .card.matched {
+            background-color: #7fbb7f;
+            cursor: default;
         }
         
-        .ring-message {
-            font-size: 2rem;
-            line-height: 1.6;
-            max-width: 80%;
-            margin: 0 auto;
-            animation: glow 3s infinite alternate;
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+            margin: 15px 0;
         }
         
-        @keyframes glow {
-            from { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        button {
+            padding: 12px 15px;
+            background-color: #9f83c9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-            100% { transform: translateY(0) rotate(0deg); }
+        button:active {
+            background-color: #8974b2;
+            transform: translateY(1px);
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .button-overlay {
+        .completed-message {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            cursor: pointer;
-        }
-        
-        .start-button {
-            background-color: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .start-button:hover {
-            background-color: rgba(255,255,255,0.1);
-            transform: scale(1.05);
-        }
-        
-        .hidden {
             display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .completed-message h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #e2d9f2;
+        }
+        
+        .completed-message p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            max-width: 600px;
+        }
+        
+        .timeline-visualization {
+            width: 100%;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            margin-top: 0;
+        }
+        
+        .timeline-visualization.visible {
+            max-height: 1000px;
+            margin-top: 15px;
+        }
+        
+        .timeline-container {
+            padding: 15px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-year {
+            width: 70px;
+            padding: 4px 8px;
+            background-color: #d3a5e0;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-event {
+            padding: 8px 10px;
+            background-color: #9f83c9;
+            color: white;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        
+        .next-puzzle-btn {
+            background-color: #ff6b6b;
+            font-size: 18px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+        
+        .next-puzzle-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .next-puzzle-screen h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        
+        .next-puzzle-screen p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff6b6b;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <audio id="bgMusic" loop>
-        <source src="21pilots-falling-in-love.mp3" type="audio/mpeg">
-        <!-- You'll need to add your music file here -->
-    </audio>
+    <h1>Our Relationship Timeline</h1>
     
-    <div class="button-overlay" id="startOverlay">
-        <button class="start-button">Click to Begin Our Journey</button>
+    <div class="game-container">
+        <div class="game-stats">
+            <div>Matches: <span id="matches">0</span>/<span id="total-pairs">10</span></div>
+            <div>Time: <span id="time">00:00</span></div>
+        </div>
+        
+        <div class="cards-section">
+            <div class="section-title">Years</div>
+            <div class="cards-container" id="year-cards"></div>
+        </div>
+        
+        <div class="cards-section">
+            <div class="section-title">Events</div>
+            <div class="cards-container" id="event-cards"></div>
+        </div>
+        
+        <div class="buttons-container">
+            <button id="shuffle-btn">Shuffle Cards</button>
+            <button id="hint-btn">Show Hint</button>
+            <button id="view-timeline-btn">View Timeline</button>
+        </div>
+        
+        <div class="timeline-visualization" id="timeline-visualization">
+            <div class="timeline-container" id="timeline-container"></div>
+        </div>
     </div>
     
-    <div class="container" id="slideshow">
-        <!-- First Slide -->
-        <div class="slide active">
-            <div class="slide-content">
-                <h1>For Aimee, with Love</h1>
-            </div>
+    <div class="completed-message" id="completed-message">
+        <h2>Timeline Complete!</h2>
+        <p>You've successfully matched all the important moments in our journey together!</p>
+        <p>Time: <span id="final-time">00:00</span></p>
+        <div class="buttons-container" style="max-width: 250px;">
+            <button id="view-timeline-complete-btn">View Full Timeline</button>
+            <button id="play-again-btn">Play Again</button>
+            <button id="next-puzzle-btn" class="next-puzzle-btn">Continue to Next Puzzle</button>
         </div>
-        
-        <!-- Beginning -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="slide1.JPG" alt="Early days" class="slide-image">
-                <p class="message">From classmates to something more, you've had my heart since that first night in the Casino.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="slide-content">
-                <img src="Slide2.JPG" alt="Manchester memories" class="slide-image">
-                <p class="message">Southport saw us being ourselves, late night laughs, endless talks, and a bond growing stronger everyday.</p>
-            </div>
-        </div>
-        
-        <!-- Manchester -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="slide3.HEIC" alt="Manchester memories" class="slide-image">
-                <p class="message">Manchester became our canvas, painting countless memories across the city.</p>
-            </div>
-        </div>
-
-        <!-- Home Together -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="Slide4.heic" alt="Our place" class="slide-image">
-                <p class="message">Our little sanctuary on Collier Street - where I learned home isn't a place, it's a person</p>
-            </div>
-        </div>        
-        
-        <!-- Adventures -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="slide5.JPG" alt="Adventures together" class="slide-image">
-                <p class="message">Whether exploring the streets of Berlin.</p>
-            </div>
-        </div>
-
-        <!-- Adventures -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="slide6.heic" alt="Adventures together" class="slide-image">
-                <p class="message">Snuggling on a winters night in Manchester</p>
-            </div>
-        </div>
-        
-        <!-- Adventures -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="slide 7.PNG" alt="Adventures together" class="slide-image">
-                <p class="message">Scuba Diving in Bali</p>
-            </div>
-        </div>        
-
-        <!-- Growth -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="" alt="Growing together" class="slide-image">
-                <p class="message">Climbing walls and climbing mountains</p>
-            </div>
-        </div>        
-        
-        <!-- World Travelers -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="/api/placeholder/800/600" alt="World travels" class="slide-image">
-                <p class="message">Taking on the world together, one adventure at a time, all the way to Australia</p>
-            </div>
-        </div>
-
-        
-        <!-- Growth -->
-        <div class="slide">
-            <div class="slide-content">
-                <img src="/api/placeholder/800/600" alt="Growing together" class="slide-image">
-                <p class="message">Growing with you has been the greatest adventure</p>
-            </div>
-        </div>
-        
-        <!-- Inside Jokes -->
-        <div class="slide">
-            <div class="slide-content">
-                <h2>To Our Little World We've Made Together</h2>
-                <p class="message">"A little bit of pickleball, A whole lot of love"</p>
-                <p class="message">All my Love - James</p>
-            </div>
-        </div>
-        
+    </div>
+    
+    <div class="next-puzzle-screen" id="next-puzzle-screen">
+        <div id="confetti-container"></div>
+        <h2>You've Completed This Challenge!</h2>
+        <p>Ready for the next adventure? I've prepared more puzzles for you to solve.</p>
+        <p>Click below to continue our journey together!</p>
+        <a href="https://jxmeswxll.github.io/Pages/B/Home.html">
+            <button class="next-puzzle-btn">Go to Next Puzzle</button>
+        </a>
+    </div>
     
     <script>
-        // Create background hearts
-        function createHearts() {
-            const container = document.querySelector('.container');
-            for (let i = 0; i < 15; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.fontSize = Math.random() * 30 + 15 + 'px';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = Math.random() * 100 + 'vh';
-                heart.style.animationDuration = Math.random() * 8 + 5 + 's';
-                heart.style.animationDelay = Math.random() * 5 + 's';
-                heart.innerHTML = '❤';
-                container.appendChild(heart);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Timeline data
+            const timelineData = [
+                { year: 2015, event: "Went on our first date" },
+                { year: 2016, event: "Moved to Manchester for uni" },
+                { year: 2017, event: "Moved into devell house together" },
+                { year: 2018, event: "Evacuated from Devell house" },
+                { year: 2019, event: "Went to Spain and Berlin" },
+                { year: 2020, event: "Moved to Collier together" },
+                { year: 2021, event: "Llandudno" },
+                { year: 2022, event: "The year of Veve and gym" },
+                { year: 2023, event: "Rock climbing and the healthiest first 6 months to a year we ever had" },
+                { year: 2024, event: "Travelled around the world and moved to Australia" }
+            ];
+            
+            // Game variables
+            let matches = 0;
+            let totalPairs = timelineData.length;
+            let seconds = 0;
+            let timerInterval;
+            let isPlaying = false;
+            let selectedYearCard = null;
+            let selectedEventCard = null;
+            
+            // DOM elements
+            const yearCardsContainer = document.getElementById('year-cards');
+            const eventCardsContainer = document.getElementById('event-cards');
+            const matchesDisplay = document.getElementById('matches');
+            const totalPairsDisplay = document.getElementById('total-pairs');
+            const timeDisplay = document.getElementById('time');
+            const finalTimeDisplay = document.getElementById('final-time');
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const viewTimelineBtn = document.getElementById('view-timeline-btn');
+            const completedMessage = document.getElementById('completed-message');
+            const playAgainBtn = document.getElementById('play-again-btn');
+            const viewTimelineCompleteBtn = document.getElementById('view-timeline-complete-btn');
+            const timelineVisualization = document.getElementById('timeline-visualization');
+            const timelineContainer = document.getElementById('timeline-container');
+            const nextPuzzleBtn = document.getElementById('next-puzzle-btn');
+            const nextPuzzleScreen = document.getElementById('next-puzzle-screen');
+            const confettiContainer = document.getElementById('confetti-container');
+            
+            // Initialize the game
+            initGame();
+            
+            // Initialize the game
+            function initGame() {
+                // Reset game state
+                matches = 0;
+                seconds = 0;
+                isPlaying = false;
+                selectedYearCard = null;
+                selectedEventCard = null;
+                
+                // Clear containers
+                yearCardsContainer.innerHTML = '';
+                eventCardsContainer.innerHTML = '';
+                timelineContainer.innerHTML = '';
+                timelineVisualization.classList.remove('visible');
+                
+                // Update displays
+                matchesDisplay.textContent = matches;
+                totalPairsDisplay.textContent = totalPairs;
+                timeDisplay.textContent = '00:00';
+                
+                // Create year cards
+                for (let i = 0; i < timelineData.length; i++) {
+                    const item = timelineData[i];
+                    const yearCard = createCard('year', item.year, i);
+                    yearCardsContainer.appendChild(yearCard);
+                }
+                
+                // Create event cards
+                for (let i = 0; i < timelineData.length; i++) {
+                    const item = timelineData[i];
+                    const eventCard = createCard('event', item.event, i);
+                    eventCardsContainer.appendChild(eventCard);
+                }
+                
+                // Shuffle cards
+                shuffleCards();
+                
+                // Create timeline visualization
+                createTimelineVisualization();
+                
+                // Reset view timeline button text
+                viewTimelineBtn.textContent = 'View Timeline';
             }
-        }
-        
-        // Slideshow functionality
-        function startSlideshow() {
-            const slides = document.querySelectorAll('.slide');
-            let currentSlide = 0;
             
-            function showSlide(index) {
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[index].classList.add('active');
+            // Create a card
+            function createCard(type, content, dataIndex) {
+                const card = document.createElement('div');
+                card.className = `card ${type}-card`;
+                card.textContent = content;
+                card.dataset.index = dataIndex;
+                
+                card.addEventListener('click', function() {
+                    if (!isPlaying) startGame();
+                    
+                    // Don't allow clicking already matched cards
+                    if (card.classList.contains('matched')) return;
+                    
+                    // Don't allow selecting the same card twice
+                    if ((type === 'year' && card === selectedYearCard) || 
+                        (type === 'event' && card === selectedEventCard)) return;
+                    
+                    // Handle card selection
+                    if (type === 'year') {
+                        // Deselect previous year card if exists
+                        if (selectedYearCard) {
+                            selectedYearCard.classList.remove('selected');
+                        }
+                        selectedYearCard = card;
+                    } else {
+                        // Deselect previous event card if exists
+                        if (selectedEventCard) {
+                            selectedEventCard.classList.remove('selected');
+                        }
+                        selectedEventCard = card;
+                    }
+                    
+                    // Mark as selected
+                    card.classList.add('selected');
+                    
+                    // Check for match if both cards are selected
+                    if (selectedYearCard && selectedEventCard) {
+                        checkForMatch();
+                    }
+                });
+                
+                return card;
             }
             
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                showSlide(currentSlide);
+            // Check if selected cards match
+            function checkForMatch() {
+                const yearIndex = parseInt(selectedYearCard.dataset.index);
+                const eventIndex = parseInt(selectedEventCard.dataset.index);
+                
+                if (yearIndex === eventIndex) {
+                    // Match found
+                    selectedYearCard.classList.add('matched');
+                    selectedEventCard.classList.add('matched');
+                    
+                    // Clear selections
+                    selectedYearCard = null;
+                    selectedEventCard = null;
+                    
+                    // Update matches
+                    matches++;
+                    matchesDisplay.textContent = matches;
+                    
+                    // Auto-scroll if needed to see remaining cards
+                    if (matches < totalPairs) {
+                        const unmatchedYearCard = document.querySelector('.year-card:not(.matched)');
+                        if (unmatchedYearCard) {
+                            setTimeout(function() {
+                                unmatchedYearCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 300);
+                        }
+                    }
+                    
+                    // Check if game is completed
+                    if (matches === totalPairs) {
+                        gameCompleted();
+                    }
+                } else {
+                    // No match, clear selections after a delay
+                    setTimeout(function() {
+                        if (selectedYearCard) {
+                            selectedYearCard.classList.remove('selected');
+                            selectedYearCard = null;
+                        }
+                        if (selectedEventCard) {
+                            selectedEventCard.classList.remove('selected');
+                            selectedEventCard = null;
+                        }
+                    }, 1000);
+                }
             }
             
-            // Show first slide
-            showSlide(0);
+            // Shuffle the cards
+            function shuffleCards() {
+                const yearCards = Array.from(yearCardsContainer.children);
+                const eventCards = Array.from(eventCardsContainer.children);
+                
+                // Fisher-Yates shuffle algorithm
+                for (let i = yearCards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    yearCardsContainer.appendChild(yearCards[j]);
+                }
+                
+                for (let i = eventCards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    eventCardsContainer.appendChild(eventCards[j]);
+                }
+                
+                // Clear selections
+                if (selectedYearCard) {
+                    selectedYearCard.classList.remove('selected');
+                    selectedYearCard = null;
+                }
+                if (selectedEventCard) {
+                    selectedEventCard.classList.remove('selected');
+                    selectedEventCard = null;
+                }
+            }
             
-            // Change slides every 9 seconds for a more relaxed pace
-            setInterval(nextSlide, 9000);
-        }
-        
-        // Start everything when user clicks the button
-        document.querySelector('.start-button').addEventListener('click', function() {
-            // Hide the overlay
-            document.getElementById('startOverlay').classList.add('hidden');
+            // Show a hint
+            function showHint() {
+                // Only give hint if game is in progress
+                if (!isPlaying) startGame();
+                
+                // Find an unmatched pair
+                const unmatchedCards = Array.from(yearCardsContainer.children).filter(
+                    card => !card.classList.contains('matched')
+                );
+                
+                if (unmatchedCards.length > 0) {
+                    // Pick a random unmatched card
+                    const randomIndex = Math.floor(Math.random() * unmatchedCards.length);
+                    const hintYearCard = unmatchedCards[randomIndex];
+                    const dataIndex = hintYearCard.dataset.index;
+                    
+                    // Find matching event card
+                    const hintEventCard = Array.from(eventCardsContainer.children).find(
+                        card => card.dataset.index === dataIndex
+                    );
+                    
+                    // Highlight both cards briefly
+                    if (hintYearCard && hintEventCard) {
+                        const originalYearBorder = hintYearCard.style.border;
+                        const originalEventBorder = hintEventCard.style.border;
+                        
+                        hintYearCard.style.border = '2px dashed #ffcc00';
+                        hintEventCard.style.border = '2px dashed #ffcc00';
+                        
+                        // Scroll to hint cards
+                        setTimeout(function() {
+                            hintYearCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            setTimeout(function() {
+                                hintEventCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }, 1000);
+                        }, 300);
+                        
+                        setTimeout(function() {
+                            hintYearCard.style.border = originalYearBorder;
+                            hintEventCard.style.border = originalEventBorder;
+                        }, 3000);
+                    }
+                }
+            }
             
-            // Start playing music
-            const music = document.getElementById('bgMusic');
-            music.play();
+            // Game completed
+            function gameCompleted() {
+                clearInterval(timerInterval);
+                isPlaying = false;
+                
+                // Show completion message
+                finalTimeDisplay.textContent = timeDisplay.textContent;
+                completedMessage.style.display = 'flex';
+            }
             
-            // Create hearts and start slideshow
-            createHearts();
-            startSlideshow();
+            // Create confetti effect
+            function createConfetti() {
+                confettiContainer.innerHTML = '';
+                const colors = ['#ff6b6b', '#ffcc00', '#9f83c9', '#d3a5e0', '#7fbb7f', '#6abfc3'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    confetti.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    confettiContainer.appendChild(confetti);
+                }
+            }
+            
+            // Create timeline visualization
+            function createTimelineVisualization() {
+                // Sort data chronologically
+                const sortedData = [...timelineData].sort((a, b) => a.year - b.year);
+                
+                // Create timeline items
+                sortedData.forEach((item) => {
+                    const timelineItem = document.createElement('div');
+                    timelineItem.className = 'timeline-item';
+                    
+                    const yearElement = document.createElement('div');
+                    yearElement.className = 'timeline-year';
+                    yearElement.textContent = item.year;
+                    
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'timeline-event';
+                    eventElement.textContent = item.event;
+                    
+                    timelineItem.appendChild(yearElement);
+                    timelineItem.appendChild(eventElement);
+                    
+                    timelineContainer.appendChild(timelineItem);
+                });
+            }
+            
+            // Start the game
+            function startGame() {
+                if (!isPlaying) {
+                    isPlaying = true;
+                    
+                    // Reset timer
+                    seconds = 0;
+                    timeDisplay.textContent = '00:00';
+                    
+                    // Start timer
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(function() {
+                        seconds++;
+                        const mins = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }, 1000);
+                }
+            }
+            
+            // Show next puzzle screen
+            function showNextPuzzleScreen() {
+                completedMessage.style.display = 'none';
+                nextPuzzleScreen.style.display = 'flex';
+                createConfetti();
+            }
+            
+            // Event listeners
+            shuffleBtn.addEventListener('click', function() {
+                shuffleCards();
+                
+                // Reset game if already started
+                if (isPlaying) {
+                    // Reset matches
+                    matches = 0;
+                    matchesDisplay.textContent = matches;
+                    
+                    // Reset timer
+                    seconds = 0;
+                    timeDisplay.textContent = '00:00';
+                    
+                    // Remove matched class from all cards
+                    document.querySelectorAll('.card').forEach(card => {
+                        card.classList.remove('matched');
+                    });
+                }
+            });
+            
+            hintBtn.addEventListener('click', showHint);
+            
+            viewTimelineBtn.addEventListener('click', function() {
+                if (timelineVisualization.classList.contains('visible')) {
+                    timelineVisualization.classList.remove('visible');
+                    viewTimelineBtn.textContent = 'View Timeline';
+                } else {
+                    timelineVisualization.classList.add('visible');
+                    viewTimelineBtn.textContent = 'Hide Timeline';
+                }
+            });
+            
+            playAgainBtn.addEventListener('click', function() {
+                completedMessage.style.display = 'none';
+                initGame();
+            });
+            
+            viewTimelineCompleteBtn.addEventListener('click', function() {
+                completedMessage.style.display = 'none';
+                timelineVisualization.classList.add('visible');
+                viewTimelineBtn.textContent = 'Hide Timeline';
+            });
+            
+            nextPuzzleBtn.addEventListener('click', showNextPuzzleScreen);
+            
+            // Prevent zooming on double tap for iOS
+            document.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
         });
     </script>
 </body>
