@@ -165,38 +165,6 @@
             display: none;
         }
         
-        .audio-controls {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 8px 15px;
-            border-radius: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .audio-controls button {
-            padding: 8px;
-            margin: 0 5px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .audio-controls button svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .audio-title {
-            margin-left: 10px;
-            font-size: 14px;
-            color: #55456b;
-        }
-        
         @media (max-width: 350px) {
             .puzzle-container {
                 width: 280px;
@@ -211,16 +179,6 @@
 <body>
     <h1>Aimee's Birthday</h1>
     
-    <div class="audio-controls">
-        <button id="play-pause-btn" title="Play/Pause">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                <path d="M8 5v14l11-7z" id="play-icon"/>
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" id="pause-icon" style="display: none;"/>
-            </svg>
-        </button>
-        <span class="audio-title">21 Pilots - Can't Help Falling in Love</span>
-    </div>
-    
     <div class="stats">
         <div>Moves: <span id="moves">0</span></div>
         <div>Time: <span id="time">00:00</span></div>
@@ -234,13 +192,6 @@
         <button id="shuffle-btn">Shuffle</button>
         <button id="number-toggle-btn">Hide Numbers</button>
     </div>
-    
-    <audio id="background-music" loop>
-        <source src="21pilots-falling-in-love.mp3" type="audio/mpeg">
-        <!-- Fallback sources if the first one fails -->
-        <source src="/21pilots-falling-in-love.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
     
     <div class="completed-message" id="completed-message">
         <h2>Puzzle Completed!</h2>
@@ -274,42 +225,6 @@
             const playAgainBtn = document.getElementById('play-again-btn');
             const errorMessage = document.getElementById('error-message');
             const clueImage = document.getElementById('clue-image');
-            const backgroundMusic = document.getElementById('background-music');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
-            
-            // Music control
-            playPauseBtn.addEventListener('click', function() {
-                if (backgroundMusic.paused) {
-                    backgroundMusic.play().then(() => {
-                        playIcon.style.display = 'none';
-                        pauseIcon.style.display = 'block';
-                    }).catch(error => {
-                        console.error("Error playing audio:", error);
-                        errorMessage.textContent = "Could not play audio. Try interacting with the page first.";
-                        errorMessage.style.display = "block";
-                    });
-                } else {
-                    backgroundMusic.pause();
-                    playIcon.style.display = 'block';
-                    pauseIcon.style.display = 'none';
-                }
-            });
-            
-            // Start music automatically but user needs to interact first due to browser policies
-            document.addEventListener('click', function startAudioOnFirstInteraction() {
-                if (backgroundMusic.paused) {
-                    backgroundMusic.play().then(() => {
-                        playIcon.style.display = 'none';
-                        pauseIcon.style.display = 'block';
-                    }).catch(error => {
-                        console.error("Error playing audio:", error);
-                    });
-                }
-                // Remove this listener after first interaction
-                document.removeEventListener('click', startAudioOnFirstInteraction);
-            }, { once: true });
             
             // Color schemes for different grid sizes (fallback if image doesn't load)
             const colorSchemes = {
@@ -388,24 +303,6 @@
             
             // Try to load clue image
             tryLoadingClueImage(["clue-location.jpg", "/clue-location.jpg"], 0);
-            
-            // Try to load audio file
-            function tryLoadingAudio(paths, index) {
-                if (index >= paths.length) {
-                    console.log("Failed to load audio from all paths");
-                    return;
-                }
-                
-                backgroundMusic.src = paths[index];
-                backgroundMusic.onerror = function() {
-                    console.log("Failed to load audio from: " + paths[index]);
-                    // Try next path
-                    tryLoadingAudio(paths, index + 1);
-                };
-            }
-            
-            // Try to load audio
-            tryLoadingAudio(["21pilots-falling-in-love.mp3", "/21pilots-falling-in-love.mp3"], 0);
             
             // Start trying to load the main puzzle image
             tryLoadingImage(imagePaths, 0);
@@ -618,16 +515,6 @@
                         const secs = seconds % 60;
                         timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                     }, 1000);
-                    
-                    // Make sure music is playing
-                    if (backgroundMusic.paused) {
-                        backgroundMusic.play().then(() => {
-                            playIcon.style.display = 'none';
-                            pauseIcon.style.display = 'block';
-                        }).catch(error => {
-                            console.error("Error playing audio:", error);
-                        });
-                    }
                 }
             }
             
@@ -715,17 +602,6 @@
                 e.preventDefault(); // Prevent accidental clicks
             }, { passive: false });
         });
-        // Keep the music playing when the puzzle is completed
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'visible') {
-                // Try to resume music when tab becomes visible again
-                if (!backgroundMusic.paused) {
-                    backgroundMusic.play().catch(error => {
-                        console.error("Error resuming audio:", error);
-                    });
-                }
-            }
-        });
-</script>
+    </script>
 </body>
 </html>
