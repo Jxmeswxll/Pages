@@ -15,11 +15,6 @@
             overflow: hidden;
         }
         
-        @keyframes fadeInBackground {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         .container {
             height: 100vh;
             display: flex;
@@ -28,7 +23,6 @@
             align-items: center;
             position: relative;
             background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(0,0,0,1) 100%);
-            animation: fadeInBackground 2s ease-in;
         }
         
         .slide {
@@ -120,59 +114,18 @@
             right: -10px;
         }
         
-        .heart {
-            position: absolute;
-            color: rgba(255, 100, 100, 0.3);
-            z-index: -1;
-            animation: float 10s ease-in-out infinite;
-        }
-        
-        .final-message {
-            font-size: 2.2rem;
-            font-weight: 400;
-            margin-top: 30px;
-            text-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
-            opacity: 0;
-            animation: fadeIn 3s forwards;
-            animation-delay: 1s;
-        }
-        
-        .ring-message {
-            font-size: 2rem;
-            line-height: 1.6;
-            max-width: 80%;
-            margin: 0 auto;
-            animation: glow 3s infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-            100% { transform: translateY(0) rotate(0deg); }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         .button-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.7);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
             cursor: pointer;
+            background-color: rgba(0,0,0,0.7);
         }
         
         .start-button {
@@ -193,33 +146,17 @@
         }
         
         .hidden {
-            display: none;
-        }
-        
-        .loading-message {
-            color: white;
-            font-size: 1.2rem;
-            margin-top: 15px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loading-message.visible {
-            opacity: 1;
+            display: none !important;
         }
     </style>
 </head>
 <body>
     <audio id="bgMusic" preload="auto">
         <source src="21pilots-falling-in-love.mp3" type="audio/mpeg">
-        <!-- You'll need to add your music file here -->
     </audio>
     
     <div class="button-overlay" id="startOverlay">
-        <div style="text-align: center;">
-            <button class="start-button">Click to Begin Our Journey</button>
-            <div id="loadingMessage" class="loading-message">Loading your memories...</div>
-        </div>
+        <button class="start-button">Click to Begin Our Journey</button>
     </div>
     
     <div class="container" id="slideshow">
@@ -328,37 +265,16 @@
                 <p class="message">All my Love - James</p>
             </div>
         </div>
-        
     </div>
     
     <script>
-        // Create background hearts
-        function createHearts() {
-            const container = document.querySelector('.container');
-            for (let i = 0; i < 15; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.fontSize = Math.random() * 30 + 15 + 'px';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = Math.random() * 100 + 'vh';
-                heart.style.animationDuration = Math.random() * 8 + 5 + 's';
-                heart.style.animationDelay = Math.random() * 5 + 's';
-                heart.innerHTML = '❤';
-                container.appendChild(heart);
-            }
-        }
-        
         // Slideshow functionality with music-synchronized timing
         function startSlideshow() {
             const slides = document.querySelectorAll('.slide');
             const music = document.getElementById('bgMusic');
-            const loadingMessage = document.getElementById('loadingMessage');
             
             // Show first slide immediately
             showSlide(0);
-            
-            // Show loading message
-            loadingMessage.classList.add('visible');
             
             // Slide times in seconds relative to music start
             const slideTimesInSeconds = [
@@ -384,77 +300,24 @@
                 slides[index].classList.add('active');
             }
             
-            // Try to play the music
-            const playPromise = music.play();
+            // Play the music and start the slideshow timing
+            music.play();
             
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Music started playing successfully
-                    console.log("Music started playing");
-                    loadingMessage.classList.remove('visible');
-                    
-                    // Schedule each slide at the specified time relative to music start
-                    for (let i = 1; i < slides.length; i++) {
-                        setTimeout(() => {
-                            showSlide(i);
-                        }, slideTimesInSeconds[i] * 1000); // Convert to milliseconds
-                    }
-                })
-                .catch(error => {
-                    // Auto-play was prevented or there was another error
-                    console.log("Music playback was prevented: ", error);
-                    loadingMessage.textContent = "Click anywhere to start music and slideshow";
-                    
-                    // Add a click event to the document to start playing
-                    document.addEventListener('click', function musicStarter() {
-                        music.play()
-                            .then(_ => {
-                                console.log("Music started after click");
-                                loadingMessage.classList.remove('visible');
-                                
-                                // Schedule each slide at the specified time relative to music start
-                                for (let i = 1; i < slides.length; i++) {
-                                    setTimeout(() => {
-                                        showSlide(i);
-                                    }, slideTimesInSeconds[i] * 1000); // Convert to milliseconds
-                                }
-                                
-                                // Remove this event listener once music is playing
-                                document.removeEventListener('click', musicStarter);
-                            })
-                            .catch(err => {
-                                console.log("Still couldn't play music: ", err);
-                                loadingMessage.textContent = "There was a problem playing the music. Please refresh and try again.";
-                            });
-                    }, { once: true });
-                });
+            // Schedule each slide at the specified time relative to music start
+            for (let i = 1; i < slides.length; i++) {
+                setTimeout(() => {
+                    showSlide(i);
+                }, slideTimesInSeconds[i] * 1000); // Convert to milliseconds
             }
         }
         
         // Start everything when user clicks the button
         document.querySelector('.start-button').addEventListener('click', function() {
-            // Hide the button but keep the overlay for loading message
-            this.style.display = 'none';
+            // Completely hide the overlay
+            document.getElementById('startOverlay').classList.add('hidden');
             
-            // Load music file
-            const music = document.getElementById('bgMusic');
-            
-            // Create hearts immediately
-            createHearts();
-            
-            // Start slideshow (which will now wait for music)
+            // Start slideshow
             startSlideshow();
-        });
-        
-        // Preload images to avoid delays
-        window.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide-image');
-            slides.forEach(slide => {
-                if (slide.src && !slide.src.includes('/api/placeholder/')) {
-                    const img = new Image();
-                    img.src = slide.src;
-                }
-            });
         });
     </script>
 </body>
