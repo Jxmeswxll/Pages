@@ -9,24 +9,24 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://example.com/"> <!-- Replace with actual URL -->
+    <meta property="og:url" content="https://synergysolutions.com/"> 
     <meta property="og:title" content="Synergy Solutions | Transforming Enterprise Complexity">
     <meta property="og:description" content="B2B enterprise services leveraging AI and expert support.">
-    <meta property="og:image" content="https://picsum.photos/seed/meta/1200/630"> <!-- Replace with actual preview image URL -->
+    <meta property="og:image" content="https://synergysolutions.com/images/meta-preview.jpg"> 
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://example.com/"> <!-- Replace with actual URL -->
+    <meta property="twitter:url" content="https://synergysolutions.com/"> 
     <meta property="twitter:title" content="Synergy Solutions | Transforming Enterprise Complexity">
     <meta property="twitter:description" content="B2B enterprise services leveraging AI and expert support.">
-    <meta property="twitter:image" content="https://picsum.photos/seed/meta/1200/630"> <!-- Replace with actual preview image URL -->
+    <meta property="twitter:image" content="https://synergysolutions.com/images/meta-preview.jpg"> 
 
     <style>
-        /* Reset and Base Styles /
+        /* Reset and Base Styles */
         :root {
-            --primary-color: #0A2342; / Deep Blue /
-            --secondary-color: #2C6E9E; / Muted Blue /
-            --accent-color: #4F8CBA; / Lighter Blue Accent */
+            --primary-color: #0A2342; /* Deep Blue */
+            --secondary-color: #2C6E9E; /* Muted Blue */
+            --accent-color: #4F8CBA; /* Lighter Blue Accent */
             --text-light: #F8F9FA;
             --text-dark: #212529;
             --background-light: #FFFFFF;
@@ -35,6 +35,10 @@
             --gradient-end: #2C6E9E;
             --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             --font-secondary: 'Roboto', sans-serif;
+            --transition-speed: 0.3s;
+            --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --box-shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --box-shadow-lg: 0 8px 25px rgba(44, 110, 158, 0.15);
         }
 
         *,
@@ -77,7 +81,7 @@
         a {
             color: var(--secondary-color);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color var(--transition-speed) ease;
         }
 
         a:hover {
@@ -109,7 +113,7 @@
             text-align: center;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition-speed) ease;
             border: none;
         }
 
@@ -140,7 +144,7 @@
         /* Header & Navigation */
         .main-header {
             background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow-sm);
             position: sticky;
             top: 0;
             left: 0;
@@ -187,12 +191,13 @@
             width: 0;
             height: 2px;
             background-color: var(--accent-color);
-            transition: width 0.3s ease;
+            transition: width var(--transition-speed) ease;
          }
 
          .nav-links a:hover::after {
             width: 100%;
          }
+
 
         .header-cta {
             display: none; /* Hidden on mobile */
@@ -212,27 +217,26 @@
             height: 3px;
             background-color: var(--primary-color);
             margin: 5px 0;
-            transition: all 0.3s ease;
+            transition: all var(--transition-speed) ease;
         }
 
-        /* Mobile Navigation Drawer /
+        /* Mobile Navigation Drawer */
         .mobile-nav {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -100%; /* Changed from transform for better performance */
             width: 80%;
             max-width: 300px;
             height: 100%;
             background-color: var(--primary-color);
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-            transform: translateX(-100%);
-            transition: transform 0.4s ease-in-out;
+            transition: left 0.4s ease-in-out;
             z-index: 999;
-            padding-top: 80px; / Space for close button or header */
+            padding-top: 80px; /* Space for close button or header */
         }
 
         .mobile-nav.open {
-            transform: translateX(0);
+            left: 0; /* Changed from transform for better performance */
         }
 
         .mobile-nav ul {
@@ -264,12 +268,12 @@
             cursor: pointer;
         }
 
-        /* Hero Section /
+        /* Hero Section */
         #hero {
-            background-image: linear-gradient(rgba(10, 35, 66, 0.7), rgba(10, 35, 66, 0.7)), url('https://picsum.photos/seed/hero/1600/900');
+            background-image: linear-gradient(rgba(10, 35, 66, 0.7), rgba(10, 35, 66, 0.7)), url('https://images.unsplash.com/photo-1558403194-611308249627?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
             background-size: cover;
             background-position: center center;
-            background-attachment: fixed; / Simple parallax effect */
+            background-attachment: fixed; /* Simple parallax effect */
             color: var(--text-light);
             text-align: center;
             padding: 120px 0;
@@ -296,7 +300,7 @@
             margin-bottom: 2rem;
         }
 
-        /* USP Section /
+        /* USP Section */
         #usp {
             background-color: var(--background-medium);
             padding: 40px 0;
@@ -316,41 +320,53 @@
            font-size: 1.1rem;
            margin-bottom: 0.5rem;
         }
-        .usp-item span { / Placeholder for icon */
-            display: block;
+        .usp-icon { 
+            display: inline-block;
             font-size: 2rem;
             color: var(--accent-color);
             margin-bottom: 0.5rem;
+            width: 50px;
+            height: 50px;
+        }
+        .usp-icon svg {
+            width: 100%;
+            height: 100%;
         }
 
-        /* Expertise Section /
+        /* Expertise Section */
         #expertise {
             background-color: var(--background-light);
         }
         #expertise .container h2 { text-align: center; margin-bottom: 40px;}
         .expertise-grid {
             display: grid;
-            grid-template-columns: 1fr; / Mobile: 1 column /
+            grid-template-columns: 1fr; /* Mobile: 1 column */
             gap: 30px;
         }
         .expertise-card {
             background-color: var(--background-light);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--box-shadow-md);
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
         }
         .expertise-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(44, 110, 158, 0.15);
+            box-shadow: var(--box-shadow-lg);
         }
-        .expertise-icon { / Placeholder for animated SVG */
+        .expertise-icon { 
             font-size: 3rem;
             color: var(--accent-color);
             margin-bottom: 15px;
             display: inline-block;
-            transition: transform 0.3s ease;
+            transition: transform var(--transition-speed) ease;
+            width: 60px;
+            height: 60px;
+        }
+        .expertise-icon svg {
+            width: 100%;
+            height: 100%;
         }
         .expertise-card:hover .expertise-icon {
             transform: scale(1.1);
@@ -360,7 +376,7 @@
             color: var(--primary-color);
         }
 
-        /* Case Studies Section /
+        /* Case Studies Section */
         #case-studies {
             background-color: var(--background-medium);
         }
@@ -370,7 +386,7 @@
             padding: 30px;
             border-radius: 8px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--box-shadow-md);
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -394,7 +410,7 @@
             height: 100%;
             background-image: linear-gradient(to right, var(--accent-color), var(--secondary-color));
             border-radius: 10px;
-            width: 0; / Initial state for animation */
+            width: 0; /* Initial state for animation */
             transition: width 1.5s ease-out;
             position: relative;
         }
@@ -434,8 +450,8 @@
         }
 
         .testimonial-slide {
-            flex: 0 0 100%; /* Each slide takes full width /
-            padding: 0 15px; / Spacing between slides if needed */
+            flex: 0 0 100%; /* Each slide takes full width */
+            padding: 0 15px; /* Spacing between slides if needed */
             box-sizing: border-box;
             text-align: center;
         }
@@ -497,7 +513,7 @@
             border-radius: 50%;
             margin: 0 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color var(--transition-speed) ease;
         }
 
         .dot.active {
@@ -547,8 +563,14 @@
             min-height: 120px;
             resize: vertical;
         }
+        .form-error {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
 
-        /* Footer /
+        /* Footer */
         .main-footer {
             background-color: var(--primary-color);
             color: var(--text-light);
@@ -580,13 +602,19 @@
         }
         .footer-social a {
             color: var(--text-light);
-            font-size: 1.5rem; / For SVG placeholders */
+            font-size: 1.5rem;
             opacity: 0.8;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+            display: inline-block;
         }
         .footer-social a:hover {
             opacity: 1;
             transform: scale(1.1);
+        }
+        .footer-social svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
         .footer-tech-stack {
             margin-top: 15px;
@@ -603,11 +631,11 @@
             opacity: 0.6;
         }
 
-        /* Sticky CTA Button /
+        /* Sticky CTA Button */
         .sticky-cta {
             position: fixed;
             z-index: 990;
-            / Mobile styles */
+            /* Mobile styles */
             bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
@@ -615,9 +643,9 @@
             font-size: 0.9rem;
         }
 
-        /* Modal Styles /
+        /* Modal Styles */
         .modal {
-            display: none; / Hidden by default */
+            display: none; /* Hidden by default */
             position: fixed;
             z-index: 1050;
             left: 0;
@@ -627,7 +655,7 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.6);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity var(--transition-speed) ease;
         }
         .modal.show {
             display: flex;
@@ -646,7 +674,7 @@
             text-align: center;
             position: relative;
             transform: scale(0.9);
-            transition: transform 0.3s ease;
+            transition: transform var(--transition-speed) ease;
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -712,7 +740,10 @@
             /* Desktop Navigation */
             .hamburger-menu { display: none; }
             .mobile-nav { display: none; }
-            .nav-links { display: flex; }
+            .nav-links { 
+                display: flex; 
+                align-items: center;
+            }
             .header-cta { display: block; }
 
             #hero { padding: 150px 0; min-height: 80vh;}
@@ -722,14 +753,14 @@
 
             .testimonial-slide { padding: 0 30px; }
 
-            /* Desktop Sticky CTA /
+            /* Desktop Sticky CTA */
             .sticky-cta {
-                left: auto; / Reset mobile positioning /
-                transform: none; / Reset mobile positioning */
+                left: auto; /* Reset mobile positioning */
+                transform: none; /* Reset mobile positioning */
                 right: 25px;
                 bottom: 25px;
                 padding: 12px 25px;
-                 font-size: 1rem;
+                font-size: 1rem;
             }
 
              .footer-container {
@@ -747,14 +778,13 @@
              .footer-social-container { order: 3; text-align: right;}
              .footer-tech-stack { margin-top: 0;}
              .footer-copy { width: 100%; order: 4; margin-top: 30px; text-align: center;}
-
         }
 
-        /* Large devices (large desktops, 1200px and up) /
+        /* Large devices (large desktops, 1200px and up) */
         @media (min-width: 1200px) {
-            .container { width: 80%; / Max width is 1140px /}
+            .container { width: 80%; }
              #hero h1 { font-size: 4.5rem; }
-             .expertise-grid { grid-template-columns: repeat(3, 1fr); } / Could go to 4 if needed */
+             .expertise-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         /* W3C Compliance & Accessibility */
@@ -771,6 +801,10 @@
             border: 0;
         }
 
+        /* Fix for hamburger menu in Safari */
+        .hamburger-menu:focus {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -818,6 +852,7 @@
         </ul>
     </div>
 
+
     <main>
         <!-- Hero Section -->
         <section id="hero" class="fade-in">
@@ -832,17 +867,33 @@
          <section id="usp">
             <div class="usp-container container">
                  <div class="usp-item fade-in">
-                    <span>[Icon]</span>
-                     <h4>24/7 Expert Support</h4>
-                     <p>Dedicated technical assistance whenever you need it.</p>
+                    <div class="usp-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                    </div>
+                    <h4>24/7 Expert Support</h4>
+                    <p>Dedicated technical assistance whenever you need it.</p>
                  </div>
                  <div class="usp-item fade-in">
-                     <span>[Icon]</span>
+                    <div class="usp-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                      </svg>
+                    </div>
                      <h4>AI-Driven Solutions</h4>
                      <p>Leverage machine learning for smarter operations.</p>
                  </div>
                  <div class="usp-item fade-in">
-                     <span>[Icon]</span>
+                    <div class="usp-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </div>
                      <h4>ISO-Certified Security</h4>
                      <p>Robust security protocols to protect your valuable data.</p>
                  </div>
@@ -855,32 +906,60 @@
                 <h2>Our Expertise</h2>
                 <div class="expertise-grid">
                     <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                          </svg>
+                        </div>
                         <h4>Cloud Architecture</h4>
                         <p>Scalable and resilient cloud infrastructure design on AWS, Azure, and GCP.</p>
                     </div>
                     <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                          </svg>
+                        </div>
                         <h4>Data Analytics & AI</h4>
                         <p>Unlock insights and automate processes with advanced data science.</p>
                     </div>
                     <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 18l6-6-6-6"></path>
+                            <path d="M8 6l-6 6 6 6"></path>
+                          </svg>
+                        </div>
                         <h4>Custom Software Dev</h4>
                         <p>Bespoke application development tailored to your unique business needs.</p>
                     </div>
                     <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                          </svg>
+                        </div>
                         <h4>Cybersecurity Solutions</h4>
                         <p>Comprehensive security assessments and implementation.</p>
                     </div>
                      <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="9" x2="20" y2="9"></line>
+                            <line x1="4" y1="15" x2="20" y2="15"></line>
+                            <line x1="10" y1="3" x2="8" y2="21"></line>
+                            <line x1="16" y1="3" x2="14" y2="21"></line>
+                          </svg>
+                        </div>
                         <h4>DevOps & Automation</h4>
                         <p>Streamline your development lifecycle for faster, reliable delivery.</p>
                     </div>
                      <div class="expertise-card fade-in">
-                        <div class="expertise-icon">[SVG Icon]</div>
+                        <div class="expertise-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                          </svg>
+                        </div>
                         <h4>Legacy System Modernization</h4>
                         <p>Upgrade outdated systems for improved performance and security.</p>
                     </div>
@@ -894,7 +973,7 @@
                 <h2>Proven Results</h2>
                 <div class="case-study fade-in">
                      <div class="case-study-image">
-                         <img src="https://picsum.photos/seed/case1/600/400" alt="Team collaborating on project" loading="lazy">
+                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Team collaborating on logistics project" loading="lazy">
                      </div>
                      <div class="case-study-content">
                         <h4>Global Logistics Optimization</h4>
@@ -917,7 +996,7 @@
                 </div>
                  <div class="case-study fade-in">
                      <div class="case-study-image">
-                         <img src="https://picsum.photos/seed/case2/600/400" alt="Enterprise dashboard on screen" loading="lazy">
+                         <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Financial services dashboard on screen" loading="lazy">
                      </div>
                     <div class="case-study-content">
                         <h4>Financial Services Platform Migration</h4>
@@ -941,6 +1020,7 @@
             </div>
         </section>
 
+
         <!-- Testimonials Section -->
         <section id="testimonials">
             <div class="container">
@@ -950,34 +1030,33 @@
                         <!-- Slide 1 -->
                         <div class="testimonial-slide">
                             <div class="testimonial-card">
-                                <img src="https://picsum.photos/seed/client1/100/100" alt="Client Photo 1" class="testimonial-photo" loading="lazy">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Jane Doe" class="testimonial-photo" loading="lazy">
                                 <p class="testimonial-quote">"Synergy Solutions fundamentally changed how we approach our tech infrastructure. Their expertise in cloud migration was invaluable."</p>
                                 <p class="testimonial-author">Jane Doe</p>
                                 <p class="testimonial-role">CTO, Innovate Corp</p>
-                                <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=InnovateCorp+Logo" alt="Innovate Corp Logo" class="testimonial-logo" loading="lazy">
+                                <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=InnovateCorp" alt="Innovate Corp Logo" class="testimonial-logo" loading="lazy">
                             </div>
                         </div>
                         <!-- Slide 2 -->
                         <div class="testimonial-slide">
                             <div class="testimonial-card">
-                                <img src="https://picsum.photos/seed/client2/100/100" alt="Client Photo 2" class="testimonial-photo" loading="lazy">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="John Smith" class="testimonial-photo" loading="lazy">
                                 <p class="testimonial-quote">"The AI-driven analytics platform they built provided insights we never thought possible. It's been a game-changer for our marketing efforts."</p>
                                 <p class="testimonial-author">John Smith</p>
                                 <p class="testimonial-role">VP of Marketing, GlobalTech</p>
-                                 <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=GlobalTech+Logo" alt="GlobalTech Logo" class="testimonial-logo" loading="lazy">
+                                 <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=GlobalTech" alt="GlobalTech Logo" class="testimonial-logo" loading="lazy">
                             </div>
                         </div>
                         <!-- Slide 3 -->
                         <div class="testimonial-slide">
                             <div class="testimonial-card">
-                                <img src="https://picsum.photos/seed/client3/100/100" alt="Client Photo 3" class="testimonial-photo" loading="lazy">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Alice Green" class="testimonial-photo" loading="lazy">
                                 <p class="testimonial-quote">"Their 24/7 support and proactive security monitoring give us peace of mind. A truly reliable enterprise partner."</p>
                                 <p class="testimonial-author">Alice Green</p>
                                 <p class="testimonial-role">Director of Operations, SecureNet</p>
-                                 <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=SecureNet+Logo" alt="SecureNet Logo" class="testimonial-logo" loading="lazy">
+                                 <img src="https://via.placeholder.com/150x40/FFFFFF/000000?text=SecureNet" alt="SecureNet Logo" class="testimonial-logo" loading="lazy">
                             </div>
                         </div>
-                         <!-- Add more slides as needed -->
                     </div>
                 </div>
                  <div class="carousel-dots">
@@ -994,15 +1073,17 @@
                     <div class="form-group fade-in">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" required>
+                        <div class="form-error">Please enter your name</div>
                     </div>
                     <div class="form-group fade-in">
                         <label for="email">Business Email</label>
                         <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-                         <small style="display: none; color: red;">Please enter a valid business email address.</small>
+                        <div class="form-error">Please enter a valid business email address</div>
                     </div>
                     <div class="form-group fade-in">
                         <label for="company">Company Name</label>
                         <input type="text" id="company" name="company" required>
+                        <div class="form-error">Please enter your company name</div>
                     </div>
                     <div class="form-group fade-in">
                         <label for="scope">Project Scope (Optional)</label>
@@ -1013,7 +1094,7 @@
                             <option value="software-dev">Custom Software Development</option>
                             <option value="security">Cybersecurity Assessment</option>
                             <option value="devops">DevOps & Automation</option>
-                             <option value="modernization">Legacy System Modernization</option>
+                            <option value="modernization">Legacy System Modernization</option>
                             <option value="other">Other / Not Sure</option>
                         </select>
                     </div>
@@ -1036,7 +1117,7 @@
             <div class="footer-contact">
                 <h4>Synergy Solutions</h4>
                 <p>123 Innovation Drive<br>Tech City, TX 75001</p>
-                <p>Email: <a href="mailto:info@synergysolutions.example">info@synergysolutions.example</a></p>
+                <p>Email: <a href="mailto:info@synergysolutions.com">info@synergysolutions.com</a></p>
                 <p>Phone: <a href="tel:+15551234567">+1 (555) 123-4567</a></p>
             </div>
              <div class="footer-links-container">
@@ -1052,16 +1133,36 @@
             <div class="footer-social-container">
                  <h4>Connect With Us</h4>
                  <ul class="footer-social">
-                     <li><a href="#" aria-label="LinkedIn">[LI]</a></li> <!-- Placeholder for SVG -->
-                     <li><a href="#" aria-label="Twitter">[TW]</a></li> <!-- Placeholder for SVG -->
-                     <li><a href="#" aria-label="Facebook">[FB]</a></li> <!-- Placeholder for SVG -->
+                     <li>
+                       <a href="#" aria-label="LinkedIn">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                           <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                           <rect x="2" y="9" width="4" height="12"></rect>
+                           <circle cx="4" cy="4" r="2"></circle>
+                         </svg>
+                       </a>
+                     </li>
+                     <li>
+                       <a href="#" aria-label="Twitter">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                           <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                         </svg>
+                       </a>
+                     </li>
+                     <li>
+                       <a href="#" aria-label="Facebook">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                         </svg>
+                       </a>
+                     </li>
                  </ul>
                  <div class="footer-tech-stack">
                     Built with AWS, React, and Node.js Expertise
                  </div>
             </div>
             <div class="footer-copy">
-                © <span id="currentYear"></span> Synergy Solutions. All Rights Reserved.
+                © <span id="currentYear">2025</span> Synergy Solutions. All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -1078,8 +1179,11 @@
         </div>
     </div>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
 
             // --- Mobile Navigation ---
             const hamburger = document.querySelector('.hamburger-menu');
@@ -1091,79 +1195,90 @@
                 hamburger.addEventListener('click', () => {
                     mobileNav.classList.toggle('open');
                     hamburger.setAttribute('aria-expanded', mobileNav.classList.contains('open'));
+                    // Prevent body scrolling when nav is open
+                    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
                 });
 
-                 closeBtn.addEventListener('click', () => {
+                closeBtn.addEventListener('click', () => {
                     mobileNav.classList.remove('open');
                     hamburger.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
                 });
 
                 // Close nav when a link is clicked
-                 mobileNavLinks.forEach(link => {
-                     link.addEventListener('click', () => {
-                         mobileNav.classList.remove('open');
-                         hamburger.setAttribute('aria-expanded', 'false');
-                     });
-                 });
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNav.classList.remove('open');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    });
+                });
 
                 // Close nav if clicking outside of it
-                 document.addEventListener('click', (event) => {
-                     if (mobileNav.classList.contains('open') && !mobileNav.contains(event.target) && !hamburger.contains(event.target)) {
-                         mobileNav.classList.remove('open');
-                         hamburger.setAttribute('aria-expanded', 'false');
-                     }
-                 });
+                document.addEventListener('click', (event) => {
+                    if (mobileNav.classList.contains('open') && 
+                        !mobileNav.contains(event.target) && 
+                        !hamburger.contains(event.target)) {
+                        mobileNav.classList.remove('open');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Close mobile nav on escape key
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && mobileNav.classList.contains('open')) {
+                        mobileNav.classList.remove('open');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
             }
 
             // --- Fade-in Elements on Scroll ---
             const fadeInElements = document.querySelectorAll('.fade-in');
-             const progressBars = document.querySelectorAll('.progress-bar');
+            const progressBars = document.querySelectorAll('.progress-bar');
+            
+            // Use IntersectionObserver if supported
+            if ('IntersectionObserver' in window) {
+                const observerOptions = {
+                    root: null, // relative to document viewport
+                    rootMargin: '0px',
+                    threshold: 0.1 // trigger when 10% of the element is visible
+                };
 
-            const observerOptions = {
-                root: null, // relative to document viewport
-                rootMargin: '0px',
-                threshold: 0.1 // trigger when 10% of the element is visible
-            };
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-
-                        // Specific logic for progress bars
-                        if (entry.target.classList.contains('progress-bar')) {
-                             const progress = entry.target.getAttribute('data-progress');
-                             entry.target.style.width = progress + '%';
+                            // Specific logic for progress bars
+                            if (entry.target.classList.contains('progress-bar')) {
+                                const progress = entry.target.getAttribute('data-progress');
+                                entry.target.style.width = progress + '%';
+                            }
+                            else if (entry.target.classList.contains('case-study')) {
+                                // Trigger progress bars within the intersecting case study
+                                entry.target.querySelectorAll('.progress-bar').forEach(bar => {
+                                    const progress = bar.getAttribute('data-progress');
+                                    bar.style.width = progress + '%';
+                                });
+                            }
                         }
-                         else if (entry.target.classList.contains('case-study')) {
-                            // Trigger progress bars within the intersecting case study
-                            entry.target.querySelectorAll('.progress-bar').forEach(bar => {
-                                 const progress = bar.getAttribute('data-progress');
-                                 bar.style.width = progress + '%';
-                            });
-                        }
+                    });
+                }, observerOptions);
 
-                        // Only observe once
-                        // observer.unobserve(entry.target);
-                        // Keep observing if you want animations to replay if scrolled out and back in
-                    } else {
-                        // Optional: Remove 'visible' class if element scrolls out of view
-                        // entry.target.classList.remove('visible');
-                        // Reset progress bars if scrolled out
-                         if (entry.target.classList.contains('progress-bar')) {
-                            // entry.target.style.width = '0%'; // Uncomment to reset
-                        } else if (entry.target.classList.contains('case-study')) {
-                            // entry.target.querySelectorAll('.progress-bar').forEach(bar => {
-                            //    bar.style.width = '0%'; // Uncomment to reset
-                           // });
-                        }
-                    }
+                fadeInElements.forEach(el => observer.observe(el));
+                // Observe case studies as a whole to trigger internal progress bars
+                document.querySelectorAll('.case-study').forEach(el => observer.observe(el));
+            } else {
+                // Fallback for browsers not supporting IntersectionObserver
+                fadeInElements.forEach(el => el.classList.add('visible'));
+                progressBars.forEach(bar => {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.width = progress + '%';
                 });
-            }, observerOptions);
-
-             fadeInElements.forEach(el => observer.observe(el));
-             // Observe case studies as a whole to trigger internal progress bars
-             document.querySelectorAll('.case-study').forEach(el => observer.observe(el));
+            }
 
             // --- Testimonial Carousel ---
             const carousel = document.querySelector('.testimonial-carousel');
@@ -1198,7 +1313,11 @@
                 function goToSlide(index) {
                     if (index < 0) index = slides.length - 1;
                     if (index >= slides.length) index = 0;
-                    slider.style.transform = translateX(-${index * slideWidth}px);
+                    
+                    // Fix: Use explicit width calculation
+                    slideWidth = slides[0].offsetWidth;
+                    slider.style.transform = `translateX(-${index * slideWidth}px)`;
+                    
                     currentIndex = index;
                     updateDots();
                     resetAutoRotate();
@@ -1242,143 +1361,209 @@
                 carousel.addEventListener('touchend', startAutoRotate, { passive: true });
 
                 // Basic Swipe/Drag Functionality
-                 carousel.addEventListener('mousedown', (e) => {
+                carousel.addEventListener('mousedown', (e) => {
                     isDragging = true;
                     startX = e.pageX - carousel.offsetLeft;
-                    scrollLeft = slider.style.transform ? parseInt(slider.style.transform.replace('translateX(', '').replace('px)', '')) : 0;
+                    scrollLeft = slider.style.transform ? 
+                        parseInt(slider.style.transform.replace(/[^-\d.]/g, '')) : 0;
                     carousel.style.cursor = 'grabbing';
-                     slider.style.transition = 'none'; // Disable transition during drag
-                 });
+                    slider.style.transition = 'none'; // Disable transition during drag
+                });
 
-                 carousel.addEventListener('mouseleave', () => {
-                     if (!isDragging) return;
-                     isDragging = false;
-                     carousel.style.cursor = 'grab';
-                     snapToSlide();
-                 });
+                carousel.addEventListener('mouseleave', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    carousel.style.cursor = 'grab';
+                    snapToSlide();
+                });
 
-                 carousel.addEventListener('mouseup', () => {
-                     if (!isDragging) return;
-                     isDragging = false;
-                     carousel.style.cursor = 'grab';
-                     snapToSlide();
-                 });
+                carousel.addEventListener('mouseup', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    carousel.style.cursor = 'grab';
+                    snapToSlide();
+                });
 
-                 carousel.addEventListener('mousemove', (e) => {
-                     if (!isDragging) return;
-                     e.preventDefault();
-                     const x = e.pageX - carousel.offsetLeft;
-                     const walk = (x - startX) * 1.5; // Drag multiplier
-                     slider.style.transform = translateX(${scrollLeft + walk}px);
-                 });
+                carousel.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - carousel.offsetLeft;
+                    const walk = (x - startX) * 1.5; // Drag multiplier
+                    slider.style.transform = `translateX(${scrollLeft + walk}px)`;
+                });
 
                 // Touch events for Swipe
-                 carousel.addEventListener('touchstart', (e) => {
-                     isDragging = true;
-                     startX = e.touches[0].pageX - carousel.offsetLeft;
-                     scrollLeft = slider.style.transform ? parseInt(slider.style.transform.replace('translateX(', '').replace('px)', '')) : 0;
-                     slider.style.transition = 'none'; // Disable transition during drag
-                     stopAutoRotate();
-                 }, { passive: true });
+                carousel.addEventListener('touchstart', (e) => {
+                    isDragging = true;
+                    startX = e.touches[0].pageX - carousel.offsetLeft;
+                    scrollLeft = slider.style.transform ? 
+                        parseInt(slider.style.transform.replace(/[^-\d.]/g, '')) : 0;
+                    slider.style.transition = 'none'; // Disable transition during drag
+                    stopAutoRotate();
+                }, { passive: true });
 
-                 carousel.addEventListener('touchmove', (e) => {
-                     if (!isDragging) return;
-                     const x = e.touches[0].pageX - carousel.offsetLeft;
-                     const walk = (x - startX) * 1.5;
-                     slider.style.transform = translateX(${scrollLeft + walk}px);
-                 }, { passive: true }); // Use passive true if not preventing default scroll
+                carousel.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    const x = e.touches[0].pageX - carousel.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    slider.style.transform = `translateX(${scrollLeft + walk}px)`;
+                }, { passive: true });
 
-                 carousel.addEventListener('touchend', () => {
-                     if (!isDragging) return;
-                     isDragging = false;
-                     snapToSlide();
-                     startAutoRotate();
-                 });
+                carousel.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    snapToSlide();
+                    startAutoRotate();
+                });
 
-                 function snapToSlide() {
-                     slider.style.transition = 'transform 0.5s ease-in-out'; // Re-enable transition
-                     const currentTranslateX = slider.style.transform ? parseInt(slider.style.transform.replace('translateX(', '').replace('px)', '')) : 0;
-                     const endSlideIndex = Math.round(-currentTranslateX / slideWidth);
-                     goToSlide(endSlideIndex);
-                 }
+                function snapToSlide() {
+                    slider.style.transition = 'transform 0.5s ease-in-out'; // Re-enable transition
+                    const currentTranslateX = slider.style.transform ? 
+                        parseInt(slider.style.transform.replace(/[^-\d.]/g, '')) : 0;
+                    const endSlideIndex = Math.round(-currentTranslateX / slideWidth);
+                    goToSlide(endSlideIndex);
+                }
 
+                // Add keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        prevSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        nextSlide();
+                    }
+                });
+
+                // Initialize the carousel
+                goToSlide(0);
             }
 
             // --- Contact Form Validation and Modal ---
             const contactForm = document.getElementById('contactForm');
             const successModal = document.getElementById('successModal');
             const closeModalBtn = document.getElementById('closeModal');
-            const emailInput = document.getElementById('email');
-            const emailError = emailInput.nextElementSibling; // Assuming the small tag is right after
-
-            if (contactForm && successModal && closeModalBtn && emailInput && emailError) {
+            
+            if (contactForm && successModal && closeModalBtn) {
+                // Get all form elements and error messages
+                const formInputs = contactForm.querySelectorAll('input, select, textarea');
+                const errorMessages = contactForm.querySelectorAll('.form-error');
+                
+                // Validate a single form field
+                function validateField(field) {
+                    // Skip optional fields
+                    if (!field.hasAttribute('required')) return true;
+                    
+                    let isValid = true;
+                    const errorElement = field.nextElementSibling?.classList.contains('form-error') ? 
+                                        field.nextElementSibling : null;
+                    
+                    // Check for empty required field
+                    if (!field.value.trim()) {
+                        isValid = false;
+                    }
+                    
+                    // Check pattern for email
+                    if (field.type === 'email' && field.validity.patternMismatch) {
+                        isValid = false;
+                    }
+                    
+                    // Visual feedback
+                    if (!isValid) {
+                        field.style.borderColor = '#e53935';
+                        if (errorElement) errorElement.style.display = 'block';
+                    } else {
+                        field.style.borderColor = '#ccc';
+                        if (errorElement) errorElement.style.display = 'none';
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Live validation as user types/changes fields
+                formInputs.forEach(input => {
+                    ['input', 'blur', 'change'].forEach(eventType => {
+                        input.addEventListener(eventType, () => validateField(input));
+                    });
+                });
+                
+                // Form submission
                 contactForm.addEventListener('submit', function(event) {
                     event.preventDefault(); // Prevent default submission
-
+                    
+                    // Validate all fields
                     let isValid = true;
-                    emailError.style.display = 'none'; // Hide error initially
-
-                    // Basic required field check (HTML5 does this, but good practice)
-                    const requiredFields = contactForm.querySelectorAll('[required]');
-                    requiredFields.forEach(field => {
-                        if (!field.value.trim()) {
+                    formInputs.forEach(field => {
+                        if (!validateField(field)) {
                             isValid = false;
-                            field.style.borderColor = 'red'; // Example: highlight invalid field
-                        } else {
-                            field.style.borderColor = '#ccc'; // Reset border color
                         }
                     });
-
-                    // Email validation using pattern
-                    if (emailInput.validity.patternMismatch || !emailInput.value.trim()) {
-                         isValid = false;
-                         emailInput.style.borderColor = 'red';
-                         emailError.style.display = 'block';
-                     } else {
-                         emailInput.style.borderColor = '#ccc';
-                     }
-
+                    
                     if (isValid) {
-                        // Simulate form submission (replace with actual fetch/AJAX call)
-                        console.log('Form data:', {
-                            name: document.getElementById('name').value,
-                            email: emailInput.value,
-                            company: document.getElementById('company').value,
-                            scope: document.getElementById('scope').value,
-                            message: document.getElementById('message').value
+                        // Prepare form data for submission
+                        const formData = new FormData(contactForm);
+                        const formDataObj = {};
+                        formData.forEach((value, key) => {
+                            formDataObj[key] = value;
                         });
-
+                        
+                        // For now, log to console (would be replaced with actual AJAX call)
+                        console.log('Form data:', formDataObj);
+                        
                         // Show success modal
                         successModal.classList.add('show');
-                        contactForm.reset(); // Clear the form fields
-                        requiredFields.forEach(field => field.style.borderColor = '#ccc'); // Reset borders
+                        
+                        // Reset form
+                        contactForm.reset();
+                        formInputs.forEach(field => {
+                            field.style.borderColor = '';
+                        });
+                        errorMessages.forEach(error => {
+                            error.style.display = 'none';
+                        });
                     } else {
-                        console.log('Form validation failed.');
-                        // Optionally, focus the first invalid field
-                        const firstInvalid = contactForm.querySelector(':invalid');
+                        // Focus the first invalid field
+                        const firstInvalid = contactForm.querySelector('input:invalid, select:invalid, textarea:invalid');
                         if (firstInvalid) firstInvalid.focus();
                     }
                 });
-
+                
                 // Close modal functionality
-                 closeModalBtn.addEventListener('click', () => {
+                closeModalBtn.addEventListener('click', () => {
                     successModal.classList.remove('show');
                 });
-
+                
                 // Close modal if clicking outside the content
                 successModal.addEventListener('click', (event) => {
                     if (event.target === successModal) {
                         successModal.classList.remove('show');
                     }
                 });
+                
+                // Close modal with escape key
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && successModal.classList.contains('show')) {
+                        successModal.classList.remove('show');
+                    }
+                });
             }
-
-             // --- Update Footer Year ---
-            const yearSpan = document.getElementById('currentYear');
-            if(yearSpan) {
-                yearSpan.textContent = new Date().getFullYear();
+            
+            // Initialize any progress bars that are already in view
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                if (isElementInViewport(bar)) {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.width = progress + '%';
+                }
+            });
+            
+            // Helper function to check if element is in viewport
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
             }
-
         });
     </script>
 
