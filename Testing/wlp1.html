@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aftershock PC | Professional Workstations</title>
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Embedded CSS -->
+    <style>
+    /*
+       Aftershock PC Workstation Landing Page
+       CSS Styling with Red and Black Theme
+    */
+
+    /* ===== Base Styles ===== */
+    :root {
+        /* Primary Colors */
+        --aftershock-red: #e31837;
+        --aftershock-black: #0a0a0a;
+
+        /* Secondary Colors */
+        --aftershock-dark-gray: #1a1a1a;
+        --aftershock-light-gray: #333333;
+        --aftershock-accent-gray: #666666;
+        --aftershock-text-gray: #cccccc;
+        --aftershock-white: #ffffff;
+
+        /* Accent Colors */
+        --aftershock-red-light: #ff3b4e;
+        --aftershock-red-dark: #c10e29;
+
+        /* Font Sizes */
+        --font-size-xs: 0.75rem;
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.5rem;
+        --font-size-2xl: 2rem;
+        --font-size-3xl: 2.5rem;
+        --font-size-4xl: 3rem;
+
+        /* Spacing */
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
+        --spacing-3xl: 4rem;
+
+        /* Border Radius */
+        --border-radius-sm: 3px;
+        --border-radius-md: 5px;
+        --border-radius-lg: 8px;
+
+        /* Transitions */
+        --transition-fast: 0.2s ease;
+        --transition-medium: 0.3s ease;
+        --transition-slow: 0.5s ease;
+
+        /* Shadows */
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+        --shadow-red: 0 4px 12px rgba(227, 24, 55, 0.3);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        font-size: var(--font-size-md);
+        line-height: 1.6;
+        color: var(--aftershock-text-gray);
+        background-color: var(--aftershock-black);
+        overflow-x: hidden;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-lg);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: var(--spacing-md);
+        color: var(--aftershock-white);
+    }
+
+    h1 {
+        font-size: var(--font-size-4xl);
+    }
+
+    h2 {
+        font-size: var(--font-size-3xl);
+        text-align: center;
+        margin-bottom: var(--spacing-xl);
+    }
+
+    h3 {
+        font-size: var(--font-size-xl);
+    }
+
+    p {
+        margin-bottom: var(--spacing-md);
+    }
+
+    a {
+        color: var(--aftershock-white);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+    }
+
+    a:hover {
+        color: var(--aftershock-red);
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block; /* Prevents bottom space */
+    }
+
+    section {
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-2xl);
+        color: var(--aftershock-accent-gray);
+    }
+
+    /* ===== Button Styles ===== */
+    .cta-button {
+        display: inline-block;
+        background-color: var(--aftershock-red);
+        color: var(--aftershock-white);
+        font-weight: 600;
+        padding: var(--spacing-md) var(--spacing-xl);
+        border-radius: var(--border-radius-md);
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition-medium);
+        text-align: center;
+        box-shadow: var(--shadow-red);
+        position: relative; /* For ripple effect */
+        overflow: hidden; /* For ripple effect */
+    }
+
+    .cta-button:hover {
+        background-color: var(--aftershock-red-light);
+        color: var(--aftershock-white);
+        transform: translateY(-2px);
+    }
+
+    .cta-button.secondary {
+        background-color: transparent;
+        border: 2px solid var(--aftershock-red);
+        box-shadow: none;
+    }
+
+    .cta-button.secondary:hover {
+        background-color: var(--aftershock-red);
+        color: var(--aftershock-white);
+    }
+
+    /* ===== Header Styles ===== */
+    header {
+        background-color: var(--aftershock-dark-gray);
+        padding: var(--spacing-md) 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--shadow-md);
+    }
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        max-width: 180px;
+    }
+    .logo img { /* Ensure logo image displays correctly */
+        display: block;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+    }
+
+    nav ul li {
+        margin-left: var(--spacing-xl);
+    }
+
+    nav ul li a {
+        font-weight: 500;
+        position: relative;
+    }
+
+    nav ul li a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--aftershock-red);
+        transition: width var(--transition-medium);
+    }
+
+    nav ul li a:hover::after {
+        width: 100%;
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+        font-size: var(--font-size-xl);
+        cursor: pointer;
+        background: none; /* Ensure button is transparent */
+        border: none; /* Remove default border */
+        color: var(--aftershock-white); /* Set icon color */
+        padding: 0; /* Remove default padding */
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+        background: linear-gradient(135deg, var(--aftershock-black) 0%, var(--aftershock-dark-gray) 100%);
+        padding: var(--spacing-3xl) 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(227, 24, 55, 0.1) 0%, rgba(227, 24, 55, 0) 70%);
+        z-index: 1;
+        pointer-events: none; /* Allow clicks through */
+    }
+
+    .hero .container {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-content {
+        flex: 1;
+        padding-right: var(--spacing-xl);
+    }
+
+    .hero-image {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .hero h1 {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .hero h1 span {
+        display: block;
+        color: var(--aftershock-red);
+    }
+
+    .hero p {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-xl);
+        max-width: 600px;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    /* ===== Benefits Section ===== */
+    .benefits {
+        background-color: var(--aftershock-light-gray);
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--spacing-xl);
+    }
+
+    .benefit-card {
+        background-color: var(--aftershock-dark-gray);
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius-lg);
+        text-align: center;
+        transition: transform var(--transition-medium), opacity var(--transition-slow);
+        box-shadow: var(--shadow-sm);
+        opacity: 0; /* For animation */
+        transform: translateY(20px); /* For animation */
+    }
+
+    .benefit-card:hover {
+        transform: translateY(-10px) !important; /* Ensure hover overrides animation */
+        box-shadow: var(--shadow-md);
+    }
+
+    .benefit-card i {
+        font-size: var(--font-size-3xl);
+        color: var(--aftershock-red);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .benefit-card h3 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* ===== Workstations Section ===== */
+    .workstations {
+        background-color: var(--aftershock-black);
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .workstation-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xl);
+    }
+
+    .workstation-card {
+        background-color: var(--aftershock-dark-gray);
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+        transition: transform var(--transition-medium), box-shadow var(--transition-medium), opacity var(--transition-slow);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        opacity: 0; /* For animation */
+        transform: translateY(20px); /* For animation */
+    }
+
+    .workstation-card:hover {
+        transform: translateY(-5px) !important; /* Ensure hover overrides animation */
+        box-shadow: var(--shadow-lg);
+    }
+
+    .workstation-card.featured {
+        border: 2px solid var(--aftershock-red);
+        box-shadow: var(--shadow-red);
+    }
+
+    .featured-tag {
+        position: absolute;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        background-color: var(--aftershock-red);
+        color: var(--aftershock-white);
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        z-index: 10;
+    }
+
+    .workstation-image {
+        height: 200px;
+        background-color: var(--aftershock-black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-md);
+    }
+
+    .workstation-image img {
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .workstation-content {
+        padding: var(--spacing-xl);
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .workstation-tagline {
+        color: var(--aftershock-red);
+        font-weight: 500;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .workstation-benefits {
+        margin-bottom: var(--spacing-xl);
+        flex-grow: 1;
+    }
+
+    .benefit-item {
+        display: flex;
+        margin-bottom: var(--spacing-md);
+        align-items: flex-start; /* Align icon with text */
+    }
+
+    .benefit-item i {
+        color: var(--aftershock-red);
+        margin-right: var(--spacing-md);
+        flex-shrink: 0;
+        margin-top: 4px; /* Align icon better */
+        font-size: 0.9em; /* Slightly smaller icon */
+    }
+    .benefit-item p {
+        margin-bottom: 0; /* Remove default p margin */
+    }
+
+    .workstation-cta {
+        margin-top: auto; /* Push button to bottom */
+        padding-top: var(--spacing-md); /* Add space above button */
+    }
+
+    /* ===== Comparison Section ===== */
+    .comparison {
+        background-color: var(--aftershock-light-gray);
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .comparison-table-container {
+        background-color: var(--aftershock-dark-gray);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-xl);
+        margin-bottom: var(--spacing-xl);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-2xl);
+    }
+
+    .comparison-table {
+        overflow-x: auto; /* Enable horizontal scroll on small screens */
+    }
+
+    .comparison-table table {
+        width: 100%;
+        min-width: 800px; /* Prevent table collapsing too much */
+        border-collapse: collapse;
+        border-spacing: 0;
+        color: var(--aftershock-text-gray);
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: var(--spacing-md);
+        text-align: center;
+        border-bottom: 1px solid var(--aftershock-light-gray);
+        vertical-align: middle; /* Center content vertically */
+    }
+
+    .comparison-table th {
+        background-color: var(--aftershock-black);
+        color: var(--aftershock-white);
+        font-weight: 600;
+        position: sticky; /* Make header sticky during scroll */
+        top: 0; /* Stick to top */
+        z-index: 1; /* Ensure header is above content */
+    }
+
+    .comparison-table .feature-header {
+        text-align: left;
+        position: sticky;
+        left: 0; /* Stick feature column */
+        background-color: var(--aftershock-black); /* Match header bg */
+        z-index: 2; /* Above other headers */
+    }
+
+    .comparison-table .feature-name {
+        text-align: left;
+        font-weight: 600;
+        color: var(--aftershock-white);
+        position: sticky;
+        left: 0; /* Stick feature column */
+        background-color: var(--aftershock-dark-gray); /* Match row bg */
+        z-index: 1; /* Above other cells */
+    }
+
+    .model-header h3 {
+        margin-bottom: var(--spacing-xs);
+        color: var(--aftershock-red);
+    }
+
+    .model-header p {
+        margin-bottom: 0;
+        font-size: var(--font-size-sm);
+    }
+
+    .performance-bar {
+        height: 8px;
+        background-color: var(--aftershock-light-gray);
+        border-radius: 4px;
+        margin: var(--spacing-xs) auto; /* Center bar */
+        overflow: hidden;
+        max-width: 100px; /* Limit bar width */
+    }
+
+    .performance-fill {
+        height: 100%;
+        background-color: var(--aftershock-red);
+        border-radius: 4px;
+        transition: width var(--transition-slow); /* Animate fill */
+    }
+
+    .comparison-table i.fas.fa-circle {
+        color: var(--aftershock-red);
+        font-size: var(--font-size-sm);
+        margin: 0 2px;
+    }
+
+    .comparison-table i.fas.fa-circle.empty {
+        color: var(--aftershock-light-gray);
+        opacity: 0.5; /* Make empty circles less prominent */
+    }
+
+    .price-row td {
+        font-weight: 700;
+        color: var(--aftershock-white);
+        font-size: var(--font-size-lg);
+    }
+
+    .cta-row td {
+        border-bottom: none;
+        padding-top: var(--spacing-lg);
+    }
+
+    .cta-row .cta-button {
+        width: 100%;
+        max-width: 150px; /* Limit button width */
+        padding: var(--spacing-sm) var(--spacing-md); /* Smaller button padding */
+        font-size: var(--font-size-sm); /* Smaller button font */
+    }
+
+    /* Comparison Graph Styles */
+    .comparison-graph {
+        margin-top: var(--spacing-xl);
+        padding-top: var(--spacing-xl);
+        border-top: 1px solid var(--aftershock-light-gray);
+    }
+
+    .comparison-graph h3 {
+        text-align: center;
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .graph-container {
+        display: flex;
+        height: 300px;
+        margin-top: var(--spacing-xl);
+        position: relative; /* For tooltips */
+    }
+
+    .graph-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-right: var(--spacing-md);
+        width: 100px; /* Increased width for label */
+        text-align: right;
+    }
+
+    .graph-y-axis > span { /* Performance Label */
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        text-align: center;
+        font-weight: 600;
+        color: var(--aftershock-white);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute; /* Position it absolutely */
+        left: -30px; /* Adjust position */
+        top: 0;
+    }
+
+    .graph-y-labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding: var(--spacing-md) 0;
+        font-size: var(--font-size-sm);
+        color: var(--aftershock-accent-gray);
+        margin-left: auto; /* Push labels to the right */
+    }
+
+    .graph-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .graph-x-axis {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: var(--spacing-md);
+        padding-left: var(--spacing-md); /* Align with bars */
+    }
+
+    .graph-x-axis span {
+        text-align: center;
+        font-weight: 500;
+        flex: 1;
+        font-size: var(--font-size-sm);
+    }
+
+    .graph-bars {
+        display: flex;
+        height: 220px; /* Main bar area height */
+        border-left: 1px solid var(--aftershock-accent-gray);
+        border-bottom: 1px solid var(--aftershock-accent-gray);
+        padding: 0 0 0 var(--spacing-md); /* Padding left */
+        background: linear-gradient(to bottom,
+            transparent 0%, transparent 33%,
+            rgba(102, 102, 102, 0.1) 33%, rgba(102, 102, 102, 0.1) 34%,
+            transparent 34%, transparent 66%,
+            rgba(102, 102, 102, 0.1) 66%, rgba(102, 102, 102, 0.1) 67%,
+            transparent 67%, transparent 100%);
+        position: relative; /* For grid lines */
+    }
+
+    .graph-category {
+        display: flex;
+        align-items: flex-end;
+        flex: 1;
+        justify-content: center;
+        gap: 10px;
+        height: 100%;
+        padding: 0 5px; /* Spacing around bars */
+    }
+
+    .graph-bar {
+        width: 20px;
+        border-radius: 4px 4px 0 0;
+        transition: height var(--transition-medium), opacity var(--transition-fast);
+        cursor: pointer; /* Indicate interactivity */
+        position: relative; /* For tooltip */
+    }
+
+    .graph-bar.base { background-color: #6c757d; }
+    .graph-bar.core { background-color: #17a2b8; }
+    .graph-bar.pro { background-color: #ffc107; }
+    .graph-bar.elite { background-color: var(--aftershock-red); }
+
+    .graph-legend {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        gap: var(--spacing-lg);
+        margin-top: var(--spacing-lg);
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        cursor: pointer; /* Indicate interactivity */
+        transition: opacity var(--transition-fast);
+    }
+
+    .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        flex-shrink: 0; /* Prevent shrinking */
+    }
+
+    .legend-color.base { background-color: #6c757d; }
+    .legend-color.core { background-color: #17a2b8; }
+    .legend-color.pro { background-color: #ffc107; }
+    .legend-color.elite { background-color: var(--aftershock-red); }
+
+    .comparison-cta {
+        text-align: center;
+        margin-top: var(--spacing-xl);
+    }
+
+    .comparison-cta p {
+        margin-bottom: var(--spacing-md);
+        font-size: var(--font-size-lg);
+    }
+
+    /* ===== Testimonials Section ===== */
+    .testimonials {
+        background-color: var(--aftershock-black);
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .testimonials-slider {
+        display: flex;
+        gap: var(--spacing-xl);
+        overflow-x: auto;
+        padding: var(--spacing-md) 0 var(--spacing-xl); /* Add bottom padding */
+        scrollbar-width: none; /* Firefox */
+        scroll-snap-type: x mandatory; /* Enable snapping */
+    }
+
+    .testimonials-slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    .testimonial {
+        background-color: var(--aftershock-dark-gray);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-xl);
+        min-width: 350px;
+        flex: 0 0 auto; /* Prevent shrinking, allow auto width */
+        box-shadow: var(--shadow-md);
+        transition: transform var(--transition-medium), opacity var(--transition-slow);
+        scroll-snap-align: start; /* Snap alignment */
+        opacity: 0; /* For animation */
+        transform: translateY(20px); /* For animation */
+    }
+
+    .testimonial:hover {
+        transform: translateY(-5px) !important; /* Ensure hover overrides animation */
+        box-shadow: var(--shadow-lg);
+    }
+
+    .testimonial-content {
+        margin-bottom: var(--spacing-lg);
+        position: relative; /* For quote icon */
+        padding-left: 40px; /* Space for quote */
+    }
+    .testimonial-content::before { /* Quote icon */
+        content: "\f10d"; /* Font Awesome quote-left */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: -5px;
+        font-size: 2rem;
+        color: var(--aftershock-light-gray);
+        opacity: 0.5;
+    }
+
+    .testimonial-content p {
+        font-style: italic;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        margin-top: auto; /* Push author to bottom if needed */
+    }
+
+    .testimonial-author img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: var(--spacing-md);
+        border: 2px solid var(--aftershock-red);
+        object-fit: cover; /* Ensure image covers */
+    }
+
+    .author-info h4 {
+        margin-bottom: 0;
+        font-size: var(--font-size-md);
+    }
+
+    .author-info p {
+        margin-bottom: 0;
+        font-size: var(--font-size-sm);
+        color: var(--aftershock-accent-gray);
+    }
+
+    /* ===== CTA Section ===== */
+    .cta-section {
+        background: linear-gradient(135deg, var(--aftershock-dark-gray) 0%, var(--aftershock-black) 100%);
+        padding: var(--spacing-3xl) 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(227, 24, 55, 0.05) 0%, rgba(227, 24, 55, 0) 70%);
+        z-index: 1;
+        pointer-events: none; /* Allow clicks through */
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .cta-content h2 {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .cta-content p {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .contact-form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
+    }
+
+    .form-group {
+        margin-bottom: var(--spacing-md); /* Add space below each group */
+    }
+    /* Span message and submit across columns */
+    .form-group.full-width {
+        grid-column: span 2;
+    }
+    .form-group.submit-group {
+        grid-column: span 2;
+        margin-top: var(--spacing-md); /* Add space above submit */
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+        width: 100%;
+        padding: var(--spacing-md);
+        background-color: var(--aftershock-light-gray);
+        border: 1px solid var(--aftershock-accent-gray);
+        border-radius: var(--border-radius-md);
+        color: var(--aftershock-white);
+        font-family: 'Poppins', sans-serif;
+        font-size: var(--font-size-md);
+        transition: border-color var(--transition-fast);
+    }
+
+    .contact-form textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        border-color: var(--aftershock-red);
+    }
+
+    .contact-form button {
+        width: 100%;
+        font-size: var(--font-size-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    /* ===== Footer ===== */
+    footer {
+        background-color: var(--aftershock-dark-gray);
+        padding-top: var(--spacing-2xl);
+        border-top: 2px solid var(--aftershock-red); /* Add red border top */
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: var(--spacing-xl); /* Add gap between columns */
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    .footer-logo {
+        max-width: 250px;
+        flex-basis: 100%; /* Full width on small screens */
+        margin-bottom: var(--spacing-lg); /* Space below logo on wrap */
+    }
+    @media (min-width: 768px) {
+        .footer-logo {
+            flex-basis: auto; /* Auto width on larger screens */
+            margin-bottom: 0;
+        }
+    }
+
+    .footer-logo img {
+        margin-bottom: var(--spacing-md);
+        max-width: 180px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: var(--spacing-2xl);
+        flex-grow: 1; /* Allow links section to grow */
+        justify-content: space-between; /* Distribute columns */
+    }
+
+    .footer-column h4 {
+        margin-bottom: var(--spacing-lg);
+        color: var(--aftershock-white);
+        font-size: var(--font-size-md); /* Slightly smaller heading */
+    }
+
+    .footer-column ul {
+        list-style: none;
+    }
+
+    .footer-column ul li {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .footer-column ul li a {
+        color: var(--aftershock-text-gray);
+        transition: color var(--transition-fast);
+        font-size: var(--font-size-sm); /* Smaller link text */
+    }
+
+    .footer-column ul li a:hover {
+        color: var(--aftershock-red);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid var(--aftershock-light-gray);
+        padding: var(--spacing-lg) 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: var(--spacing-md); /* Space between items */
+        font-size: var(--font-size-sm); /* Smaller bottom text */
+    }
+
+    .social-icons {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    .social-icons a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background-color: var(--aftershock-light-gray);
+        border-radius: 50%;
+        transition: all var(--transition-medium);
+        color: var(--aftershock-white); /* Ensure icon color */
+    }
+    .social-icons a i {
+        font-size: 1rem; /* Control icon size */
+    }
+
+    .social-icons a:hover {
+        background-color: var(--aftershock-red);
+        transform: translateY(-3px);
+    }
+
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 1024px) {
+        .benefits-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .workstation-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .graph-container {
+            height: 250px;
+        }
+        .graph-y-axis > span { /* Adjust performance label position */
+            left: -20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        h1 { font-size: var(--font-size-3xl); }
+        h2 { font-size: var(--font-size-2xl); }
+
+        .hero .container { flex-direction: column; text-align: center; }
+        .hero-content { padding-right: 0; margin-bottom: var(--spacing-xl); }
+        .hero-cta { justify-content: center; }
+        .hero-image { justify-content: center; margin-top: var(--spacing-lg); }
+
+        .contact-form { grid-template-columns: 1fr; }
+        .form-group.full-width, .form-group.submit-group { grid-column: span 1; }
+
+        .footer-links { flex-direction: column; gap: var(--spacing-xl); }
+        .footer-bottom { flex-direction: column; text-align: center; }
+
+        nav ul {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 100%; /* Position below header */
+            left: 0;
+            width: 100%;
+            background-color: var(--aftershock-dark-gray);
+            flex-direction: column;
+            padding: var(--spacing-lg) 0;
+            box-shadow: var(--shadow-md);
+            z-index: 99; /* Below header */
+            max-height: 0; /* Start hidden */
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        nav ul.active {
+            display: flex; /* Show when active */
+            max-height: 500px; /* Allow expansion */
+        }
+
+        nav ul li { margin: 0; width: 100%; text-align: center; }
+        nav ul li a { display: block; padding: var(--spacing-md) 0; }
+        nav ul li a::after { display: none; } /* Hide underline effect */
+
+        .mobile-menu-toggle { display: block; }
+        /*.mobile-menu-toggle.active { /* Optional: Change icon or style when active */
+            /* transform: rotate(90deg); */
+        
+
+        .comparison-graph { overflow-x: auto; }
+        .graph-container { min-width: 600px; }
+        .graph-y-axis > span { display: none; } /* Hide vertical label on small screens */
+        .graph-y-labels { margin-left: 0; text-align: left; } /* Adjust y-labels */
+    }
+
+    @media (max-width: 480px) {
+        .benefits-grid { grid-template-columns: 1fr; }
+        .testimonial { min-width: calc(100% - var(--spacing-lg) * 2); } /* Full width minus padding */
+
+        h1 { font-size: var(--font-size-2xl); }
+        .hero p { font-size: var(--font-size-md); }
+        .hero-cta { flex-direction: column; }
+        .hero-cta .cta-button { width: 100%; max-width: 300px; margin: 0 auto; }
+
+        .section-subtitle { font-size: var(--font-size-md); }
+        .footer-column { flex-basis: 100%; } /* Stack footer columns */
+    }
+
+    /* ===== Conversion Optimization & Interaction Styles ===== */
+    .cta-button::after { /* Ripple effect */
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%, -50%);
+        transform-origin: 50% 50%;
+        pointer-events: none; /* Prevent interaction */
+    }
+
+    .cta-button:active::after { /* Trigger on click */
+        animation: ripple 0.6s ease-out;
+    }
+
+    @keyframes ripple {
+        0% { transform: scale(0, 0) translate(-50%, -50%); opacity: 0.5; }
+        100% { transform: scale(40, 40) translate(-50%, -50%); opacity: 0; }
+    }
+
+    /* Highlight styles for comparison table */
+    .comparison-table th.highlight,
+    .comparison-table td.highlight {
+        background-color: rgba(227, 24, 55, 0.1);
+        transition: background-color var(--transition-fast);
+    }
+
+    .workstation-card.table-highlight {
+        transform: translateY(-10px) !important; /* Ensure hover overrides animation */
+        box-shadow: var(--shadow-red);
+        border: 2px solid var(--aftershock-red); /* Add border */
+    }
+
+    /* Graph tooltip */
+    .graph-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px); /* Position above bar */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--aftershock-black);
+        color: var(--aftershock-white);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-xs);
+        white-space: nowrap;
+        z-index: 10;
+        box-shadow: var(--shadow-sm);
+        opacity: 0; /* Hidden by default */
+        transition: opacity var(--transition-fast);
+        pointer-events: none; /* Prevent hover issues */
+    }
+    .graph-bar:hover .graph-tooltip {
+        opacity: 1; /* Show on hover */
+    }
+
+    .graph-tooltip::after { /* Tooltip arrow */
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px 5px 0;
+        border-style: solid;
+        border-color: var(--aftershock-black) transparent transparent transparent;
+    }
+
+    .legend-item.active {
+        font-weight: 700;
+        opacity: 1 !important; /* Ensure active legend is fully visible */
+    }
+    /*.legend-item:not(.active) {
+        /* Optional: Dim inactive legend items during hover */
+        /* opacity: 0.7; */
+   /* }
+
+    /* Form error styles */
+    .contact-form input.error,
+    .contact-form select.error,
+    .contact-form textarea.error {
+        border-color: var(--aftershock-red);
+        box-shadow: 0 0 0 1px var(--aftershock-red);
+    }
+
+    .form-success {
+        text-align: center;
+        padding: var(--spacing-xl);
+        border: 1px solid var(--aftershock-red);
+        background-color: rgba(227, 24, 55, 0.1);
+        border-radius: var(--border-radius-md);
+    }
+
+    .form-success p {
+        font-size: var(--font-size-lg);
+        color: var(--aftershock-white);
+        margin-bottom: 0;
+    }
+
+    /* Animation styles */
+    .benefit-card.animate,
+    .workstation-card.animate,
+    .testimonial.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Optimize focus states for accessibility */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 2px solid var(--aftershock-red-light);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px rgba(255, 59, 78, 0.5); /* Optional glow */
+    }
+    /* Remove default outline when focus-visible is supported */
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+
+
+    /* Print styles for better printing */
+    @media print {
+        header,
+        footer,
+        .cta-section,
+        .hero-cta,
+        .mobile-menu-toggle {
+            display: none !important;
+        }
+
+        body {
+            background-color: white !important;
+            color: black !important;
+            font-size: 10pt;
+        }
+        h1, h2, h3, h4, h5, h6, p, a, span, div {
+            color: black !important;
+        }
+        section { padding: 1cm 0; }
+        .container { max-width: 100%; padding: 0 1cm; }
+        .benefits-grid, .workstation-grid { grid-template-columns: 1fr; }
+        .benefit-card, .workstation-card, .testimonial {
+            box-shadow: none;
+            border: 1px solid #ccc;
+            opacity: 1;
+            transform: none;
+        }
+        .comparison-table table { min-width: auto; }
+        .comparison-table th, .comparison-table td { border: 1px solid #ddd; }
+        .comparison-graph, .testimonials-slider { display: none; } /* Hide complex elements */
+        .cta-button { border: 1px solid black; background: none; color: black; box-shadow: none; }
+    }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo"> <!-- Added link to logo -->
+                <!-- === REPLACE WITH ACTUAL LOGO URL === -->
+                <img src="https://www.aftershockpc.com/frontend/assets/images/logo.png" alt="Aftershock PC Logo">
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#workstations">Workstations</a></li>
+                    <li><a href="#comparison">Compare</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact" class="cta-button">Contact Us</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu"> <!-- Changed to button for semantics -->
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional Workstations <span>Engineered for Excellence</span></h1>
+                <p>Unlock your creative potential with Aftershock PC's revamped workstation lineup. Purpose-built for professionals who demand performance, reliability, and value.</p>
+                <div class="hero-cta">
+                    <a href="#workstations" class="cta-button">Explore Workstations</a>
+                    <a href="#comparison" class="cta-button secondary">Compare Models</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                 <!-- === REPLACE WITH ACTUAL HERO IMAGE URL === -->
+                <img src="https://www.aftershockpc.com/frontend/assets/images/products/workstation.png" alt="Aftershock PC Workstation">
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2>Why Choose Aftershock Workstations?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Uncompromising Performance</h3>
+                    <p>Experience seamless workflows with workstations designed to handle your most demanding tasks.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Reliability You Can Trust</h3>
+                    <p>Built with premium components and rigorous testing to ensure your work is never interrupted.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Simplified Selection</h3>
+                    <p>Four purpose-built configurations to match your exact professional needs without the complexity.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Expert Support</h3>
+                    <p>Dedicated technical assistance from professionals who understand your creative workflow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workstations Section -->
+    <section id="workstations" class="workstations">
+        <div class="container">
+            <h2>Meet Your New Workstation</h2>
+            <p class="section-subtitle">Four purpose-built systems designed for your specific workflow</p>
+
+            <div class="workstation-grid">
+                <!-- Base Workstation -->
+                <div class="workstation-card">
+                    <div class="workstation-image">
+                         <!-- === REPLACE WITH ACTUAL BASE IMAGE URL === -->
+                        <img src="https://www.aftershockpc.com/frontend/assets/images/products/workstation-base.png" alt="Base Workstation">
+                    </div>
+                    <div class="workstation-content">
+                        <h3>Base</h3>
+                        <p class="workstation-tagline">Efficient Performance for Office Productivity</p>
+                        <div class="workstation-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Streamline your daily office tasks with reliable performance</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Handle multiple applications simultaneously without slowdowns</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Perfect for spreadsheets, presentations, and everyday productivity</p>
+                            </div>
+                        </div>
+                        <div class="workstation-cta">
+                             <!-- === REPLACE # WITH ACTUAL LINK === -->
+                            <a href="#" class="cta-button">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Workstation -->
+                <div class="workstation-card">
+                    <div class="workstation-image">
+                         <!-- === REPLACE WITH ACTUAL CORE IMAGE URL === -->
+                        <img src="https://www.aftershockpc.com/frontend/assets/images/products/workstation-core.png" alt="Core Workstation">
+                    </div>
+                    <div class="workstation-content">
+                        <h3>Core</h3>
+                        <p class="workstation-tagline">Enhanced Capabilities for Creative Design</p>
+                        <div class="workstation-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Accelerate photo editing workflows with faster processing</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Experience superior color accuracy for graphic design projects</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Multitask between creative applications without compromising performance</p>
+                            </div>
+                        </div>
+                        <div class="workstation-cta">
+                             <!-- === REPLACE # WITH ACTUAL LINK === -->
+                            <a href="#" class="cta-button">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Workstation -->
+                <div class="workstation-card featured">
+                    <div class="featured-tag">Most Popular</div>
+                    <div class="workstation-image">
+                         <!-- === REPLACE WITH ACTUAL PRO IMAGE URL === -->
+                        <img src="https://www.aftershockpc.com/frontend/assets/images/products/workstation-pro.png" alt="Pro Workstation">
+                    </div>
+                    <div class="workstation-content">
+                        <h3>Pro</h3>
+                        <p class="workstation-tagline">Professional Power for Video Production</p>
+                        <div class="workstation-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Edit 4K video with real-time playback and minimal rendering times</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Handle complex visual effects and motion graphics with ease</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Maintain smooth performance even with demanding visual workflows</p>
+                            </div>
+                        </div>
+                        <div class="workstation-cta">
+                             <!-- === REPLACE # WITH ACTUAL LINK === -->
+                            <a href="#" class="cta-button">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Elite Workstation -->
+                <div class="workstation-card">
+                    <div class="workstation-image">
+                         <!-- === REPLACE WITH ACTUAL ELITE IMAGE URL === -->
+                        <img src="https://www.aftershockpc.com/frontend/assets/images/products/workstation-elite.png" alt="Elite Workstation">
+                    </div>
+                    <div class="workstation-content">
+                        <h3>Elite</h3>
+                        <p class="workstation-tagline">Ultimate Performance for Professional Rendering</p>
+                        <div class="workstation-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Dramatically reduce rendering times for complex 3D projects</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Handle architectural visualization and simulation with workstation-grade components</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-check"></i>
+                                <p>Future-proof performance for the most demanding professional workflows</p>
+                            </div>
+                        </div>
+                        <div class="workstation-cta">
+                             <!-- === REPLACE # WITH ACTUAL LINK === -->
+                            <a href="#" class="cta-button">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table Section -->
+    <section id="comparison" class="comparison">
+        <div class="container">
+            <h2>Find Your Perfect Workstation</h2>
+            <p class="section-subtitle">Compare our workstation models to find the right fit for your professional needs</p>
+
+            <div class="comparison-table-container">
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="feature-header">Features</th>
+                                <th>
+                                    <div class="model-header">
+                                        <h3>Base</h3>
+                                        <p>Office Productivity</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="model-header">
+                                        <h3>Core</h3>
+                                        <p>Photo & Design</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="model-header">
+                                        <h3>Pro</h3>
+                                        <p>Video Editing</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="model-header">
+                                        <h3>Elite</h3>
+                                        <p>3D Rendering</p>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature-name">Ideal For</td>
+                                <td>Office work, multitasking, spreadsheets, presentations</td>
+                                <td>Photo editing, graphic design, illustration</td>
+                                <td>4K video editing, motion graphics, visual effects</td>
+                                <td>3D modeling, rendering, simulation, architectural visualization</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Performance Level</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 25%"></div>
+                                    </div>
+                                    <span>Entry-Level</span>
+                                </td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 50%"></div>
+                                    </div>
+                                    <span>Mid-Range</span>
+                                </td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 75%"></div>
+                                    </div>
+                                    <span>High-Performance</span>
+                                </td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 100%"></div>
+                                    </div>
+                                    <span>Workstation-Grade</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">CPU</td>
+                                <td>Entry-level multi-core processor</td>
+                                <td>Mid-range multi-core processor</td>
+                                <td>High-performance multi-core processor</td>
+                                <td>Workstation-grade multi-core processor</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">GPU</td>
+                                <td>Integrated graphics</td>
+                                <td>Mid-range dedicated graphics</td>
+                                <td>High-performance dedicated graphics</td>
+                                <td>Workstation-grade dedicated graphics</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">RAM</td>
+                                <td>16GB</td>
+                                <td>32GB</td>
+                                <td>64GB</td>
+                                <td>128GB+</td> <!-- Updated RAM -->
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Storage</td>
+                                <td>512GB SSD</td>
+                                <td>1TB SSD</td>
+                                <td>2TB SSD</td>
+                                <td>4TB SSD + Options</td> <!-- Updated Storage -->
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Display Support</td>
+                                <td>Dual 1080p Displays</td>
+                                <td>Dual 4K Displays</td>
+                                <td>Triple 4K Displays</td>
+                                <td>Multiple 4K/8K Displays</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Color Accuracy</td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Expandability</td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle empty"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                    <i class="fas fa-circle"></i>
+                                </td>
+                            </tr>
+                            <tr class="price-row">
+                                <td class="feature-name">Starting Price</td>
+                                <!-- === REPLACE WITH ACTUAL PRICES === -->
+                                <td>$XXX</td>
+                                <td>$XXX</td>
+                                <td>$XXX</td>
+                                <td>$XXX</td>
+                            </tr>
+                            <tr class="cta-row">
+                                <td></td>
+                                <!-- === REPLACE # WITH ACTUAL LINKS === -->
+                                <td><a href="#" class="cta-button">Select Base</a></td>
+                                <td><a href="#" class="cta-button">Select Core</a></td>
+                                <td><a href="#" class="cta-button">Select Pro</a></td>
+                                <td><a href="#" class="cta-button">Select Elite</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="comparison-graph">
+                    <h3>Performance by Task Type</h3>
+                    <div class="graph-container">
+                        <div class="graph-y-axis">
+                            <span>Performance</span>
+                            <div class="graph-y-labels">
+                                <span>High</span>
+                                <span>Medium</span>
+                                <span>Low</span>
+                            </div>
+                        </div>
+                        <div class="graph-content">
+                            <div class="graph-x-axis">
+                                <span>Office Work</span>
+                                <span>Photo Editing</span>
+                                <span>Video Editing</span>
+                                <span>3D Rendering</span>
+                            </div>
+                            <div class="graph-bars">
+                                <div class="graph-category">
+                                    <div class="graph-bar base" style="height: 70%;" title="Base: Good for Office Work"></div>
+                                    <div class="graph-bar core" style="height: 85%;" title="Core: Great for Office Work"></div>
+                                    <div class="graph-bar pro" style="height: 95%;" title="Pro: Excellent for Office Work"></div>
+                                    <div class="graph-bar elite" style="height: 100%;" title="Elite: Exceptional for Office Work"></div>
+                                </div>
+                                <div class="graph-category">
+                                    <div class="graph-bar base" style="height: 40%;" title="Base: Basic Photo Editing"></div>
+                                    <div class="graph-bar core" style="height: 80%;" title="Core: Great for Photo Editing"></div>
+                                    <div class="graph-bar pro" style="height: 90%;" title="Pro: Excellent for Photo Editing"></div>
+                                    <div class="graph-bar elite" style="height: 100%;" title="Elite: Exceptional for Photo Editing"></div>
+                                </div>
+                                <div class="graph-category">
+                                    <div class="graph-bar base" style="height: 20%;" title="Base: Limited Video Editing"></div>
+                                    <div class="graph-bar core" style="height: 50%;" title="Core: Moderate Video Editing"></div>
+                                    <div class="graph-bar pro" style="height: 90%;" title="Pro: Excellent for Video Editing"></div>
+                                    <div class="graph-bar elite" style="height: 100%;" title="Elite: Exceptional for Video Editing"></div>
+                                </div>
+                                <div class="graph-category">
+                                    <div class="graph-bar base" style="height: 10%;" title="Base: Not Recommended for Rendering"></div>
+                                    <div class="graph-bar core" style="height: 30%;" title="Core: Basic Rendering"></div>
+                                    <div class="graph-bar pro" style="height: 60%;" title="Pro: Good for Rendering"></div>
+                                    <div class="graph-bar elite" style="height: 100%;" title="Elite: Exceptional for Rendering"></div>
+                                </div>
+                            </div>
+                            <div class="graph-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color base"></span>
+                                    <span>Base</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color core"></span>
+                                    <span>Core</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color pro"></span>
+                                    <span>Pro</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color elite"></span>
+                                    <span>Elite</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-cta">
+                <p>Not sure which workstation is right for you?</p>
+                <a href="#contact" class="cta-button">Get Expert Advice</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>What Professionals Say</h2>
+            <div class="testimonials-slider">
+                 <!-- === REPLACE WITH ACTUAL TESTIMONIALS & IMAGES === -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"As a video editor working with 4K footage daily, the Pro workstation has transformed my workflow. Rendering times are cut in half, and I can preview effects in real-time."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James Wilson">
+                        <div class="author-info">
+                            <h4>James Wilson</h4>
+                            <p>Senior Video Editor, Cinematic Studios</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"The Elite workstation handles our architectural visualization projects with ease. Complex renders that used to take overnight now finish in just a few hours."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Chen">
+                        <div class="author-info">
+                            <h4>Sarah Chen</h4>
+                            <p>Lead 3D Artist, ArchViz Partners</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"For our design agency, the Core workstations provide the perfect balance of performance and value. Our designers can work efficiently with large Photoshop files and complex illustrations."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael Rodriguez">
+                        <div class="author-info">
+                            <h4>Michael Rodriguez</h4>
+                            <p>Creative Director, Pixel Perfect Design</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="testimonial"> <!-- Added another testimonial -->
+                    <div class="testimonial-content">
+                        <p>"We equipped our entire office with the Base workstations. They're reliable, fast enough for all our standard tasks, and the support from Aftershock has been excellent."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Linda Green">
+                        <div class="author-info">
+                            <h4>Linda Green</h4>
+                            <p>Operations Manager, Innovate Solutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section id="contact" class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Upgrade Your Workflow?</h2>
+                <p>Speak with our workstation specialists to find the perfect system for your professional needs.</p>
+                <!-- === FORM ACTION/METHOD NEEDED FOR ACTUAL SUBMISSION === -->
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="fullname" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <select name="interest" required>
+                            <option value="" disabled selected>Interested In</option>
+                            <option value="base">Base Workstation</option>
+                            <option value="core">Core Workstation</option>
+                            <option value="pro">Pro Workstation</option>
+                            <option value="elite">Elite Workstation</option>
+                            <option value="consultation">Expert Consultation</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea name="message" placeholder="Tell us about your workflow requirements (Optional)"></textarea>
+                    </div>
+                    <div class="form-group submit-group">
+                        <button type="submit" class="cta-button">Get Started</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                     <!-- === REPLACE WITH ACTUAL LOGO URL === -->
+                    <img src="https://www.aftershockpc.com/frontend/assets/images/logo.png" alt="Aftershock PC Logo">
+                    <p>Professional Workstations Engineered for Excellence</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Products</h4>
+                        <ul>
+                             <!-- === REPLACE # WITH ACTUAL LINKS === -->
+                            <li><a href="#">Base Workstation</a></li>
+                            <li><a href="#">Core Workstation</a></li>
+                            <li><a href="#">Pro Workstation</a></li>
+                            <li><a href="#">Elite Workstation</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                             <!-- === REPLACE # WITH ACTUAL LINKS === -->
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Warranty</a></li>
+                            <li><a href="#">Technical Support</a></li>
+                            <li><a href="#">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                             <!-- === REPLACE # WITH ACTUAL LINKS === -->
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                 <!-- === UPDATE COPYRIGHT YEAR/INFO === -->
+                <p>© 2025 Aftershock PC. All rights reserved.</p>
+                <div class="social-icons">
+                     <!-- === REPLACE # WITH ACTUAL SOCIAL MEDIA LINKS === -->
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Embedded JavaScript -->
+    <script>
+    /*
+       Aftershock PC Workstation Landing Page
+       JavaScript Functionality
+    */
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile Navigation Toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('nav ul');
+
+        if (mobileMenuToggle && navMenu) {
+            mobileMenuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+                // Toggle icon class for visual feedback (optional)
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times'); // Assumes you have fa-times for close
+                }
+            });
+        }
+
+        // Close mobile menu when clicking on a nav link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Check if mobile menu is active before closing
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    if (mobileMenuToggle) {
+                        mobileMenuToggle.classList.remove('active');
+                        const icon = mobileMenuToggle.querySelector('i');
+                         if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault(); // Prevent default only if target exists
+                        const headerOffset = document.querySelector('header')?.offsetHeight || 80; // Get header height or fallback
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                } else if (targetId === '#') {
+                    e.preventDefault(); // Prevent jumping to top for '#' links
+                }
+                // Allow default behavior for external links
+            });
+        });
+
+        // Interactive comparison table
+        const workstationCards = document.querySelectorAll('.workstation-card');
+        const tableHeaders = document.querySelectorAll('.comparison-table th:not(.feature-header)'); // Select only model headers
+        const tableCells = document.querySelectorAll('.comparison-table td'); // All data cells
+
+        // Function to remove all highlights
+        const removeTableHighlights = () => {
+            tableHeaders.forEach(th => th.classList.remove('highlight'));
+            tableCells.forEach(td => td.classList.remove('highlight'));
+            workstationCards.forEach(card => card.classList.remove('table-highlight'));
+        };
+
+        // Highlight table column on workstation card hover
+        workstationCards.forEach((card, cardIndex) => {
+            card.addEventListener('mouseenter', function() {
+                removeTableHighlights(); // Clear previous highlights
+                const columnIndex = cardIndex + 1; // +1 because first col is features
+
+                if (tableHeaders[cardIndex]) {
+                    tableHeaders[cardIndex].classList.add('highlight');
+                }
+                tableCells.forEach(cell => {
+                    // Check if the cell belongs to the correct column index
+                    if (cell.cellIndex === columnIndex) {
+                        cell.classList.add('highlight');
+                    }
+                });
+            });
+
+            card.addEventListener('mouseleave', removeTableHighlights);
+        });
+
+        // Highlight table column and card on table header hover
+        tableHeaders.forEach((header, headerIndex) => {
+            header.addEventListener('mouseenter', function() {
+                removeTableHighlights(); // Clear previous highlights
+                const columnIndex = headerIndex + 1; // +1 because first col is features
+
+                header.classList.add('highlight');
+                tableCells.forEach(cell => {
+                    if (cell.cellIndex === columnIndex) {
+                        cell.classList.add('highlight');
+                    }
+                });
+
+                // Also highlight the corresponding workstation card
+                if (workstationCards[headerIndex]) {
+                    workstationCards[headerIndex].classList.add('table-highlight');
+                }
+            });
+
+            header.addEventListener('mouseleave', removeTableHighlights);
+        });
+
+
+        // Interactive performance graph
+        const graphBars = document.querySelectorAll('.graph-bar');
+        const legendItems = document.querySelectorAll('.legend-item');
+
+        // Function to reset graph styles
+        const resetGraphStyles = () => {
+            graphBars.forEach(bar => bar.style.opacity = '1');
+            legendItems.forEach(item => item.classList.remove('active'));
+        };
+
+        // Add hover effect to graph bars
+        graphBars.forEach(bar => {
+            bar.addEventListener('mouseenter', function() {
+                resetGraphStyles(); // Reset first
+
+                const tooltipText = this.getAttribute('title');
+                if (tooltipText) {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'graph-tooltip';
+                    tooltip.textContent = tooltipText;
+                    this.appendChild(tooltip); // Append tooltip
+                }
+
+                const barType = Array.from(this.classList).find(cls => ['base', 'core', 'pro', 'elite'].includes(cls));
+
+                if (barType) {
+                    // Highlight related bars and legend
+                    document.querySelectorAll(`.graph-bar.${barType}`).forEach(relatedBar => relatedBar.style.opacity = '1');
+                    document.querySelectorAll(`.graph-bar:not(.${barType})`).forEach(otherBar => otherBar.style.opacity = '0.4'); // Dim more
+                    const legendItem = document.querySelector(`.legend-color.${barType}`)?.parentElement;
+                    if (legendItem) legendItem.classList.add('active');
+                }
+            });
+
+            bar.addEventListener('mouseleave', function() {
+                const tooltip = this.querySelector('.graph-tooltip');
+                if (tooltip) {
+                    this.removeChild(tooltip);
+                }
+                resetGraphStyles(); // Reset styles on mouse leave
+            });
+        });
+
+        // Add hover effect to legend items
+        legendItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                resetGraphStyles(); // Reset first
+                this.classList.add('active');
+
+                const colorSpan = this.querySelector('.legend-color');
+                const barType = Array.from(colorSpan.classList).find(cls => ['base', 'core', 'pro', 'elite'].includes(cls));
+
+                if (barType) {
+                    document.querySelectorAll(`.graph-bar.${barType}`).forEach(bar => bar.style.opacity = '1');
+                    document.querySelectorAll(`.graph-bar:not(.${barType})`).forEach(bar => bar.style.opacity = '0.4'); // Dim more
+                }
+            });
+
+            item.addEventListener('mouseleave', resetGraphStyles);
+        });
+
+        // Form validation
+        const contactForm = document.querySelector('.contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent actual submission for demo
+
+                let isValid = true;
+                const requiredFields = contactForm.querySelectorAll('[required]');
+                const emailField = contactForm.querySelector('input[type="email"]');
+
+                // Clear previous errors
+                contactForm.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('error');
+                    }
+                });
+
+                // Email validation
+                if (emailField && emailField.value.trim()) {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(emailField.value)) {
+                        isValid = false;
+                        emailField.classList.add('error');
+                    }
+                }
+
+                if (isValid) {
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'form-success';
+                    successMessage.innerHTML = '<p><i class="fas fa-check-circle"></i> Thank you! Our team will contact you shortly.</p>';
+
+                    // Replace form content with success message
+                    contactForm.parentNode.replaceChild(successMessage, contactForm);
+
+                    // In a real implementation, you would submit the form data here via AJAX or standard form submission
+                    // e.target.submit(); // Uncomment for standard submission
+                } else {
+                    // Optional: Focus the first invalid field
+                    contactForm.querySelector('.error')?.focus();
+                }
+            });
+
+            // Remove error class on input
+            contactForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+                field.addEventListener('input', () => field.classList.remove('error'));
+            });
+            if (contactForm.querySelector('input[type="email"]')) {
+                 contactForm.querySelector('input[type="email"]').addEventListener('input', () => contactForm.querySelector('input[type="email"]').classList.remove('error'));
+            }
+        }
+
+        // Add scroll animation for elements using Intersection Observer
+        const animatedElements = document.querySelectorAll('.benefit-card, .workstation-card, .testimonial');
+
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+        } else {
+            // Fallback for older browsers: just show the elements
+            animatedElements.forEach(element => {
+                element.classList.add('animate'); // Or simply remove the initial hidden state
+            });
+        }
+
+    }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
