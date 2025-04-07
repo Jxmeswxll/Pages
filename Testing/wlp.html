@@ -3,599 +3,1186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aftershock Workstations | Powering Professionals</title>
-    <!-- Consider adding a Favicon here -->
-
-    <!-- Link to Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
-
+    <title>Aftershock PC Workstations - Professional Power. Simplified Choice.</title>
+    <!-- === ADD FONT AWESOME CDN (for icons) or replace icons below === -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* --- Global Styles & Variables --- */
-        :root {
-            --aftershock-red: #FF0000; /* Or Aftershock's specific red */
-            --aftershock-black: #1a1a1a; /* Dark grey for less harshness */
-            --text-light: #f4f4f4;
-            --text-dark: #333;
-            --background-light: #ffffff;
-            --background-dark: var(--aftershock-black);
-            --font-primary: 'Roboto', sans-serif;
-        }
-
+        /* Reset & Base Styles */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --aftershock-red: #ff0000;
+            --aftershock-dark-red: #cc0000;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #121212;
+            --light-text: #f0f0f0; /* Slightly off-white */
+            --gray-text: #aaaaaa;
+            --card-bg: #222222; /* Slightly lighter card */
+            --border-color: #383838; /* Slightly lighter border */
+            --header-height: 70px; /* Approximate header height for scroll offset */
+            --border-radius: 4px; /* Subtle rounding */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+            scroll-padding-top: var(--header-height); /* Offset for sticky header */
         }
 
         body {
-            font-family: var(--font-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--background-light);
+            color: var(--light-text);
+            background: linear-gradient(180deg, var(--darker-bg) 0%, #1f1f1f 100%); /* Subtle gradient */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        h1, h2, h3, h4 {
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
             line-height: 1.2;
             margin-bottom: 1rem;
-            font-weight: 700; /* Bolder headings */
         }
 
-        h1 { font-size: 3rem; font-weight: 900; color: var(--aftershock-red); }
-        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        h3 { font-size: 1.75rem; color: var(--aftershock-red); }
-        h4 { font-size: 1.25rem; }
+        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); } /* Responsive heading */
+        h2 { font-size: clamp(2rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 1.75rem); }
 
         p {
             margin-bottom: 1rem;
+            color: var(--gray-text); /* Default paragraph text is slightly muted */
         }
-
-        a {
-            text-decoration: none;
-            color: var(--aftershock-red);
-        }
+        p strong { color: var(--light-text); } /* Make strong text stand out */
 
         img {
             max-width: 100%;
             height: auto;
-            display: block; /* Prevents bottom space */
-            /* REMINDER: Optimize all images for web (size, format, compression) */
+            display: block;
+             /* === REMINDER: Optimize all images for web use === */
         }
 
-        .section-padding {
-            padding: 60px 0;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem; /* Slightly more padding */
         }
 
-        .dark-bg {
-            background-color: var(--background-dark);
-            color: var(--text-light);
+        section {
+            padding: 5rem 0; /* Increased section padding */
+            position: relative; /* For potential pseudo-elements */
         }
 
-        .dark-bg h2, .dark-bg h3, .dark-bg h4 {
-            color: var(--text-light); /* White headings on dark bg */
-        }
-        .dark-bg h3 { color: var(--aftershock-red); } /* Keep specific headings red */
+        /* --- Utilities --- */
+        .text-center { text-align: center; }
+        .text-primary { color: var(--aftershock-red); }
+        .glowing-text { text-shadow: 0 0 8px var(--aftershock-red), 0 0 15px rgba(255, 0, 0, 0.5); }
+        .hidden-preload { opacity: 0; transform: translateY(20px); } /* For scroll animation */
 
-
-        .text-center {
-            text-align: center;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #555;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 2rem;
-        }
-
-        .subtitle-light {
-            font-size: 1.1rem;
-            color: #ccc; /* Lighter subtitle on dark backgrounds */
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 2rem;
-        }
-
-        /* --- Header --- */
-        .main-header {
-            background-color: var(--aftershock-black);
-            color: var(--text-light);
-            padding: 1rem 0;
-            position: sticky; /* Optional: make header sticky */
+        /* --- Header Styles --- */
+        header {
+            background-color: rgba(0, 0, 0, 0.9); /* Slightly transparent */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            color: var(--light-text);
+            padding: 0.8rem 0;
+            position: sticky;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000; /* Ensure header is on top */
+            border-bottom: 2px solid var(--aftershock-red);
+            height: var(--header-height);
+            transition: background-color 0.3s ease;
         }
 
-        .main-header .container {
+        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 100%;
         }
 
-        .main-header .logo img {
-            height: 40px; /* Adjust as needed */
-            width: auto;
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900; /* Bolder logo */
+            letter-spacing: 1px;
         }
+        .logo span { color: var(--aftershock-red); }
 
-        .main-nav ul {
-            list-style: none;
+        nav ul {
             display: flex;
+            list-style: none;
+            align-items: center; /* Align items vertically */
         }
-
-        .main-nav ul li {
-            margin-left: 20px;
-        }
-
-        .main-nav ul li a {
-            color: var(--text-light);
-            padding: 5px 10px;
+        nav ul li { margin-left: 2rem; }
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
             transition: color 0.3s ease;
+            padding: 0.5rem 0; /* Add padding for easier clicking */
+            position: relative;
         }
+        nav ul li a::after { /* Underline hover effect */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--aftershock-red);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover { color: var(--aftershock-red); }
+        nav ul li a:hover::after { width: 100%; }
+        nav ul li .btn { margin-left: 1rem; } /* Space before button in nav */
 
-        .main-nav ul li a:hover {
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem; /* Slightly more padding */
+            font-size: 0.9rem; /* Slightly smaller base font */
+            font-weight: 700; /* Bolder buttons */
+            text-decoration: none;
+            text-transform: uppercase;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            border: 2px solid transparent; /* Base border */
+        }
+        .btn-primary {
+            background-color: var(--aftershock-red);
+            color: var(--light-text);
+            border-color: var(--aftershock-red);
+        }
+        .btn-primary:hover {
+            background-color: var(--aftershock-dark-red);
+            border-color: var(--aftershock-dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--light-text);
+            border-color: var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--aftershock-red);
             color: var(--aftershock-red);
+            transform: translateY(-2px);
         }
 
         /* --- Hero Section --- */
         .hero {
-            background-color: var(--aftershock-black); /* Fallback color */
-            /* === PLACEHOLDER BACKGROUND IMAGE === */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('placeholder-hero-bg.jpg');
-            background-size: cover;
-            background-position: center center;
-            color: var(--text-light);
+            /* === REPLACE HERO BACKGROUND IMAGE === */
+            background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.95)), url('placeholder-hero-bg-1920x1080.jpg') center/cover no-repeat fixed; /* Fixed background for parallax effect */
+            color: var(--light-text);
+            padding: 8rem 0 10rem; /* More padding bottom */
             text-align: center;
-            padding: 100px 0;
-            min-height: 60vh; /* Ensure it takes significant space */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-bottom: 4px solid var(--aftershock-red);
+            overflow: hidden; /* Contain pseudo-elements */
         }
-
+        .hero .container { position: relative; z-index: 1; }
         .hero h1 {
-            color: var(--text-light); /* Override default red for hero */
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
         }
-
-        .hero .subtitle {
-            color: #ddd; /* Lighter subtitle for hero */
-            margin-bottom: 2.5rem;
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 750px;
+            margin: 0 auto 2.5rem;
+            color: var(--light-text); /* Brighter text in hero */
+            opacity: 0.9;
         }
+        .hero-cta .btn { margin: 0 0.5rem; }
 
-        /* --- Buttons --- */
-        .cta-button {
+        /* --- Section Title --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem; /* More space after title */
+        }
+        .section-title h2 {
+            position: relative;
             display: inline-block;
+            padding-bottom: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 0; /* Remove default margin */
+        }
+        .section-title h2::after { /* Refined underline */
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px; /* Shorter underline */
+            height: 4px; /* Thicker underline */
             background-color: var(--aftershock-red);
-            color: var(--background-light);
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            border-radius: 2px;
+        }
+        .section-title p { /* Optional subtitle */
+            max-width: 600px;
+            margin: 1rem auto 0;
+            color: var(--gray-text);
+        }
+
+        /* --- Product Section --- */
+        .products { background-color: var(--dark-bg); }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 2.5rem; /* Increased gap */
+        }
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--aftershock-red);
+            display: flex;
+            flex-direction: column; /* Ensure footer buttons align */
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.15);
+        }
+        .product-card h3 {
+            border-bottom: 1px solid var(--border-color); /* Thinner border */
+            padding-bottom: 0.8rem;
+            margin-bottom: 1rem;
+            color: var(--aftershock-red);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        .cta-button:hover {
-            background-color: #cc0000; /* Darker red on hover */
-            transform: translateY(-2px);
-        }
-
-        .cta-button.large {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-        }
-
-        .learn-more-link {
-            color: var(--aftershock-red);
-            font-weight: 700;
-            display: inline-block;
-            margin-top: 1rem;
-        }
-
-        .learn-more-link:hover {
-            text-decoration: underline;
-        }
-
-
-        /* --- Workstation Lineup --- */
-        .workstation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 3rem;
-        }
-
-        .workstation-card {
-            background-color: #f9f9f9; /* Slightly off-white card background */
-            padding: 25px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column; /* Align items vertically */
-        }
-
-        .workstation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-
-        .workstation-image {
-            max-width: 180px; /* Control image size */
-            margin: 0 auto 1.5rem auto; /* Center image */
-        }
-
-        .workstation-card h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .workstation-card .tagline {
-            font-weight: 700;
-            color: var(--text-dark);
+        .product-subtitle {
+            font-weight: 600; /* Bolder subtitle */
+            color: var(--light-text);
             margin-bottom: 1rem;
-            font-size: 1.1rem;
+            font-style: normal; /* Remove italic */
         }
-
-        .workstation-card .benefit-description {
+        .product-description { /* Added class for main description */
             font-size: 0.95rem;
-            color: #555;
-            flex-grow: 1; /* Pushes link to bottom */
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1; /* Push content down */
+        }
+        .specs-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            padding-left: 0; /* Remove default padding */
+        }
+        .specs-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--gray-text);
+        }
+        .specs-list li::before {
+            content: '\f00c'; /* Font Awesome check icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--aftershock-red);
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+        }
+        .product-image-container {
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Ensure image stays within bounds */
+            aspect-ratio: 16 / 10; /* Maintain aspect ratio */
+            background-color: var(--dark-bg); /* Placeholder bg */
+        }
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure image covers container */
+            transition: transform 0.4s ease;
+        }
+        .product-card:hover .product-image-container img {
+            transform: scale(1.05);
+        }
+        .product-actions {
+            display: flex;
+            gap: 1rem; /* Use gap for spacing */
+            margin-top: auto; /* Push actions to bottom */
+            padding-top: 1rem; /* Space above buttons */
+            border-top: 1px solid var(--border-color);
+        }
+        .product-actions .btn {
+            flex: 1;
+            text-align: center;
+            padding: 0.7rem 1rem; /* Slightly smaller buttons in cards */
+        }
+
+        /* --- Divider --- */
+        .aftershock-divider {
+            height: 2px; /* Thinner divider */
+            background: linear-gradient(to right, transparent, var(--aftershock-red) 50%, transparent);
+            border: none;
+            margin: 0; /* Remove default margin */
         }
 
         /* --- Comparison Section --- */
-        .comparison-graph {
-            margin-top: 3rem;
-            /* Style the actual graph container here */
+        .comparison { background-color: var(--darker-bg); }
+        .comparison-chart {
+            margin: 3rem 0;
+            width: 100%;
+            overflow-x: auto; /* Allow horizontal scroll on small screens */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
-
-        .graph-placeholder {
-            background-color: #2a2a2a; /* Darker placeholder bg */
-            padding: 30px;
-            border-radius: 8px;
+        table {
+            width: 100%;
+            min-width: 600px; /* Prevent table collapsing too much */
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Clip corners */
+        }
+        th, td {
+            padding: 1.2rem 1rem; /* More padding */
             text-align: center;
-            min-height: 300px; /* Example height */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed var(--aftershock-red); /* Highlight placeholder */
+            border: 1px solid var(--border-color);
+            vertical-align: middle;
         }
-
-        .graph-placeholder h4 {
-            margin-bottom: 1rem;
-        }
-
-        .comparison-key {
-            margin-top: 1.5rem;
+        thead th {
+            background-color: #000;
+            color: var(--light-text);
+            font-weight: 700;
+            text-transform: uppercase;
             font-size: 0.9rem;
-            color: #bbb;
+            letter-spacing: 0.5px;
+        }
+        tbody th {
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        .rating-icon { /* Using icons instead of stars */
+            color: var(--aftershock-red);
+            font-size: 1rem;
+            margin: 0 1px;
+            opacity: 0.3; /* Default dim */
+        }
+        .rating-icon.active { opacity: 1; }
+        .assessment-quiz { text-align: center; margin-top: 3rem; }
+
+        /* --- Testimonials Section --- */
+        .testimonials { background-color: var(--dark-bg); }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .testimonial-card {
+            background-color: var(--card-bg);
+            border-left: 5px solid var(--aftershock-red);
+            padding: 2.5rem; /* More padding */
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .testimonial-card::before { /* Quote icon */
+            content: '\f10d'; /* Font Awesome quote-left */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: rgba(255, 0, 0, 0.15); /* Subtler quote */
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            line-height: 1;
+        }
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem; /* Slightly larger text */
+            color: var(--light-text); /* Brighter testimonial text */
+            position: relative; /* Ensure text is above quote */
+            z-index: 1;
+        }
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--aftershock-red);
+            margin-bottom: 0.2rem;
+        }
+        .testimonial-position {
+            font-size: 0.9rem;
+            color: var(--gray-text);
         }
 
-        /* --- Benefits Section --- */
-        .benefits-grid {
+        /* --- Advantage Section (Formerly Features) --- */
+        .advantage { background-color: var(--darker-bg); }
+        .advantage-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 3rem;
+            gap: 2rem;
         }
-
-        .benefit-item {
+        .advantage-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
+            border-bottom: 4px solid var(--aftershock-red);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .benefit-icon {
-            max-width: 60px; /* Control icon size */
-            margin: 0 auto 1rem auto;
-            /* Use filter for red effect if icons are single color SVG/PNG */
-            /* filter: invert(16%) sepia(95%) saturate(7475%) hue-rotate(359deg) brightness(100%) contrast(118%); */
+         .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
-
-        .benefit-item h4 {
-            margin-bottom: 0.5rem;
+        .advantage-icon {
+            font-size: 2.5rem; /* Use Font Awesome icons */
             color: var(--aftershock-red);
+            margin-bottom: 1.5rem;
+            display: inline-block;
         }
+         .advantage-card h3 {
+             font-size: 1.2rem;
+             margin-bottom: 0.8rem;
+             color: var(--light-text);
+         }
+         .advantage-card p { font-size: 0.9rem; }
 
-        .benefit-item p {
-            font-size: 0.95rem;
-            color: #555;
+        /* --- Promotion Section --- */
+        .promotion {
+            /* === REPLACE PROMO BACKGROUND IMAGE === */
+            background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.95)), url('placeholder-promo-bg-1920x800.jpg') center/cover no-repeat;
+            color: var(--light-text);
+            text-align: center;
+            border-top: 4px solid var(--aftershock-red);
+            border-bottom: 4px solid var(--aftershock-red);
+        }
+        .promotion h2 {
+            margin-bottom: 1rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            color: var(--aftershock-red);
+            text-transform: uppercase;
+        }
+        .promotion h3 {
+            color: var(--light-text);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .promotion-content {
+            max-width: 700px; /* Slightly narrower */
+            margin: 0 auto;
+        }
+        .promotion-list {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+            display: inline-block; /* Center the list block */
+            padding-left: 0;
+        }
+        .promotion-list li {
+            margin-bottom: 0.8rem; /* More space */
+            position: relative;
+            padding-left: 2rem; /* More space for icon */
+            font-size: 1.05rem;
+        }
+        .promotion-list li::before {
+            content: '\f00c'; /* Font Awesome check */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--aftershock-red);
+            position: absolute;
+            left: 0;
+            top: 4px; /* Align icon better */
+            font-size: 1rem;
+        }
+        .promotion-content p em { /* Disclaimer text */
+            display: block;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--gray-text);
+        }
+        .pulse-effect { animation: pulse 2s infinite ease-in-out; }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
         }
 
         /* --- CTA Section --- */
-        .cta-section h2 {
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-        .cta-section p {
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-        .assurance-text {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
+        .cta { background-color: var(--dark-bg); text-align: center; }
+        .cta-content { max-width: 700px; margin: 0 auto; }
+        .cta-content h2 { margin-bottom: 1rem; }
+        .cta-content p { margin-bottom: 2.5rem; font-size: 1.1rem; color: var(--light-text); }
+        .cta-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
 
         /* --- Footer --- */
-        .main-footer {
-            background-color: var(--aftershock-black);
-            color: #aaa;
-            padding: 2rem 0;
-            text-align: center;
+        footer {
+            background-color: black;
+            color: var(--light-text);
+            padding: 5rem 0 2rem; /* More top padding */
+            border-top: 3px solid var(--aftershock-red);
             font-size: 0.9rem;
         }
-
-        .main-footer .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive footer columns */
+            gap: 3rem; /* More gap */
+            margin-bottom: 3rem;
         }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-            display: flex;
-            gap: 15px; /* Space between links */
+        .footer-heading {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            color: var(--aftershock-red);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .footer-links li a {
-            color: #aaa;
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--aftershock-red);
+        }
+        .footer-links { list-style: none; padding-left: 0; }
+        .footer-links li { margin-bottom: 0.8rem; } /* More space */
+        .footer-links a {
+            color: var(--gray-text);
+            text-decoration: none;
             transition: color 0.3s ease;
         }
-
-        .footer-links li a:hover {
-            color: var(--aftershock-red);
+        .footer-links a:hover { color: var(--aftershock-red); }
+        .footer-contact p { margin-bottom: 0.5rem; color: var(--gray-text); } /* Specific class for contact info */
+        .footer-contact p i { margin-right: 0.5rem; color: var(--aftershock-red); width: 15px; text-align: center;} /* Icon styling */
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--gray-text);
+            font-size: 0.85rem;
         }
 
+        /* --- Quiz Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001; /* Above header */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto; /* Adjust vertical margin */
+            padding: 2.5rem; /* More padding */
+            border-radius: var(--border-radius);
+            max-width: 650px; /* Wider modal */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border-top: 5px solid var(--aftershock-red);
+            animation: slideIn 0.4s ease-out;
+        }
+        @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* --- Responsive Design --- */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem; /* Larger close button */
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--gray-text);
+            transition: color 0.3s ease;
+        }
+        .close-modal:hover { color: var(--aftershock-red); }
+        .modal-content h2 { color: var(--aftershock-red); margin-bottom: 0.5rem; }
+        .modal-content p { margin-bottom: 2rem; color: var(--light-text); }
 
-            .main-header .container {
+        .quiz-form { margin-top: 1rem; }
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h4 { margin-bottom: 1rem; color: var(--light-text); font-size: 1.1rem; }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive options */
+            gap: 1rem;
+        }
+        .quiz-option {
+            display: block; /* Make label block */
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative; /* For custom radio */
+        }
+        .quiz-option input[type="radio"] {
+            opacity: 0; /* Hide default radio */
+            position: absolute;
+        }
+        .quiz-option span { /* Custom radio appearance */
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            vertical-align: middle;
+            transition: border-color 0.3s ease;
+            position: relative;
+            top: -1px;
+        }
+        .quiz-option span::after { /* Inner dot */
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--aftershock-red);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s ease;
+        }
+        .quiz-option:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--gray-text);
+        }
+        .quiz-option input[type="radio"]:checked + span {
+            border-color: var(--aftershock-red);
+        }
+        .quiz-option input[type="radio"]:checked + span::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .quiz-submit { margin-top: 2rem; width: 100%; }
+        .quiz-recommendation { text-align: center; margin: 2rem 0; }
+        .quiz-recommendation h3 { color: var(--aftershock-red); font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .quiz-recommendation p { font-size: 1.1rem; margin-bottom: 2rem; }
+        .quiz-recommendation .btn { margin: 0 0.5rem; }
+
+        /* --- Mobile Navigation --- */
+        .mobile-nav-toggle {
+            display: none; /* Hidden by default */
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.8rem; /* Larger icon */
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001; /* Above nav */
+        }
+
+        @media (max-width: 992px) { /* Breakpoint for mobile nav */
+            .mobile-nav-toggle { display: block; }
+            nav ul {
+                display: none; /* Hide desktop nav */
+                position: absolute;
+                top: var(--header-height); /* Position below header */
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.98); /* Solid background */
                 flex-direction: column;
+                padding: 1rem 0;
+                border-top: 1px solid var(--border-color);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+                max-height: 0; /* Start hidden */
+                overflow: hidden;
+                transition: max-height 0.5s ease-out; /* Smooth transition */
             }
-            .main-nav { margin-top: 1rem; } /* Add space below logo */
-            .main-nav ul {
-                /* margin-top: 1rem; */ /* Removed duplicate */
-                justify-content: center; /* Center nav items on mobile */
-                flex-wrap: wrap; /* Allow nav items to wrap */
-                gap: 5px 10px; /* Add gap for wrapped items */
+            nav ul.show {
+                display: flex; /* Show when class is added */
+                max-height: 500px; /* Allow it to expand */
             }
-            .main-nav ul li {
-                margin-left: 0; /* Remove left margin when centered */
+            nav ul li { margin: 0; width: 100%; }
+            nav ul li a {
+                display: block;
+                padding: 1rem 1.5rem; /* Full width padding */
+                text-align: center;
+                border-bottom: 1px solid var(--border-color);
             }
-
-            .hero {
-                padding: 60px 0;
-                min-height: 40vh;
-            }
-
-            .workstation-grid {
-                grid-template-columns: 1fr; /* Stack cards on smaller screens */
-            }
-
-            .benefits-grid {
-                 grid-template-columns: 1fr; /* Stack benefits */
-            }
-
-            .section-padding {
-                padding: 40px 0;
-            }
+             nav ul li a::after { display: none; } /* Hide underline effect on mobile */
+             nav ul li:last-child a { border-bottom: none; }
+             nav ul li .btn {
+                 display: block;
+                 margin: 1rem auto; /* Center button */
+                 width: calc(100% - 3rem); /* Button width */
+             }
         }
 
-        @media (max-width: 480px) {
-             h1 { font-size: 2rem; }
-             h2 { font-size: 1.75rem; }
-             .cta-button { font-size: 1rem; padding: 10px 20px; }
-             .cta-button.large { font-size: 1.1rem; padding: 12px 25px; }
-             .footer-links { flex-direction: column; gap: 10px; }
-             .main-nav ul li a { padding: 5px; } /* Reduce padding on small screens */
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 0 8rem; }
+            .product-actions { flex-direction: column; } /* Stack buttons */
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-buttons .btn { width: 80%; max-width: 300px; }
+            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } /* Adjust footer columns */
         }
+         @media (max-width: 576px) {
+             .container { padding: 0 1rem; }
+             section { padding: 3rem 0; }
+             .hero { padding: 5rem 0 6rem; }
+             .hero h1 { font-size: 2rem; }
+             .hero p { font-size: 1rem; }
+             h2 { font-size: 1.8rem; }
+             h3 { font-size: 1.3rem; }
+             .modal-content { margin: 10% auto; padding: 1.5rem; max-width: 90%; }
+             .quiz-options { grid-template-columns: 1fr; } /* Stack quiz options */
+         }
+
     </style>
-
 </head>
 <body>
-
-    <header class="main-header">
-        <div class="container">
-            <div class="logo">
-                <!-- === REPLACE WITH AFTERSHOCK LOGO (SVG preferred) === -->
-                <img src="placeholder-logo.png" alt="Aftershock PC Logo">
-            </div>
-            <nav class="main-nav">
-                <!-- Optional: Links to main site sections or keep as page anchors -->
-                <ul>
-                    <li><a href="#overview">Overview</a></li>
-                    <li><a href="#lineup">The Lineup</a></li>
-                    <li><a href="#compare">Compare</a></li>
-                    <li><a href="#why-aftershock">Why Aftershock?</a></li>
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">AFTER<span>SHOCK</span> PC</a>
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <i class="fas fa-bars"></i> <!-- Font Awesome Burger Icon -->
+            </button>
+            <nav>
+                <ul id="main-nav">
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#comparison">Compare</a></li>
+                    <li><a href="#advantage">Advantage</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#promotion">Offer</a></li>
+                    <!-- === REPLACE # with actual shop link === -->
+                    <li><a href="#" class="btn btn-primary">Shop Now</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1>Unlock Your Professional Potential</h1>
-                <p class="subtitle">Stop searching, start creating. Aftershock's streamlined workstation lineup delivers the precise power you need, simplified.</p>
-                <a href="#lineup" class="cta-button">Discover Your Perfect Workstation</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hidden-preload">
+            <h1 class="glowing-text">PROFESSIONAL POWER. SIMPLIFIED.</h1>
+            <p>Experience the new standard in professional computing. Aftershock PC's streamlined workstation lineup delivers precisely engineered power for every workflow, eliminating complexity so you can focus on creating.</p>
+            <div class="hero-cta">
+                <!-- === REPLACE # with actual shop link === -->
+                <a href="#products" class="btn btn-primary pulse-effect">Explore The Lineup</a>
+                <a href="#comparison" class="btn btn-secondary">Compare Models</a>
             </div>
-            <!-- Optional: Background image/video relevant to workstations (set in CSS) -->
-        </section>
+        </div>
+    </section>
 
-        <!-- Problem/Solution Intro -->
-        <section id="overview" class="intro-section section-padding">
-            <div class="container text-center">
-                <h2>Tired of Complex Choices? We Simplified Performance.</h2>
-                <p>Choosing the right workstation shouldn't slow you down. We've redesigned our lineup to offer clear, powerful choices tailored to your professional workflow, from everyday tasks to demanding creative projects.</p>
-            </div>
-        </section>
-
-        <!-- Product Lineup Section -->
-        <section id="lineup" class="lineup-section section-padding">
-            <div class="container">
-                <h2 class="text-center">Meet the New Aftershock Workstation Lineup</h2>
-                <p class="text-center subtitle-light">Four focused systems, built for clarity and peak performance.</p>
-
-                <div class="workstation-grid">
-                    <!-- Base -->
-                    <div class="workstation-card">
-                        <!-- === REPLACE IMAGE === -->
-                        <img src="placeholder-pc-base.png" alt="Aftershock Base Workstation" class="workstation-image">
-                        <h3>Base</h3>
-                        <p class="tagline">Effortless Everyday Productivity</p>
-                        <p class="benefit-description">Perfect for seamless multitasking across office applications, presentations, and daily business tasks. Reliable power that keeps you efficient.</p>
-                        <a href="#compare" class="learn-more-link">See how it compares →</a>
-                    </div>
-
-                    <!-- Core -->
-                    <div class="workstation-card">
-                         <!-- === REPLACE IMAGE === -->
-                        <img src="placeholder-pc-core.png" alt="Aftershock Core Workstation" class="workstation-image">
-                        <h3>Core</h3>
-                        <p class="tagline">Bring Your Creative Vision to Life</p>
-                        <p class="benefit-description">Ideal for photographers and graphic designers. Experience faster processing and enhanced visual fidelity for smooth editing and design workflows.</p>
-                         <a href="#compare" class="learn-more-link">See how it compares →</a>
-                    </div>
-
-                    <!-- Pro -->
-                    <div class="workstation-card">
-                         <!-- === REPLACE IMAGE === -->
-                        <img src="placeholder-pc-pro.png" alt="Aftershock Pro Workstation" class="workstation-image">
-                        <h3>Pro</h3>
-                        <p class="tagline">Master Demanding Visual Workflows</p>
-                        <p class="benefit-description">Optimized for video editors and visual professionals. Power through 4K editing, complex timelines, and intensive graphic tasks without compromise.</p>
-                         <a href="#compare" class="learn-more-link">See how it compares →</a>
-                    </div>
-
-                    <!-- Elite -->
-                    <div class="workstation-card">
-                         <!-- === REPLACE IMAGE === -->
-                        <img src="placeholder-pc-elite.png" alt="Aftershock Elite Workstation" class="workstation-image">
-                        <h3>Elite</h3>
-                        <p class="tagline">Unleash Peak Professional Power</p>
-                        <p class="benefit-description">Engineered for professional rendering, complex 3D modeling, and simulation. Tackle the most intensive computational tasks with ultimate performance.</p>
-                         <a href="#compare" class="learn-more-link">See how it compares →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Comparison Section -->
-        <section id="compare" class="compare-section section-padding dark-bg">
-            <div class="container">
-                <h2 class="text-center">Find Your Fit: Which Workstation is Right for You?</h2>
-                <p class="text-center subtitle-light">Visually compare performance across common professional tasks.</p>
-
-                <div class="comparison-graph">
-                    <!-- === PLACEHOLDER for the actual graph === -->
-                    <!-- This needs to be replaced with your actual comparison graph. -->
-                    <!-- Options: SVG, Canvas (with JS), styled HTML, or an optimized image. -->
-                    <div class="graph-placeholder">
-                        <h4>Performance Level vs. Task Type</h4>
-                        <p>(Placeholder: Replace this with your visual graph showing Base, Core, Pro, Elite plotted against tasks like Office Work, Photo/Graphic Design, Video Editing, Pro Rendering/3D)</p>
-                        <!-- Example using an image placeholder -->
-                        <img src="placeholder-comparison-graph.png" alt="Workstation Comparison Graph Placeholder" style="max-width: 100%; height: auto; margin-top: 20px; border: 1px solid #555;">
-                    </div>
-                     <div class="comparison-key text-center">
-                        <p><strong>Task Types:</strong> Office Work | Photo & Graphic Design | Video Editing | Pro Rendering & 3D</p>
-                    </div>
-                </div>
-                 <div class="text-center" style="margin-top: 30px;">
-                     <a href="#cta" class="cta-button">Choose Your Workstation</a>
-                 </div>
-            </div>
-        </section>
-
-        <!-- Why Aftershock Section (Benefits) -->
-        <section id="why-aftershock" class="benefits-section section-padding">
-            <div class="container">
-                <h2 class="text-center">The Aftershock Advantage: More Than Just Hardware</h2>
-                <div class="benefits-grid">
-                    <div class="benefit-item">
-                        <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-speed.png" alt="Speed Icon" class="benefit-icon">
-                        <h4>Work Faster, Not Harder</h4>
-                        <p>Optimized performance tailored to your specific tasks means less waiting and more creating.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-simple.png" alt="Simplicity Icon" class="benefit-icon">
-                        <h4>Simplified Choice, Clear Results</h4>
-                        <p>No more guesswork. Our focused lineup makes it easy to select the perfect tool for your job.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-reliable.png" alt="Reliability Icon" class="benefit-icon">
-                        <h4>Built for Reliability</h4>
-                        <p>Professionally assembled and tested for stability, ensuring your workstation is ready when you are.</p>
-                    </div>
-                     <div class="benefit-item">
-                         <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-future.png" alt="Scalability Icon" class="benefit-icon">
-                        <h4>Ready for Tomorrow</h4>
-                        <p>Designed with quality components and considerations for future needs or potential upgrades.</p>
-                    </div>
-                     <div class="benefit-item">
-                         <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-support.png" alt="Support Icon" class="benefit-icon">
-                        <h4>Expert Local Support</h4>
-                        <p>Backed by Aftershock's renowned customer service and technical support team.</p>
-                    </div>
-                     <div class="benefit-item">
-                         <!-- === REPLACE ICON === -->
-                        <img src="placeholder-icon-rts.png" alt="Ready To Ship Icon" class="benefit-icon">
-                        <h4>Ready When You Are</h4>
-                        <p>Pre-configured Ready-To-Ship (RTS) systems mean faster delivery to get you working sooner.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final CTA Section -->
-        <section id="cta" class="cta-section section-padding dark-bg">
-            <div class="container text-center">
-                <h2>Ready to Elevate Your Workflow?</h2>
-                <p>Experience the clarity and power of the new Aftershock Workstation lineup.</p>
-                <!-- === UPDATE LINK to the main store page filtered for these workstations === -->
-                <a href="/link-to-workstation-category-page" class="cta-button large">Explore the Full Lineup & Purchase</a>
-                <p class="assurance-text">Includes Aftershock's Standard Warranty & Support</p>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="main-footer">
+    <!-- Products Section -->
+    <section id="products" class="products">
         <div class="container">
-            <p>© <span id="current-year"></span> Aftershock PC. All Rights Reserved.</p>
-            <!-- === UPDATE FOOTER LINKS as needed === -->
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Support</a></li>
-            </ul>
+            <div class="section-title hidden-preload">
+                <h2 class="glowing-text">CHOOSE YOUR PERFORMANCE TIER</h2>
+                <p>Four distinct systems, each optimized for specific professional demands. Find the perfect balance of power and efficiency for your work.</p>
+            </div>
+            <div class="product-grid">
+                <!-- BASE -->
+                <div class="product-card hidden-preload">
+                    <h3>BASE</h3>
+                    <p class="product-subtitle">Essential Performance, Uncompromised Reliability</p>
+                    <div class="product-image-container">
+                        <!-- === REPLACE IMAGE === -->
+                        <img src="placeholder-pc-base-400x250.jpg" alt="BASE Workstation">
+                    </div>
+                    <p class="product-description">Ideal for professionals needing dependable speed for everyday office tasks, seamless multitasking, and smooth communication.</p>
+                    <ul class="specs-list">
+                        <li><strong>Perfect For:</strong> Office Apps, Web, Conferencing</li>
+                        <li><strong>Processor:</strong> Intel Core i5 / AMD Ryzen 5</li>
+                        <li><strong>Memory:</strong> 16GB DDR4</li>
+                        <li><strong>Storage:</strong> 512GB NVMe SSD</li>
+                        <li><strong>OS:</strong> Windows 11 Pro</li>
+                    </ul>
+                    <div class="product-actions">
+                        <!-- === REPLACE # with actual config/product links === -->
+                        <a href="#" class="btn btn-primary">Configure</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+
+                <!-- CORE -->
+                <div class="product-card hidden-preload">
+                    <h3>CORE</h3>
+                    <p class="product-subtitle">Accelerated Creativity, Enhanced Visuals</p>
+                     <div class="product-image-container">
+                        <!-- === REPLACE IMAGE === -->
+                        <img src="placeholder-pc-core-400x250.jpg" alt="CORE Workstation">
+                    </div>
+                    <p class="product-description">Empowers creative professionals with faster processing for photo editing, graphic design, and managing multiple demanding applications.</p>
+                     <ul class="specs-list">
+                        <li><strong>Perfect For:</strong> Photo Editing, Graphic Design, UI/UX</li>
+                        <li><strong>Processor:</strong> Intel Core i7 / AMD Ryzen 7</li>
+                        <li><strong>Memory:</strong> 32GB DDR4/DDR5</li>
+                        <li><strong>Storage:</strong> 1TB NVMe SSD</li>
+                        <li><strong>Graphics:</strong> Mid-Tier Dedicated GPU</li>
+                        <li><strong>OS:</strong> Windows 11 Pro</li>
+                    </ul>
+                    <div class="product-actions">
+                         <!-- === REPLACE # with actual config/product links === -->
+                        <a href="#" class="btn btn-primary">Configure</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+
+                <!-- PRO -->
+                <div class="product-card hidden-preload">
+                    <h3>PRO</h3>
+                    <p class="product-subtitle">Dominate Demanding Visual Workflows</p>
+                     <div class="product-image-container">
+                        <!-- === REPLACE IMAGE === -->
+                        <img src="placeholder-pc-pro-400x250.jpg" alt="PRO Workstation">
+                    </div>
+                    <p class="product-description">Engineered for video editors and visual artists needing serious power for 4K/8K editing, complex motion graphics, and intensive rendering tasks.</p>
+                     <ul class="specs-list">
+                        <li><strong>Perfect For:</strong> Video Editing, Motion Graphics, Complex Design</li>
+                        <li><strong>Processor:</strong> Intel Core i9 / AMD Ryzen 9</li>
+                        <li><strong>Memory:</strong> 64GB DDR5</li>
+                        <li><strong>Storage:</strong> 2TB NVMe SSD</li>
+                        <li><strong>Graphics:</strong> High-Performance RTX/Pro GPU</li>
+                        <li><strong>OS:</strong> Windows 11 Pro</li>
+                    </ul>
+                    <div class="product-actions">
+                         <!-- === REPLACE # with actual config/product links === -->
+                        <a href="#" class="btn btn-primary">Configure</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+
+                <!-- ELITE -->
+                <div class="product-card hidden-preload">
+                    <h3>ELITE</h3>
+                    <p class="product-subtitle">Ultimate Power for Extreme Computation</p>
+                     <div class="product-image-container">
+                        <!-- === REPLACE IMAGE === -->
+                        <img src="placeholder-pc-elite-400x250.jpg" alt="ELITE Workstation">
+                    </div>
+                    <p class="product-description">The pinnacle of workstation performance, built for professionals tackling complex 3D rendering, simulations, AI/ML development, and data analysis.</p>
+                     <ul class="specs-list">
+                        <li><strong>Perfect For:</strong> 3D Rendering, Simulation, AI/ML, Data Science</li>
+                        <li><strong>Processor:</strong> Xeon / Threadripper Options</li>
+                        <li><strong>Memory:</strong> 128GB+ ECC DDR5</li>
+                        <li><strong>Storage:</strong> 4TB+ NVMe RAID Options</li>
+                        <li><strong>Graphics:</strong> Top-Tier Workstation GPU</li>
+                        <li><strong>OS:</strong> Windows 11 Pro for Workstations</li>
+                    </ul>
+                    <div class="product-actions">
+                         <!-- === REPLACE # with actual config/product links === -->
+                        <a href="#" class="btn btn-primary">Configure</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="aftershock-divider">
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="comparison">
+        <div class="container">
+            <div class="section-title hidden-preload">
+                <h2 class="glowing-text">FIND YOUR PERFECT MATCH</h2>
+                <p>Quickly compare performance across common professional tasks to identify the ideal Aftershock workstation for your specific needs.</p>
+            </div>
+            <div class="comparison-chart hidden-preload">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task / Workflow</th>
+                            <th>BASE</th>
+                            <th>CORE</th>
+                            <th>PRO</th>
+                            <th>ELITE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th><i class="fas fa-briefcase text-primary"></i> Office Productivity</th>
+                            <td> <!-- 4/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-palette text-primary"></i> Photo & Graphic Design</th>
+                             <td> <!-- 2/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 4/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-video text-primary"></i> Video Editing (4K+)</th>
+                             <td> <!-- 1/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 3/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-cube text-primary"></i> 3D Rendering & Simulation</th>
+                             <td> <!-- 0/5 Rating -->
+                                <i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 2/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 4/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon"></i>
+                            </td>
+                            <td> <!-- 5/5 Rating -->
+                                <i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i><i class="fas fa-circle rating-icon active"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="assessment-quiz hidden-preload">
+                <p>Still unsure? Let us help you find the perfect fit.</p>
+                <a href="#" id="quizBtn" class="btn btn-primary">Take Our Quick Assessment Quiz</a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="aftershock-divider">
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title hidden-preload">
+                <h2 class="glowing-text">TRUSTED BY PROFESSIONALS</h2>
+                <p>Hear from industry leaders who rely on Aftershock PC workstations to power their success.</p>
+            </div>
+            <div class="testimonial-grid">
+                <!-- === REPLACE TESTIMONIAL CONTENT === -->
+                <div class="testimonial-card hidden-preload">
+                     <p class="testimonial-text">"Switching to the Aftershock PRO workstation cut our 4K render times in half. The performance is phenomenal, and the support has been top-notch."</p>
+                    <p class="testimonial-author">Alex Martinez</p>
+                    <p class="testimonial-position">Lead Video Editor, Pixel Perfect Productions</p>
+                </div>
+                <div class="testimonial-card hidden-preload">
+                    <p class="testimonial-text">"The ELITE system handles my most complex architectural models without breaking a sweat. It's a reliable workhorse that lets me focus on design, not lag."</p>
+                    <p class="testimonial-author">Dr. Evelyn Reed</p>
+                    <p class="testimonial-position">Computational Scientist, Innovate Labs</p>
+                </div>
+                <div class="testimonial-card hidden-preload">
+                    <p class="testimonial-text">"We needed reliable, cost-effective machines for our design team. The CORE workstations delivered the perfect blend of performance and value."</p>
+                    <p class="testimonial-author">Ben Carter</p>
+                    <p class="testimonial-position">Art Director, Creative Spark Agency</p>
+                </div>
+            </div>
+            <div class="text-center hidden-preload" style="margin-top: 3rem;">
+                 <!-- === REPLACE # with link to more testimonials === -->
+                <a href="#" class="btn btn-secondary">Read More Success Stories</a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="aftershock-divider">
+
+    <!-- Advantage Section (Formerly Features) -->
+    <section id="advantage" class="advantage">
+        <div class="container">
+            <div class="section-title hidden-preload">
+                <h2 class="glowing-text">THE AFTERSHOCK ADVANTAGE</h2>
+                <p>More than just hardware. Discover why professionals choose Aftershock PC for performance, reliability, and peace of mind.</p>
+            </div>
+            <div class="advantage-grid">
+                 <!-- === REPLACE ICONS if not using Font Awesome === -->
+                <div class="advantage-card hidden-preload">
+                    <i class="fas fa-tachometer-alt advantage-icon"></i>
+                    <h3>Optimized Performance</h3>
+                    <p>Work faster and smarter with systems precision-tuned for demanding professional applications.</p>
+                </div>
+                <div class="advantage-card hidden-preload">
+                    <i class="fas fa-check-circle advantage-icon"></i>
+                    <h3>Simplified Choice</h3>
+                    <p>Easily find your perfect match with our clear, focused lineup, eliminating configuration confusion.</p>
+                </div>
+                <div class="advantage-card hidden-preload">
+                    <i class="fas fa-microchip advantage-icon"></i>
+                    <h3>Pro-Grade Components</h3>
+                    <p>Experience lasting reliability with meticulously selected, high-quality hardware built for endurance.</p>
+                </div>
+                <div class="advantage-card hidden-preload">
+                    <i class="fas fa-headset advantage-icon"></i>
+                    <h3>Expert Support</h3>
+                    <p>Gain peace of mind with our dedicated local support team and comprehensive warranty coverage.</p>
+                </div>
+                 <div class="advantage-card hidden-preload">
+                    <i class="fas fa-shipping-fast advantage-icon"></i>
+                    <h3>Ready-to-Ship</h3>
+                    <p>Get started faster with pre-configured systems built, tested, and ready for immediate dispatch.</p>
+                </div>
+                 <div class="advantage-card hidden-preload">
+                    <i class="fas fa-sync-alt advantage-icon"></i>
+                    <h3>Future-Ready Design</h3>
+                    <p>Invest with confidence in systems designed for longevity and potential future upgrades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="aftershock-divider">
+
+    <!-- Promotion Section -->
+    <section id="promotion" class="promotion">
+        <div class="container hidden-preload">
+            <div class="promotion-content">
+                <h2>LIMITED TIME LAUNCH OFFER</h2>
+                <h3>UNLOCK PREMIUM BENEFITS</h3>
+                <!-- === UPDATE OFFER DETAILS === -->
+                <p>Purchase any new Aftershock Workstation before <strong>May 31st, 2025</strong> and receive our exclusive <strong>Pro Launch Pack FREE!</strong></p>
+
+                <ul class="promotion-list">
+                    <li><i class="fas fa-star"></i> Extended 5-Year Premium Warranty</li>
+                    <li><i class="fas fa-tools"></i> Professional Cable Management Kit</li>
+                    <li><i class="fas fa-palette"></i> Advanced Color Calibration Software</li>
+                    <li><i class="fas fa-cloud"></i> 1TB Cloud Storage (1 Year)</li>
+                </ul>
+
+                <p><em>A $499 value, yours free for a limited time. Don't miss out!</em></p>
+                <!-- === REPLACE # with link to offer details/shop === -->
+                <a href="#" class="btn btn-primary pulse-effect" style="margin-top: 1rem;">Claim Your Pro Pack Now</a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="aftershock-divider">
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container hidden-preload">
+            <div class="cta-content">
+                <h2 class="glowing-text">READY TO ELEVATE YOUR WORKFLOW?</h2>
+                <p>Stop settling for less. Invest in a workstation built for professionals, by professionals. Explore the lineup or talk to a specialist today.</p>
+                <div class="cta-buttons">
+                     <!-- === REPLACE # with actual links === -->
+                    <a href="#products" class="btn btn-primary">Shop Workstations</a>
+                    <a href="#" class="btn btn-secondary">Book a Consultation</a>
+                    <a href="#" class="btn btn-secondary">Find a Showroom</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">AFTERSHOCK PC</h3>
+                    <p>Premium custom PCs and Workstations, engineered in [Your Location/Country] for peak performance and reliability.</p>
+                    <!-- Add Social Media Icons if desired -->
+                </div>
+                <div>
+                    <h3 class="footer-heading">Workstations</h3>
+                    <ul class="footer-links">
+                        <!-- === REPLACE # with actual product links === -->
+                        <li><a href="#">BASE Series</a></li>
+                        <li><a href="#">CORE Series</a></li>
+                        <li><a href="#">PRO Series</a></li>
+                        <li><a href="#">ELITE Series</a></li>
+                        <li><a href="#">All Workstations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Support</h3>
+                    <ul class="footer-links">
+                         <!-- === REPLACE # with actual support links === -->
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Help Center / FAQ</a></li>
+                        <li><a href="#">Warranty Information</a></li>
+                        <li><a href="#">Drivers & Downloads</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-heading">Contact Us</h3>
+                     <!-- === UPDATE Contact Details === -->
+                    <p><i class="fas fa-phone"></i> 1-800-AFTERSHOCK</p>
+                    <p><i class="fas fa-envelope"></i> workstations@aftershockpc.com</p>
+                    <p><i class="fas fa-comments"></i> Live Chat (Available on site)</p>
+                    <p><i class="fas fa-map-marker-alt"></i> [Your Showroom Address, if applicable]</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                 <!-- === UPDATE Year and Company Name if needed === -->
+                <p>© <span id="current-year"></span> Aftershock PC Pte Ltd. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- JavaScript Section -->
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" title="Close">×</span>
+            <div id="quiz-step-1">
+                <h2>Find Your Perfect Workstation</h2>
+                <p>Answer a few quick questions, and we'll recommend the ideal Aftershock system for your workflow.</p>
+                <form class="quiz-form">
+                    <div class="quiz-question">
+                        <h4>1. What is your primary type of work?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option"><input type="radio" name="workType" value="office" required><span></span> Office & Productivity</label>
+                            <label class="quiz-option"><input type="radio" name="workType" value="photo"><span></span> Photo & Graphic Design</label>
+                            <label class="quiz-option"><input type="radio" name="workType" value="video"><span></span> Video Editing & Motion</label>
+                            <label class="quiz-option"><input type="radio" name="workType" value="3d"><span></span> 3D, Rendering & Science</label>
+                        </div>
+                    </div>
+                    <div class="quiz-question">
+                        <h4>2. How demanding are your typical projects?</h4>
+                         <div class="quiz-options">
+                            <label class="quiz-option"><input type="radio" name="complexity" value="low" required><span></span> Basic / Light</label>
+                            <label class="quiz-option"><input type="radio" name="complexity" value="medium"><span></span> Moderate / Standard</label>
+                            <label class="quiz-option"><input type="radio" name="complexity" value="high"><span></span> Complex / Heavy</label>
+                        </div>
+                    </div>
+                     <div class="quiz-question">
+                        <h4>3. What's your approximate budget?</h4>
+                         <div class="quiz-options">
+                            <label class="quiz-option"><input type="radio" name="budget" value="low" required><span></span> Under $1,500</label>
+                            <label class="quiz-option"><input type="radio" name="budget" value="medium"><span></span> $1,500 - $2,500</label>
+                            <label class="quiz-option"><input type="radio" name="budget" value="high"><span></span> $2,500 - $3,500</label>
+                             <label class="quiz-option"><input type="radio" name="budget" value="premium"><span></span> $3,500+</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary quiz-submit">Get My Recommendation</button>
+                </form>
+            </div>
+            <div id="quiz-step-2" style="display: none;">
+                <!-- Recommendation will be injected here by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -605,56 +1192,164 @@
                 currentYearSpan.textContent = new Date().getFullYear();
             }
 
-            // --- Optional Enhancements (Uncomment and implement as needed) ---
+            // --- Mobile Navigation Toggle ---
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const body = document.body;
 
-            // === Optional: Smooth Scrolling for internal links ===
-           
-            const navLinks = document.querySelectorAll('.main-nav a[href^="#"], .hero a[href^="#"], .learn-more-link[href^="#"]');
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    let targetId = this.getAttribute('href');
-                    // Basic check if targetId starts with # and has more characters
-                    if (targetId && targetId.startsWith('#') && targetId.length > 1) {
-                         let targetElement = document.querySelector(targetId);
-
-                        if (targetElement) {
-                            // Calculate offset if header is sticky
-                            let headerOffset = document.querySelector('.main-header')?.offsetHeight || 0;
-                            let elementPosition = targetElement.getBoundingClientRect().top;
-                            // Adjust for scroll position and header height
-                            let offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                            window.scrollTo({
-                                top: offsetPosition,
-                                behavior: "smooth"
-                            });
-                        }
+            if (mobileNavToggle && mainNav) {
+                mobileNavToggle.addEventListener('click', () => {
+                    const isExpanded = mainNav.classList.toggle('show');
+                    mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+                    // Toggle burger/close icon
+                    const icon = mobileNavToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-times');
                     }
+                    // Optional: Prevent body scroll when mobile nav is open
+                    // body.style.overflow = isExpanded ? 'hidden' : '';
                 });
-            });
-            
 
-            // === Optional: Simple Fade-in Animation on Scroll (using Intersection Observer) ===
-            
-            const fadeElements = document.querySelectorAll('.workstation-card, .benefit-item, .intro-section .container > *, .compare-section .container > *:not(h2):not(.subtitle-light), .benefits-section .container > h2, .cta-section .container > *'); // Select elements to fade in
+                // Close mobile nav when a link is clicked
+                mainNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (mainNav.classList.contains('show')) {
+                            mobileNavToggle.click(); // Simulate click to close
+                        }
+                    });
+                });
+            }
 
-            // Function to check if element is already visible on load
-            const isElementInViewport = (el) => {
-                const rect = el.getBoundingClientRect();
-                return (
-                    rect.top >= 0 &&
-                    rect.left >= 0 &&
-                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                );
+            // --- Quiz Modal Logic ---
+            const quizBtn = document.getElementById('quizBtn');
+            const quizModal = document.getElementById('quizModal');
+            const closeModalBtn = quizModal ? quizModal.querySelector('.close-modal') : null;
+            const quizForm = quizModal ? quizModal.querySelector('.quiz-form') : null;
+            const quizStep1 = document.getElementById('quiz-step-1');
+            const quizStep2 = document.getElementById('quiz-step-2');
+
+            // Function to open modal
+            const openModal = () => {
+                if (quizModal && quizStep1 && quizStep2) {
+                    quizModal.style.display = 'block';
+                    quizStep1.style.display = 'block'; // Show form
+                    quizStep2.style.display = 'none';  // Hide result
+                    quizForm.reset(); // Reset form fields
+                    body.style.overflow = 'hidden'; // Prevent background scroll
+                }
             };
 
+            // Function to close modal
+            const closeModal = () => {
+                if (quizModal) {
+                    quizModal.style.display = 'none';
+                    body.style.overflow = ''; // Restore background scroll
+                }
+            };
+
+            if (quizBtn) {
+                quizBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+
+            // Close modal if clicking outside the content
+            if (quizModal) {
+                quizModal.addEventListener('click', (e) => {
+                    if (e.target === quizModal) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // Handle Quiz Submission
+            if (quizForm && quizStep1 && quizStep2) {
+                quizForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const workType = quizForm.querySelector('input[name="workType"]:checked')?.value;
+                    const complexity = quizForm.querySelector('input[name="complexity"]:checked')?.value;
+                    const budget = quizForm.querySelector('input[name="budget"]:checked')?.value;
+
+                    // --- Recommendation Logic (Adjust as needed) ---
+                    let recommendation = 'BASE'; // Default
+                    let reason = "For essential productivity and reliability within your budget.";
+
+                    if (workType === '3d' || (workType === 'video' && complexity === 'high')) {
+                        recommendation = 'ELITE';
+                        reason = "To handle the most demanding 3D rendering, simulation, or complex high-resolution video workflows.";
+                    } else if (workType === 'video' || (workType === 'photo' && complexity === 'high')) {
+                        recommendation = 'PRO';
+                         reason = "For seamless 4K+ video editing, motion graphics, or complex, high-resolution design projects.";
+                    } else if (workType === 'photo' || complexity === 'medium') {
+                        recommendation = 'CORE';
+                         reason = "Offering accelerated performance ideal for photo editing, graphic design, and moderate creative tasks.";
+                    }
+
+                    // Budgetary Adjustments (Lower recommendation if budget is too low)
+                    if (recommendation === 'ELITE' && (budget === 'high' || budget === 'medium' || budget === 'low')) {
+                        recommendation = 'PRO';
+                         reason = "The PRO offers excellent high-end performance that aligns better with your budget for demanding tasks.";
+                         if (budget === 'medium' || budget === 'low') {
+                             recommendation = 'CORE';
+                             reason = "The CORE provides strong creative capabilities suitable for your budget, balancing performance and cost.";
+                         }
+                         if (budget === 'low') {
+                             recommendation = 'BASE';
+                             reason = "While your tasks are demanding, the BASE model offers the best value within your specified budget.";
+                         }
+                    } else if (recommendation === 'PRO' && (budget === 'medium' || budget === 'low')) {
+                        recommendation = 'CORE';
+                        reason = "The CORE strikes a great balance for creative work within your budget.";
+                         if (budget === 'low') {
+                             recommendation = 'BASE';
+                             reason = "The BASE model is the most suitable starting point within your budget.";
+                         }
+                    } else if (recommendation === 'CORE' && budget === 'low') {
+                        recommendation = 'BASE';
+                        reason = "The BASE model provides solid performance for essential tasks and fits well within your budget.";
+                    }
+                    // --- End Recommendation Logic ---
+
+
+                    // Display Recommendation
+                    quizStep2.innerHTML = `
+                        <h2>Your Recommended Workstation</h2>
+                        <div class="quiz-recommendation">
+                            <h3 class="glowing-text">${recommendation}</h3>
+                            <p>${reason}</p>
+                            <div>
+                                <!-- === REPLACE # with actual product link === -->
+                                <a href="#${recommendation.toLowerCase()}" class="btn btn-primary view-details-btn">View ${recommendation} Details</a>
+                                <button class="btn btn-secondary retake-quiz-btn">Retake Quiz</button>
+                            </div>
+                        </div>
+                    `;
+
+                    quizStep1.style.display = 'none';
+                    quizStep2.style.display = 'block';
+
+                    // Add event listeners for new buttons
+                    quizStep2.querySelector('.view-details-btn')?.addEventListener('click', closeModal); // Close modal when viewing details
+                    quizStep2.querySelector('.retake-quiz-btn')?.addEventListener('click', () => {
+                        quizStep1.style.display = 'block';
+                        quizStep2.style.display = 'none';
+                        quizForm.reset();
+                    });
+                });
+            }
+
+            // --- Intersection Observer for Animations ---
             const observerOptions = {
-                root: null, // relative to document viewport
+                root: null, // relative to viewport
                 rootMargin: '0px',
-                threshold: 0.1 // trigger when 10% of the element is visible
+                threshold: 0.1 // trigger when 10% is visible
             };
 
             const observerCallback = (entries, observer) => {
@@ -662,29 +1357,48 @@
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0)';
-                        // Optional: Unobserve after animation to save resources
-                        observer.unobserve(entry.target);
+                        entry.target.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                        observer.unobserve(entry.target); // Stop observing once animated
                     }
                 });
             };
 
-            const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-            fadeElements.forEach(el => {
-                // Apply initial state only if element is NOT already visible
-                 if (!isElementInViewport(el)) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(20px)';
-                 } else {
-                     // If already visible, set directly to final state
-                     el.style.opacity = '1';
-                     el.style.transform = 'translateY(0)';
-                 }
-                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                // Observe all elements regardless of initial visibility
-                intersectionObserver.observe(el);
+            // Select elements to animate
+            const elementsToAnimate = document.querySelectorAll('.hidden-preload');
+            elementsToAnimate.forEach(el => {
+                observer.observe(el);
             });
-            
+
+             // --- Smooth scrolling adjustment for sticky header (alternative to scroll-padding-top) ---
+             // Note: scroll-padding-top is generally preferred, but this is an alternative JS method.
+             /*
+             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                 anchor.addEventListener('click', function (e) {
+                     const href = this.getAttribute('href');
+                     if (href && href.startsWith('#') && href.length > 1) {
+                         const targetElement = document.querySelector(href);
+                         if (targetElement) {
+                             e.preventDefault(); // Prevent default only if target exists
+                             const headerOffset = document.querySelector('header')?.offsetHeight || 70; // Get header height or fallback
+                             const elementPosition = targetElement.getBoundingClientRect().top;
+                             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                             window.scrollTo({
+                                 top: offsetPosition,
+                                 behavior: "smooth"
+                             });
+
+                             // Optional: Close mobile nav if open after scroll
+                             if (mainNav && mainNav.classList.contains('show')) {
+                                 mobileNavToggle.click();
+                             }
+                         }
+                     }
+                 });
+             });
+             */
 
         }); // End DOMContentLoaded
     </script>
