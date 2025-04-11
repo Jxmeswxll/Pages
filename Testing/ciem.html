@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aftershock PC @ IEM Melbourne | Performance Where It Counts</title>
+    <!-- Optional: Add Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Favicon Placeholder -->
+    <link rel="icon" href="/api/placeholder/32/32/00ffff/0a0a0f?text=A" type="image/png">
+
+    <style>
+        /* --- Base Variables & Resets --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap'); /* Example Font */
+
+        :root {
+            --primary-bg: #0a0a0f; /* Very dark blue/black */
+            --secondary-bg: #10121a; /* Slightly lighter dark */
+            --card-bg: rgba(18, 20, 30, 0.8);
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-headings: #ffffff;
+            --accent-1: #00ffff; /* Cyan */
+            --accent-2: #ff00ff; /* Magenta */
+            --accent-3: #00ff00; /* Green */
+            --accent-4: #ff4500; /* Orange-Red */
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-glow: rgba(0, 255, 255, 0.5); /* Cyan glow */
+            --header-height: 70px;
+            --font-primary: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-1);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-2);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- Utility Classes --- */
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-dark {
+            background-color: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-headings);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title span {
+            /* RGB Text Effect */
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0 5px;
+        }
+
+        .highlight {
+            color: var(--accent-1);
+            font-weight: 700;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: #000; /* Dark text on bright gradient */
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.3);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-1);
+            border: 2px solid var(--accent-1);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+            color: var(--text-headings);
+            border-color: var(--accent-2);
+            transform: translateY(-2px);
+        }
+
+        /* --- Header --- */
+        #main-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 10, 15, 0.8); /* Start semi-transparent */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            height: var(--header-height);
+            border-bottom: 1px solid transparent; /* For scrolled state */
+        }
+
+        #main-header.scrolled {
+            background-color: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 40px; /* Adjust as needed */
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-checkout {
+            padding: 8px 20px; /* Slightly smaller nav button */
+        }
+
+        #menu-toggle {
+            display: none; /* Hidden by default */
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .mobile-nav-links {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-direction: column;
+            gap: 15px;
+        }
+        .mobile-nav-links.active {
+            display: flex;
+        }
+        .mobile-nav-links a {
+             color: var(--text-primary);
+             font-weight: 600;
+             text-transform: uppercase;
+             font-size: 1rem;
+             padding: 10px;
+             text-align: center;
+             border-bottom: 1px solid var(--border-color);
+        }
+        .mobile-nav-links a:last-child {
+            border-bottom: none;
+        }
+
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: url('/api/placeholder/1920/1080/0a0a0f/10121a?text=Abstract+Esports+BG') no-repeat center center/cover; /* Placeholder BG */
+            padding-top: var(--header-height); /* Offset for sticky header */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 10, 15, 0.7), rgba(10, 10, 15, 0.9));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tagline {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--text-headings);
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px var(--border-glow);
+            /* Add subtle animation if desired */
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 15px var(--border-glow); }
+            50% { text-shadow: 0 0 25px var(--border-glow); }
+        }
+
+        .hero-subtagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            font-size: 1rem;
+        }
+
+        /* --- Introduction Section --- */
+        #intro {
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .intro-text strong {
+            color: var(--accent-1);
+        }
+
+        #countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .timer-box {
+            background-color: var(--secondary-bg);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            min-width: 90px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        .timer-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-1);
+            margin-bottom: 5px;
+        }
+
+        /* --- Bundle Showcase --- */
+        .bundle-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .bundle-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bundle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+        }
+
+        .bundle-image {
+            position: relative;
+        }
+        .bundle-image img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+        }
+
+        .bundle-price, .bundle-giveaway-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .bundle-giveaway-tag {
+             background: linear-gradient(90deg, var(--accent-3), var(--accent-1));
+        }
+
+        .bundle-content {
+            padding: 30px;
+            flex-grow: 1; /* Make content area grow */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bundle-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-headings);
+        }
+        .bundle-partner-tag {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .bundle-specs {
+            margin-bottom: 30px;
+            flex-grow: 1; /* Push button to bottom */
+        }
+
+        .bundle-specs li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .bundle-specs i {
+            color: var(--accent-1);
+            width: 20px;
+            text-align: center;
+        }
+
+        .bundle-cta {
+            margin-top: auto; /* Push button to bottom */
+            width: 100%;
+        }
+
+        /* --- RTS Specs Section --- */
+        .rts-system {
+            margin-bottom: 60px;
+            background: rgba(16, 18, 26, 0.5); /* Slightly different bg */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .rts-system:last-child {
+            margin-bottom: 0;
+        }
+
+        .rts-system h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent-1);
+            border-bottom: 2px solid var(--accent-1);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .rts-system h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-headings);
+        }
+
+        .rts-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .specs-table th, .specs-table td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .specs-table th {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        .specs-table td:first-child {
+            font-weight: 600;
+            color: var(--accent-3); /* Green accent for component type */
+            width: 20%;
+        }
+        .specs-table td:nth-child(2) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .specs-table td:last-child {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .rts-performance ul {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .rts-performance li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .rts-performance li::before {
+            content: '\f111'; /* Font Awesome bullet */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--accent-2);
+            position: absolute;
+            left: -20px;
+            font-size: 0.6rem;
+            top: 6px;
+        }
+
+        .video-showcase img {
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .video-showcase p {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .rts-teaser {
+            text-align: center;
+            border: 2px dashed var(--accent-1);
+            background: linear-gradient(rgba(0, 255, 255, 0.05), rgba(0, 255, 255, 0.01));
+        }
+        .rts-teaser h3 {
+            border: none;
+            display: block;
+        }
+        .teaser-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        .teaser-stats li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+        .teaser-stats i {
+            color: var(--accent-2);
+        }
+        .event-callout {
+            font-weight: 700;
+            color: var(--accent-3);
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Partner Showcase --- */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .partner-card {
+            background-color: var(--primary-bg); /* Slightly darker than section bg */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .partner-card:hover {
+             border-color: var(--accent-1);
+             box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        .partner-logo {
+            height: 50px;
+            width: auto;
+            margin: 0 auto 20px auto;
+            object-fit: contain;
+        }
+
+        .partner-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-headings);
+        }
+
+        .partner-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .partner-features {
+            text-align: left;
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+        .partner-features li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .partner-features i {
+            color: var(--accent-3);
+            width: 15px;
+        }
+
+        .mini-compare-table {
+            width: 100%;
+            font-size: 0.85rem;
+            margin: 15px 0;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .mini-compare-table th, .mini-compare-table td {
+            padding: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .mini-compare-table th {
+            color: var(--text-secondary);
+        }
+
+        .peripheral-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .peripheral-showcase img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            background: var(--secondary-bg);
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .partner-card blockquote {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin: 15px 0;
+            border-left: 3px solid var(--accent-2);
+            padding-left: 10px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .partner-card .btn {
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+        .partner-card .btn i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* --- Event Information --- */
+        .event-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .event-details h4 {
+            font-size: 1.3rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: var(--accent-2);
+        }
+        .event-details ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+        .event-details li {
+            margin-bottom: 8px;
+        }
+
+        .event-map img {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .event-map p {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* --- FAQ Section --- */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--primary-bg);
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .faq-item summary {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            list-style: none; /* Remove default marker */
+            color: var(--text-headings);
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-item summary::after { /* Custom marker */
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+            color: var(--accent-1);
+        }
+
+        .faq-item[open] summary {
+            background-color: rgba(0, 255, 255, 0.05);
+        }
+
+        .faq-item[open] summary::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .faq-item p {
+            padding: 0 20px 20px 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--secondary-bg);
+            padding: 40px 0 20px 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px; /* Space before footer */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo img {
+            height: 45px;
+            width: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--accent-1);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        .footer-social a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover {
+            color: var(--accent-1);
+            border-color: var(--accent-1);
+            background-color: rgba(0, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .section-title { font-size: 2rem; }
+            .hero-tagline { font-size: 3rem; }
+            .nav-links { gap: 20px; }
+            .nav-links a { font-size: 0.8rem; }
+            .rts-content { grid-template-columns: 1fr; }
+            .rts-performance { margin-top: 30px; }
+            .event-info-grid { grid-template-columns: 1fr; text-align: center; }
+            .event-map img { margin: 20px auto; }
+        }
+
+        @media (max-width: 768px) {
+            :root { --header-height: 60px; }
+            .nav-links, .nav-checkout { display: none; } /* Hide desktop nav items */
+            #menu-toggle { display: block; } /* Show hamburger */
+            .hero-tagline { font-size: 2.5rem; }
+            .hero-subtagline { font-size: 1rem; }
+            .bundle-cards-container { grid-template-columns: 1fr; gap: 30px; }
+            .bundle-card { max-width: 500px; margin: 0 auto; } /* Center cards */
+            .specs-table { font-size: 0.85rem; }
+            .specs-table th, .specs-table td { padding: 8px 5px; }
+            .partners-grid { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links { margin: 15px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .section-title { font-size: 1.8rem; }
+            .hero-tagline { font-size: 2rem; }
+            #countdown-timer { gap: 10px; flex-wrap: wrap; }
+            .timer-box { padding: 10px 15px; min-width: 70px; }
+            .timer-box span { font-size: 1.5rem; }
+            .bundle-title { font-size: 1.3rem; }
+            .btn { padding: 10px 20px; font-size: 0.8rem; }
+            .rts-system h3 { font-size: 1.5rem; }
+            .footer-logo img { height: 35px; }
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header id="main-header">
+        <nav class="container">
+            <a href="#hero" class="logo">
+                <img src="/api/placeholder/150/40/FFFFFF/0a0a0f?text=AFTERSHOCK+PC" alt="Aftershock PC Logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#bundles">Bundles</a></li>
+                <li><a href="#specs">RTS Specs</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#event-info">Event Info</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <!-- Placeholder for Checkout Link/Button -->
+            <a href="#checkout" class="btn btn-primary nav-checkout">Checkout</a>
+             <!-- Mobile Menu Toggle (Requires JS) -->
+            <button id="menu-toggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+         <!-- Mobile Menu Container (Requires JS to populate/show) -->
+        <div id="mobile-menu" class="mobile-nav-links"></div>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <!-- Motion Graphics Placeholder: Could be a background video or JS animation -->
+                <div class="motion-graphic-placeholder"></div>
+                <h1 class="hero-tagline">Performance Where It Counts</h1>
+                <p class="hero-subtagline">Exclusive IEM Melbourne Bundles & Ready-To-Ship Systems</p>
+                <a href="#bundles" class="btn btn-secondary hero-cta">Explore Bundles</a>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section id="intro" class="container section-padding">
+            <h2 class="section-title"><span>IEM Melbourne</span> Exclusive Offers</h2>
+            <p class="intro-text">
+                Join Aftershock PC at <strong>IEM Melbourne (October XX-XX, 2024)</strong> at the Melbourne & Olympic Parks. Score limited-time exclusive bundles online or grab yours directly at our booth! Don't miss out – the countdown is on!
+            </p>
+            <div id="countdown-timer">
+                <!-- Countdown Timer (Requires JavaScript) -->
+                <div class="timer-box"><span id="days">00</span>Days</div>
+                <div class="timer-box"><span id="hours">00</span>Hours</div>
+                <div class="timer-box"><span id="minutes">00</span>Mins</div>
+                <div class="timer-box"><span id="seconds">00</span>Secs</div>
+            </div>
+        </section>
+
+        <!-- Bundle Showcase Section -->
+        <section id="bundles" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Choose Your <span>Arsenal</span></h2>
+                <div class="bundle-cards-container">
+
+                    <!-- Bundle 1: Purchase -->
+                    <div class="bundle-card">
+                        <div class="bundle-image">
+                            <img src="/api/placeholder/600/400/0a0a0f/FFFFFF?text=Bundle+1+Setup+RGB" alt="AORUS + NVIDIA Powered Gaming Bundle Setup">
+                            <div class="bundle-price">$2500 AUD</div>
+                        </div>
+                        <div class="bundle-content">
+                            <h3 class="bundle-title">AORUS + NVIDIA Powered Gaming Bundle</h3>
+                            <p class="bundle-partner-tag">Featuring AORUS & SteelSeries</p>
+                            <ul class="bundle-specs">
+                                <li><i class="fas fa-microchip"></i> NVIDIA GeForce RTX 5070 (Est.)</li>
+                                <li><i class="fas fa-memory"></i> AORUS Z890 Motherboard (Est.)</li>
+                                <li><i class="fas fa-desktop"></i> Samsung Odyssey G5 27" Monitor</li>
+                                <li><i class="fas fa-keyboard"></i> SteelSeries Apex 7 TKL Keyboard</li>
+                                <li><i class="fas fa-mouse"></i> SteelSeries Aerox 5 Mouse</li>
+                                <li><i class="fas fa-headphones"></i> SteelSeries Arctis Nova 3 Headset</li>
+                            </ul>
+                            <!-- Placeholder Link for Buy Now -->
+                            <a href="#checkout-bundle1" class="btn btn-primary bundle-cta">Buy Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Bundle 2: Giveaway -->
+                    <div class="bundle-card giveaway-card">
+                         <div class="bundle-image">
+                            <img src="/api/placeholder/600/400/0a0a0f/00ffff?text=Giveaway+Bundle+OLED" alt="Premium Giveaway Bundle">
+                            <div class="bundle-giveaway-tag">Premium Giveaway!</div>
+                        </div>
+                        <div class="bundle-content">
+                            <h3 class="bundle-title">Premium Giveaway Bundle</h3>
+                             <p class="bundle-partner-tag">Featuring Samsung & SteelSeries</p>
+                            <ul class="bundle-specs">
+                                <li><i class="fas fa-tv"></i> <span class="highlight">Samsung Odyssey OLED G8</span> Monitor</li>
+                                <li><i class="fas fa-keyboard"></i> SteelSeries Apex Pro TKL WL Keyboard</li>
+                                <li><i class="fas fa-headphones-alt"></i> SteelSeries Arctis Nova Pro Wireless</li>
+                                <li><i class="fas fa-mouse"></i> SteelSeries Aerox 9 Wireless</li>
+                                <li><i class="fas fa-plus-circle"></i> High-Performance Aftershock PC</li>
+                            </ul>
+                             <!-- Placeholder Link for Giveaway -->
+                            <a href="#giveaway-page" class="btn btn-secondary bundle-cta">Enter Giveaway</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RTS Systems Specs Section -->
+        <section id="specs" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Ready-To-Ship <span>System Specs</span></h2>
+
+                <!-- RTS 1 Details -->
+                <div class="rts-system">
+                    <h3>RTS 1: AORUS + NVIDIA Dominator</h3>
+                    <div class="rts-content">
+                        <div class="rts-table-container">
+                            <h4>Technical Breakdown</h4>
+                            <table class="specs-table">
+                                <!-- Add JS for expandable rows or keep it simple -->
+                                <thead>
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Specification</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>CPU</td><td>Intel Core i7-14700K</td><td>20 Cores / 28 Threads</td></tr>
+                                    <tr><td>GPU</td><td>Gigabyte AORUS RTX 5070 MASTER (Est.)</td><td>16GB GDDR7 (Est.)</td></tr>
+                                    <tr><td>Mobo</td><td>Gigabyte AORUS Z890 ELITE AX (Est.)</td><td>Wi-Fi 7, PCIe 5.0</td></tr>
+                                    <tr><td>RAM</td><td>32GB DDR5 6400MHz AORUS RGB</td><td>(2x16GB)</td></tr>
+                                    <tr><td>SSD</td><td>2TB AORUS Gen5 NVMe SSD</td><td>Up to 10,000 MB/s</td></tr>
+                                    <tr><td>Cooler</td><td>AORUS WATERFORCE X 360 AIO</td><td>LCD Display</td></tr>
+                                    <tr><td>PSU</td><td>AORUS P850W 80+ Gold</td><td>Fully Modular</td></tr>
+                                    <tr><td>Case</td><td>Aftershock Custom Flow Case</td><td>High Airflow Design</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="rts-performance">
+                            <h4>Esports Performance Benchmarks (Est. QHD)</h4>
+                            <ul>
+                                <li>Valorant: 400+ FPS</li>
+                                <li>CS2: 350+ FPS</li>
+                                <li>Apex Legends: 240+ FPS</li>
+                                <!-- Add more benchmarks -->
+                            </ul>
+                            <div class="video-showcase">
+                                <!-- Placeholder for video link/embed -->
+                                <a href="#" title="Watch Build Showcase">
+                                    <img src="/api/placeholder/400/225/0a0a0f/FFFFFF?text=System+Build+Video" alt="System Build Showcase Video">
+                                </a>
+                                <p>Watch the build & RGB showcase!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RTS 2 Teaser -->
+                <div class="rts-system rts-teaser">
+                    <h3>RTS 2: Intel Battlemage Showcase (Event Exclusive)</h3>
+                    <p>Experience the future of integrated graphics! See the first public demonstration of Intel's Battlemage performance in our exclusive showcase system.</p>
+                    <ul class="teaser-stats">
+                        <li><i class="fas fa-bolt"></i> Next-Gen Architecture</li>
+                        <li><i class="fas fa-chart-line"></i> Significant Performance Uplift (Expected)</li>
+                        <li><i class="fas fa-eye"></i> Ray Tracing Enhancements</li>
+                    </ul>
+                    <p class="event-callout"><strong>See it first at IEM Melbourne! Booth #XX</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partner Showcase Section -->
+        <section id="partners" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Powered By <span>Our Partners</span></h2>
+                <div class="partners-grid">
+
+                    <!-- AORUS Section -->
+                    <div class="partner-card">
+                        <img src="/api/placeholder/150/50/FFFFFF/10121a?text=AORUS+Logo" alt="AORUS Logo" class="partner-logo">
+                        <h4>AORUS: Team Up. Fight On.</h4>
+                        <p>Experience cutting-edge motherboards and components designed for peak gaming performance and stability.</p>
+                        <!-- Add expandable specs or feature list -->
+                        <ul class="partner-features">
+                            <li><i class="fas fa-cogs"></i> Z890 Chipset Power</li>
+                            <li><i class="fas fa-wifi"></i> Wi-Fi 7 Ready</li>
+                            <li><i class="fas fa-thermometer-half"></i> Advanced Thermal Design</li>
+                        </ul>
+                        <a href="https://www.aorus.com" target="_blank" class="btn btn-secondary">Learn More <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+
+                    <!-- Samsung Section -->
+                    <div class="partner-card">
+                         <img src="/api/placeholder/150/50/FFFFFF/10121a?text=SAMSUNG+Logo" alt="Samsung Logo" class="partner-logo">
+                        <h4>Samsung: Gaming Monitors</h4>
+                        <p>Immerse yourself in stunning visuals with Samsung's Odyssey range, featuring high refresh rates and rapid response times.</p>
+                        <!-- Monitor Comparison Table -->
+                        <h5>Featured Monitors:</h5>
+                        <table class="mini-compare-table">
+                            <thead><tr><th>Model</th><th>Type</th><th>Refresh</th><th>Response</th></tr></thead>
+                            <tbody>
+                                <tr><td>Odyssey G5</td><td>QHD VA</td><td>165Hz</td><td>1ms</td></tr>
+                                <tr><td>Odyssey OLED G8</td><td>UWQHD OLED</td><td>175Hz</td><td>0.1ms</td></tr>
+                            </tbody>
+                        </table>
+                        <a href="https://www.samsung.com/au/monitors/gaming/" target="_blank" class="btn btn-secondary">Explore Monitors <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+
+                    <!-- SteelSeries Section -->
+                    <div class="partner-card">
+                         <img src="/api/placeholder/150/50/FFFFFF/10121a?text=STEELSERIES+Logo" alt="SteelSeries Logo" class="partner-logo">
+                        <h4>SteelSeries: For Glory</h4>
+                        <p>Equip yourself with esports-grade peripherals trusted by professionals worldwide for precision and reliability.</p>
+                         <!-- Peripheral Showcase -->
+                        <div class="peripheral-showcase">
+                             <img src="/api/placeholder/60/60/FFFFFF/10121a?text=Apex" alt="Apex Keyboard">
+                             <img src="/api/placeholder/60/60/FFFFFF/10121a?text=Aerox" alt="Aerox Mouse">
+                             <img src="/api/placeholder/60/60/FFFFFF/10121a?text=Nova" alt="Nova Headset">
+                        </div>
+                        <blockquote>"SteelSeries gear gives me the edge I need." - Pro Player (Placeholder)</blockquote>
+                        <a href="https://steelseries.com" target="_blank" class="btn btn-secondary">Discover Gear <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Information Section -->
+        <section id="event-info" class="section-padding">
+            <div class="container event-info-grid">
+                <div class="event-details">
+                    <h2 class="section-title">Visit Us At <span>IEM Melbourne</span></h2>
+                    <p><strong>Dates:</strong> October XX - XX, 2024</p>
+                    <p><strong>Location:</strong> Melbourne & Olympic Parks</p>
+                    <p><strong>Booth:</strong> #XX (Find us near the main stage!)</p>
+                    <h4>Special Events:</h4>
+                    <ul>
+                        <li>Daily System Building Demos</li>
+                        <li>Pro Player Meet & Greet (Sat/Sun PM)</li>
+                        <li>Exclusive Merch Drops</li>
+                    </ul>
+                </div>
+                <div class="event-map">
+                    <!-- Placeholder Map Image -->
+                    <img src="/api/placeholder/500/350/CCCCCC/FFFFFF?text=Event+Map+Highlighting+Booth+XX" alt="IEM Melbourne Event Map Placeholder">
+                    <p>Map showing booth location.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+                <div class="faq-container">
+                    <details class="faq-item">
+                        <summary>How does shipping work for online bundle purchases?</summary>
+                        <p>Online bundle orders placed before the event will ship starting [Date]. Standard shipping times apply. Expedited options available at checkout.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>What is the warranty on the bundles?</summary>
+                        <p>All Aftershock PCs in the bundles come with our standard [X]-Year Premium Warranty. Peripherals are covered by their respective manufacturer warranties (Samsung, SteelSeries).</p>
+                    </details>
+                     <details class="faq-item">
+                        <summary>Can I buy the bundles at the IEM event?</summary>
+                        <p>Yes! A limited number of bundles will be available for purchase directly at our booth (#XX) during IEM Melbourne. First come, first served.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>How do I enter the Premium Giveaway Bundle?</summary>
+                        <p>Click the "Enter Giveaway" button above or visit our booth at IEM Melbourne to scan the QR code. Full terms and conditions apply.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Who do I contact for technical support?</summary>
+                        <p>For Aftershock PC support, please visit our support page or call [Phone Number]. For peripheral support, please contact Samsung or SteelSeries directly.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placeholder Sections for JS Interaction -->
+        <div id="checkout"></div>
+        <div id="checkout-bundle1"></div>
+        <div id="giveaway-page"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="#hero" class="footer-logo">
+                     <img src="/api/placeholder/180/50/FFFFFF/0a0a0f?text=AFTERSHOCK+PC" alt="Aftershock PC Logo">
+                </a>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Support</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                </div>
+            </div>
+            <p class="copyright">© 2024 Aftershock PC. All Rights Reserved. IEM is a trademark of ESL Gaming GmbH.</p>
+        </div>
+    </footer>
+
+    <!-- Basic JS for Header Scroll Effect & Mobile Menu -->
+    <script>
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Basic mobile menu toggle listener
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links'); // Get the desktop links
+
+        menuToggle.addEventListener('click', () => {
+             // Clone nav links into mobile menu if empty (simple example)
+             if (mobileMenu.innerHTML === '') {
+                // Create links for mobile menu based on desktop links
+                const desktopLinks = navLinks.querySelectorAll('a');
+                desktopLinks.forEach(link => {
+                    const mobileLink = document.createElement('a');
+                    mobileLink.href = link.href;
+                    mobileLink.textContent = link.textContent;
+                    // Add click listener to close menu after clicking a link
+                    mobileLink.addEventListener('click', () => {
+                        mobileMenu.classList.remove('active');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                    });
+                    mobileMenu.appendChild(mobileLink);
+                });
+             }
+             // Toggle the active class and icon
+             mobileMenu.classList.toggle('active');
+             menuToggle.querySelector('i').classList.toggle('fa-bars');
+             menuToggle.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Add JS for Countdown Timer here
+        // Example structure (replace with actual countdown logic)
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown-timer');
+            if (!countdownElement) return; // Exit if element not found
+
+            const eventDate = new Date("2024-10-18T09:00:00").getTime(); // Set your IEM Melbourne start date/time
+
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = eventDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    countdownElement.innerHTML = "<p>The Event Is Live!</p>"; // Or hide it
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+
+            }, 1000);
+        }
+        // Call the countdown function when the page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+
+
+        // Add JS for Giveaway Logic here (e.g., redirect or open modal)
+        // Add JS for Checkout Logic here (e.g., redirect to store page)
+        // Add JS for Expandable Specs here (if using JS method)
+
+    </script>
+
+</body>
+</html>
