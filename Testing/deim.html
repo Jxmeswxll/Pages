@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Updated Title -->
     <title>Aftershock PC @ IEM Melbourne 2024 | Red & Black Performance</title>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Favicon Placeholder (Red Theme) -->
     <link rel="icon" href="https://via.placeholder.com/32/ff0000/0a0a0a?text=A" type="image/png">
 
     <style>
@@ -46,7 +43,14 @@
 
         body {
             font-family: var(--font-primary);
-            background-color: var(--primary-bg);
+            /* --- ADDED: Site-wide background --- */
+            background-image: url('/Assets/image23.png'); /* Path to your background */
+            background-color: var(--primary-bg); /* Fallback color if image fails */
+            background-repeat: no-repeat; /* Prevent tiling */
+            background-attachment: fixed; /* Keep background fixed during scroll */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center center; /* Center the image */
+            /* --- End Added Background --- */
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden; /* Prevent horizontal scroll */
@@ -56,6 +60,20 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative; /* Ensure container content stays above body background if needed */
+            z-index: 1;
+        }
+
+        /* Make sections slightly opaque so body background can be seen, adjust as needed */
+        main > section {
+            background-color: rgba(10, 10, 10, 0.85); /* Example: slightly transparent black for sections */
+        }
+        main > section.section-dark {
+             background-color: rgba(26, 26, 26, 0.9); /* Example: slightly transparent dark grey for dark sections */
+        }
+        /* Make cards slightly opaque too */
+        .bundle-card, .rts-system, .partner-card, .faq-item {
+             background-color: rgba(26, 26, 26, 0.85); /* Adjust transparency */
         }
 
         img {
@@ -98,11 +116,7 @@
             padding: 80px 0;
         }
 
-        .section-dark {
-            background-color: var(--secondary-bg);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
+        /* .section-dark adjustments already made above */
 
         .section-title {
             font-size: 2.5rem;
@@ -175,7 +189,8 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background-color: rgba(10, 10, 10, 0.8); /* Darker base */
+            /* Adjust transparency to let body background show through */
+            background-color: rgba(10, 10, 10, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 10px 0;
@@ -185,7 +200,7 @@
         }
 
         #main-header.scrolled {
-            background-color: rgba(10, 10, 10, 0.95); /* Darker base */
+            background-color: rgba(10, 10, 10, 0.9); /* Slightly less transparent when scrolled */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid var(--border-color); /* Red border */
         }
@@ -255,7 +270,8 @@
             top: var(--header-height);
             left: 0;
             width: 100%;
-            background-color: var(--secondary-bg); /* Dark Grey BG */
+            /* Adjust transparency */
+            background-color: rgba(26, 26, 26, 0.95); /* Dark Grey BG, slightly opaque */
             padding: 20px 0;
             border-bottom: 1px solid var(--border-color); /* Red Border */
             flex-direction: column;
@@ -294,10 +310,12 @@
             justify-content: center;
             text-align: center;
             position: relative;
-            /* Placeholder - Use a dark/red themed esports background image */
-            background: url('https://via.placeholder.com/1920x1080/0a0a0a/1a1a1a?text=Dark+Red+Esports+Background') no-repeat center center/cover;
+            /* --- UPDATED: Use CSS background --- */
+            background: url('/Assets/hero.png') no-repeat center center/cover;
             padding-top: var(--header-height);
             overflow: hidden;
+            /* Remove background color override if you want body background to show through */
+             background-color: transparent !important; /* Override potential section background */
         }
 
         .hero-overlay {
@@ -306,14 +324,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Dark overlay */
+            /* Dark overlay to ensure text readability over the hero image */
             background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9));
             z-index: 1;
         }
 
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Ensure content is above overlay */
             padding: 40px 20px;
         }
 
@@ -348,6 +366,8 @@
         /* --- Introduction Section --- */
         #intro {
             text-align: center;
+            /* Apply the general section background override */
+            background-color: rgba(10, 10, 10, 0.85);
         }
 
         .intro-text {
@@ -374,7 +394,8 @@
         }
 
         .timer-box {
-            background-color: var(--secondary-bg); /* Dark grey */
+            /* Adjust transparency if needed */
+            background-color: rgba(26, 26, 26, 0.9); /* Dark grey */
             padding: 15px 25px;
             border-radius: 8px;
             border: 1px solid var(--border-color); /* Red border */
@@ -397,6 +418,11 @@
         }
 
         /* --- Bundle Showcase --- */
+        #bundles {
+            /* Apply the general section-dark background override */
+            background-color: rgba(26, 26, 26, 0.9);
+        }
+
         .bundle-cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
@@ -404,12 +430,12 @@
         }
 
         .bundle-card {
-            background-color: var(--card-bg); /* Dark transparent */
+            /* background adjusted above */
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color); /* Red border */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); /* Keep blur effect */
             display: flex;
             flex-direction: column;
         }
@@ -495,9 +521,14 @@
         }
 
         /* --- RTS Specs Section --- */
+        #specs {
+            /* Apply the general section background override */
+            background-color: rgba(10, 10, 10, 0.85);
+        }
+
         .rts-system {
             margin-bottom: 60px;
-            background: rgba(26, 26, 26, 0.5); /* Darker transparent */
+            /* background adjusted above */
             padding: 30px;
             border-radius: 8px;
             border: 1px solid var(--border-color); /* Red border */
@@ -535,6 +566,7 @@
             min-width: 500px;
             border-collapse: collapse;
             font-size: 0.9rem;
+            background-color: rgba(0, 0, 0, 0.2); /* Make table slightly more solid */
         }
         .specs-table th, .specs-table td {
             padding: 12px 10px;
@@ -628,22 +660,29 @@
         }
 
         /* --- Partner Showcase --- */
+         #partners {
+             /* Apply the general section-dark background override */
+             background-color: rgba(26, 26, 26, 0.9);
+         }
         .partners-grid {
             display: grid;
-            /* Adjust columns for logo-only view */
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 30px;
-            align-items: center; /* Center logos vertically */
-            justify-content: center; /* Center grid items if fewer than columns */
+            align-items: center;
+            justify-content: center;
         }
 
         .partner-card {
-            background-color: var(--primary-bg); /* Black BG */
-            padding: 30px 20px; /* Adjusted padding */
+            /* background adjusted above */
+            padding: 30px 20px;
             border-radius: 8px;
             border: 1px solid var(--border-color); /* Red border */
             text-align: center;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            min-height: 100px; /* Ensure cards have some height */
+            display: flex; /* Center logo vertically */
+            align-items: center; /* Center logo vertically */
+            justify-content: center; /* Center logo horizontally */
         }
         .partner-card:hover {
              border-color: var(--accent-1); /* Red border on hover */
@@ -651,17 +690,13 @@
         }
 
         .partner-logo {
-            height: 60px; /* Increased height for better visibility */
+            height: 60px;
             width: auto;
-            max-width: 180px; /* Limit width */
-            margin: 0 auto; /* Center the logo */
+            max-width: 180px;
+            margin: 0; /* Remove auto margins */
             object-fit: contain;
             display: block;
-            /* Optional: add white background if logos are transparent/dark */
-            /* background-color: #fff;
-            padding: 5px;
-            border-radius: 4px; */
-            filter: brightness(0) invert(1); /* Make logos white if they are black */
+            /* filter: brightness(0) invert(1); /* Make logos white if they are black - Adjust if needed */
         }
         /* Remove styles for hidden elements */
         .partner-card h4,
@@ -672,11 +707,15 @@
         .partner-card .mini-compare-table,
         .partner-card .peripheral-showcase,
         .partner-card h5 {
-            display: none; /* Hide description, features, buttons etc. */
+            display: none;
         }
 
 
         /* --- Event Information --- */
+        #event-info {
+            /* Apply the general section background override */
+             background-color: rgba(10, 10, 10, 0.85);
+        }
         .event-info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -711,13 +750,17 @@
         }
 
         /* --- FAQ Section --- */
+        #faq {
+            /* Apply the general section-dark background override */
+            background-color: rgba(26, 26, 26, 0.9);
+        }
         .faq-container {
             max-width: 800px;
             margin: 0 auto;
         }
 
         .faq-item {
-            background-color: var(--primary-bg); /* Black BG */
+            /* background adjusted above */
             margin-bottom: 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color); /* Red Border */
@@ -733,6 +776,7 @@
             color: var(--text-headings);
             transition: background-color 0.3s ease;
             display: block;
+            background-color: rgba(0,0,0,0.2); /* Make summary slightly more solid */
         }
         .faq-item summary::-webkit-details-marker { display: none; }
 
@@ -749,7 +793,7 @@
         }
 
         .faq-item[open] summary {
-            background-color: rgba(255, 0, 0, 0.05); /* Subtle red bg when open */
+            background-color: rgba(255, 0, 0, 0.1); /* Subtle red bg when open */
         }
 
         .faq-item[open] summary::after {
@@ -757,7 +801,8 @@
         }
 
         .faq-item div {
-             padding: 0 20px 20px 20px;
+             padding: 15px 20px 20px 20px; /* Add top padding */
+             background-color: rgba(0,0,0,0.1); /* Slightly different background for content */
         }
         .faq-item p {
             color: var(--text-secondary);
@@ -774,10 +819,13 @@
 
         /* --- Footer --- */
         footer {
-            background-color: var(--secondary-bg); /* Dark Grey BG */
+            /* Adjust transparency */
+            background-color: rgba(26, 26, 26, 0.95); /* Dark Grey BG */
             padding: 40px 0 20px 0;
             border-top: 1px solid var(--border-color); /* Red Border */
             margin-top: 80px;
+            position: relative; /* Ensure footer is above body background */
+            z-index: 10;
         }
 
         .footer-content {
@@ -860,7 +908,6 @@
             .hero-subtagline { font-size: 1rem; }
             .footer-content { flex-direction: column; text-align: center; }
             .footer-links { margin: 15px 0; }
-            /* Adjust partner logo grid for mobile if needed */
             .partners-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px;}
         }
 
@@ -918,7 +965,8 @@
 
         <!-- Hero Section -->
         <section id="hero">
-            <img src="/Assets/hero.png" alt="Hero">
+            <!-- REMOVED: <img src="/Assets/hero.png" alt="Hero"> -->
+            <!-- The image is now applied via CSS background rule -->
             <div class="hero-overlay"></div>
             <div class="container hero-content">
                 <h1 class="hero-tagline">Performance Where It Counts</h1>
@@ -934,7 +982,7 @@
                 Join Aftershock PC at <strong class="highlight">IEM Melbourne (October 18-20, 2024)</strong> at the Melbourne & Olympic Parks (Booth #A12). Score limited-time exclusive bundles online or grab yours directly at our booth! Don't miss out – the countdown is on!
             </p>
             <div id="countdown-timer">
-                <!-- Countdown Timer Content (Populated by JS) -->
+                <!-- Countdown Timer Content -->
                 <div class="timer-box">
                     <span id="days">00</span>
                     <div>Days</div>
@@ -963,7 +1011,6 @@
                     <!-- Bundle 1: Purchase -->
                     <div class="bundle-card">
                         <div class="bundle-image">
-                            <!-- Placeholder - Use relevant red/black themed setup image -->
                             <img src="https://via.placeholder.com/600x400/1a1a1a/ff0000?text=RTX+4060+Custom+Bundle+Setup" alt="Custom Performance Gaming Bundle Setup with Red RGB Lighting">
                             <div class="bundle-price">$1899 AUD</div>
                         </div>
@@ -985,7 +1032,6 @@
                     <!-- Bundle 2: Giveaway -->
                     <div class="bundle-card giveaway-card">
                          <div class="bundle-image">
-                            <!-- Placeholder - Use relevant red/black themed setup image -->
                             <img src="https://via.placeholder.com/600x400/0a0a0a/ff0000?text=Premium+OLED+Giveaway+Bundle" alt="Premium Giveaway Bundle featuring Samsung OLED and SteelSeries Gear">
                             <div class="bundle-giveaway-tag">Premium Giveaway!</div>
                         </div>
@@ -1013,7 +1059,6 @@
 
                 <!-- RTS 1 Details - AORUS Powered -->
                 <div class="rts-system">
-                    <!-- Updated Title to highlight AORUS -->
                     <h3>RTS 1: AORUS Powered Performance Build</h3>
                     <div class="rts-content">
                         <div class="rts-table-container">
@@ -1027,7 +1072,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Specs remain the same, showcasing Gigabyte/AORUS components -->
                                     <tr><td>CPU</td><td>Intel Core Ultra 5 245KF</td><td>5.2 GHz / 14 Cores 14 Threads</td></tr>
                                     <tr><td>GPU</td><td>Gigabyte RTX 4060 Eagle OC</td><td>8GB</td></tr>
                                     <tr><td>Mobo</td><td>Gigabyte B860M Eagle Wi-Fi 6E</td><td>DDR5</td></tr>
@@ -1051,7 +1095,6 @@
                             </ul>
                             <div class="video-showcase">
                                 <a href="#" title="Watch Build Showcase">
-                                    <!-- Placeholder - Use relevant red/black themed video thumbnail -->
                                     <img src="https://via.placeholder.com/400x225/0a0a0a/ff0000?text=RTS+1+Build+Showcase+Video" alt="RTS 1 AORUS Powered System Build Showcase Video Thumbnail">
                                 </a>
                                 <p>Watch the build & RGB showcase!</p>
@@ -1062,7 +1105,6 @@
 
                 <!-- RTS 2 Teaser - Intel Battlemage Showcase -->
                 <div class="rts-system rts-teaser">
-                     <!-- Title remains the same, clearly indicating Intel -->
                     <h3>RTS 2: Intel Battlemage Showcase (Event Exclusive)</h3>
                     <p>Experience the future of integrated graphics! See the first public demonstration of Intel's Battlemage performance in our exclusive showcase system.</p>
                     <ul class="teaser-stats">
@@ -1081,26 +1123,17 @@
             <div class="container">
                 <h2 class="section-title">Powered By <span>Our Partners</span></h2>
                 <div class="partners-grid">
-
                     <!-- AORUS Logo -->
                     <div class="partner-card">
-                        <!-- !! REPLACE with actual AORUS logo URL !! -->
                         <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=AORUS+LOGO" alt="AORUS Logo" class="partner-logo">
-                        <!-- Hidden h4 title: <h4>AORUS</h4> -->
                     </div>
-
                     <!-- Samsung Logo -->
                     <div class="partner-card">
-                         <!-- !! REPLACE with actual SAMSUNG logo URL !! -->
                          <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=SAMSUNG+LOGO" alt="Samsung Logo" class="partner-logo">
-                         <!-- Hidden h4 title: <h4>Samsung</h4> -->
                     </div>
-
                     <!-- SteelSeries Logo -->
                     <div class="partner-card">
-                         <!-- !! REPLACE with actual STEELSERIES logo URL !! -->
                          <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=STEELSERIES+LOGO" alt="SteelSeries Logo" class="partner-logo">
-                         <!-- Hidden h4 title: <h4>SteelSeries</h4> -->
                     </div>
                 </div>
             </div>
@@ -1124,7 +1157,6 @@
                     </ul>
                 </div>
                 <div class="event-map">
-                    <!-- Placeholder Map - Use relevant map image -->
                     <img src="https://via.placeholder.com/500x350/1a1a1a/FFFFFF?text=Map+Showing+Aftershock+Booth+A12" alt="IEM Melbourne Event Map highlighting the Aftershock PC Booth A12">
                     <p>Find us easily - look for the <span class="highlight">Aftershock glow</span> at Booth #A12!</p>
                 </div>
@@ -1172,7 +1204,6 @@
         <div class="container">
             <div class="footer-content">
                 <a href="#hero" class="footer-logo">
-                     <!-- Use your actual Red/Black Aftershock Logo -->
                      <img src="https://via.placeholder.com/180x50/FFFFFF/0a0a0a?text=AFTERSHOCK+PC" alt="Aftershock PC Logo">
                 </a>
                 <div class="footer-links">
@@ -1182,7 +1213,6 @@
                     <a href="#">Warranty</a>
                 </div>
                 <div class="footer-social">
-                    <!-- Add actual social media links -->
                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Twitter"><i class="fab fa-twitter"></i></a>
                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Instagram"><i class="fab fa-instagram"></i></a>
@@ -1194,7 +1224,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript (Kept unchanged from original) -->
+    <!-- JavaScript (Kept unchanged) -->
     <script>
         // --- Header Scroll Effect ---
         const header = document.getElementById('main-header');
@@ -1258,17 +1288,14 @@
             }
 
             // --- SET YOUR EVENT DATE AND TIME HERE ---
-            // Format: YYYY-MM-DDTHH:mm:ss (e.g., October 18, 2024, 9:00 AM)
             const eventDate = new Date("2024-10-18T09:00:00").getTime();
 
             const timer = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = eventDate - now;
 
-                // If the countdown is over
                 if (distance < 0) {
                     clearInterval(timer);
-                    // Clear existing timer boxes and show message
                     while (countdownElement.firstChild) {
                         countdownElement.removeChild(countdownElement.firstChild);
                     }
@@ -1278,13 +1305,11 @@
                     return;
                 }
 
-                // Calculate time units
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Update HTML elements (ensure they exist before updating)
                 daysEl.innerText = String(days).padStart(2, '0');
                 hoursEl.innerText = String(hours).padStart(2, '0');
                 minutesEl.innerText = String(minutes).padStart(2, '0');
@@ -1293,7 +1318,6 @@
             }, 1000);
         }
 
-        // Call the countdown function when the page loads
         document.addEventListener('DOMContentLoaded', startCountdown);
     </script>
 
