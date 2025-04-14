@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated Title -->
+    <title>Aftershock PC @ IEM Melbourne 2024 | Red & Black Performance</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Favicon Placeholder (Red Theme) -->
+    <link rel="icon" href="https://via.placeholder.com/32/ff0000/0a0a0a?text=A" type="image/png">
+
+    <style>
+        /* --- Base Variables & Resets --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+
+        :root {
+            /* --- Red & Black Theme --- */
+            --primary-bg: #0a0a0a; /* Black */
+            --secondary-bg: #1a1a1a; /* Dark Grey */
+            --card-bg: rgba(26, 26, 26, 0.8); /* Dark Grey Semi-Transparent */
+            --text-primary: #f0f0f0; /* Off-white */
+            --text-secondary: #a0a0a0; /* Grey */
+            --text-headings: #ffffff; /* White */
+            --accent-1: #ff0000; /* Bright Red */
+            --accent-2: #cc0000; /* Darker Red */
+            --accent-3: #ff4500; /* Orange-Red (Keep for variety or change to another red) */
+            --border-color: rgba(255, 0, 0, 0.2); /* Subtle Red Border */
+            --border-glow: rgba(255, 0, 0, 0.5); /* Red Glow */
+            --focus-outline-color: var(--accent-1); /* Red Focus Outline */
+            /* --- Kept from Original --- */
+            --header-height: 70px;
+            --font-primary: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-1); /* Red links */
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-2); /* Darker red on hover */
+        }
+
+        /* Basic focus style for accessibility */
+        a:focus-visible,
+        button:focus-visible,
+        summary:focus-visible,
+        details[open] summary:focus-visible {
+             outline: 2px solid var(--focus-outline-color);
+             outline-offset: 2px;
+             border-radius: 2px; /* Optional: slightly round the outline */
+        }
+        /* Remove default outline when custom is applied */
+        a:focus, button:focus, summary:focus, details[open] summary:focus {
+            outline: none;
+        }
+
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- Utility Classes --- */
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-dark {
+            background-color: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-headings);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title span {
+            /* Red Gradient */
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0 5px;
+        }
+
+        .highlight {
+            color: var(--accent-1); /* Red highlight */
+            font-weight: 700;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            /* Red Gradient */
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: #fff; /* White text on red gradient */
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2); /* Red shadow */
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3); /* Stronger red shadow */
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-1); /* Red text */
+            border: 2px solid var(--accent-1); /* Red border */
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 0, 0, 0.1); /* Subtle red background */
+            color: var(--text-headings);
+            border-color: var(--accent-2); /* Darker red border */
+            transform: translateY(-2px);
+        }
+
+        /* --- Header --- */
+        #main-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.8); /* Darker base */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            height: var(--header-height);
+            border-bottom: 1px solid transparent; /* For scrolled state */
+        }
+
+        #main-header.scrolled {
+            background-color: rgba(10, 10, 10, 0.95); /* Darker base */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color); /* Red border */
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            /* Red Gradient Underline */
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a:focus-visible::after {
+            width: 100%;
+        }
+
+        .nav-checkout {
+            padding: 8px 20px;
+        }
+
+        #menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-nav-links {
+            display: none;
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-bg); /* Dark Grey BG */
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color); /* Red Border */
+            flex-direction: column;
+            max-height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .mobile-nav-links.active {
+            display: flex;
+        }
+
+        .mobile-nav-links a {
+             display: block;
+             color: var(--text-primary);
+             font-weight: 600;
+             text-transform: uppercase;
+             font-size: 1rem;
+             padding: 15px 20px;
+             text-align: center;
+             border-bottom: 1px solid var(--border-color); /* Red Border */
+        }
+        .mobile-nav-links a:last-child {
+            border-bottom: none;
+        }
+         .mobile-nav-links a:hover {
+            background-color: rgba(255, 0, 0, 0.05); /* Subtle red hover */
+         }
+
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            /* Placeholder - Use a dark/red themed esports background image */
+            background: url('https://via.placeholder.com/1920x1080/0a0a0a/1a1a1a?text=Dark+Red+Esports+Background') no-repeat center center/cover;
+            padding-top: var(--header-height);
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Dark overlay */
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 40px 20px;
+        }
+
+        .hero-tagline {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--text-headings);
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px var(--border-glow); /* Red glow */
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        /* Keep pulseGlow, uses --border-glow which is now red */
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 15px var(--border-glow); }
+            50% { text-shadow: 0 0 25px var(--border-glow); }
+        }
+
+        .hero-subtagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            font-size: 1rem;
+        }
+
+        /* --- Introduction Section --- */
+        #intro {
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .intro-text strong {
+            color: var(--accent-1); /* Red highlight */
+        }
+
+        #countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        #countdown-timer p {
+            font-size: 1.5rem;
+            color: var(--accent-3); /* Orange-Red (or change to --accent-1 if preferred) */
+            font-weight: bold;
+        }
+
+        .timer-box {
+            background-color: var(--secondary-bg); /* Dark grey */
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* Red border */
+            text-align: center;
+            min-width: 90px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.1); /* Red shadow */
+        }
+
+        .timer-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-1); /* Red numbers */
+            margin-bottom: 5px;
+        }
+        .timer-box div:last-child {
+             font-size: 0.8rem;
+             color: var(--text-secondary);
+             text-transform: uppercase;
+        }
+
+        /* --- Bundle Showcase --- */
+        .bundle-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+            gap: 40px;
+        }
+
+        .bundle-card {
+            background-color: var(--card-bg); /* Dark transparent */
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color); /* Red border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bundle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.15); /* Red shadow */
+        }
+
+        .bundle-image {
+            position: relative;
+        }
+        .bundle-image img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            background-color: var(--secondary-bg); /* Dark BG for loading */
+        }
+
+        .bundle-price, .bundle-giveaway-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            /* Red Gradient Tag */
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: #fff; /* White text */
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+        .bundle-giveaway-tag {
+             /* Keep giveaway distinct, maybe orange-red or another red gradient */
+             background: linear-gradient(90deg, var(--accent-3), var(--accent-1));
+             color: #fff;
+        }
+
+        .bundle-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bundle-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-headings);
+        }
+        .bundle-partner-tag {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .bundle-specs {
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .bundle-specs li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .bundle-specs i {
+            color: var(--accent-1); /* Red icons */
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            padding-top: 3px;
+        }
+
+        .bundle-cta {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* --- RTS Specs Section --- */
+        .rts-system {
+            margin-bottom: 60px;
+            background: rgba(26, 26, 26, 0.5); /* Darker transparent */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* Red border */
+        }
+        .rts-system:last-child {
+            margin-bottom: 0;
+        }
+
+        .rts-system h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent-1); /* Red title */
+            border-bottom: 2px solid var(--accent-1); /* Red underline */
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .rts-system h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-headings);
+        }
+
+        .rts-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .rts-table-container {
+            overflow-x: auto;
+        }
+
+        .specs-table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .specs-table th, .specs-table td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
+            vertical-align: top;
+        }
+        .specs-table th {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        .specs-table td:first-child {
+            font-weight: 600;
+            color: var(--accent-3); /* Orange-Red accent for component type (or change to --accent-1) */
+            width: 20%;
+        }
+        .specs-table td:nth-child(2) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .specs-table td:last-child {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .rts-performance ul {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .rts-performance li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .rts-performance li::before {
+            content: '\f111'; /* Font Awesome bullet */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--accent-2); /* Darker red bullet */
+            position: absolute;
+            left: -20px;
+            font-size: 0.6rem;
+            top: 6px;
+        }
+
+        .video-showcase img {
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color); /* Red border */
+            background-color: var(--secondary-bg);
+        }
+        .video-showcase p {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .rts-teaser {
+            text-align: center;
+            border: 2px dashed var(--accent-1); /* Red dashed border */
+            background: linear-gradient(rgba(255, 0, 0, 0.05), rgba(255, 0, 0, 0.01)); /* Subtle red gradient bg */
+        }
+        .rts-teaser h3 {
+            border: none;
+            display: block;
+        }
+        .teaser-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .teaser-stats li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .teaser-stats i {
+            color: var(--accent-2); /* Darker red icons */
+        }
+        .event-callout {
+            font-weight: 700;
+            color: var(--accent-1); /* Red callout */
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Partner Showcase --- */
+        .partners-grid {
+            display: grid;
+            /* Adjust columns for logo-only view */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            align-items: center; /* Center logos vertically */
+            justify-content: center; /* Center grid items if fewer than columns */
+        }
+
+        .partner-card {
+            background-color: var(--primary-bg); /* Black BG */
+            padding: 30px 20px; /* Adjusted padding */
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* Red border */
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .partner-card:hover {
+             border-color: var(--accent-1); /* Red border on hover */
+             box-shadow: 0 0 15px rgba(255, 0, 0, 0.1); /* Red shadow on hover */
+        }
+
+        .partner-logo {
+            height: 60px; /* Increased height for better visibility */
+            width: auto;
+            max-width: 180px; /* Limit width */
+            margin: 0 auto; /* Center the logo */
+            object-fit: contain;
+            display: block;
+            /* Optional: add white background if logos are transparent/dark */
+            /* background-color: #fff;
+            padding: 5px;
+            border-radius: 4px; */
+            filter: brightness(0) invert(1); /* Make logos white if they are black */
+        }
+        /* Remove styles for hidden elements */
+        .partner-card h4,
+        .partner-card p,
+        .partner-card ul,
+        .partner-card .btn,
+        .partner-card blockquote,
+        .partner-card .mini-compare-table,
+        .partner-card .peripheral-showcase,
+        .partner-card h5 {
+            display: none; /* Hide description, features, buttons etc. */
+        }
+
+
+        /* --- Event Information --- */
+        .event-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+
+        .event-details h4 {
+            font-size: 1.3rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: var(--accent-2); /* Darker red */
+        }
+        .event-details ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+        .event-details li {
+            margin-bottom: 8px;
+        }
+
+        .event-map img {
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* Red border */
+            margin-bottom: 10px;
+            background-color: var(--secondary-bg); /* Dark BG */
+        }
+        .event-map p {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* --- FAQ Section --- */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--primary-bg); /* Black BG */
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* Red Border */
+            overflow: hidden;
+        }
+
+        .faq-item summary {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            list-style: none;
+            color: var(--text-headings);
+            transition: background-color 0.3s ease;
+            display: block;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+
+        .faq-item summary::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+            color: var(--accent-1); /* Red chevron */
+        }
+
+        .faq-item[open] summary {
+            background-color: rgba(255, 0, 0, 0.05); /* Subtle red bg when open */
+        }
+
+        .faq-item[open] summary::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .faq-item div {
+             padding: 0 20px 20px 20px;
+        }
+        .faq-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            padding: 0;
+        }
+        .faq-item p a { /* Ensure links inside FAQ are red */
+            color: var(--accent-1);
+        }
+         .faq-item p a:hover {
+            color: var(--accent-2);
+         }
+
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--secondary-bg); /* Dark Grey BG */
+            padding: 40px 0 20px 0;
+            border-top: 1px solid var(--border-color); /* Red Border */
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px 20px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px 25px;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--accent-1); /* Red hover */
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        .footer-social a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-color); /* Red border */
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover,
+        .footer-social a:focus-visible {
+            color: var(--accent-1); /* Red icon */
+            border-color: var(--accent-1); /* Red border */
+            background-color: rgba(255, 0, 0, 0.1); /* Subtle red background */
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle top border */
+        }
+
+        /* --- Responsive Design (Keep existing breaks, colors will adapt) --- */
+        @media (max-width: 1024px) {
+            .section-title { font-size: 2rem; }
+            .hero-tagline { font-size: 3rem; }
+            .nav-links { gap: 20px; }
+            .nav-links a { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            :root { --header-height: 60px; }
+            html { font-size: 15px; }
+            .nav-links { display: none; }
+            .nav-checkout { display: none; }
+            #menu-toggle { display: block; }
+            .hero-tagline { font-size: 2.5rem; }
+            .hero-subtagline { font-size: 1rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links { margin: 15px 0; }
+            /* Adjust partner logo grid for mobile if needed */
+            .partners-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px;}
+        }
+
+        @media (max-width: 480px) {
+             html { font-size: 14px; }
+            .section-title { font-size: 1.8rem; }
+            .hero-tagline { font-size: 2rem; }
+            #countdown-timer { gap: 10px; }
+            .timer-box { padding: 10px 15px; min-width: 70px; }
+            .timer-box span { font-size: 1.5rem; }
+            .bundle-title { font-size: 1.3rem; }
+            .btn { padding: 10px 20px; font-size: 0.8rem; }
+            .rts-system h3 { font-size: 1.5rem; }
+            .footer-logo img { height: 35px; }
+            .specs-table { min-width: 300px; }
+            .specs-table th, .specs-table td { padding: 8px 5px; }
+            .partners-grid { grid-template-columns: repeat(2, 1fr); } /* 2 logos per row on smallest screens */
+            .partner-logo { height: 50px; }
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header id="main-header">
+        <nav class="container">
+            <a href="#hero" class="logo">
+                <!-- Use your actual Red/Black Aftershock Logo -->
+                <img src="https://via.placeholder.com/150x40/FFFFFF/0a0a0a?text=AFTERSHOCK+PC" alt="Aftershock PC Logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#bundles">Bundles</a></li>
+                <li><a href="#specs">RTS Specs</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#event-info">Event Info</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="#checkout" class="btn btn-primary nav-checkout">Checkout Bundles</a>
+            <button id="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+         <div id="mobile-menu" class="mobile-nav-links">
+             <a href="#bundles">Bundles</a>
+             <a href="#specs">RTS Specs</a>
+             <a href="#partners">Partners</a>
+             <a href="#event-info">Event Info</a>
+             <a href="#faq">FAQ</a>
+             <a href="#checkout" class="btn btn-primary" style="margin: 15px 20px 0; display: block;">Checkout Bundles</a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <h1 class="hero-tagline">Performance Where It Counts</h1>
+                <p class="hero-subtagline">Exclusive IEM Melbourne 2024 Bundles & Ready-To-Ship Systems</p>
+                <a href="#bundles" class="btn btn-secondary hero-cta">Explore Bundles</a>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section id="intro" class="container section-padding">
+            <h2 class="section-title"><span>IEM Melbourne</span> Exclusive Offers</h2>
+            <p class="intro-text">
+                Join Aftershock PC at <strong class="highlight">IEM Melbourne (October 18-20, 2024)</strong> at the Melbourne & Olympic Parks (Booth #A12). Score limited-time exclusive bundles online or grab yours directly at our booth! Don't miss out – the countdown is on!
+            </p>
+            <div id="countdown-timer">
+                <!-- Countdown Timer Content (Populated by JS) -->
+                <div class="timer-box">
+                    <span id="days">00</span>
+                    <div>Days</div>
+                </div>
+                <div class="timer-box">
+                    <span id="hours">00</span>
+                    <div>Hours</div>
+                </div>
+                <div class="timer-box">
+                    <span id="minutes">00</span>
+                    <div>Mins</div>
+                </div>
+                <div class="timer-box">
+                    <span id="seconds">00</span>
+                    <div>Secs</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bundle Showcase Section -->
+        <section id="bundles" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Choose Your <span>Arsenal</span></h2>
+                <div class="bundle-cards-container">
+
+                    <!-- Bundle 1: Purchase -->
+                    <div class="bundle-card">
+                        <div class="bundle-image">
+                            <!-- Placeholder - Use relevant red/black themed setup image -->
+                            <img src="https://via.placeholder.com/600x400/1a1a1a/ff0000?text=RTX+4060+Custom+Bundle+Setup" alt="Custom Performance Gaming Bundle Setup with Red RGB Lighting">
+                            <div class="bundle-price">$1899 AUD</div>
+                        </div>
+                        <div class="bundle-content">
+                            <h3 class="bundle-title">Custom Performance Gaming Bundle</h3>
+                            <p class="bundle-partner-tag">Featuring Gigabyte, Aftershock & Lexar</p>
+                            <ul class="bundle-specs">
+                                <li><i class="fas fa-microchip"></i> Gigabyte RTX 4060 Eagle OC 8GB</li>
+                                <li><i class="fas fa-memory"></i> Gigabyte B860M Eagle Wi-Fi 6E</li>
+                                <li><i class="fas fa-desktop"></i> AOC 24G2 24" 165Hz Gaming Monitor</li>
+                                <li><i class="fas fa-keyboard"></i> Aftershock Stealth TKL Mechanical Keyboard</li>
+                                <li><i class="fas fa-mouse"></i> Aftershock Precision Lightweight Mouse</li>
+                                <li><i class="fas fa-headphones"></i> Aftershock Sonic Pro Gaming Headset</li>
+                            </ul>
+                            <a href="#checkout-bundle1" class="btn btn-primary bundle-cta">Buy Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Bundle 2: Giveaway -->
+                    <div class="bundle-card giveaway-card">
+                         <div class="bundle-image">
+                            <!-- Placeholder - Use relevant red/black themed setup image -->
+                            <img src="https://via.placeholder.com/600x400/0a0a0a/ff0000?text=Premium+OLED+Giveaway+Bundle" alt="Premium Giveaway Bundle featuring Samsung OLED and SteelSeries Gear">
+                            <div class="bundle-giveaway-tag">Premium Giveaway!</div>
+                        </div>
+                        <div class="bundle-content">
+                            <h3 class="bundle-title">Premium Giveaway Bundle</h3>
+                             <p class="bundle-partner-tag">Featuring Samsung & SteelSeries</p>
+                            <ul class="bundle-specs">
+                                <li><i class="fas fa-tv"></i> <span class="highlight">Samsung Odyssey OLED G8</span> Monitor</li>
+                                <li><i class="fas fa-keyboard"></i> SteelSeries Apex Pro TKL WL Keyboard</li>
+                                <li><i class="fas fa-headphones-alt"></i> SteelSeries Arctis Nova Pro Wireless</li>
+                                <li><i class="fas fa-mouse"></i> SteelSeries Aerox 9 Wireless</li>
+                                <li><i class="fas fa-plus-circle"></i> High-Performance Aftershock PC (Specs TBC)</li>
+                            </ul>
+                            <a href="#giveaway-page" class="btn btn-secondary bundle-cta">Enter Giveaway</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RTS Systems Specs Section -->
+        <section id="specs" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Ready-To-Ship <span>System Specs</span></h2>
+
+                <!-- RTS 1 Details - AORUS Powered -->
+                <div class="rts-system">
+                    <!-- Updated Title to highlight AORUS -->
+                    <h3>RTS 1: AORUS Powered Performance Build</h3>
+                    <div class="rts-content">
+                        <div class="rts-table-container">
+                            <h4>Technical Breakdown</h4>
+                            <table class="specs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Specification</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Specs remain the same, showcasing Gigabyte/AORUS components -->
+                                    <tr><td>CPU</td><td>Intel Core Ultra 5 245KF</td><td>5.2 GHz / 14 Cores 14 Threads</td></tr>
+                                    <tr><td>GPU</td><td>Gigabyte RTX 4060 Eagle OC</td><td>8GB</td></tr>
+                                    <tr><td>Mobo</td><td>Gigabyte B860M Eagle Wi-Fi 6E</td><td>DDR5</td></tr>
+                                    <tr><td>RAM</td><td>32GB Lexar Thor RGB 6000MHz</td><td>(2x16GB)</td></tr>
+                                    <tr><td>SSD</td><td>1TB Gen4 Lexar NQ790 M.2 NVME</td><td>R 7000MBs / W 6000MBs</td></tr>
+                                    <tr><td>Cooler</td><td>Aftershock Glacier Mirror 240mm</td><td>Liquid Cooling</td></tr>
+                                    <tr><td>PSU</td><td>650W Inwin B65E</td><td>80+ Bronze</td></tr>
+                                    <tr><td>Case</td><td>Gigabyte C102 Glass</td><td>Tempered Glass Design</td></tr>
+                                    <tr><td>Fan</td><td>Aftershock Omni RGB 120mm</td><td>Black</td></tr>
+                                    <tr><td>OS</td><td>Windows 11 Home</td><td>64 Bit Special</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="rts-performance">
+                            <h4>Esports Performance Benchmarks (Est. QHD)</h4>
+                            <ul>
+                                <li>Valorant: 220+ FPS</li>
+                                <li>CS2: 180+ FPS</li>
+                                <li>Apex Legends: 120+ FPS</li>
+                                <li>Fortnite (Comp): 150+ FPS</li>
+                            </ul>
+                            <div class="video-showcase">
+                                <a href="#" title="Watch Build Showcase">
+                                    <!-- Placeholder - Use relevant red/black themed video thumbnail -->
+                                    <img src="https://via.placeholder.com/400x225/0a0a0a/ff0000?text=RTS+1+Build+Showcase+Video" alt="RTS 1 AORUS Powered System Build Showcase Video Thumbnail">
+                                </a>
+                                <p>Watch the build & RGB showcase!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RTS 2 Teaser - Intel Battlemage Showcase -->
+                <div class="rts-system rts-teaser">
+                     <!-- Title remains the same, clearly indicating Intel -->
+                    <h3>RTS 2: Intel Battlemage Showcase (Event Exclusive)</h3>
+                    <p>Experience the future of integrated graphics! See the first public demonstration of Intel's Battlemage performance in our exclusive showcase system.</p>
+                    <ul class="teaser-stats">
+                        <li><i class="fas fa-bolt"></i> Next-Gen Architecture</li>
+                        <li><i class="fas fa-chart-line"></i> Significant Perf Uplift</li>
+                        <li><i class="fas fa-eye"></i> Advanced Ray Tracing</li>
+                        <li><i class="fas fa-gamepad"></i> Smooth 1080p Gaming</li>
+                    </ul>
+                    <p class="event-callout"><strong>See it first at IEM Melbourne! Booth #A12</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partner Showcase Section (Logos Only) -->
+        <section id="partners" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Powered By <span>Our Partners</span></h2>
+                <div class="partners-grid">
+
+                    <!-- AORUS Logo -->
+                    <div class="partner-card">
+                        <!-- !! REPLACE with actual AORUS logo URL !! -->
+                        <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=AORUS+LOGO" alt="AORUS Logo" class="partner-logo">
+                        <!-- Hidden h4 title: <h4>AORUS</h4> -->
+                    </div>
+
+                    <!-- Samsung Logo -->
+                    <div class="partner-card">
+                         <!-- !! REPLACE with actual SAMSUNG logo URL !! -->
+                         <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=SAMSUNG+LOGO" alt="Samsung Logo" class="partner-logo">
+                         <!-- Hidden h4 title: <h4>Samsung</h4> -->
+                    </div>
+
+                    <!-- SteelSeries Logo -->
+                    <div class="partner-card">
+                         <!-- !! REPLACE with actual STEELSERIES logo URL !! -->
+                         <img src="https://via.placeholder.com/180x60/000000/FFFFFF?text=STEELSERIES+LOGO" alt="SteelSeries Logo" class="partner-logo">
+                         <!-- Hidden h4 title: <h4>SteelSeries</h4> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Information Section -->
+        <section id="event-info" class="section-padding">
+            <div class="container event-info-grid">
+                <div class="event-details">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Visit Us At <span>IEM Melbourne</span></h2>
+                    <p><strong>Dates:</strong> October 18 - 20, 2024</p>
+                    <p><strong>Location:</strong> Melbourne & Olympic Parks</p>
+                    <p><strong>Booth:</strong> #A12 (Near the Main Stage Area)</p>
+                    <h4>What's Happening at Our Booth:</h4>
+                    <ul>
+                        <li>Live PC Build Demonstrations Daily</li>
+                        <li>Exclusive Event-Only Discounts</li>
+                        <li>Play on our Latest RTS Systems</li>
+                        <li>Pro Player Meet & Greets (Schedule TBC)</li>
+                        <li>Premium Bundle Giveaway Entry</li>
+                    </ul>
+                </div>
+                <div class="event-map">
+                    <!-- Placeholder Map - Use relevant map image -->
+                    <img src="https://via.placeholder.com/500x350/1a1a1a/FFFFFF?text=Map+Showing+Aftershock+Booth+A12" alt="IEM Melbourne Event Map highlighting the Aftershock PC Booth A12">
+                    <p>Find us easily - look for the <span class="highlight">Aftershock glow</span> at Booth #A12!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section-padding section-dark">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+                <div class="faq-container">
+                    <details class="faq-item">
+                        <summary>How does shipping work for online bundle purchases?</summary>
+                        <div><p>Online bundle orders placed before October 15th will aim to ship before the event starts. Orders placed after this date or during the event will ship starting the week of October 21st. Standard Australian shipping times apply. Express options are available at checkout.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>What is the warranty on the bundles?</summary>
+                         <div><p>All Aftershock PCs included in the bundles come with our standard 3-Year Pickup & Return Warranty. Peripherals (monitors, keyboards, mice, headsets) are covered by their respective manufacturer warranties (Samsung, SteelSeries). Please retain proof of purchase.</p></div>
+                    </details>
+                     <details class="faq-item">
+                        <summary>Can I buy the bundles at the IEM event?</summary>
+                         <div><p>Yes! A limited quantity of the 'AORUS Powered Gaming Bundle' will be available for purchase directly at our booth (#A12) during IEM Melbourne. These are first come, first served. The Giveaway Bundle is entry-only.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>How do I enter the Premium Giveaway Bundle?</summary>
+                         <div><p>You can enter the giveaway via the link on this page (<a href="#giveaway-page">Enter Giveaway</a>) which will become active closer to the event, or by visiting our booth (#A12) at IEM Melbourne and scanning the QR code. One entry per person. Full terms and conditions will be available on the entry page.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Who do I contact for technical support?</summary>
+                         <div><p>For technical support regarding the Aftershock PC itself, please visit our <a href="[Your Support Page Link]" target="_blank">support page</a> or call us at [Your Phone Number]. For issues with peripherals (monitor, keyboard, mouse, headset), please contact Samsung or SteelSeries support directly through their respective websites.</p></div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placeholder Anchors -->
+        <div id="checkout" style="height: 1px; overflow: hidden;"></div>
+        <div id="checkout-bundle1" style="height: 1px; overflow: hidden;"></div>
+        <div id="giveaway-page" style="height: 1px; overflow: hidden;"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="#hero" class="footer-logo">
+                     <!-- Use your actual Red/Black Aftershock Logo -->
+                     <img src="https://via.placeholder.com/180x50/FFFFFF/0a0a0a?text=AFTERSHOCK+PC" alt="Aftershock PC Logo">
+                </a>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Support</a>
+                    <a href="#">Warranty</a>
+                </div>
+                <div class="footer-social">
+                    <!-- Add actual social media links -->
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Twitch"><i class="fab fa-twitch"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <p class="copyright">© 2024 Aftershock PC Australia. All Rights Reserved. Aftershock PC is a registered trademark. IEM is a trademark of ESL Gaming GmbH. All other trademarks are property of their respective owners.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript (Kept unchanged from original) -->
+    <script>
+        // --- Header Scroll Effect ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = menuToggle.querySelector('i');
+
+        if (menuToggle && mobileMenu && mobileMenuIcon) {
+            menuToggle.addEventListener('click', () => {
+                const isActive = mobileMenu.classList.toggle('active');
+                menuToggle.setAttribute('aria-expanded', isActive); // Update ARIA attribute
+
+                // Toggle icon class
+                if (isActive) {
+                    mobileMenuIcon.classList.remove('fa-bars');
+                    mobileMenuIcon.classList.add('fa-times');
+                } else {
+                    mobileMenuIcon.classList.remove('fa-times');
+                    mobileMenuIcon.classList.add('fa-bars');
+                }
+            });
+
+            // --- Close Mobile Menu When Link is Clicked ---
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    mobileMenuIcon.classList.remove('fa-times');
+                    mobileMenuIcon.classList.add('fa-bars');
+                });
+            });
+        } else {
+            console.error("Mobile menu elements not found!");
+        }
+
+
+        // --- Countdown Timer ---
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown-timer');
+            const daysEl = document.getElementById("days");
+            const hoursEl = document.getElementById("hours");
+            const minutesEl = document.getElementById("minutes");
+            const secondsEl = document.getElementById("seconds");
+
+            if (!countdownElement || !daysEl || !hoursEl || !minutesEl || !secondsEl) {
+                console.error("Countdown timer elements not found!");
+                if (countdownElement) {
+                    countdownElement.innerHTML = "<p>Countdown timer error.</p>";
+                }
+                return; // Exit if elements not found
+            }
+
+            // --- SET YOUR EVENT DATE AND TIME HERE ---
+            // Format: YYYY-MM-DDTHH:mm:ss (e.g., October 18, 2024, 9:00 AM)
+            const eventDate = new Date("2024-10-18T09:00:00").getTime();
+
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = eventDate - now;
+
+                // If the countdown is over
+                if (distance < 0) {
+                    clearInterval(timer);
+                    // Clear existing timer boxes and show message
+                    while (countdownElement.firstChild) {
+                        countdownElement.removeChild(countdownElement.firstChild);
+                    }
+                    const liveMessage = document.createElement('p');
+                    liveMessage.innerHTML = "The Event Is Live! Visit us at Booth #A12!";
+                    countdownElement.appendChild(liveMessage);
+                    return;
+                }
+
+                // Calculate time units
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update HTML elements (ensure they exist before updating)
+                daysEl.innerText = String(days).padStart(2, '0');
+                hoursEl.innerText = String(hours).padStart(2, '0');
+                minutesEl.innerText = String(minutes).padStart(2, '0');
+                secondsEl.innerText = String(seconds).padStart(2, '0');
+
+            }, 1000);
+        }
+
+        // Call the countdown function when the page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+    </script>
+
+</body>
+</html>
