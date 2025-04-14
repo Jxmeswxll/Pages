@@ -3,44 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- UPDATE: More compelling title -->
-    <title>Dominate IEM Melbourne 2024: Exclusive Aftershock PC Bundles & RTS Systems</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> <!-- Updated Font Awesome -->
+    <title>Page Not Found (404) | Aftershock PC</title>
+    <!-- Re-use Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Re-use Favicon -->
     <link rel="icon" href="https://via.placeholder.com/32/ff0000/0a0a0a?text=A" type="image/png"> <!-- Use actual favicon -->
 
     <style>
-        /* --- Base Variables & Resets --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap'); /* Added 900 weight */
+        /* --- Base Variables & Resets (Copied from Landing Page) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
 
         :root {
-            /* --- Enhanced Red & Black Theme --- */
-            --primary-bg: #050505; /* Slightly deeper black */
-            --secondary-bg: #121212; /* Darker Grey */
-            --card-bg: rgba(18, 18, 18, 0.85); /* Slightly darker card BG */
-            --text-primary: #e0e0e0; /* Slightly softer off-white */
-            --text-secondary: #b0b0b0; /* Lighter grey for contrast */
-            --text-headings: #ffffff; /* Pure White */
-            --accent-1: #ff0000; /* Bright Red */
-            --accent-2: #d10000; /* Deeper Red */
-            --accent-3: #ff3c00; /* More vibrant Orange-Red */
+            /* --- Using the same theme variables --- */
+            --primary-bg: #050505;
+            --secondary-bg: #121212;
+            --card-bg: rgba(18, 18, 18, 0.85);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-headings: #ffffff;
+            --accent-1: #ff0000;
+            --accent-2: #d10000;
             --gradient-red: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-            --gradient-red-orange: linear-gradient(90deg, var(--accent-3), var(--accent-1));
             --border-color: rgba(255, 0, 0, 0.2);
-            --border-glow: rgba(255, 0, 0, 0.4); /* Slightly stronger glow */
-            --border-glow-hover: rgba(255, 0, 0, 0.6);
-            --shadow-color: rgba(255, 0, 0, 0.15); /* Softer shadow base */
-            --shadow-color-hover: rgba(255, 0, 0, 0.25);
+            --border-glow: rgba(255, 0, 0, 0.4);
+            --shadow-color: rgba(255, 0, 0, 0.15);
             --focus-outline-color: var(--accent-1);
-
-            /* --- Layout & Animation --- */
-            --header-height: 70px;
             --font-primary: 'Poppins', sans-serif;
-            --border-radius-sm: 4px;
             --border-radius-md: 8px;
             --border-radius-lg: 12px;
             --transition-speed: 0.3s;
             --transition-ease: ease-in-out;
-            --animation-delay: 0.1s; /* Base delay for staggered animations */
         }
 
         * {
@@ -50,141 +42,107 @@
         }
 
         html {
-            scroll-behavior: smooth;
             font-size: 16px;
         }
 
         body {
             font-family: var(--font-primary);
-            /* --- ENHANCED: Site-wide background --- */
-            background-image: url('/Assets/Image23.png'); /* Replace with a high-quality, dark, techy/gaming background */
+            /* --- Use the same background concept --- */
+            background-image: url('/Assets/Image23.png'); /* Optional: Use the same or a similar background */
             background-color: var(--primary-bg);
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
             background-position: center center;
             color: var(--text-primary);
-            line-height: 1.7; /* Improved readability */
+            line-height: 1.7;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased; /* Smoother fonts */
+            -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* --- Center content vertically --- */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center; /* Center main content */
         }
 
-        /* --- Container & Section Styling --- */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 25px; /* Slightly more padding */
-            position: relative;
-            z-index: 1;
-        }
-
-        main > section {
-             /* Use a slightly darker, less transparent base for sections */
-            background-color: rgba(5, 5, 5, 0.9);
-            backdrop-filter: blur(15px); /* Stronger blur */
-            -webkit-backdrop-filter: blur(15px);
-            margin-bottom: 80px; /* Add space between sections */
-            border-bottom: 1px solid var(--border-color); /* Subtle separator */
-        }
-        main > section:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        main > section.section-dark {
-            background-color: rgba(18, 18, 18, 0.92); /* Darker grey sections */
-        }
-        /* Apply similar bg/blur to cards etc. */
-        .bundle-card, .rts-system, .partner-card, .faq-item {
-             background-color: var(--card-bg);
-             backdrop-filter: blur(8px);
-             -webkit-backdrop-filter: blur(8px);
-             border-radius: var(--border-radius-lg);
-             border: 1px solid var(--border-color);
-             transition: transform var(--transition-speed) var(--transition-ease),
-                         box-shadow var(--transition-speed) var(--transition-ease),
-                         border-color var(--transition-speed) var(--transition-ease);
-             overflow: hidden; /* Ensure content respects border radius */
-        }
-
-        /* --- Base Element Styling --- */
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover; /* Ensure images cover their containers nicely */
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--accent-1);
-            transition: color var(--transition-speed) ease;
-        }
-        a:hover { color: var(--accent-2); }
-
-        a:focus-visible,
-        button:focus-visible,
-        summary:focus-visible,
-        details[open] summary:focus-visible {
-             outline: 2px solid var(--focus-outline-color);
-             outline-offset: 3px;
-             border-radius: var(--border-radius-sm);
-        }
-        a:focus, button:focus, summary:focus, details[open] summary:focus { outline: none; }
-
-        ul { list-style: none; }
-
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-headings);
-            font-weight: 800; /* Bolder headings */
-            text-wrap: balance; /* Improve headline wrapping */
-        }
-
-        /* --- Utility Classes --- */
-        .section-padding { padding: 100px 0; } /* Increased padding */
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
-            font-weight: 900; /* Max weight */
+        /* --- Container for the 404 content --- */
+        .error-container {
             text-align: center;
-            margin-bottom: 60px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            position: relative; /* For potential pseudo-element styling */
+            max-width: 700px;
+            margin: 40px auto; /* Auto margin centers horizontally, top/bottom provides space */
+            padding: 50px 30px;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
         }
-        /* Enhanced Gradient Title */
-        .section-title span {
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .error-logo img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+
+        .error-code {
+            font-size: clamp(6rem, 25vw, 12rem); /* Massive, responsive 404 */
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 0px;
+            /* --- Apply the red gradient text effect --- */
             background: var(--gradient-red);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            padding: 0 8px;
+            text-shadow: 0 0 20px var(--border-glow);
+            animation: pulseGlow404 4s infinite ease-in-out;
         }
-        /* Optional Underline Accent */
-         .section-title::after {
-             content: '';
-             display: block;
-             width: 60px;
-             height: 3px;
-             background: var(--gradient-red);
-             margin: 15px auto 0;
-             border-radius: 3px;
-         }
 
-        .highlight {
-            color: var(--accent-1);
+        @keyframes pulseGlow404 {
+            0%, 100% { text-shadow: 0 0 15px var(--border-glow); }
+            50% { text-shadow: 0 0 25px var(--border-glow); }
+        }
+
+        .error-message {
+            font-size: clamp(1.5rem, 5vw, 2.2rem); /* Large message */
             font-weight: 700;
+            color: var(--text-headings);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- Buttons --- */
+        .error-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .error-description strong {
+            color: var(--text-primary); /* Slightly highlight keywords */
+        }
+
+
+        /* --- Re-use Button Styles --- */
         .btn {
             display: inline-block;
-            padding: 14px 35px; /* Slightly larger */
+            padding: 14px 35px;
             border-radius: 50px;
-            font-weight: 700; /* Bolder */
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px; /* More spacing */
+            letter-spacing: 1px;
             border: none;
             cursor: pointer;
             transition: all var(--transition-speed) var(--transition-ease);
@@ -193,20 +151,10 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            margin: 5px; /* Add space for wrapping */
         }
-        .btn::before { /* Shine effect on hover */
-             content: "";
-             position: absolute;
-             top: 0;
-             left: -100%;
-             width: 100%;
-             height: 100%;
-             background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-             transition: left var(--transition-speed) var(--transition-ease);
-             z-index: -1;
-         }
-        .btn:hover::before { left: 100%; }
-
+         .btn::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left var(--transition-speed) var(--transition-ease); z-index: -1; }
+         .btn:hover::before { left: 100%; }
 
         .btn-primary {
             background: var(--gradient-red);
@@ -214,1372 +162,102 @@
             box-shadow: 0 6px 20px var(--shadow-color);
         }
         .btn-primary:hover {
-            box-shadow: 0 10px 30px var(--shadow-color-hover);
-            transform: translateY(-3px) scale(1.03); /* More pronounced hover */
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.25);
+            transform: translateY(-3px) scale(1.03);
         }
 
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--accent-1);
-            border: 2px solid var(--accent-1);
-        }
-        .btn-secondary:hover {
-            background-color: rgba(255, 0, 0, 0.1);
-            color: var(--text-headings);
-            border-color: var(--accent-2);
-            transform: translateY(-3px);
-            box-shadow: 0 0 15px var(--shadow-color); /* Add subtle glow */
-        }
-
-        /* --- Header --- */
-        #main-header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(5, 5, 5, 0.7); /* Darker base */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 10px 0;
-            transition: background-color var(--transition-speed) ease,
-                        box-shadow var(--transition-speed) ease,
-                        border-color var(--transition-speed) ease; /* Added border transition */
-            height: var(--header-height);
-            border-bottom: 1px solid transparent;
-        }
-
-        #main-header.scrolled {
-            background-color: rgba(5, 5, 5, 0.85);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        #main-header nav {
+        .error-navigation {
+            margin-top: 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-        }
-
-        .logo img {
-            height: 45px; /* Slightly larger */
-            width: auto;
-            display: block;
-            transition: transform var(--transition-speed) ease;
-        }
-         .logo:hover img { transform: scale(1.05); }
-
-        .nav-links { display: flex; gap: 35px; } /* More gap */
-
-        .nav-links a {
-            color: var(--text-primary);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.8px;
-            padding: 8px 0; /* More clickable area */
-            position: relative;
-            transition: color var(--transition-speed) ease;
-        }
-         .nav-links a:hover { color: var(--accent-1); } /* Hover directly on text */
-
-        .nav-links a::after { /* More prominent underline */
-            content: '';
-            position: absolute;
-            bottom: 0px; /* Closer to text */
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--gradient-red);
-            border-radius: 3px;
-            transition: width var(--transition-speed) var(--transition-ease);
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a:focus-visible::after { width: 100%; }
-
-        .nav-checkout { padding: 10px 25px; } /* Match button sizing better */
-
-        #menu-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.8rem; cursor: pointer; padding: 5px; transition: color var(--transition-speed) ease; }
-        #menu-toggle:hover { color: var(--accent-1); }
-
-        .mobile-nav-links { /* Style as before, ensure consistency */
-            display: none;
-            position: absolute;
-            top: var(--header-height);
-            left: 0;
-            width: 100%;
-            background-color: rgba(18, 18, 18, 0.98); /* Darker, less transparent */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border-color);
-            flex-direction: column;
-            max-height: calc(100vh - var(--header-height));
-            overflow-y: auto;
-            z-index: 999;
-        }
-        .mobile-nav-links.active { display: flex; }
-        .mobile-nav-links a { display: block; color: var(--text-primary); font-weight: 600; text-transform: uppercase; font-size: 1rem; padding: 18px 25px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease; }
-        .mobile-nav-links a:last-child { border-bottom: none; }
-        .mobile-nav-links a:hover { background-color: rgba(255, 0, 0, 0.1); color: var(--accent-1); }
-
-        /* --- Hero Section --- */
-        #hero {
-            min-height: 90vh; /* Slightly taller */
-            display: flex;
-            align-items: center;
             justify-content: center;
-            text-align: center;
-            position: relative;
-            /* --- USE A HIGH-RES, DARK, GAMING/TECH BACKGROUND IMAGE --- */
-            background: url('https://via.placeholder.com/1920x1080/0a0a0a/333333?text=Replace+with+EPIC+Background+Image') no-repeat center center/cover;
-            padding-top: var(--header-height);
-            overflow: hidden;
-            background-color: transparent !important; /* Ensure body bg doesn't interfere */
-            border-bottom: 2px solid var(--accent-1); /* Strong separator */
+            gap: 15px;
+            flex-wrap: wrap; /* Allow links to wrap on small screens */
         }
 
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .error-navigation a:not(.btn) {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius-md);
+            transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+        }
+        .error-navigation a:not(.btn):hover {
+            color: var(--accent-1);
+            background-color: rgba(255, 0, 0, 0.05);
+        }
+
+        /* --- Footer (Optional but recommended for consistency) --- */
+        /* --- Minimal Footer Styling (Adjust as needed or copy full footer CSS) --- */
+        footer {
+            margin-top: auto; /* Pushes footer to bottom in flex container */
+            padding: 30px 0 20px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             width: 100%;
-            height: 100%;
-            /* --- ENHANCED: Animated Gradient Overlay --- */
-            background: linear-gradient(135deg, rgba(5, 5, 5, 0.7), rgba(18, 18, 18, 0.85), rgba(5, 5, 5, 0.95));
-            background-size: 200% 200%; /* For animation */
-            animation: gradientShift 15s ease infinite;
+            background-color: rgba(10, 10, 10, 0.9); /* Match footer bg */
+            position: relative;
             z-index: 1;
         }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 50px 20px;
-            animation: fadeIn HeroAnimation var(--transition-speed) var(--transition-ease) forwards; /* Added fade-in */
-            opacity: 0; /* Start hidden for animation */
-        }
-
-        @keyframes fadeInHeroAnimation {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-
-        .hero-tagline {
-            font-size: clamp(3rem, 8vw, 5.5rem); /* Larger, responsive */
-            font-weight: 900;
-            margin-bottom: 20px;
-            /* --- ENHANCED: Gradient Text & Shadow --- */
-            background: var(--gradient-red);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 25px var(--border-glow); /* More prominent glow */
-            animation: pulseGlow 4s infinite ease-in-out, slideInUp 0.8s ease-out forwards;
-            opacity: 0; /* Start hidden for animation */
-            animation-delay: 0.2s;
-        }
-
-        @keyframes pulseGlow { /* Keep existing pulse */
-            0%, 100% { text-shadow: 0 0 25px var(--border-glow); }
-            50% { text-shadow: 0 0 40px var(--border-glow); }
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-subtagline {
-            font-size: clamp(1.1rem, 3vw, 1.4rem); /* Responsive */
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 400; /* Lighter weight for contrast */
-            animation: slideInUp 0.8s ease-out forwards;
-            opacity: 0; /* Start hidden for animation */
-            animation-delay: 0.4s;
-        }
-
-        .hero-cta {
-            font-size: 1.1rem; /* Larger CTA */
-             padding: 16px 40px; /* Match larger text */
-            animation: slideInUp 0.8s ease-out forwards;
-            opacity: 0; /* Start hidden for animation */
-            animation-delay: 0.6s;
-        }
-
-        /* Scroll down indicator */
-        #hero::after {
-             content: '\f078'; /* Font Awesome down arrow */
-             font-family: 'Font Awesome 6 Free';
-             font-weight: 900;
-             position: absolute;
-             bottom: 30px;
-             left: 50%;
-             transform: translateX(-50%);
-             color: rgba(255, 255, 255, 0.5);
-             font-size: 1.5rem;
-             z-index: 3;
-             animation: bounceArrow 2s infinite ease-in-out;
-             opacity: 0;
-             animation-delay: 1.5s; /* Delay appearance */
-             animation-fill-mode: forwards; /* Keep visible after animation starts */
-         }
-
-         @keyframes bounceArrow {
-             0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-             40% { transform: translateX(-50%) translateY(-10px); opacity: 1;}
-             60% { transform: translateX(-50%) translateY(-5px); opacity: 1;}
-         }
-
-
-        /* --- Introduction Section --- */
-        #intro { text-align: center; background-color: rgba(18, 18, 18, 0.92); } /* Use section-dark style */
-
-        .intro-text {
-            max-width: 850px;
-            margin: 0 auto 50px auto;
-            color: var(--text-primary); /* Slightly brighter text */
-            font-size: 1.15rem;
-            line-height: 1.8; /* More spacing */
-        }
-        .intro-text strong { color: var(--accent-1); font-weight: 700; }
-
-        /* Countdown Timer Styling */
-        #countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: clamp(15px, 4vw, 30px); /* Responsive gap */
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .timer-box {
-            background-color: rgba(5, 5, 5, 0.6); /* Darker background */
-            padding: 20px 30px; /* More padding */
-            border-radius: var(--border-radius-md);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            min-width: 110px; /* Wider boxes */
-            box-shadow: 0 0 15px var(--shadow-color); /* Add glow */
-            transition: transform var(--transition-speed) ease;
-        }
-         .timer-box:hover { transform: scale(1.05); }
-
-        .timer-box span { /* Bigger numbers */
-            display: block;
-            font-size: clamp(2rem, 6vw, 3rem);
-            font-weight: 700;
-            color: var(--accent-1);
-            margin-bottom: 8px;
-            line-height: 1; /* Prevent extra spacing */
-        }
-        .timer-box div:last-child { /* Clearer labels */
-             font-size: 0.85rem;
+        footer a {
              color: var(--text-secondary);
-             text-transform: uppercase;
-             letter-spacing: 0.5px;
-             font-weight: 600;
         }
-
-        /* --- Bundle Showcase Section --- */
-        #bundles { background-color: rgba(5, 5, 5, 0.9); } /* Use primary dark bg */
-
-        .bundle-cards-container {
-            display: grid;
-             /* More flexible grid */
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-            gap: 50px; /* More gap */
-        }
-
-        .bundle-card {
-            /* Inherits base card styling */
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Base shadow */
-        }
-
-        .bundle-card:hover {
-            transform: translateY(-12px); /* Lift more */
-            box-shadow: 0 15px 40px var(--shadow-color-hover), 0 0 20px var(--border-glow-hover); /* Stronger hover shadow & glow */
-            border-color: var(--accent-1); /* Highlight border */
-        }
-
-        .bundle-image { position: relative; overflow: hidden; } /* For image zoom */
-        .bundle-image img {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            transition: transform 0.5s var(--transition-ease); /* Image zoom effect */
-             background-color: var(--secondary-bg); /* Loading BG */
-        }
-        .bundle-card:hover .bundle-image img { transform: scale(1.05); }
-
-        .bundle-price, .bundle-giveaway-tag {
-            position: absolute;
-            top: 20px; /* More space */
-            right: 20px;
-            background: var(--gradient-red);
-            color: #fff;
-            padding: 10px 20px; /* Larger tags */
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem; /* Larger font */
-            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
-            z-index: 2;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .bundle-giveaway-tag { /* Make giveaway stand out */
-             background: var(--gradient-red-orange);
-             box-shadow: 0 0 15px var(--accent-3); /* Orange glow */
-        }
-
-        .bundle-content {
-            padding: 35px; /* More padding */
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .bundle-title {
-            font-size: 1.7rem; /* Larger title */
-            margin-bottom: 12px;
-            color: var(--text-headings);
-            font-weight: 700;
-        }
-        .bundle-partner-tag {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-style: italic;
-             font-weight: 400;
-        }
-
-        .bundle-specs {
-            margin-bottom: 35px; /* More space */
-            flex-grow: 1;
-        }
-
-        .bundle-specs li {
-            margin-bottom: 15px; /* More space between specs */
-            display: flex;
-            align-items: center; /* Align center */
-            gap: 15px; /* More gap */
-            font-size: 1rem; /* Slightly larger spec text */
-             color: var(--text-primary);
-        }
-
-        .bundle-specs i {
-            color: var(--accent-1);
-            font-size: 1.2rem; /* Larger icons */
-            width: 25px;
-            text-align: center;
-            flex-shrink: 0;
-            /* Removed padding-top, align-items: center handles it */
-        }
-
-        .bundle-cta { margin-top: auto; width: 100%; }
-
-        /* --- RTS Specs Section --- */
-        #specs { background-color: rgba(18, 18, 18, 0.92); } /* Darker grey section */
-
-        .rts-system {
-            margin-bottom: 80px; /* More space between systems */
-            padding: 40px; /* More padding */
-            /* Inherits base card styling */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-         .rts-system:last-child { margin-bottom: 0; }
-
-        .rts-system h3 { /* More prominent system title */
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--text-headings); /* White title */
-            border-bottom: 3px solid;
-            border-image: var(--gradient-red) 1; /* Gradient underline */
-            padding-bottom: 15px;
-            display: inline-block;
-            font-weight: 800;
-        }
-        .rts-system h4 { /* Sub-section titles */
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: var(--accent-1); /* Red sub-titles */
-            font-weight: 700;
-        }
-
-        .rts-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); /* Adjust minmax */
-            gap: 50px; /* More gap */
-            align-items: start; /* Align tops */
-        }
-
-        .rts-table-container { overflow-x: auto; }
-
-        /* Enhanced Specs Table */
-        .specs-table {
-            width: 100%;
-            min-width: 550px; /* Slightly wider minimum */
-            border-collapse: separate; /* Allows border-radius */
-            border-spacing: 0;
-            font-size: 0.95rem;
-            background-color: rgba(5, 5, 5, 0.3); /* Subtle dark bg */
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-md);
-            overflow: hidden; /* Clip content to border-radius */
-        }
-        .specs-table th, .specs-table td {
-            padding: 15px 12px; /* More padding */
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Slightly more visible border */
-            vertical-align: middle; /* Center align vertically */
-        }
-         .specs-table tr:last-child th, .specs-table tr:last-child td { border-bottom: none; } /* Remove last border */
-
-        .specs-table th {
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px; /* More spacing */
-            font-weight: 700;
-            background-color: rgba(255, 0, 0, 0.05); /* Subtle red header bg */
-        }
-        .specs-table td:first-child { /* Component Type */
-            font-weight: 700;
-            color: var(--accent-3); /* Orange-Red accent */
-            width: 25%;
-        }
-        .specs-table td:nth-child(2) { /* Specification */
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        .specs-table td:last-child { /* Details */
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-         /* Subtle Row Hover */
-         .specs-table tbody tr:hover {
-             background-color: rgba(255, 0, 0, 0.03);
-         }
-
-        .rts-performance ul {
-            margin-bottom: 35px;
-            padding-left: 25px; /* More indent */
-            list-style: none;
-        }
-        .rts-performance li {
-            margin-bottom: 12px; /* More space */
-            position: relative;
-            font-size: 1rem; /* Slightly larger */
-             color: var(--text-primary);
-        }
-        .rts-performance li::before { /* Custom bullet */
-            content: '\f105'; /* Font Awesome chevron right */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: var(--accent-2);
-            position: absolute;
-            left: -25px; /* Match padding */
-            font-size: 1rem; /* Match text size */
-            top: 5px; /* Adjust vertical alignment */
-        }
-
-        .video-showcase { position: relative; } /* For play button */
-        .video-showcase img {
-            border-radius: var(--border-radius-md);
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            background-color: var(--secondary-bg);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: filter var(--transition-speed) ease;
-        }
-        .video-showcase a:hover img { filter: brightness(0.8); } /* Darken on hover */
-        /* Add a play button overlay */
-         .video-showcase a::after {
-             content: '\f04b'; /* Font Awesome play icon */
-             font-family: 'Font Awesome 6 Free';
-             font-weight: 900;
-             position: absolute;
-             top: 50%;
-             left: 50%;
-             transform: translate(-50%, -50%);
-             font-size: 3rem;
-             color: rgba(255, 255, 255, 0.8);
-             background-color: rgba(0, 0, 0, 0.5);
-             border-radius: 50%;
-             width: 70px;
-             height: 70px;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             pointer-events: none; /* Allow clicking the link */
-             transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-         }
-         .video-showcase a:hover::after {
-             background-color: var(--accent-1);
-             color: #fff;
-         }
-
-        .video-showcase p {
-            text-align: center;
-            font-style: italic;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* RTS Teaser Section */
-        .rts-teaser {
-            text-align: center;
-            border: 2px dashed var(--accent-1);
-            background: linear-gradient(rgba(255, 0, 0, 0.03), rgba(255, 0, 0, 0.0)); /* Very subtle gradient */
-             border-radius: var(--border-radius-lg);
-             padding: 40px; /* Match system padding */
-        }
-        .rts-teaser h3 { /* Style teaser title differently */
-            border: none;
-            display: block;
-            font-size: 2rem;
-            color: var(--accent-3); /* Orange-Red Title */
-            margin-bottom: 15px;
-        }
-         .rts-teaser p:first-of-type { /* Teaser description */
-             font-size: 1.1rem;
-             color: var(--text-primary);
-             margin-bottom: 30px;
-         }
-
-        .teaser-stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px; /* More gap */
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        .teaser-stats li {
-            display: flex;
-            flex-direction: column; /* Stack icon and text */
-            align-items: center;
-            gap: 10px;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            text-align: center;
-            min-width: 100px;
-        }
-        .teaser-stats i {
-            color: var(--accent-2);
-            font-size: 1.8rem; /* Larger icons */
-            margin-bottom: 5px; /* Space between icon and text */
-        }
-        .event-callout {
-            font-weight: 700;
-            color: var(--accent-1);
-            margin-top: 30px;
-            font-size: 1.2rem; /* Larger callout */
-             display: block; /* Ensure it's on its own line */
-        }
-
-        /* --- Partner Showcase Section --- */
-         #partners { background-color: rgba(5, 5, 5, 0.9); } /* Dark bg */
-
-        .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Wider min */
-            gap: 40px; /* More gap */
-            align-items: center;
-            justify-content: center;
-        }
-
-        .partner-card {
-            /* Inherits base card styling */
-            padding: 40px 25px; /* More padding */
-            text-align: center;
-            min-height: 140px; /* Ensure decent height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: grayscale(80%) opacity(0.7); /* Start desaturated */
-            transition: filter var(--transition-speed) ease,
-                        transform var(--transition-speed) ease,
-                        box-shadow var(--transition-speed) ease,
-                        border-color var(--transition-speed) ease;
-        }
-        .partner-card:hover {
-             border-color: var(--accent-1);
-             box-shadow: 0 0 20px var(--shadow-color);
-             filter: grayscale(0%) opacity(1); /* Full color on hover */
-             transform: translateY(-5px);
-        }
-
-        .partner-logo {
-            height: auto; /* Let width control size */
-            width: 100%; /* Fill container width */
-            max-width: 200px; /* Limit max size */
-            max-height: 70px; /* Limit max height */
-            margin: 0;
-            object-fit: contain;
-            display: block;
-            /* Optional: Keep filter if logos need inversion */
-            /* filter: brightness(0) invert(1); */
-        }
-         /* Hide text elements as before */
-         .partner-card h4, .partner-card p, .partner-card ul, .partner-card .btn,
-         .partner-card blockquote, .partner-card .mini-compare-table,
-         .partner-card .peripheral-showcase, .partner-card h5 { display: none; }
-
-
-        /* --- Event Information Section --- */
-        #event-info { background-color: rgba(18, 18, 18, 0.92); }
-
-        .event-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
-            gap: 60px; /* More gap */
-            align-items: center;
-        }
-
-         .event-details h2.section-title { text-align: left; margin-bottom: 30px; }
-         .event-details h2.section-title::after { margin: 15px 0 0; /* Align underline left */}
-
-        .event-details p { /* Style key info */
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            display: flex; /* Align icon and text */
-            align-items: center;
-            gap: 10px;
-        }
-         .event-details p i { /* Add icons */
+         footer a:hover {
              color: var(--accent-1);
-             width: 20px;
-             text-align: center;
-         }
-
-        .event-details h4 {
-            font-size: 1.5rem; /* Larger heading */
-            margin-top: 40px;
-            margin-bottom: 15px;
-            color: var(--accent-2);
-            font-weight: 700;
-        }
-        .event-details ul {
-            list-style: none; /* Remove default disc */
-            padding-left: 0;
-        }
-        .event-details li {
-            margin-bottom: 12px;
-            font-size: 1rem;
-            display: flex; /* Align icon and text */
-            align-items: start;
-            gap: 12px;
-        }
-         .event-details li::before { /* Custom bullet */
-             content: '\f00c'; /* Font Awesome check */
-             font-family: 'Font Awesome 6 Free';
-             font-weight: 900;
-             color: var(--accent-1);
-             margin-top: 4px; /* Align with text */
-         }
-
-        .event-map img {
-            border-radius: var(--border-radius-md);
-            border: 2px solid var(--border-color); /* Slightly thicker border */
-            margin-bottom: 15px;
-            background-color: var(--secondary-bg);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: box-shadow var(--transition-speed) ease;
-        }
-         .event-map img:hover { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); }
-
-        .event-map p {
-            text-align: center;
-            font-style: normal; /* Less italic */
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        .event-map p .highlight { /* Make highlight stand out more */
-             font-weight: 800;
-             background: var(--gradient-red);
-             -webkit-background-clip: text;
-             background-clip: text;
-             -webkit-text-fill-color: transparent;
-             padding: 0 3px;
-         }
-
-        /* --- FAQ Section --- */
-        #faq { background-color: rgba(5, 5, 5, 0.9); }
-
-        .faq-container { max-width: 850px; margin: 0 auto; }
-
-        .faq-item {
-            /* Inherits base card styling */
-            margin-bottom: 20px; /* More space */
-            background-color: transparent; /* Let the container handle base bg */
-             overflow: hidden; /* For smooth animation */
-        }
-
-        .faq-item summary {
-            padding: 20px 25px; /* More padding */
-            font-weight: 700; /* Bolder question */
-            font-size: 1.1rem; /* Larger question */
-            cursor: pointer;
-            position: relative;
-            list-style: none; /* Remove marker */
-            color: var(--text-headings);
-            background-color: rgba(255, 255, 255, 0.03); /* Subtle bg */
-            transition: background-color var(--transition-speed) ease;
-            display: block; /* Ensure it takes full width */
-        }
-        .faq-item summary::-webkit-details-marker { display: none; }
-
-        .faq-item summary:hover { background-color: rgba(255, 0, 0, 0.08); } /* Red tint on hover */
-
-        .faq-item summary::after { /* Chevron indicator */
-            content: '\f078';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%) rotate(0deg); /* Start closed */
-            transition: transform var(--transition-speed) var(--transition-ease);
-            color: var(--accent-1);
-            font-size: 0.9rem;
-        }
-
-        .faq-item[open] summary {
-            background-color: rgba(255, 0, 0, 0.1); /* Stronger red bg when open */
-        }
-
-        .faq-item[open] summary::after { transform: translateY(-50%) rotate(180deg); } /* Rotate chevron */
-
-        .faq-item div { /* Answer content */
-            padding: 25px 25px 30px 25px;
-            background-color: rgba(0, 0, 0, 0.2); /* Slightly darker bg for answer */
-            border-top: 1px solid var(--border-color); /* Separator */
-        }
-        /* Smooth open/close animation */
-        .faq-item[open] div {
-             animation: faqOpen 0.4s ease-out;
-         }
-         @keyframes faqOpen {
-             from { opacity: 0; transform: translateY(-10px); }
-             to { opacity: 1; transform: translateY(0); }
-         }
-
-        .faq-item p {
-            color: var(--text-primary); /* Brighter answer text */
-            font-size: 1rem;
-            line-height: 1.7;
-            padding: 0;
-        }
-        .faq-item p a { /* Ensure links stand out */
-            color: var(--accent-1);
-            font-weight: 600;
-            text-decoration: underline;
-            text-decoration-color: var(--border-color);
-            text-underline-offset: 3px;
-        }
-         .faq-item p a:hover {
-            color: var(--accent-2);
-            text-decoration-color: var(--accent-2);
          }
 
 
-        /* --- Footer --- */
-        footer {
-            background-color: rgba(10, 10, 10, 0.95); /* Slightly darker footer */
-            padding: 60px 0 30px 0; /* More padding */
-            border-top: 2px solid var(--accent-1); /* Stronger top border */
-            margin-top: 100px; /* More space before footer */
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 40px 20px; /* More gap */
-            margin-bottom: 40px;
-        }
-
-        .footer-logo img { height: 50px; width: auto; display: block; } /* Slightly larger footer logo */
-
-        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 30px; /* More gap */ }
-        .footer-links a { color: var(--text-secondary); font-size: 0.95rem; transition: color var(--transition-speed) ease; }
-        .footer-links a:hover { color: var(--accent-1); }
-
-        .footer-social { display: flex; gap: 18px; } /* More gap */
-        .footer-social a {
-            color: var(--text-secondary);
-            font-size: 1.3rem; /* Larger icons */
-            width: 42px; /* Larger circle */
-            height: 42px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            transition: all var(--transition-speed) var(--transition-ease);
-        }
-        .footer-social a:hover,
-        .footer-social a:focus-visible {
-            color: var(--accent-1);
-            border-color: var(--accent-1);
-            background-color: rgba(255, 0, 0, 0.1);
-            transform: translateY(-4px) scale(1.1); /* Enhanced hover */
-             box-shadow: 0 0 10px var(--shadow-color);
-        }
-
-        .copyright {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem; /* Slightly larger */
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* More visible */
-        }
-
-
-        /* --- Animations --- */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s var(--transition-ease), transform 0.8s var(--transition-ease);
-        }
-        .fade-in-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* Stagger children elements if needed */
-        .fade-in-section.visible .stagger- R {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInChild 0.6s var(--transition-ease) forwards;
-        }
-
-        @keyframes fadeInChild {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Example: Apply stagger delays inline or with JS */
-        .fade-in-section.visible .stagger-1 { animation-delay: calc(1 * var(--animation-delay)); }
-        .fade-in-section.visible .stagger-2 { animation-delay: calc(2 * var(--animation-delay)); }
-        .fade-in-section.visible .stagger-3 { animation-delay: calc(3 * var(--animation-delay)); }
-        /* etc. */
-
-
-        /* --- Responsive Design (Adjustments) --- */
-        @media (max-width: 1024px) {
-            .section-padding { padding: 80px 0; }
-            .nav-links { gap: 25px; }
-            .rts-content { grid-template-columns: 1fr; /* Stack RTS content earlier */}
-            .event-info-grid { gap: 40px; }
-        }
-
+        /* --- Responsive Adjustments --- */
         @media (max-width: 768px) {
-            :root { --header-height: 65px; } /* Adjust height */
             html { font-size: 15px; }
-            .section-padding { padding: 60px 0; }
-            .nav-links, .nav-checkout { display: none; }
-            #menu-toggle { display: block; }
-            .hero-tagline { /* Font size adjusted in clamp */ }
-            .footer-content { flex-direction: column; text-align: center; gap: 30px; }
-            .partners-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;}
-            .bundle-cards-container { grid-template-columns: 1fr; gap: 40px; } /* Stack bundles on mobile */
-            .rts-system { padding: 30px; }
-            .specs-table { min-width: 400px; }
-            .event-info-grid { grid-template-columns: 1fr; } /* Stack event info */
-            .event-map { order: -1; margin-bottom: 30px;} /* Show map first on mobile */
+            .error-container { padding: 40px 20px; margin: 30px 15px; }
+            .error-logo img { max-width: 150px; }
         }
 
         @media (max-width: 480px) {
-             html { font-size: 14px; }
-             .container { padding: 0 15px; }
-             .section-padding { padding: 50px 0; }
-             .hero-tagline { /* Font size adjusted in clamp */ }
-             #countdown-timer { gap: 10px; }
-             .timer-box { padding: 15px 20px; min-width: 80px; }
-             .timer-box span { font-size: 2rem; }
-             .btn { padding: 12px 25px; font-size: 0.85rem; }
-             .bundle-content { padding: 25px; }
-             .bundle-title { font-size: 1.5rem; }
-             .rts-system { padding: 25px; }
-             .rts-system h3 { font-size: 1.6rem; }
-             .specs-table { min-width: 320px; font-size: 0.85rem; }
-             .specs-table th, .specs-table td { padding: 10px 8px; }
-             .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-             .partner-logo { max-width: 150px; max-height: 55px; }
-             .footer-content { gap: 25px; }
-             .footer-links { gap: 15px 20px; }
-             .footer-social a { width: 38px; height: 38px; font-size: 1.1rem;}
-             .copyright { font-size: 0.8rem; }
-             .faq-item summary { padding: 15px 20px; font-size: 1rem;}
-             .faq-item summary::after { right: 20px; }
-             .faq-item div { padding: 20px; }
+            html { font-size: 14px; }
+            .error-container { padding: 30px 15px; margin: 20px 10px; }
+            .error-description { font-size: 1rem; }
+            .btn { padding: 12px 25px; font-size: 0.9rem; }
+             .error-navigation { gap: 10px; }
+             .error-navigation a:not(.btn) { font-size: 0.85rem; padding: 6px 10px; }
         }
 
     </style>
-
 </head>
 <body>
 
-    <!-- Header (HTML unchanged) -->
-    <header id="main-header">
-        <nav class="container">
-            <a href="#hero" class="logo">
-                <!-- IMPORTANT: Replace with your actual HIGH-QUALITY Aftershock logo -->
-                <img src="https://via.placeholder.com/180x50/FFFFFF/0a0a0a?text=AFTERSHOCK+PC+LOGO" alt="Aftershock PC Logo">
-            </a>
-            <ul class="nav-links">
-                <li><a href="#bundles">Bundles</a></li>
-                <li><a href="#specs">RTS Specs</a></li>
-                <li><a href="#partners">Partners</a></li>
-                <li><a href="#event-info">Event Info</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-            <!-- UPDATE: CTA Text more specific -->
-            <a href="#checkout" class="btn btn-primary nav-checkout">View Bundles</a>
-            <button id="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
-         <div id="mobile-menu" class="mobile-nav-links">
-             <a href="#bundles">Bundles</a>
-             <a href="#specs">RTS Specs</a>
-             <a href="#partners">Partners</a>
-             <a href="#event-info">Event Info</a>
-             <a href="#faq">FAQ</a>
-             <a href="#checkout" class="btn btn-primary" style="margin: 15px 20px 0; display: block;">View Bundles</a>
+    <div class="error-container">
+        <div class="error-logo">
+            <!-- Use your actual Aftershock logo -->
+            <img src="https://via.placeholder.com/180x50/FFFFFF/0a0a0a?text=AFTERSHOCK+PC+LOGO" alt="Aftershock PC Logo">
         </div>
-    </header>
 
-    <main>
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">Lost Signal</h2>
+        <p class="error-description">
+            Oops! Looks like the page you're searching for has warped out of existence or maybe just mistyped.
+            Don't worry, let's get you back on track.
+        </p>
 
-        <!-- Hero Section (HTML Structure Unchanged, CSS makes it pop) -->
-        <section id="hero">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                 <!-- UPDATE: More dynamic tagline -->
-                <h1 class="hero-tagline">IGNITE YOUR GAME</h1>
-                <p class="hero-subtagline">Unleash Peak Performance with Exclusive Aftershock PC Bundles & RTS Systems at IEM Melbourne 2024.</p>
-                <a href="#bundles" class="btn btn-secondary hero-cta">Explore Exclusive Deals</a>
-            </div>
-        </section>
+        <!-- Primary action: Back to Home -->
+        <a href="/" class="btn btn-primary"><i class="fas fa-home"></i> Return to Base</a>
 
-        <!-- Introduction Section (Add fade-in class) -->
-        <section id="intro" class="container section-padding fade-in-section">
-            <!-- UPDATE: Title phrasing -->
-            <h2 class="section-title"><span>IEM Melbourne</span> Showdown</h2>
-            <!-- UPDATE: Copy slightly more engaging -->
-            <p class="intro-text">
-                Gear up for glory! Join Aftershock PC at <strong class="highlight">IEM Melbourne (Oct 18-20, 2024)</strong>, Melbourne & Olympic Parks (Booth #A12). Score limited-edition bundles online now or grab insane deals directly at our booth. The clock is ticking – secure your upgrade!
-            </p>
-            <div id="countdown-timer">
-                <!-- Countdown Timer Content (HTML unchanged) -->
-                <div class="timer-box stagger-1"> <span id="days">00</span> <div>Days</div> </div>
-                <div class="timer-box stagger-2"> <span id="hours">00</span> <div>Hours</div> </div>
-                <div class="timer-box stagger-3"> <span id="minutes">00</span> <div>Mins</div> </div>
-                <div class="timer-box stagger-4"> <span id="seconds">00</span> <div>Secs</div> </div>
-            </div>
-        </section>
+        <!-- Secondary helpful links -->
+        <div class="error-navigation">
+            <a href="/#bundles">View IEM Bundles</a> <!-- Update link if needed -->
+            <a href="/#event-info">Event Information</a> <!-- Update link if needed -->
+            <a href="/support">Get Support</a> <!-- Update link to actual support page -->
+        </div>
+    </div>
 
-        <!-- Bundle Showcase Section (Add fade-in class) -->
-        <section id="bundles" class="section-padding section-dark fade-in-section">
-            <div class="container">
-                 <!-- UPDATE: Title more action-oriented -->
-                <h2 class="section-title">Choose Your <span>Weapon</span></h2>
-                <div class="bundle-cards-container">
-
-                    <!-- Bundle 1: Purchase (Add stagger class) -->
-                    <div class="bundle-card stagger-1">
-                        <div class="bundle-image">
-                             <!-- IMPORTANT: Replace with high-quality bundle image -->
-                            <img src="https://via.placeholder.com/600x400/1a1a1a/ff0000?text=RTX+4060+Custom+Bundle+Visual" alt="Custom Performance Gaming Bundle with Red Accents">
-                            <div class="bundle-price">$1899 AUD</div>
-                        </div>
-                        <div class="bundle-content">
-                            <h3 class="bundle-title">AORUS Powered Gaming Bundle</h3>
-                            <p class="bundle-partner-tag">Feat: Gigabyte, Aftershock & Lexar</p>
-                            <ul class="bundle-specs">
-                                <!-- Icons updated to Font Awesome 6 syntax if needed -->
-                                <li><i class="fa-solid fa-microchip"></i> Gigabyte RTX 4060 Eagle OC 8GB</li>
-                                <li><i class="fa-solid fa-server"></i> Gigabyte B860M Eagle AX Wi-Fi 6E</li> <!-- Corrected icon & name -->
-                                <li><i class="fa-solid fa-display"></i> AOC 24G2SP 24" 165Hz Monitor</li> <!-- Specific model example -->
-                                <li><i class="fa-solid fa-keyboard"></i> Aftershock F1 TKL Mechanical Keyboard</li> <!-- Example naming -->
-                                <li><i class="fa-solid fa-computer-mouse"></i> Aftershock Apex Lightweight Mouse</li> <!-- Example naming -->
-                                <li><i class="fa-solid fa-headphones-simple"></i> Aftershock Surge Pro Headset</li> <!-- Example naming -->
-                            </ul>
-                             <!-- UPDATE: CTA Text more specific -->
-                            <a href="#checkout-bundle1" class="btn btn-primary bundle-cta">Secure This Bundle</a>
-                        </div>
-                    </div>
-
-                    <!-- Bundle 2: Giveaway (Add stagger class) -->
-                    <div class="bundle-card giveaway-card stagger-2">
-                         <div class="bundle-image">
-                             <!-- IMPORTANT: Replace with high-quality giveaway image -->
-                            <img src="https://via.placeholder.com/600x400/0a0a0a/ff4500?text=Premium+OLED+Giveaway+Visual" alt="Premium Giveaway Bundle with Samsung OLED and SteelSeries Gear">
-                            <div class="bundle-giveaway-tag">Ultimate Giveaway!</div>
-                        </div>
-                        <div class="bundle-content">
-                            <h3 class="bundle-title">The OLED Dominator Giveaway</h3>
-                             <p class="bundle-partner-tag">Feat: Samsung & SteelSeries</p>
-                            <ul class="bundle-specs">
-                                <li><i class="fa-solid fa-tv"></i> <span class="highlight">Samsung Odyssey OLED G8</span></li>
-                                <li><i class="fa-solid fa-keyboard"></i> SteelSeries Apex Pro TKL WL</li>
-                                <li><i class="fa-solid fa-headset"></i> SteelSeries Arctis Nova Pro WL</li> <!-- Corrected icon -->
-                                <li><i class="fa-solid fa-computer-mouse"></i> SteelSeries Aerox 9 WL</li>
-                                <li><i class="fa-solid fa-bolt"></i> <span class="highlight">Flagship Aftershock PC</span> (TBC)</li> <!-- More exciting -->
-                            </ul>
-                            <a href="#giveaway-page" class="btn btn-secondary bundle-cta">Enter To Win</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RTS Systems Specs Section (Add fade-in class) -->
-        <section id="specs" class="section-padding fade-in-section">
-            <div class="container">
-                 <!-- UPDATE: Title more specific -->
-                <h2 class="section-title">Instant Action: <span>RTS Builds</span></h2>
-
-                <!-- RTS 1 Details (Add stagger class) -->
-                <div class="rts-system stagger-1">
-                    <h3>RTS 1: AORUS 4060 Powerhouse</h3>
-                    <div class="rts-content">
-                        <div class="rts-table-container">
-                            <h4>Core Components</h4>
-                            <table class="specs-table">
-                                <!-- Table content unchanged, but CSS styling improves it -->
-                                <thead> <tr><th>Component</th><th>Specification</th><th>Details</th></tr> </thead>
-                                <tbody>
-                                    <tr><td>CPU</td><td>Intel Core Ultra 5 245KF</td><td>5.2 GHz / 14 Cores</td></tr>
-                                    <tr><td>GPU</td><td>Gigabyte RTX 4060 Eagle OC</td><td>8GB GDDR6</td></tr>
-                                    <tr><td>Mobo</td><td>Gigabyte B860M Eagle AX Wi-Fi 6E</td><td>DDR5 Support</td></tr>
-                                    <tr><td>RAM</td><td>32GB Lexar Thor RGB 6000MHz</td><td>(2x16GB) CL38</td></tr>
-                                    <tr><td>SSD</td><td>1TB Gen4 Lexar NQ790 NVMe</td><td>~7000MB/s Read</td></tr>
-                                    <tr><td>Cooler</td><td>Aftershock Glacier Mirror 240mm AIO</td><td>ARGB Liquid Cooling</td></tr>
-                                    <tr><td>PSU</td><td>650W Inwin B65E 80+ Bronze</td><td>Reliable Power</td></tr>
-                                    <tr><td>Case</td><td>Gigabyte C102 Glass Mid-Tower</td><td>Tempered Glass Panel</td></tr>
-                                    <tr><td>Fans</td><td>3x Aftershock Omni ARGB 120mm</td><td>Black Frame</td></tr>
-                                    <tr><td>OS</td><td>Windows 11 Home (Unactivated)</td><td>Install Included</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="rts-performance">
-                            <h4>Target Performance (1080p/1440p High)</h4>
-                            <ul>
-                                <!-- UPDATE: Added icons & slightly rephrased -->
-                                <li><i class="fa-solid fa-crosshairs"></i> Valorant: 300+ FPS</li>
-                                <li><i class="fa-solid fa-shield-halved"></i> CS2: 200+ FPS</li>
-                                <li><i class="fa-solid fa-person-running"></i> Apex Legends: 144+ FPS</li>
-                                <li><i class="fa-solid fa-building"></i> Fortnite (Comp): 180+ FPS</li>
-                            </ul>
-                            <div class="video-showcase">
-                                 <!-- IMPORTANT: Link to actual video -->
-                                <a href="#" title="Watch Build Showcase">
-                                     <!-- IMPORTANT: Replace with video thumbnail -->
-                                    <img src="https://via.placeholder.com/400x225/0a0a0a/ff0000?text=RTS+1+Build+Video+Thumb" alt="RTS 1 AORUS Powered System Build Showcase Video Thumbnail">
-                                </a>
-                                <p>See this build in action!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RTS 2 Teaser (Add stagger class) -->
-                <div class="rts-system rts-teaser stagger-2">
-                    <h3>RTS 2: Intel Battlemage <span class="highlight">World Premiere</span></h3>
-                    <p>Witness the dawn of next-gen integrated graphics! Experience the <strong class="highlight">first global public demo</strong> of Intel's Battlemage performance, exclusively in our showcase system.</p>
-                    <ul class="teaser-stats">
-                         <!-- Updated icons and text -->
-                        <li><i class="fa-solid fa-microchip"></i><span>Next-Gen Xe² Arch</span></li>
-                        <li><i class="fa-solid fa-chart-line"></i><span>Major Perf Leap</span></li>
-                        <li><i class="fa-solid fa-wand-magic-sparkles"></i><span>AI Upscaling Tech</span></li>
-                        <li><i class="fa-solid fa-gamepad"></i><span>Fluid 1080p+ iGPU</span></li>
-                    </ul>
-                    <p class="event-callout"><i class="fa-solid fa-star"></i> Be the FIRST to see it at IEM Melbourne! Booth #A12 <i class="fa-solid fa-star"></i></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Partner Showcase Section (Add fade-in class) -->
-        <section id="partners" class="section-padding section-dark fade-in-section">
-            <div class="container">
-                <h2 class="section-title"><span>Forged</span> With The Best</h2>
-                <div class="partners-grid">
-                     <!-- IMPORTANT: Replace with actual, high-quality partner logos -->
-                    <div class="partner-card stagger-1"> <img src="https://via.placeholder.com/200x70/FFFFFF/000000?text=AORUS+LOGO" alt="AORUS Logo" class="partner-logo"> </div>
-                    <div class="partner-card stagger-2"> <img src="https://via.placeholder.com/200x70/FFFFFF/000000?text=SAMSUNG+LOGO" alt="Samsung Logo" class="partner-logo"> </div>
-                    <div class="partner-card stagger-3"> <img src="https://via.placeholder.com/200x70/FFFFFF/000000?text=STEELSERIES+LOGO" alt="SteelSeries Logo" class="partner-logo"> </div>
-                    <!-- Add other partners if applicable (Intel, Lexar?) -->
-                     <div class="partner-card stagger-4"> <img src="https://via.placeholder.com/200x70/FFFFFF/000000?text=INTEL+LOGO" alt="Intel Logo" class="partner-logo"> </div>
-                     <div class="partner-card stagger-5"> <img src="https://via.placeholder.com/200x70/FFFFFF/000000?text=LEXAR+LOGO" alt="Lexar Logo" class="partner-logo"> </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Event Information Section (Add fade-in class) -->
-        <section id="event-info" class="section-padding fade-in-section">
-            <div class="container event-info-grid">
-                <div class="event-details stagger-1">
-                    <h2 class="section-title" style="text-align: left; margin-bottom: 30px;">Meet Us At <span>IEM Melbourne</span></h2>
-                     <!-- Added Icons -->
-                    <p><i class="fa-solid fa-calendar-days"></i> <strong>Dates:</strong> October 18 - 20, 2024</p>
-                    <p><i class="fa-solid fa-location-dot"></i> <strong>Venue:</strong> Melbourne & Olympic Parks</p>
-                    <p><i class="fa-solid fa-map-pin"></i> <strong>Booth:</strong> #A12 (Near Main Stage)</p>
-                    <h4>Booth Highlights:</h4>
-                    <ul>
-                         <!-- Added Icons & more exciting copy -->
-                        <li><i class="fa-solid fa-burst"></i> Live PC Build & Overclocking Demos</li>
-                        <li><i class="fa-solid fa-tags"></i> Exclusive Event-Only Discounts & Merch</li>
-                        <li><i class="fa-solid fa-gamepad"></i> Play on High-FPS RTS & Battlemage Systems</li>
-                        <li><i class="fa-solid fa-star"></i> Pro Player Appearances (Schedule TBA)</li>
-                        <li><i class="fa-solid fa-ticket"></i> Enter the OLED Dominator Giveaway!</li>
-                    </ul>
-                </div>
-                <div class="event-map stagger-2">
-                     <!-- IMPORTANT: Replace with actual map image pointing to A12 -->
-                    <img src="https://via.placeholder.com/500x350/1a1a1a/FFFFFF?text=Replace+with+Event+Map+Highlighting+Booth+A12" alt="IEM Melbourne Event Map highlighting the Aftershock PC Booth A12">
-                    <p>Find us easily – look for the <span class="highlight">Aftershock RED glow</span> at Booth #A12!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section (Add fade-in class) -->
-        <section id="faq" class="section-padding section-dark fade-in-section">
-            <div class="container">
-                <h2 class="section-title">Got Questions? <span>We've Got Answers</span></h2>
-                <div class="faq-container">
-                    <!-- FAQ items unchanged structurally, but styling improved -->
-                    <details class="faq-item stagger-1">
-                        <summary>How does shipping work for online bundle orders?</summary>
-                        <div><p>Orders placed before Oct 15th aim for pre-event delivery (standard AU shipping). Orders during/after Oct 15th ship from Oct 21st. Express options available at checkout.</p></div>
-                    </details>
-                    <details class="faq-item stagger-2">
-                        <summary>What's the warranty on these bundles?</summary>
-                         <div><p>Aftershock PCs include our standard 3-Year Pickup & Return Warranty. Peripherals (monitors, keyboards, etc.) are covered by their manufacturer warranties (e.g., Samsung, SteelSeries via their support channels). Keep your proof of purchase!</p></div>
-                    </details>
-                     <details class="faq-item stagger-3">
-                        <summary>Can I buy the AORUS Bundle at the event?</summary>
-                         <div><p>Yes! A <strong class="highlight">very limited quantity</strong> of the 'AORUS Powered Gaming Bundle' will be available for purchase directly at Booth #A12 during IEM Melbourne. First come, first served – don't miss out! The Giveaway Bundle is entry-only (online & at booth).</p></div>
-                    </details>
-                    <details class="faq-item stagger-4">
-                        <summary>How do I enter the OLED Dominator Giveaway?</summary>
-                         <div><p>Easy! Enter via the SweepWidget on this page (<a href="#giveaway-page">scroll down!</a>) or scan the QR code at our <strong class="highlight">Booth #A12</strong> at IEM Melbourne. One entry per person. T&Cs apply (see widget).</p></div>
-                    </details>
-                    <details class="faq-item stagger-5">
-                        <summary>Who do I contact for support?</summary>
-                         <div><p>For your Aftershock PC: Visit our <a href="[Your Support Page Link]" target="_blank">Support Hub</a> or call [Your Phone Number]. For peripherals (Monitor, KB/Mouse, Headset): Please contact Samsung or SteelSeries support directly via their websites for fastest service.</p></div>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <!-- Placeholder Anchors & Giveaway Widget (Unchanged HTML) -->
-        <section id="checkout" class="section-padding fade-in-section" style="padding-top: 20px; padding-bottom: 20px;">
-             <div class="container">
-                 <!-- Optional: Add a title here if #checkout becomes a real section -->
-                 <!-- <h2 class="section-title">Checkout / Purchase Section</h2> -->
-                 <!-- Content for checkout would go here -->
-             </div>
-         </section>
-
-        <section id="giveaway-page" class="section-padding section-dark fade-in-section">
-             <div class="container">
-                 <h2 class="section-title">Enter The <span>Ultimate Giveaway</span></h2>
-                 <div id="89855-f1v9xk8r" class="sw_container stagger-1" style="max-width: 700px; margin: 0 auto; background: rgba(18,18,18,0.8); padding: 20px; border-radius: var(--border-radius-lg); border: 1px solid var(--border-color);">
-                    <p style="text-align: center; margin-bottom: 15px; color: var(--text-secondary);">Widget loading...</p>
-                    <!-- SweepWidget script will populate this -->
-                    <script type="text/javascript" src="https://sweepwidget.com/w/j/w_init.js"></script>
-                 </div>
-             </div>
-         </section>
-
-
-        <!-- Hidden anchors (no need to fade these) -->
-        <div id="checkout-bundle1" style="height: 1px; overflow: hidden;"></div>
-
-    </main>
-
-    <!-- Footer (HTML unchanged) -->
+    <!-- Minimal Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <a href="#hero" class="footer-logo">
-                     <img src="https://via.placeholder.com/180x50/FFFFFF/0a0a0a?text=AFTERSHOCK+PC+LOGO" alt="Aftershock PC Logo">
-                </a>
-                <div class="footer-links">
-                    <!-- IMPORTANT: Update with actual links -->
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Support</a>
-                    <a href="#">Warranty</a>
-                    <a href="#">Contact Us</a>
-                </div>
-                <div class="footer-social">
-                     <!-- IMPORTANT: Update with actual social media links -->
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on Twitch"><i class="fab fa-twitch"></i></a>
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Aftershock PC on YouTube"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <p class="copyright">© 2024 Aftershock PC Australia. All Rights Reserved. Aftershock PC® is a registered trademark. IEM™ is a trademark of ESL Gaming GmbH. Intel®, Battlemage™, AORUS™, Samsung®, SteelSeries®, Lexar® and other trademarks are property of their respective owners.</p>
-        </div>
+        <p>© 2024 Aftershock PC Australia. All Rights Reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+         <!-- Update links -->
     </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // --- Header Scroll Effect ---
-        const header = document.getElementById('main-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // --- Mobile Menu Toggle ---
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuIcon = menuToggle.querySelector('i');
-
-        if (menuToggle && mobileMenu && mobileMenuIcon) {
-            menuToggle.addEventListener('click', () => {
-                const isActive = mobileMenu.classList.toggle('active');
-                menuToggle.setAttribute('aria-expanded', isActive);
-                mobileMenuIcon.className = isActive ? 'fas fa-times' : 'fas fa-bars';
-            });
-
-            const mobileNavLinks = mobileMenu.querySelectorAll('a');
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    mobileMenuIcon.className = 'fas fa-bars';
-                });
-            });
-        } else {
-            console.error("Mobile menu elements not found!");
-        }
-
-        // --- Countdown Timer ---
-        function startCountdown() {
-            const countdownContainer = document.getElementById('countdown-timer');
-            const daysEl = document.getElementById("days");
-            const hoursEl = document.getElementById("hours");
-            const minutesEl = document.getElementById("minutes");
-            const secondsEl = document.getElementById("seconds");
-
-            if (!countdownContainer || !daysEl || !hoursEl || !minutesEl || !secondsEl) {
-                console.error("Countdown timer elements not found!");
-                if (countdownContainer) {
-                    countdownContainer.innerHTML = "<p style='color: var(--accent-1); font-weight: bold;'>Countdown unavailable.</p>";
-                }
-                return;
-            }
-
-            const eventDate = new Date("2024-10-18T09:00:00").getTime(); // Ensure this is correct local time for event start
-
-            function updateTimer() {
-                const now = new Date().getTime();
-                const distance = eventDate - now;
-
-                if (distance < 0) {
-                    clearInterval(timerInterval);
-                    // Clear existing boxes
-                    while (countdownContainer.firstChild) {
-                        countdownContainer.removeChild(countdownContainer.firstChild);
-                    }
-                    // Display live message
-                    const liveMessage = document.createElement('div');
-                    liveMessage.style.textAlign = 'center';
-                    liveMessage.style.width = '100%';
-                    liveMessage.innerHTML = `<p style='font-size: 1.5rem; color: var(--accent-1); font-weight: 700; text-transform: uppercase; animation: pulseGlow 2s infinite ease-in-out;'>IEM Melbourne Is Live!</p><p style='color: var(--text-primary); margin-top: 10px;'>Visit us at Booth #A12!</p>`;
-                    countdownContainer.appendChild(liveMessage);
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                daysEl.innerText = String(days).padStart(2, '0');
-                hoursEl.innerText = String(hours).padStart(2, '0');
-                minutesEl.innerText = String(minutes).padStart(2, '0');
-                secondsEl.innerText = String(seconds).padStart(2, '0');
-            }
-
-            updateTimer(); // Initial call to avoid delay
-            const timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        // --- Fade-in Scroll Effect ---
-        function handleIntersection(entries, observer) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-
-                    // Optional: Add stagger effect to children with .stagger-* classes
-                    const staggerChildren = entry.target.querySelectorAll('[class*="stagger-"]');
-                    staggerChildren.forEach((child, index) => {
-                        // Calculate delay based on the stagger number (e.g., stagger-1, stagger-2)
-                        const staggerIndex = parseInt(child.className.match(/stagger-(\d+)/)?.[1] || '1', 10);
-                        child.style.animationDelay = `${staggerIndex * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--animation-delay').trim() || '0.1')}s`;
-                        // Trigger animation (add class if not using pure animation property)
-                         // child.classList.add('animate-child'); // If using a separate class for child animation
-                    });
-
-                    observer.unobserve(entry.target); // Optional: stop observing once visible
-                }
-            });
-        }
-
-        function setupScrollAnimations() {
-            const sections = document.querySelectorAll('.fade-in-section');
-            if (!sections.length) return;
-
-            // Check if IntersectionObserver is supported
-            if ('IntersectionObserver' in window) {
-                const observerOptions = {
-                    root: null, // relative to document viewport
-                    rootMargin: '0px',
-                    threshold: 0.15 // Trigger when 15% of the element is visible
-                };
-                const observer = new IntersectionObserver(handleIntersection, observerOptions);
-                sections.forEach(section => observer.observe(section));
-            } else {
-                // Fallback for older browsers: just show elements immediately
-                sections.forEach(section => section.classList.add('visible'));
-                 console.warn("IntersectionObserver not supported, scroll animations disabled.");
-            }
-        }
-
-
-        // --- Initialize Functions on DOMContentLoaded ---
-        document.addEventListener('DOMContentLoaded', () => {
-            startCountdown();
-            setupScrollAnimations();
-        });
-
-    </script>
 
 </body>
 </html>
