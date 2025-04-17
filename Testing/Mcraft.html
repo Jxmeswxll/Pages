@@ -3,697 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlockTech PCs - Minecraft Style</title>
+    <title>BlockTech PCs - Build Your Rig!</title>
     <style>
         @font-face {
             font-family: 'Minecraft';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-minecraft/1.0.0/minecraft.woff2') format('woff2');
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-minecraft/1.0.0/minecraft.woff2') format('woff2'); /* Make sure this URL is reliable or host the font yourself */
             font-weight: normal;
             font-style: normal;
         }
-        
+
+        :root {
+            --mc-bg: #C6C6C6;
+            --mc-bg-dark: #8B8B8B;
+            --mc-border-light: #FFFFFF;
+            --mc-border-dark: #5B5B5B;
+            --mc-border-inset-dark: #373737;
+            --mc-text: #404040;
+            --mc-text-light: #FFFFFF;
+            --mc-tooltip-bg: #100010;
+            --mc-tooltip-border: #5000FF;
+            --mc-item-name: #55FFFF; /* Cyan */
+            --mc-item-spec: #AAAAAA; /* Gray */
+            --mc-item-price: #FFFF55; /* Yellow */
+            --mc-item-ench: #FF55FF; /* Magenta (for special features) */
+            --mc-pixelated: pixelated; /* or -moz-crisp-edges, -webkit-optimize-contrast */
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Minecraft', 'Courier New', monospace;
-            background-color: rgba(0, 0, 0, 0.8);
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiMxRDI2MkYiPjwvcmVjdD48L3N2Zz4=');
-            color: white;
+            /* Using a classic dirt block background texture pattern */
+            background-color: #3B271A; /* Dirt color fallback */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABASURBVDhPY2RgYDjAwAgYBLGJgZkpmP5TJoNIPCKRgdmBkfmAwP6f+Q3EzIAwG5eIGVkWcDkzGxACAKyOXR+u9dCPAAAAAElFTkSuQmCC'), /* Dark dirt layer */
+                              url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABMSURBVDhPY2RgYDjAwAgYBDGFgbkpmP5TJgMQCEckMjAzMTI/MBj+//9DAzEbEGZzibgyCwNz4IAyGzcCMzADMzLHpMVAYgAAS/NVk5/fXzEAAAAASUVORK5CYII='); /* Lighter dirt top */
+            background-size: 32px 32px; /* Render textures larger */
+            background-repeat: repeat;
+            image-rendering: var(--mc-pixelated);
+            color: var(--mc-text-light);
             overflow-x: hidden;
-            background-size: 16px 16px;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
-        
-        /* Minecraft interface background - darker transparent overlay */
-        .interface-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
+
+        .site-title {
+            font-size: 36px;
+            color: var(--mc-text-light);
+            text-shadow: 2px 2px #3B271A; /* Dark shadow like in-game title */
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
-        
-        /* Main inventory container - matches in-game UI */
+
+        /* Minecraft GUI Style Background/Border */
+        .mc-panel {
+            background-color: var(--mc-bg);
+            border: 2px solid;
+            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+            box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25);
+            padding: 8px;
+        }
+
         .inventory-container {
             display: flex;
-            justify-content: center;
-            gap: 0;
-            max-width: 900px;
-            margin: 40px auto;
-            background-color: #C6C6C6;
-            border: 2px solid #5B5B5B;
-            box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.5), inset -1px -1px 3px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap; /* Allow wrap on smaller screens */
+            gap: 0; /* No gap, borders handle separation */
+            max-width: 920px; /* Adjusted for typical inventory width */
+            margin: 0 auto; /* Centered */
         }
-        
-        /* Left panel - inventory sidebar */
+
+        /* Left panel - Navigation/Filtering */
         .inventory-sidebar {
-            width: 30%;
+            width: 200px; /* Fixed width sidebar */
+            background-color: var(--mc-bg-dark); /* Slightly darker background */
+            border: 2px solid;
+            border-color: var(--mc-border-inset-dark) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-inset-dark);
             padding: 8px;
-            border-right: 2px solid #5B5B5B;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
-        
-        /* Search bar like in creative mode */
-        .search-bar {
+
+        .search-bar { /* Kept for aesthetic */
             display: flex;
             align-items: center;
-            background-color: #8B8B8B;
-            border: 2px solid #373737;
+            background-color: var(--mc-bg-dark);
+            border: 1px solid var(--mc-border-inset-dark);
+            box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.5);
             margin-bottom: 10px;
-            padding: 2px;
+            padding: 4px;
         }
-        
-        .search-icon {
-            width: 18px;
-            height: 18px;
+
+        .search-icon { /* Magnifying glass styling */
+            width: 16px; height: 16px;
             margin-right: 5px;
-            background-color: #C6C6C6;
-            border: 1px solid #373737;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVDhPtY5BCsIwEATR91B7B+kNepfCU3gNXsTdi+LSBn/SkQSFTchDQ3xzD7EDD2w2m5s+jw/cGAsG+C9iLhGjH0e8Jv1A/Gvz2L2iL2wPQLyvvS54+TkQCcACkFzrWw90/N0EaM5H+b7nx/I2AN7nO10j+AIArNvrAMAR0LweCR6GcgBo/v1w9B5A1/N8E1YAnAEAfN9sB8B3QRwAYhXAMQLAOlEAMALAWoIBYARAFQEAEQDWERcAFQEAC+gB/4AAuA3/jG1m1kSEAAAAAElFTkSuQmCC') center center no-repeat;
+            background-size: contain;
+            image-rendering: var(--mc-pixelated);
         }
-        
+
         .search-input {
-            background-color: #1D1D1D;
-            border: 1px solid #373737;
+            flex-grow: 1;
+            background-color: #373737; /* Dark input bg */
+            border: none;
             color: #AAAAAA;
             font-family: 'Minecraft', monospace;
-            padding: 3px;
-            width: calc(100% - 60px);
+            padding: 2px;
+            font-size: 12px;
+            outline: none;
         }
-        
-        .search-cancel {
-            width: 18px;
-            height: 18px;
-            margin-left: 5px;
-            background-color: #C6C6C6;
-            border: 1px solid #373737;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #FF0000;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
+
         /* Tabs in sidebar */
         .inventory-tabs {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 2px; /* Gap between tabs */
             margin-top: 10px;
         }
-        
+
         .inventory-tab {
             display: flex;
             align-items: center;
-            background-color: #8B8B8B;
-            border: 1px solid #373737;
-            padding: 5px;
+            background-color: var(--mc-bg-dark);
+            border: 2px solid;
+            border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+            padding: 6px;
             cursor: pointer;
+            color: var(--mc-text-light);
+            text-shadow: 1px 1px #373737;
+            font-size: 12px; /* Smaller tab text */
+            transition: background-color 0.1s ease;
+            position: relative; /* For ::before pseudo-element */
         }
-        
+
+        .inventory-tab:hover {
+            background-color: #A0A0A0; /* Slightly lighter gray on hover */
+        }
+
         .inventory-tab.active {
-            background-color: #AAAAAA;
-            border-color: #FFFFFF;
+            background-color: var(--mc-bg); /* Active tab uses main panel color */
+            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); /* Inset look */
+            box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.25), inset -2px -2px 0px rgba(255, 255, 255, 0.5);
+            color: var(--mc-text);
+            text-shadow: 1px 1px #FFFFFF;
+            z-index: 1; /* Bring active tab slightly forward */
         }
-        
+        .inventory-tab.active::before { /* Triangle marker like creative tabs */
+           content: '';
+           position: absolute;
+           left: -8px; /* Adjust position */
+           top: 50%;
+           transform: translateY(-50%);
+           width: 0;
+           height: 0;
+           border-top: 6px solid transparent;
+           border-bottom: 6px solid transparent;
+           border-right: 6px solid var(--mc-bg); /* Matches active tab background */
+        }
+
+
         .tab-icon {
-            width: 24px;
-            height: 24px;
-            background-color: #C6C6C6;
-            border: 1px solid #373737;
+            width: 24px; height: 24px;
             margin-right: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 18px; /* Adjust icon size if needed */
+            image-rendering: var(--mc-pixelated);
         }
-        
-        /* Selected item highlight */
-        .item-selected {
-            background-color: #FF8B00;
-            border: 2px solid #FFC142 !important;
-        }
-        
-        /* Main inventory grid area */
+        .tab-icon img { max-width: 100%; max-height: 100%; image-rendering: var(--mc-pixelated); }
+
+        /* Main inventory area */
         .main-inventory {
-            width: 70%;
-            padding: 8px;
+            flex-grow: 1; /* Take remaining width */
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Prevent overflow issues with flex */
         }
-        
+
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            background-color: var(--mc-bg); /* Match panel background */
+            border-bottom: 2px solid var(--mc-border-dark);
+            border-left: 2px solid var(--mc-border-dark);
+            margin-left: -2px; /* Overlap sidebar border */
+        }
+
         .inventory-title {
-            font-size: 18px;
-            color: #404040;
-            padding: 5px 0;
-            border-bottom: 2px solid #8B8B8B;
-            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--mc-text);
+            font-weight: normal;
         }
-        
-        /* Character preview section */
-        .character-preview {
-            width: 35%;
-            margin-right: 10px;
+
+        .inventory-content-area {
+            display: flex;
+            background-color: var(--mc-bg);
+            border-left: 2px solid var(--mc-border-dark);
+            margin-left: -2px; /* Overlap sidebar border */
+            flex-grow: 1;
+        }
+
+        /* Section for selected PC details */
+        .selected-pc-details {
+            width: 220px; /* Fixed width for details */
+            padding: 10px;
+            border-right: 2px solid var(--mc-border-dark);
+            background-color: var(--mc-bg-dark); /* Darker area for details */
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-sizing: border-box;
+            min-height: 250px; /* Ensure some minimum height */
         }
-        
-        .character-image {
-            width: 100px;
-            height: 180px;
-            background-color: #000000;
+
+        .selected-pc-details .details-title {
+            font-size: 14px;
+            color: var(--mc-text-light);
+            text-shadow: 1px 1px #373737;
+            margin-bottom: 10px;
+        }
+
+        .selected-pc-icon-container {
+            width: 64px; height: 64px;
+            background-color: var(--mc-bg); /* Slot background */
+            border: 2px solid var(--mc-border-inset-dark);
+            box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.5);
             margin-bottom: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
-        .character-slots {
+
+        .selected-pc-icon-container img {
+            width: 56px; height: 56px;
+            image-rendering: var(--mc-pixelated);
+        }
+
+        .selected-pc-info {
+             font-size: 12px;
+             color: var(--mc-text-light);
+             text-align: left;
+             width: 100%;
+             margin-bottom: 15px;
+             line-height: 1.4;
+        }
+         .selected-pc-info .name { font-size: 14px; color: var(--mc-item-name); margin-bottom: 5px; }
+         .selected-pc-info .specs { color: var(--mc-item-spec); margin-bottom: 5px; }
+         .selected-pc-info .price { font-size: 14px; color: var(--mc-item-price); }
+
+        .add-to-cart-btn {
+            font-family: 'Minecraft', monospace;
+            font-size: 14px;
+            color: var(--mc-text-light);
+            text-shadow: 1px 1px #373737;
+            background-color: var(--mc-bg-dark);
+            border: 2px solid;
+            border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+            padding: 8px 16px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            margin-top: auto; /* Push to bottom */
+            min-width: 150px;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #A0A0A0;
+        }
+        .add-to-cart-btn:active {
+            background-color: var(--mc-bg); /* Inset look on click */
+            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+            box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.25), inset -1px -1px 0px rgba(255, 255, 255, 0.5);
+            color: var(--mc-text);
+            text-shadow: 1px 1px #FFFFFF;
+        }
+        .add-to-cart-btn.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: var(--mc-bg-dark);
+             border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+            box-shadow: none;
+             color: var(--mc-text-light);
+            text-shadow: 1px 1px #373737;
+        }
+
+
+        /* PC products grid area */
+        .pc-grid-area {
+            flex-grow: 1;
+            padding: 8px;
+            overflow-y: auto; /* Allow scrolling if many items */
+            background-color: var(--mc-bg); /* Match panel color */
+            min-height: 250px; /* Match details pane height */
+        }
+
+        .pc-grid {
             display: grid;
-            grid-template-columns: repeat(1, 40px);
-            grid-template-rows: repeat(4, 40px);
-            gap: 4px;
+            /* Adjust columns based on available space, aiming for ~54px slots (40px + padding/border) */
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 6px; /* Spacing between slots */
         }
-        
-        /* PC inventory slots */
-        .inventory-content {
-            display: flex;
-        }
-        
-        .crafting-area {
-            width: 65%;
-        }
-        
-        .crafting-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 4px;
-            margin-bottom: 20px;
-        }
-        
-        .crafting-arrow {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            color: #8B8B8B;
-        }
-        
-        .crafting-result {
-            width: 40px;
-            height: 40px;
-            background-color: #8B8B8B;
-            border: 1px solid #373737;
-        }
-        
-        /* Inventory slots */
-        .inventory-slot, .crafting-slot {
-            width: 40px;
-            height: 40px;
-            background-color: #8B8B8B;
-            border: 1px solid #373737;
+
+        /* Inventory Slot Style */
+        .inventory-slot {
+            width: 48px; height: 48px; /* Slightly larger slots */
+            background-color: var(--mc-bg-dark); /* Darker slot background */
+            border: 1px solid var(--mc-border-inset-dark);
+            box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             position: relative;
+            overflow: hidden; /* Hide overflow from potential large icons */
         }
-        
-        /* PC products grid */
-        .pc-grid {
-            display: grid;
-            grid-template-columns: repeat(9, 40px);
-            grid-template-rows: repeat(4, 40px);
-            gap: 4px;
-            margin-top: 4px;
-        }
-        
-        /* Item contents */
-        .inventory-slot img, .crafting-slot img {
-            max-width: 32px;
-            max-height: 32px;
-            image-rendering: pixelated;
-        }
-        
-        .item-count {
+
+        .inventory-slot:hover::after { /* Subtle hover highlight */
+            content: '';
             position: absolute;
-            bottom: 2px;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .inventory-slot.item-selected { /* Selected item highlight */
+             outline: 2px solid #FFFFA0; /* Yellowish outline */
+             outline-offset: -2px;
+             box-shadow: inset 0 0 0 1px #FFFFA0; /* Inner glow effect */
+             background-color: #A8A8A8; /* Slightly lighter bg when selected */
+        }
+
+        /* Item contents */
+        .inventory-slot img {
+            max-width: 36px; max-height: 36px; /* Icon size within slot */
+            image-rendering: var(--mc-pixelated);
+        }
+
+        .item-price-tag { /* Changed from item-count to price tag */
+            position: absolute;
+            bottom: 1px;
             right: 2px;
             font-size: 10px;
-            color: white;
+            color: var(--mc-item-price); /* Use yellow for price */
             text-shadow: 1px 1px 0 #000000;
+            background: rgba(0,0,0,0.4); /* Slight dark background for readability */
+            padding: 0 2px;
         }
-        
-        /* Player hotbar */
-        .player-hotbar {
+
+        /* Player hotbar - repurposed for navigation */
+        .site-navigation {
             display: flex;
             justify-content: center;
             gap: 4px;
             margin-top: 20px;
+            border: 2px solid;
+            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+            background-color: var(--mc-bg-dark);
+            padding: 4px;
+            max-width: 500px; /* Constrain width */
+            margin-left: auto;
+            margin-right: auto;
         }
-        
-        .hotbar-slot {
-            width: 40px;
-            height: 40px;
-            background-color: #8B8B8B;
-            border: 1px solid #373737;
+
+        .nav-slot {
+            width: 40px; height: 40px;
+            background-color: var(--mc-bg);
+            border: 1px solid var(--mc-border-inset-dark);
+             box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
-        .hotbar-slot.selected {
-            border: 2px solid #FFFFFF;
-        }
-        
-        /* Player stats (health, hunger, experience) */
-        .player-stats {
+        .nav-slot a {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            margin-top: 10px;
+            width: 100%; height: 100%;
+            text-decoration: none;
         }
-        
-        .health-bar, .hunger-bar {
-            display: flex;
+
+        .nav-slot img {
+            max-width: 32px; max-height: 32px;
+            image-rendering: var(--mc-pixelated);
         }
-        
-        .heart, .hunger-point {
-            width: 9px;
-            height: 9px;
-            margin: 0 1px;
+
+        .nav-slot.selected {
+            border: 2px solid var(--mc-border-light); /* Standard selected hotbar look */
+            box-shadow: none; /* Remove inset shadow when selected */
         }
-        
-        .heart {
-            background-color: #FF0000;
-        }
-        
-        .hunger-point {
-            background-color: #963A0A;
-        }
-        
-        .xp-bar {
-            height: 5px;
-            width: 180px;
-            background-color: #8B8B8B;
-            margin-top: 5px;
-        }
-        
-        .xp-fill {
-            height: 100%;
-            width: 70%;
-            background-color: #80FF20;
-        }
-        
-        /* PC product details pop-up */
-        .product-details {
-            position: absolute;
-            background-color: #100010;
-            border: 1px solid #5000FF;
-            color: white;
+
+        /* Product details pop-up (Tooltip) */
+        .product-details-tooltip {
+            position: absolute; /* Positioned by JS */
+            background-color: var(--mc-tooltip-bg);
+            border: 2px solid var(--mc-tooltip-border);
+            color: var(--mc-text-light);
             padding: 8px;
-            width: 200px;
+            max-width: 250px; /* Limit width */
             z-index: 100;
-            display: none;
+            display: none; /* Hidden by default */
             font-size: 12px;
-            pointer-events: none;
+            pointer-events: none; /* Doesn't interfere with mouse */
+            line-height: 1.4;
+             /* Minecraft tooltip style border */
+             box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
         }
-        
-        .product-name {
-            color: #55FFFF;
-            margin-bottom: 5px;
-        }
-        
-        .product-specs {
-            color: #AAAAAA;
-        }
-        
-        .product-price {
-            color: #FFFF55;
-            margin-top: 5px;
-        }
-        
-        /* Media queries */
+
+        .tooltip-name { color: var(--mc-item-name); margin-bottom: 5px; font-size: 13px; }
+        .tooltip-specs { color: var(--mc-item-spec); margin-bottom: 5px;}
+        .tooltip-specs li { margin-left: 10px; list-style: none; position: relative; }
+        .tooltip-specs li::before { content: "•"; color: #808080; position: absolute; left: -10px; }
+        .tooltip-ench { color: var(--mc-item-ench); margin-bottom: 5px; font-style: italic; } /* For special features */
+        .tooltip-price { color: var(--mc-item-price); margin-top: 8px; font-weight: bold; }
+
+         /* Simple Block Icons (Base64 SVG) */
+        .icon-wood { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQTM3QjRBIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOEI2NzNCQiIvPjwvc3ZnPg=='); }
+        .icon-stone { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNzA3MDcwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjODA4MDgwIi8+PC9zdmc+'); }
+        .icon-iron { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+'); }
+        .icon-gold { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjRkZERTAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkZGRkREIi8+PC9zdmc+'); }
+        .icon-diamond { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+'); }
+        .icon-emerald { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDA5OTQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMTZDQzVFIi8+PC9zdmc+'); }
+        .icon-redstone { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzgwMDAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkYwMDAwIi8+PC9zdmc+'); }
+        .icon-netherite { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+'); }
+        .icon-pc { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE0IiBoZWlnaHQ9IjEwIiB4PSIxIiB5PSIxIiBmaWxsPSIjNjY2Ii8+PHJlY3Qgd2lkdGg9IjEyIiBoZWlnaHQ9IjgiIHg9IjIiIHk9IjIiIGZpbGw9IiMzMzMiLz48cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSIyIiB4PSI1IiB5PSIxMyIgZmlsbD0iIzY2NiIvPjwvc3ZnPg=='); }
+         /* Icon helper class */
+        .item-icon { width: 100%; height: 100%; background-size: cover; image-rendering: pixelated; }
+
+        /* Simple representation of icons for tabs - Replace with actual images */
+        .icon-all::before { content: "📦"; } /* Chest */
+        .icon-gaming::before { content: "⛏️"; } /* Pickaxe */
+        .icon-work::before { content: "📒"; } /* Book */
+        .icon-custom::before { content: "🛠️"; } /* Hammer & Wrench */
+        .icon-peripheral::before { content: "🖱️"; } /* Mouse */
+
+         /* Responsive */
         @media (max-width: 768px) {
-            .inventory-container {
-                flex-direction: column;
-            }
-            
-            .inventory-sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 2px solid #5B5B5B;
-            }
-            
-            .main-inventory {
-                width: 100%;
-            }
-            
-            .inventory-content {
-                flex-direction: column;
-            }
-            
-            .character-preview, .crafting-area {
-                width: 100%;
-            }
-            
-            .pc-grid {
-                grid-template-columns: repeat(5, 40px);
-                grid-template-rows: repeat(8, 40px);
-            }
+            .inventory-container { flex-direction: column; }
+            .inventory-sidebar { width: 100%; border-right: none; border-bottom: 2px solid var(--mc-border-dark); margin-bottom: -2px; }
+            .inventory-content-area { flex-direction: column; border-left: none; margin-left: 0;}
+            .selected-pc-details { width: 100%; border-right: none; border-bottom: 2px solid var(--mc-border-dark); min-height: auto; padding-bottom: 15px; }
+            .pc-grid-area { width: 100%; border-top: none; }
+            .pc-grid { grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 4px;}
+             .inventory-tab.active::before { display: none; } /* Hide marker on mobile */
+            .site-title { font-size: 28px; }
         }
+         @media (max-width: 480px) {
+            .site-title { font-size: 24px; }
+            .inventory-slot { width: 40px; height: 40px; }
+            .inventory-slot img { max-width: 30px; max-height: 30px; }
+            .item-price-tag { font-size: 9px; }
+         }
+
     </style>
 </head>
 <body>
-    <div class="interface-background"></div>
-    
     <div class="container">
+        <h1 class="site-title">BlockTech PCs</h1>
+
         <div class="inventory-container">
-            <!-- Left panel - inventory categories -->
+            <!-- Left Sidebar: Categories/Filtering -->
             <div class="inventory-sidebar">
-                <!-- Search bar -->
                 <div class="search-bar">
-                    <div class="search-icon">🔍</div>
-                    <div class="search-input">Search...</div>
-                    <div class="search-cancel">✕</div>
+                    <div class="search-icon"></div>
+                    <input type="text" class="search-input" placeholder="Search items...">
                 </div>
-                
-                <!-- Selected PC item -->
-                <div class="inventory-slot item-selected">
-                    <img src="/api/placeholder/32/32" alt="Gaming PC">
-                </div>
-                
-                <!-- Food and resources tab -->
+
                 <div class="inventory-tabs">
-                    <div class="inventory-tab">
-                        <div class="tab-icon">🍎</div>
-                        Gaming PCs
+                    <div class="inventory-tab active" data-category="all">
+                        <span class="tab-icon icon-all"></span> All Rigs
                     </div>
-                    <div class="inventory-tab">
-                        <div class="tab-icon">💼</div>
-                        Work PCs
+                    <div class="inventory-tab" data-category="gaming">
+                         <span class="tab-icon icon-gaming"></span> Gaming PCs
                     </div>
-                    <div class="inventory-tab active">
-                        <div class="tab-icon">⚒️</div>
-                        Custom PCs
+                    <div class="inventory-tab" data-category="workstation">
+                         <span class="tab-icon icon-work"></span> Workstations
                     </div>
-                    <div class="inventory-tab">
-                        <div class="tab-icon">🎮</div>
-                        Peripherals
+                     <div class="inventory-tab" data-category="budget">
+                         <span class="tab-icon icon-wood"></span> Budget Builds
+                    </div>
+                    <div class="inventory-tab" data-category="custom">
+                        <span class="tab-icon icon-custom"></span> Custom Builds
+                    </div>
+                    <div class="inventory-tab" data-category="peripheral">
+                         <span class="tab-icon icon-peripheral"></span> Peripherals
                     </div>
                 </div>
             </div>
-            
-            <!-- Main inventory area -->
+
+            <!-- Main Content Area -->
             <div class="main-inventory">
-                <div class="inventory-title">PC Crafting</div>
-                
-                <div class="inventory-content">
-                    <!-- Character preview -->
-                    <div class="character-preview">
-                        <div class="character-image">
-                            <img src="/api/placeholder/100/180" alt="Minecraft Character">
+                 <div class="inventory-header">
+                    <div class="inventory-title">Available Rigs & Peripherals</div>
+                    <!-- Could add sorting options here -->
+                 </div>
+
+                <div class="inventory-content-area">
+                    <!-- Selected PC Details -->
+                    <div class="selected-pc-details">
+                         <div class="details-title">Selected Item</div>
+                        <div class="selected-pc-icon-container" id="selected-item-icon">
+                             <!-- Icon of selected item appears here -->
+                              <div class="item-icon icon-pc"></div> <!-- Default PC icon -->
                         </div>
-                        
-                        <!-- Character equipment slots -->
-                        <div class="character-slots">
-                            <div class="inventory-slot"></div>
-                            <div class="inventory-slot"></div>
-                            <div class="inventory-slot"></div>
-                            <div class="inventory-slot"></div>
+                        <div class="selected-pc-info" id="selected-item-info">
+                            <div class="name">Select a PC</div>
+                            <div class="specs">Hover over an item for details, click to select.</div>
+                            <div class="price"></div>
                         </div>
+                        <button class="add-to-cart-btn disabled" id="add-to-cart-button">Add to Cart</button>
                     </div>
-                    
-                    <!-- Crafting area -->
-                    <div class="crafting-area">
-                        <div class="crafting-grid">
-                            <div class="crafting-slot"></div>
-                            <div class="crafting-slot"></div>
-                            <div class="inventory-slot"></div>
-                            <div class="crafting-slot"></div>
-                            <div class="crafting-slot"></div>
-                            <div class="inventory-slot"></div>
-                            <div class="crafting-slot"></div>
-                            <div class="crafting-slot"></div>
-                            <div class="inventory-slot"></div>
-                        </div>
-                        
-                        <div class="crafting-result">
-                            <img src="/api/placeholder/32/32" alt="Experience Book">
+
+                    <!-- PC Grid (Shop Items) -->
+                    <div class="pc-grid-area">
+                        <div class="pc-grid" id="pc-grid">
+                            <!-- Items will be populated by data below -->
+                            <div class="inventory-slot" data-product="gaming-diamond" data-category="gaming">
+                                <div class="item-icon icon-diamond"></div>
+                                <div class="item-price-tag">$1999</div>
+                            </div>
+                            <div class="inventory-slot" data-product="workstation-netherite" data-category="workstation">
+                                <div class="item-icon icon-netherite"></div>
+                                <div class="item-price-tag">$2999</div>
+                            </div>
+                             <div class="inventory-slot" data-product="budget-iron" data-category="budget gaming">
+                                 <div class="item-icon icon-iron"></div>
+                                <div class="item-price-tag">$999</div>
+                            </div>
+                            <div class="inventory-slot" data-product="streaming-emerald" data-category="gaming workstation">
+                                 <div class="item-icon icon-emerald"></div>
+                                <div class="item-price-tag">$1699</div>
+                            </div>
+                            <div class="inventory-slot" data-product="mini-redstone" data-category="budget custom">
+                                 <div class="item-icon icon-redstone"></div>
+                                <div class="item-price-tag">$799</div>
+                            </div>
+                            <div class="inventory-slot" data-product="highend-gold" data-category="gaming workstation">
+                                 <div class="item-icon icon-gold"></div> <!-- Maybe gold for 'bling'/high-end -->
+                                <div class="item-price-tag">$3499</div>
+                            </div>
+                             <div class="inventory-slot" data-product="budget-wood" data-category="budget">
+                                 <div class="item-icon icon-wood"></div>
+                                <div class="item-price-tag">$599</div>
+                            </div>
+                             <div class="inventory-slot" data-product="mouse-pro" data-category="peripheral">
+                                <!-- Placeholder for peripheral icon - maybe a lever or button? -->
+                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==" alt="Pro Mouse">
+                                <div class="item-price-tag">$79</div>
+                            </div>
+                             <div class="inventory-slot" data-product="keyboard-mech" data-category="peripheral">
+                                 <!-- Placeholder keyboard icon -->
+                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=" alt="Mechanical Keyboard">
+                                <div class="item-price-tag">$129</div>
+                            </div>
+                             <!-- Add more slots/products as needed -->
+                             <!-- Empty slots for visual spacing (optional) -->
+                             <!-- <div class="inventory-slot"></div> ... -->
+
                         </div>
                     </div>
                 </div>
-                
-                <!-- PC Grid (main inventory) -->
-                <div class="pc-grid">
-                    <!-- Gaming PC -->
-                    <div class="inventory-slot" data-product="gaming">
-                        <img src="/api/placeholder/32/32" alt="Gaming PC">
-                        <div class="item-count">$1999</div>
-                    </div>
-                    
-                    <!-- Workstation PC -->
-                    <div class="inventory-slot" data-product="workstation">
-                        <img src="/api/placeholder/32/32" alt="Workstation PC">
-                        <div class="item-count">$2999</div>
-                    </div>
-                    
-                    <!-- Budget PC -->
-                    <div class="inventory-slot" data-product="budget">
-                        <img src="/api/placeholder/32/32" alt="Budget PC">
-                        <div class="item-count">$999</div>
-                    </div>
-                    
-                    <!-- Streaming PC -->
-                    <div class="inventory-slot" data-product="streaming">
-                        <img src="/api/placeholder/32/32" alt="Streaming PC">
-                        <div class="item-count">$1699</div>
-                    </div>
-                    
-                    <!-- Mini PC -->
-                    <div class="inventory-slot" data-product="mini">
-                        <img src="/api/placeholder/32/32" alt="Mini PC">
-                        <div class="item-count">$799</div>
-                    </div>
-                    
-                    <!-- High-End Gaming PC -->
-                    <div class="inventory-slot" data-product="highend">
-                        <img src="/api/placeholder/32/32" alt="High-End PC">
-                        <div class="item-count">$3499</div>
-                    </div>
-                    
-                    <!-- Empty slots to complete the grid -->
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    
-                    <!-- Second row -->
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    
-                    <!-- Third row -->
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    
-                    <!-- Fourth row -->
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                    <div class="inventory-slot"></div>
-                </div>
             </div>
         </div>
-        
-        <!-- Player hotbar -->
-        <div class="player-hotbar">
-            <div class="hotbar-slot selected">
-                <img src="/api/placeholder/32/32" alt="Home">
+
+        <!-- Hotbar Navigation -->
+        <div class="site-navigation">
+            <div class="nav-slot selected">
+                <a href="#home" title="Home"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAErSURBVFhH7daxCsIwGAbgk7oHc0kPoFukR7B3D8HsAXsP6KEHYQ88BLeiy/gxTppIWybIz/cHJgxhhPnwxz8M5w57/85LzX3lTjwAbADkANIB/AfwLUAagCFABnA+QAlADsAJwBfgA7ACYAVgADgAvADIAQgAcgAjABwAbAAQANgAIgBkAA8AQgAmAEgAHADWAHIAUgByALkAcQCvABQAWgCgACwAUADYAGIBuAAMAJYASADgABACiAAwA5gBlABIAKwAEgBaAL8AbwCWAPUAsABQAbAALALYALIAigAuAEcAQwDfABgAvADYAJwAwAHoAMoATgCeAN4AvAHWAEwAhgDeAFoAkgASACYAlABGALMALQCcADYAvAHuAOAA7ABGAIgAbAAQAGEABIAgAAeALkAcQA8AHgBwA3IBwAG/APYAOgABsAD4y7XoX061GMAAAAASUVORK5CYII=" alt="Home Icon"></a> <!-- Home / Compass -->
             </div>
-            <div class="hotbar-slot">
-                <img src="/api/placeholder/32/32" alt="Shop">
+            <div class="nav-slot">
+                <a href="#shop" title="Shop"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADVSURBVFhH7dZBDsMgDAXQU7yFl6BHF3kVXsfb8BZew1u0Fl+QyEAkoI8kSQoGxUN+EJjC9/fDwMxx5l0Xl5kPAE+AjADYAAAB6ABeBdgBIAFQAlgBhAFkAOsAbgAmAFYASADkADkAPgD8ACwAKAC4AJEAZADqgALAAYAFABEAggBGABwAaABQAAIAUgAiAEwAGQDlALYARgDQAJABGAHoAPAApACuAJwAUgCGAEgALIAwgBsAOwBXAHcAIwAjAHgAdACIASYAWAAwA3wA+ALgAbAB+AMQAxAAYACGgH7pB78ANAAaAAGAK8AvACgAsiHjHyqS0B4AAAAASUVORK5CYII=" alt="Shop Icon"></a> <!-- Chest -->
             </div>
-            <div class="hotbar-slot">
-                <img src="/api/placeholder/32/32" alt="About">
+            <div class="nav-slot">
+                <a href="#about" title="About"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADfSURBVFhH7dYxDgIhEATQEcwJc8KLuwsn8CaewJuwN79kI2wMIfYhsk7jR/JHhH5m72dYZu62K+vPXO4DAAOAEIAZAACADAA7AOwAIACgABgBsAHgBcAOABMAIgBsAA0AMwAKAEoARAA4AGkAxAA8ABQAxgC+AGIAYAAgBeAIQAcAEoALgA0AQwASgAuAIAASAAMAAwAaAGsAMQAIAHkACgAUAAgASADYACIAMQAQAN4AIACUAPQAOAD+AH0AHQA9APsADAAcAOMAeQAnAD4AFACqAIwAUwCGABQAQgASAGQANwDGAAMACwAmAJoARAA7/gH4/eDkAZA89UMLAAAAAElFTkSuQmCC" alt="About Icon"></a> <!-- Sign / Book -->
             </div>
-            <div class="hotbar-slot">
-                <img src="/api/placeholder/32/32" alt="Support">
+            <div class="nav-slot">
+                <a href="#support" title="Support"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFISURBVFhH7ZZBKsNADETX27yFt+COHoVWeQmv4XVw4UbwGjx4Ca/goSjGAIQSkCCRpJvoe9mPhAm+JLP3JkPJpbfp++k3e+68F8B7AEQAIgASAAwAogAyAF8AHgAWAAQA4AAwAEAEIAKAAmAAQALAACABwAAgASAAYACACGAAkAAQAeAAMABAYBwABAAtABAASgDmALAAYABIAKQAmAFgAaACgASADYANACMBXALgBgALYACABYANgACADYAFACQANAANAEIAEABSADAAEgBgADAAIABgADAAEgAgADIAPQBGAJwANACiAEgAZgAIAAgAKIAQABkAACAFkAHwACAB4AAwAHACYAG4ATAAGAMYAPgAYADUAUgAiAHwAyADEAOgAPAB2ACYAWQA7AB0AWgA6AIkAEQAQAFIAIAKAAvAJABkALgAeACAAvwEcAe4AsAAcAQwAiACyAEIAGgD5AEIAdAABAPkAuwAH8KzQ/0m3y9H/C2XQAAAAAElFTkSuQmCC" alt="Support Icon"></a> <!-- Anvil / Wrench -->
             </div>
-            <div class="hotbar-slot">
-                <img src="/api/placeholder/32/32" alt="Contact">
+            <div class="nav-slot">
+                <a href="#contact" title="Contact"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACpSURBVFhH7dZBDoAgDERRBb8E/4AfoUSgEBWwL2u+XoW3kFjH3g6t9+c3L5N/p97pBIAZwALAPAAEgBrAFcAJQA3ABMBnAAEACcAN4ARACeAHoAAgBaAEYAbAAsAA8AUQA4gBEAOwAGAAVAAYAF4ARAAcAFAARAAaABQAcQCuAAoAJwBXAEkAGwA+ACgAvADYAPYAKABMAA8ABgACgAAgAkAMAFGAOwAbAFKAjAH8ATQABn20AIAAAAAASUVORK5CYII=" alt="Contact Icon"></a> <!-- Book & Quill -->
             </div>
-            <div class="hotbar-slot">
-                <img src="/api/placeholder/32/32" alt="Cart">
+            <div class="nav-slot">
+                <a href="#cart" title="Cart"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEASURBVFhH7ZbRCsIwFEXXPswLOMHL3YUn8CaewJvwHjzZQ3gQb0GTgI8kkQhEGxv1oUBISNNfkyZdfY/u5//0/NydPzcBXAAkACEABgBSACIANgAfAEYAGQB+ABQA9ACgABQABAA9ADMAUAACAEMAigBCABUATABkAIAA4AFgAHACYADgA2ADkAJQArAAwADQAKgAmACYADwAXgDcAQABqAF0AMQATACIAYgASACYAGQACADYASAB0ALoABgCgAFAB4AEQARgAMAAQAOYAQgAjAAYAAgByAHoAOQAUgAEADoAvgBoAEQC2ABwAPAAaAPkA7gBiAGYAPAAeANIAcwATAF0AFwA+ANwAmgBwAFUAGQCiAPwACgA/wB+AYQAT7G/f4A4AAAAASUVORK5CYII=" alt="Cart Icon"></a> <!-- Minecart with Chest -->
             </div>
-            <div class="hotbar-slot"></div>
-            <div class="hotbar-slot"></div>
-            <div class="hotbar-slot"></div>
+             <!-- Can add more nav slots if needed -->
+             <div class="nav-slot"></div>
+             <div class="nav-slot"></div>
+             <div class="nav-slot"></div>
         </div>
-        
-        <!-- Player stats -->
-        <div class="player-stats">
-            <div class="health-bar">
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-            </div>
-            
-            <div class="hunger-bar">
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-                <div class="hunger-point"></div>
-            </div>
-        </div>
-        
-        <div class="xp-bar">
-            <div class="xp-fill"></div>
-        </div>
-    </div>
-    
-    <!-- Product detail popups -->
-    <div class="product-details" id="gaming-details">
-        <div class="product-name">Diamond Gaming PC</div>
-        <div class="product-specs">• RTX 5080<br>• 32GB RAM<br>• 2TB SSD<br>• RGB Lighting</div>
-        <div class="product-price">$1999</div>
-    </div>
-    
-    <div class="product-details" id="workstation-details">
-        <div class="product-name">Netherite Workstation</div>
-        <div class="product-specs">• RTX 5090<br>• 64GB RAM<br>• 4TB SSD<br>• Threadripper CPU</div>
-        <div class="product-price">$2999</div>
-    </div>
-    
-    <div class="product-details" id="budget-details">
-        <div class="product-name">Iron Budget Tower</div>
-        <div class="product-specs">• RTX 4060<br>• 16GB RAM<br>• 1TB SSD<br>• i5 Processor</div>
-        <div class="product-price">$999</div>
-    </div>
-    
-    <div class="product-details" id="streaming-details">
-        <div class="product-name">Emerald Stream Rig</div>
-        <div class="product-specs">• RTX 5070<br>• 32GB RAM<br>• 2TB SSD<br>• Capture Card</div>
-        <div class="product-price">$1699</div>
-    </div>
-    
-    <div class="product-details" id="mini-details">
-        <div class="product-name">Redstone Mini PC</div>
-        <div class="product-specs">• RTX 4050<br>• 16GB RAM<br>• 1TB SSD<br>• Compact Case</div>
-        <div class="product-price">$799</div>
-    </div>
-    
-    <div class="product-details" id="highend-details">
-        <div class="product-name">Enchanted Elite PC</div>
-        <div class="product-specs">• RTX 5090 Ti<br>• 128GB RAM<br>• 8TB SSD<br>• Custom Cooling</div>
-        <div class="product-price">$3499</div>
+
+    </div> <!-- /container -->
+
+    <!-- Tooltip Div (one for all items) -->
+    <div class="product-details-tooltip" id="item-tooltip">
+        <!-- Content is set by JS -->
     </div>
 
     <script>
-        // Product detail popups
-        const slots = document.querySelectorAll('.inventory-slot[data-product]');
-        const details = document.querySelectorAll('.product-details');
-        
-        slots.forEach(slot => {
-            slot.addEventListener('mouseover', (e) => {
-                const product = slot.getAttribute('data-product');
-                const detail = document.getElementById(`${product}-details`);
-                
-                if (detail) {
-                    detail.style.display = 'block';
-                    detail.style.left = (e.pageX + 10) + 'px';
-                    detail.style.top = (e.pageY + 10) + 'px';
-                }
-            });
-            
-            slot.addEventListener('mousemove', (e) => {
-                const product = slot.getAttribute('data-product');
-                const detail = document.getElementById(`${product}-details`);
-                
-                if (detail) {
-                    detail.style.left = (e.pageX + 10) + 'px';
-                    detail.style.top = (e.pageY + 10) + 'px';
-                }
-            });
-            
-            slot.addEventListener('mouseout', () => {
-                const product = slot.getAttribute('data-product');
-                const detail = document.getElementById(`${product}-details`);
-                
-                if (detail) {
-                    detail.style.display = 'none';
-                }
-            });
-            
-            slot.addEventListener('click', () => {
-                slots.forEach(s => s.classList.remove('item-selected'));
-                slot.classList.add('item-selected');
-                
-                // In a real implementation, this could add to cart or open product page
-                const product = slot.getAttribute('data-product');
-                alert(`Added ${product} PC to cart!`);
-            });
-        });
-        
-        // Hotbar interaction
-        const hotbarSlots = document.querySelectorAll('.hotbar-slot');
-        
-        hotbarSlots.forEach(slot => {
-            slot.addEventListener('click', () => {
-                hotbarSlots.forEach(s => s.classList.remove('selected'));
-                slot.classList.add('selected');
-            });
-        });
-        
-        // Tab interaction
+        // --- Product Data (Ideally fetched, but hardcoded here for demo) ---
+        const productData = {
+            "gaming-diamond": { name: "Diamond Gaming PC", icon: "icon-diamond", category: ["gaming"], price: "$1999", specs: ["RTX 5080", "32GB RAM", "2TB SSD"], ench: "RGB Lighting Included" },
+            "workstation-netherite": { name: "Netherite Workstation", icon: "icon-netherite", category: ["workstation"], price: "$2999", specs: ["RTX 5090", "64GB RAM", "4TB SSD", "Threadripper CPU"] },
+            "budget-iron": { name: "Iron Budget Tower", icon: "icon-iron", category: ["budget", "gaming"], price: "$999", specs: ["RTX 4060", "16GB RAM", "1TB SSD", "i5 Processor"] },
+            "streaming-emerald": { name: "Emerald Stream Rig", icon: "icon-emerald", category: ["gaming", "workstation"], price: "$1699", specs: ["RTX 5070", "32GB RAM", "2TB SSD"], ench: "Built-in Capture Card" },
+            "mini-redstone": { name: "Redstone Mini PC", icon: "icon-redstone", category: ["budget", "custom"], price: "$799", specs: ["RTX 4050", "16GB RAM", "1TB SSD", "Compact Case"] },
+            "highend-gold": { name: "Gilded Elite PC", icon: "icon-gold", category: ["gaming", "workstation"], price: "$3499", specs: ["RTX 5090 Ti", "128GB RAM", "8TB SSD"], ench: "Custom Liquid Cooling" },
+            "budget-wood": { name: "Oak Starter PC", icon: "icon-wood", category: ["budget"], price: "$599", specs: ["Integrated Graphics", "16GB RAM", "512GB SSD", "Ryzen 5"] },
+            "mouse-pro": { name: "Diamond Pro Mouse", icon: "placeholder", img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==', category: ["peripheral"], price: "$79", specs: ["16000 DPI", "RGB", "Lightweight"] },
+            "keyboard-mech": { name: "Netherite Mech Keyboard", icon: "placeholder", img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=', category: ["peripheral"], price: "$129", specs: ["Mechanical Switches", "Full RGB", "N-Key Rollover"] },
+             // Add other products here...
+        };
+
+        // --- DOM Elements ---
+        const inventorySlots = document.querySelectorAll('.inventory-slot[data-product]');
+        const tooltip = document.getElementById('item-tooltip');
         const tabs = document.querySelectorAll('.inventory-tab');
-        
+        const pcGrid = document.getElementById('pc-grid');
+        const selectedItemIcon = document.getElementById('selected-item-icon');
+        const selectedItemInfo = document.getElementById('selected-item-info');
+        const addToCartButton = document.getElementById('add-to-cart-button');
+
+        // --- Tooltip Logic ---
+        inventorySlots.forEach(slot => {
+            slot.addEventListener('mouseover', (e) => {
+                const productId = slot.getAttribute('data-product');
+                const data = productData[productId];
+                if (!data) return;
+
+                let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '';
+                let enchHtml = data.ench ? `<div class="tooltip-ench">${data.ench}</div>` : '';
+
+                tooltip.innerHTML = `
+                    <div class="tooltip-name">${data.name}</div>
+                    <div class="tooltip-specs">${specsHtml}</div>
+                    ${enchHtml}
+                    <div class="tooltip-price">${data.price}</div>
+                `;
+                tooltip.style.display = 'block';
+                positionTooltip(e);
+            });
+
+            slot.addEventListener('mousemove', positionTooltip);
+
+            slot.addEventListener('mouseout', () => {
+                tooltip.style.display = 'none';
+            });
+
+             // --- Selection Logic ---
+            slot.addEventListener('click', () => {
+                // Remove selection from others
+                inventorySlots.forEach(s => s.classList.remove('item-selected'));
+                 // Add selection to clicked
+                slot.classList.add('item-selected');
+
+                // Update details pane
+                const productId = slot.getAttribute('data-product');
+                const data = productData[productId];
+                 if (!data) return;
+
+                 // Update Icon
+                 selectedItemIcon.innerHTML = ''; // Clear previous
+                 if (data.img) {
+                     const img = document.createElement('img');
+                     img.src = data.img;
+                     img.alt = data.name;
+                     selectedItemIcon.appendChild(img);
+                 } else {
+                     const iconDiv = document.createElement('div');
+                     iconDiv.className = `item-icon ${data.icon || 'icon-pc'}`;
+                     selectedItemIcon.appendChild(iconDiv);
+                 }
+
+
+                // Update Info
+                let specsText = data.specs ? data.specs.join('<br>• ') : 'No specs listed.';
+                specsText = data.specs ? `• ${specsText}` : specsText; // Add leading bullet if specs exist
+
+                selectedItemInfo.innerHTML = `
+                    <div class="name">${data.name}</div>
+                    <div class="specs">${specsText}</div>
+                     ${data.ench ? `<div class="ench" style="color: var(--mc-item-ench); font-style: italic;">${data.ench}</div><br>` : ''}
+                    <div class="price">${data.price}</div>
+                `;
+
+                // Enable Add to Cart button
+                addToCartButton.classList.remove('disabled');
+                addToCartButton.textContent = `Add ${data.name} to Cart`;
+                // Store product ID for the button action
+                addToCartButton.dataset.productId = productId;
+            });
+        });
+
+        function positionTooltip(e) {
+            // Position tooltip near cursor, but prevent going off-screen
+             const tooltipWidth = tooltip.offsetWidth;
+             const tooltipHeight = tooltip.offsetHeight;
+             const margin = 15; // Distance from cursor
+             let left = e.pageX + margin;
+             let top = e.pageY + margin;
+
+              // Adjust if too close to right edge
+             if (left + tooltipWidth > window.innerWidth + window.scrollX - margin) {
+                 left = e.pageX - tooltipWidth - margin;
+             }
+             // Adjust if too close to bottom edge
+             if (top + tooltipHeight > window.innerHeight + window.scrollY - margin) {
+                 top = e.pageY - tooltipHeight - margin;
+             }
+              // Prevent negative coordinates if adjustments push it off left/top
+             if (left < window.scrollX + margin) left = window.scrollX + margin;
+             if (top < window.scrollY + margin) top = window.scrollY + margin;
+
+
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+        }
+
+
+        // --- Tab Filtering Logic ---
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
+                // Update active tab style
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+
+                const selectedCategory = tab.getAttribute('data-category');
+
+                // Filter items in the grid
+                inventorySlots.forEach(slot => {
+                    const itemCategories = productData[slot.getAttribute('data-product')]?.category || [];
+                    const matches = selectedCategory === 'all' || itemCategories.includes(selectedCategory);
+                    slot.style.display = matches ? 'flex' : 'none'; // Use flex to maintain centering
+                });
             });
         });
+
+         // --- Add to Cart Button Logic ---
+        addToCartButton.addEventListener('click', () => {
+            if (addToCartButton.classList.contains('disabled')) return;
+
+            const productId = addToCartButton.dataset.productId;
+            const data = productData[productId];
+
+            // --- Replace with your actual add-to-cart logic ---
+            console.log(`Adding ${data.name} (${productId}) to cart. Price: ${data.price}`);
+             alert(`${data.name} added to your crafting bench (cart)!`);
+
+             // Optional: Update a cart icon indicator, clear selection, etc.
+             // E.g., Clear selection after adding
+             // inventorySlots.forEach(s => s.classList.remove('item-selected'));
+             // selectedItemIcon.innerHTML = '<div class="item-icon icon-pc"></div>';
+             // selectedItemInfo.innerHTML = '<div class="name">Select a PC</div>...';
+             // addToCartButton.classList.add('disabled');
+             // addToCartButton.textContent = 'Add to Cart';
+             // delete addToCartButton.dataset.productId;
+
+        });
+
+
+        // Initial Filter (Show 'all') - Trigger click on the default active tab
+        document.querySelector('.inventory-tab.active').click();
+
     </script>
+
 </body>
 </html>
