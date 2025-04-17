@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Minecraft PC Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --mc-font: 'Press Start 2P', cursive;
+            --mc-dirt: #8B4513; /* Brown */
+            --mc-dirt-dark: #5E2F0E;
+            --mc-grass-top: #6A9A3A;
+            --mc-stone: #808080; /* Grey */
+            --mc-stone-dark: #606060;
+            --mc-cobblestone: #707070;
+            --mc-wood-plank: #A07B50;
+            --mc-wood-dark: #603B1E;
+            --mc-sky-blue: #7CAFF4;
+            --mc-cloud-white: #FFFFFF;
+            --mc-text-light: #FFFFFF;
+            --mc-text-dark: #3A3A3A;
+            --mc-text-tooltip: #DDDDDD;
+            --mc-border-dark: #373737;
+            --mc-border-light: #FFFFFF;
+            --mc-button-bg: #C6C6C6;
+            --mc-button-hover-bg: #D6D6D6;
+            --mc-button-active-bg: #A0A0A0;
+            --mc-emerald: #43B59A;
+            --mc-diamond: #3EABC4;
+            --mc-gold: #F9EE5F;
+            --mc-iron: #D8D8D8;
+            --mc-redstone: #FF0000;
+            --mc-lapis: #1A2D8D;
+            --mc-tooltip-bg: rgba(10, 0, 10, 0.85);
+
+            --pixel-border-width: 3px; /* Slightly thinner for better scaling */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 10px; /* Base for rem units */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--mc-font);
+            background-color: var(--mc-sky-blue);
+            color: var(--mc-text-dark);
+            line-height: 1.6;
+            font-size: 1.4rem;
+            /* Simulate background - could be enhanced with actual images/animations */
+            background: linear-gradient(to bottom, var(--mc-sky-blue) 75%, var(--mc-grass-top) 75%, var(--mc-grass-top) 85%, var(--mc-dirt) 85%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1.5rem;
+            color: var(--mc-text-light);
+            text-shadow: 2px 2px 0 var(--mc-text-dark);
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 3.0rem; }
+        h2 { font-size: 2.2rem; margin-top: 4rem; }
+        h3 { font-size: 1.6rem; }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--mc-lapis);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Minecraft UI Elements --- */
+        .mc-border {
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-right-color: var(--mc-border-light);
+            border-bottom-color: var(--mc-border-light);
+            box-shadow: inset 2px 2px 0 var(--mc-border-light), inset -2px -2px 0 var(--mc-border-dark);
+            image-rendering: pixelated; /* Helps keep borders sharp */
+        }
+
+        .mc-button {
+            font-family: var(--mc-font);
+            font-size: 1.6rem;
+            padding: 12px 25px;
+            background-color: var(--mc-button-bg);
+            color: var(--mc-text-dark);
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-top-color: var(--mc-border-light);
+            border-left-color: var(--mc-border-light);
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            transition: background-color 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease;
+            image-rendering: pixelated;
+            text-shadow: 1px 1px 0 var(--mc-border-light);
+            box-shadow: inset 1px 1px 0 var(--mc-border-light), inset -1px -1px 0 var(--mc-border-dark);
+            user-select: none; /* Prevent text selection on click */
+        }
+
+        .mc-button:hover {
+            background-color: var(--mc-button-hover-bg);
+            text-decoration: none;
+        }
+
+        .mc-button:active {
+            background-color: var(--mc-button-active-bg);
+            border-color: var(--mc-border-light);
+            border-top-color: var(--mc-border-dark);
+            border-left-color: var(--mc-border-dark);
+            text-shadow: 1px 1px 0 var(--mc-text-dark);
+            box-shadow: inset -1px -1px 0 var(--mc-border-light), inset 1px 1px 0 var(--mc-border-dark);
+            transform: translate(1px, 1px); /* Slight press effect */
+        }
+
+        .mc-item-frame {
+            background-color: var(--mc-wood-plank);
+            padding: 15px;
+            border: 10px solid transparent; /* Base for image border */
+            border-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABFSURBVDhPY2RgYPj/B8R4gBWBBhAH4g1A/A8S7UA8G4jFA+k/IO4ExLOBWAwkxQfEfcD8Hyj+B8X/gfg/EP+D+A8QAwD+Xg4BTQY9NQAAAABJRU5ErkJggg==') 10 repeat; /* Simple pixelated wood border */
+            image-rendering: pixelated;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; /* Pushes content apart */
+            text-align: center;
+            min-height: 300px;
+            background-clip: padding-box; /* Important for border-image */
+            position: relative;
+            box-shadow: inset 3px 3px 0px rgba(0,0,0,0.2), inset -3px -3px 0px rgba(255,255,255,0.2);
+        }
+
+        .mc-item-frame .item-image {
+            width: 100px;
+            height: 100px;
+            background-color: var(--mc-stone-dark); /* Placeholder bg */
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-right-color: var(--mc-border-light);
+            border-bottom-color: var(--mc-border-light);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--mc-text-light);
+            text-shadow: 1px 1px 0 var(--mc-text-dark);
+        }
+
+        .mc-item-frame h3 {
+            margin-bottom: 10px;
+            font-size: 1.6rem;
+            color: var(--mc-text-dark);
+            text-shadow: 1px 1px 0 var(--mc-border-light);
+        }
+        .mc-item-frame p {
+            font-size: 1.2rem;
+            color: var(--mc-text-dark);
+            margin-bottom: 15px;
+        }
+
+        /* --- Header --- */
+        .site-header {
+            background-color: rgba(60, 60, 60, 0.6); /* Semi-transparent dark stone */
+            padding: 10px 0;
+            border-bottom: var(--pixel-border-width) solid var(--mc-border-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(2px); /* Optional: subtle blur */
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.0rem; /* Slightly smaller */
+            color: var(--mc-text-light);
+            text-shadow: 2px 2px 0 var(--mc-text-dark);
+            padding: 5px 10px;
+            /* Simulate Minecraft logo style */
+            background: linear-gradient(to bottom, #7d7d7d, #a0a0a0);
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-right-color: var(--mc-border-light);
+            border-bottom-color: var(--mc-border-light);
+            box-shadow: inset 2px 2px 0 var(--mc-border-light), inset -2px -2px 0 var(--mc-border-dark);
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-left: 5px; /* Reduced spacing */
+        }
+
+        .main-nav a {
+            display: block;
+            padding: 8px 12px;
+            background-color: var(--mc-stone);
+            color: var(--mc-text-light);
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-top-color: var(--mc-border-light);
+            border-left-color: var(--mc-border-light);
+            font-size: 1.3rem; /* Slightly smaller */
+            transition: background-color 0.1s ease, box-shadow 0.1s ease;
+            box-shadow: inset 1px 1px 0 var(--mc-border-light), inset -1px -1px 0 var(--mc-border-dark);
+            text-shadow: 1px 1px 0 var(--mc-text-dark);
+        }
+        .main-nav a:hover {
+            background-color: var(--mc-stone-dark);
+            text-decoration: none;
+        }
+        .main-nav a:active {
+             background-color: var(--mc-stone-dark);
+             border-color: var(--mc-border-light);
+             border-top-color: var(--mc-border-dark);
+             border-left-color: var(--mc-border-dark);
+             box-shadow: inset -1px -1px 0 var(--mc-border-light), inset 1px 1px 0 var(--mc-border-dark);
+             transform: translate(1px, 1px);
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+        .header-icons .icon {
+            font-size: 2.8rem; /* Larger icons */
+            margin-left: 15px;
+            cursor: pointer;
+            color: var(--mc-text-light);
+            text-shadow: 2px 2px 0 var(--mc-text-dark);
+            transition: transform 0.1s ease;
+            display: inline-block; /* Needed for transform */
+        }
+        .header-icons .icon:hover {
+            transform: scale(1.1);
+        }
+        .icon-steve { /* Placeholder Steve head */
+            width: 32px; height: 32px;
+            background-color: #865E3C; /* Skin tone */
+            border: 2px solid var(--mc-border-dark);
+            display: inline-block;
+            vertical-align: middle;
+            image-rendering: pixelated;
+            /* Simple face */
+            background-image:
+                linear-gradient(var(--mc-text-dark) 4px, transparent 4px), /* Hair top */
+                linear-gradient(to right, transparent 4px, #503723 4px, #503723 28px, transparent 28px), /* Hair main */
+                linear-gradient(to right, transparent 8px, var(--mc-text-light) 8px, var(--mc-text-light) 12px, transparent 12px, transparent 20px, var(--mc-text-light) 20px, var(--mc-text-light) 24px, transparent 24px), /* Eyes */
+                linear-gradient(to right, transparent 12px, #A0522D 12px, #A0522D 20px, transparent 20px); /* Nose */
+            background-size: 32px 4px, 32px 8px, 32px 4px, 32px 4px;
+            background-position: 0 4px, 0 8px, 0 18px, 0 24px;
+            background-repeat: no-repeat;
+        }
+        .icon-chest { /* Placeholder Chest */
+             width: 32px; height: 32px;
+             background-color: #8B4513; /* Wood color */
+             border: 2px solid #5E2F0E; /* Darker wood */
+             display: inline-block;
+             vertical-align: middle;
+             image-rendering: pixelated;
+             position: relative;
+        }
+        .icon-chest::before { /* Latch */
+            content: '';
+            position: absolute;
+            width: 6px; height: 8px;
+            background-color: #C0C0C0; /* Silver */
+            border: 1px solid #505050;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        /* --- Homepage Sections --- */
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            margin-top: 40px; /* Space below header */
+            margin-bottom: 60px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABdSURBVDhPY2RgYPj/B8R4gBWBBhAH4g1A/A8S7UA8G4jFA+k/IO4ExLOBWAwkxQfEfcD8Hyj+B8X/gfg/EP+D+A8Q/wPi/0D8HzL8+///gYkBKQ4jAwMDAAAA//8DAH6fCEATtwJDAAAAAElFTkSuQmCC') repeat; /* Simple stone-like pattern */
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            background-blend-mode: multiply;
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-right-color: var(--mc-border-light);
+            border-bottom-color: var(--mc-border-light);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .hero h1 {
+            font-size: 3.6rem;
+            margin-bottom: 20px;
+            color: var(--mc-gold); /* Highlight title */
+        }
+        .hero p {
+            font-size: 1.8rem;
+            margin-bottom: 35px;
+            color: var(--mc-text-light);
+            text-shadow: 1px 1px 0 var(--mc-text-dark);
+        }
+
+        .featured-pcs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .why-choose {
+            background-color: var(--mc-cobblestone);
+            padding: 40px 30px;
+            margin-bottom: 60px;
+            border: var(--pixel-border-width) solid var(--mc-border-dark);
+            border-right-color: var(--mc-border-light);
+            border-bottom-color: var(--mc-border-light);
+            color: var(--mc-text-light);
+        }
+        .why-choose h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        .why-choose ul {
+            list-style: none;
+            padding-left: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .why-choose li {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            background-color: rgba(0,0,0,0.1);
+            padding: 10px;
+            border: var(--pixel-border-width) solid var(--mc-stone-dark);
+            border-right-color: rgba(255,255,255,0.3);
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+        .why-choose li::before { /* Simple icon placeholders */
+            content: '💎'; /* Example icon */
+            font-size: 2rem;
+            margin-right: 15px;
+            line-height: 1;
+            font-family: sans-serif; /* Use a standard font for emoji */
+        }
+        .why-choose li:nth-child(2)::before { content: '⚡'; } /* Performance */
+        .why-choose li:nth-child(3)::before { content: '🎁'; } /* Exclusive Content */
+        .why-choose li:nth-child(4)::before { content: '🎨'; } /* Case Designs */
+
+
+        /* --- Footer --- */
+        .site-footer {
+            background: linear-gradient(to bottom, var(--mc-grass-top) 0%, var(--mc-dirt) 15%, var(--mc-dirt) 85%, var(--mc-dirt-dark) 100%);
+            color: var(--mc-text-light);
+            padding: 40px 0 20px 0;
+            margin-top: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 0 var(--mc-text-dark);
+        }
+        .footer-content {
+             max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            color: var(--mc-gold);
+            margin: 0 10px;
+            display: inline-block; /* Prevent wrapping issues */
+        }
+        .footer-links a:hover {
+            color: var(--mc-text-light);
+        }
+        .footer-content .legal {
+            margin-top: 15px;
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* --- Helper Classes --- */
+        .text-center { text-align: center; }
+        .mb-0 { margin-bottom: 0 !important; }
+
+        /* --- Animations (Simple Example) --- */
+        @keyframes cloudFloat {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .cloud {
+            position: absolute;
+            top: 50px; /* Adjust as needed */
+            width: 100px; /* Example size */
+            height: 40px;
+            background: var(--mc-cloud-white);
+            border-radius: 20px;
+            opacity: 0.8;
+            animation: cloudFloat 60s linear infinite;
+            z-index: -1; /* Behind content */
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: var(--mc-cloud-white);
+            border-radius: 50%;
+        }
+        .cloud::before {
+            width: 50px; height: 50px; top: -25px; left: 15px;
+        }
+        .cloud::after {
+            width: 60px; height: 60px; top: -20px; right: 10px;
+        }
+        .cloud.cloud-2 {
+            top: 120px;
+            width: 150px;
+            height: 50px;
+            animation-duration: 90s;
+            animation-delay: -20s; /* Start partway through */
+            opacity: 0.7;
+        }
+         .cloud.cloud-3 {
+            top: 180px;
+            width: 80px;
+            height: 30px;
+            animation-duration: 75s;
+            animation-delay: -45s;
+            opacity: 0.9;
+        }
+
+
+        /* --- Responsiveness --- */
+        @media (max-width: 992px) {
+            .container { max-width: 90%; }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 9px; }
+            .header-content { flex-wrap: wrap; justify-content: center; }
+            .logo { margin-bottom: 10px; }
+            .main-nav { order: 3; width: 100%; margin-top: 10px; }
+            .main-nav ul { justify-content: center; }
+            .header-icons { order: 2; margin-bottom: 10px; }
+
+            .hero { padding: 60px 15px; }
+            .hero h1 { font-size: 3.0rem; }
+            .hero p { font-size: 1.6rem; }
+
+            .featured-pcs-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+            .mc-item-frame { min-height: 280px; }
+
+            .why-choose ul { grid-template-columns: 1fr; } /* Stack benefits */
+        }
+
+        @media (max-width: 480px) {
+            html { font-size: 8.5px; }
+            body { background: var(--mc-sky-blue); } /* Simplify background for small screens */
+            .logo { font-size: 1.8rem; }
+            .main-nav a { font-size: 1.2rem; padding: 6px 10px; }
+            .header-icons .icon { font-size: 2.4rem; margin-left: 10px; }
+            .icon-steve, .icon-chest { width: 28px; height: 28px; }
+
+            .hero { padding: 40px 10px; }
+            .hero h1 { font-size: 2.6rem; }
+            .hero p { font-size: 1.5rem; }
+            .mc-button { font-size: 1.4rem; padding: 10px 20px; }
+
+            .featured-pcs-grid { grid-template-columns: 1fr; }
+            .mc-item-frame { min-height: auto; padding: 10px; }
+            .mc-item-frame .item-image { width: 80px; height: 80px; }
+
+            .why-choose { padding: 25px 15px; }
+            .why-choose li { font-size: 1.3rem; }
+
+            .site-footer { padding: 20px 0 10px 0; }
+            .footer-links a { margin: 0 5px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Animated Clouds (Decorative) -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <div class="logo">MC PC Shop</div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#customizer-section">Build PC</a></li>
+                    <li><a href="#featured">Pre-Builts</a></li>
+                    <li><a href="#footer">Support</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <span class="icon icon-steve mc-tooltip" title="My Account"></span>
+                <span class="icon icon-chest mc-tooltip" title="Shopping Cart"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Hero Section -->
+        <section id="home" class="hero mc-border">
+            <h1>Official Minecraft PCs</h1>
+            <p>Engineered by Mojang, Built for Builders!</p>
+            <a href="#customizer-section" class="mc-button">Craft Your PC Now!</a>
+        </section>
+
+        <!-- Featured PC Models Section -->
+        <section id="featured" class="featured-pcs">
+            <h2 class="text-center">Choose Your Tier</h2>
+            <div class="featured-pcs-grid">
+                <!-- Iron Tier -->
+                <div class="mc-item-frame tier-iron">
+                    <div class="item-image">Iron PC</div>
+                    <h3>Iron Tier</h3>
+                    <p>Solid performance for core Minecraft adventures.</p>
+                    <p>Starts at $XXX</p>
+                    <a href="#customizer-section" class="mc-button">Customize</a>
+                </div>
+
+                <!-- Gold Tier -->
+                <div class="mc-item-frame tier-gold">
+                     <div class="item-image">Gold PC</div>
+                    <h3>Gold Tier</h3>
+                    <p>Enhanced power for mods and smoother gameplay.</p>
+                    <p>Starts at $XXX</p>
+                    <a href="#customizer-section" class="mc-button">Customize</a>
+                </div>
+
+                <!-- Diamond Tier -->
+                <div class="mc-item-frame tier-diamond">
+                     <div class="item-image">Diamond PC</div>
+                    <h3>Diamond Tier</h3>
+                    <p>Premium performance for shaders and demanding worlds.</p>
+                    <p>Starts at $XXX</p>
+                    <a href="#customizer-section" class="mc-button">Customize</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-choose" class="why-choose mc-border">
+            <h2>Why Choose Official?</h2>
+            <ul>
+                <li>Mojang Certified Hardware</li>
+                <li>Optimized for Peak Minecraft Performance</li>
+                <li>Exclusive In-Game Content Included</li>
+                <li>Unique Minecraft-Themed Case Designs</li>
+            </ul>
+        </section>
+
+        <!-- Placeholder for Customizer Link Target -->
+        <section id="customizer-section" style="padding-top: 60px; margin-top: -60px;">
+            <!-- This section is just a target for the "Craft Your PC" links.
+                 The actual customizer would be on a separate page or loaded dynamically.
+                 We add padding/margin tricks to ensure the scroll lands nicely below the sticky header. -->
+            <h2 class="text-center">Ready to Build?</h2>
+            <p class="text-center" style="color: var(--mc-text-dark); text-shadow: 1px 1px 0 var(--mc-text-light);">Click the button below to start configuring your perfect Minecraft PC!</p>
+            <div class="text-center">
+                 <a href="#" class="mc-button" style="font-size: 1.8rem; padding: 15px 30px;">Start Customizing</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="site-footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">FAQ</a> |
+                <a href="#">Support</a> |
+                <a href="#">Warranty</a> |
+                <a href="#">Terms of Service</a> |
+                <a href="#">Privacy Policy</a>
+            </div>
+            <p class="legal">© [Current Year] Mojang AB. MINECRAFT is a trademark of Notch Development AB. <br>This is a fictional demonstration site. Not affiliated with Mojang or Microsoft.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Basic JavaScript (can be expanded)
+
+        // Example: Add simple interaction or setup for future features
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Minecraft PC Shop Demo Loaded!");
+
+            // Add tooltips dynamically if needed (using a library or custom code)
+            // const tooltips = document.querySelectorAll('.mc-tooltip');
+            // tooltips.forEach(tip => { /* Add tooltip logic here */ });
+
+            // Could add logic here to handle clicks on icons, etc.
+            const cartIcon = document.querySelector('.icon-chest');
+            if (cartIcon) {
+                cartIcon.addEventListener('click', () => {
+                    alert('Cart functionality not implemented in this demo.');
+                });
+            }
+             const accountIcon = document.querySelector('.icon-steve');
+            if (accountIcon) {
+                accountIcon.addEventListener('click', () => {
+                    alert('Account functionality not implemented in this demo.');
+                });
+            }
+        });
+
+        // Update copyright year automatically
+        const yearSpan = document.querySelector('.legal');
+        if (yearSpan) {
+            yearSpan.innerHTML = yearSpan.innerHTML.replace('[Current Year]', new Date().getFullYear());
+        }
+
+    </script>
+
+</body>
+</html>
