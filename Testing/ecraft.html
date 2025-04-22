@@ -219,16 +219,44 @@
 
     <script>
         // --- Product Data ---
-        const productData = { /* ... (product data remains the same as previous version) ... */
-           "gaming-diamond": { name: "Diamond Gaming PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/4BDDBE/FFFFFF?text=Diamond+PC", /* Modal: ~230x230px */ category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
-           "workstation-netherite": { name: "Netherite Workstation + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/404040/FFFFFF?text=Netherite+WS", /* Modal: ~230x230px */ category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
-           "budget-iron": { name: "Iron Budget Tower + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/C1C5C5/000000?text=Iron+PC", /* Modal: ~230x230px */ category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
-           "streaming-emerald": { name: "Emerald Stream Rig + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDA5OTQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMTZDQzVFIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/009940/FFFFFF?text=Emerald+Rig", /* Modal: ~230x230px */ category: ["gaming", "workstation"], price: "$1699", specs: ["GeForce RTX 5070", "32GB DDR5 RAM", "2TB NVMe SSD", "Ryzen 7 CPU"], ench: "Built-in Capture Card", shopifyUrl: "https://www.google.com" },
-           "mini-redstone": { name: "Redstone Mini PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzgwMDAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkYwMDAwIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/C80000/FFFFFF?text=Redstone+Mini", /* Modal: ~230x230px */ category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://www.google.com" },
-           "highend-gold": { name: "Gilded Elite PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjRkZERTAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkZGRkREIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/FFD700/000000?text=Gold+Elite", /* Modal: ~230x230px */ category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://www.google.com" },
-           "budget-wood": { name: "Oak Starter PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQTM3QjRBIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOEI2NzNCQiIvPjwvc3ZnPg==", imageSrc: "https://via.placeholder.com/250/A37B4A/FFFFFF?text=Oak+Starter", /* Modal: ~230x230px */ category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
-           "mouse-pro": { name: "Diamond Pro Mouse + Decal", gridIcon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==', imageSrc: 'https://via.placeholder.com/250/CCCCCC/000000?text=Pro+Mouse', /* Modal: ~230x230px */ category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
-           "keyboard-mech": { name: "Netherite Mech Keyboard + Decal", gridIcon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=', imageSrc: 'https://via.placeholder.com/250/333333/FFFFFF?text=Mech+Keyboard', /* Modal: ~230x230px */ category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
+        const productData = {
+            // Added gridIcon for specific images in grid slots
+            // Using Zealcraft.png and RapidCraft.png alternately as placeholders for imageSrc (modal image)
+           "gaming-diamond": { name: "Diamond Gaming PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+",
+                imageSrc: "Zealcraft.png", /* Placeholder 1 */ /* Modal: ~230x230px */
+                category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
+
+           "workstation-netherite": { name: "Netherite Workstation + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+",
+                imageSrc: "RapidCraft.png", /* Placeholder 2 */ /* Modal: ~230x230px */
+                category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
+
+           "budget-iron": { name: "Iron Budget Tower + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+",
+                imageSrc: "Zealcraft.png", /* Placeholder 1 */ /* Modal: ~230x230px */
+                category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
+
+           "streaming-emerald": { name: "Emerald Stream Rig + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDA5OTQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMTZDQzVFIi8+PC9zdmc+",
+                imageSrc: "RapidCraft.png", /* Placeholder 2 */ /* Modal: ~230x230px */
+                category: ["gaming", "workstation"], price: "$1699", specs: ["GeForce RTX 5070", "32GB DDR5 RAM", "2TB NVMe SSD", "Ryzen 7 CPU"], ench: "Built-in Capture Card", shopifyUrl: "https://www.google.com" },
+
+           "mini-redstone": { name: "Redstone Mini PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzgwMDAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkYwMDAwIi8+PC9zdmc+",
+                imageSrc: "Zealcraft.png", /* Placeholder 1 */ /* Modal: ~230x230px */
+                category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://www.google.com" },
+
+           "highend-gold": { name: "Gilded Elite PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjRkZERTAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkZGRkREIi8+PC9zdmc+",
+                imageSrc: "RapidCraft.png", /* Placeholder 2 */ /* Modal: ~230x230px */
+                category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://www.google.com" },
+
+           "budget-wood": { name: "Oak Starter PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQTM3QjRBIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOEI2NzNCQiIvPjwvc3ZnPg==",
+                imageSrc: "Zealcraft.png", /* Placeholder 1 */ /* Modal: ~230x230px */
+                category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
+
+           "mouse-pro": { name: "Diamond Pro Mouse + Decal", gridIcon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==',
+                imageSrc: "RapidCraft.png", /* Placeholder 2 */ /* Modal: ~230x230px */
+                category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
+
+           "keyboard-mech": { name: "Netherite Mech Keyboard + Decal", gridIcon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=',
+                imageSrc: "Zealcraft.png", /* Placeholder 1 */ /* Modal: ~230x230px */
+                category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
         };
 
         // --- DOM Elements ---
@@ -262,6 +290,9 @@
         // --- Initialisation ---
         document.addEventListener('DOMContentLoaded', () => { buildGrid(); attachSlotListeners(); attachControlListeners(); const initialCategory = 'all'; updateSelectionVisuals(initialCategory); filterItems(initialCategory); });
     </script>
+
+    <!-- The rest of the HTML body remains unchanged -->
+    <!-- ... (container, title, inventory container, hotbar, modal, tooltip divs) ... -->
 
 </body>
 </html>
