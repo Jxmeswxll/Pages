@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,8 @@
             --mc-item-spec: #AAAAAA; /* Gray */
             --mc-item-price: #FFFF55; /* Yellow */
             --mc-item-ench: #FF55FF; /* Magenta */
-            --mc-black-bg: #000000;
+            --mc-black-bg: #000000; /* Fallback if dirt tile fails */
+            --mc-dirt-fallback: #8A6545; /* Dirt fallback color */
             --mc-grass-border: #5F3A1F;
 
             /* Sizing (Desktop - based on screenshot proportions) */
@@ -45,8 +45,8 @@
             --slot-icon-size: 48px; /* Icon size within slot */
             --nav-slot-size: 42px;
             --nav-icon-size: 32px;
-            --top-strip-height: 64px; /* Height of the grass/dirt strip from background.png */
-            --inventory-max-width: 800px; /* Adjust based on screenshot */
+            --grass-height: 64px; /* !!! ADJUST: Exact height of GRASS portion in background.png !!! */
+            --inventory-max-width: 800px;
             --sidebar-width: 220px;
             --modal-max-width: 700px;
             --modal-image-size: 220px;
@@ -63,215 +63,118 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 0; /* Remove body padding-top */
             font-family: 'Minecraft', 'Courier New', monospace;
             font-size: var(--font-size-base);
-            /* Black Background */
-            background-color: var(--mc-black-bg);
-            color: var(--mc-text-light); /* Default light text for elements outside panels */
+            /* Repeating Dirt Background */
+            background-color: var(--mc-dirt-fallback); /* Dirt fallback */
+            /* !!! REPLACE with url('your_seamless_dirt_tile.png') !!! */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABGSURBVDhPY2RgYDjAwAgYBDAZAQMDFQMuAfMPgIyMjIzMLAwMzEzMDAxMzAAhBgYGBkbmAwA0MDT+FwwCQQaGAIQMDAwMDEz8gAADNwAAg3N/d9c4228AAAAASUVORK5CYII=');
+            background-repeat: repeat;
+            background-size: 48px 48px; /* Adjust tile size if needed */
+            image-rendering: var(--mc-pixelated);
+            color: var(--mc-text-light);
             overflow-x: hidden;
-            padding-top: var(--top-strip-height); /* Space for fixed strip */
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center main content blocks */
+            align-items: center;
             min-height: 100vh;
+            position: relative; /* Needed for z-index stacking */
+            z-index: 0; /* Base stacking context */
         }
 
-        #top-background-strip {
-            position: fixed; /* Fix strip to top */
+        /* Grass Layer using Pseudo-element */
+        body::before {
+            content: '';
+            position: fixed; /* Fixed to viewport top */
             top: 0;
             left: 0;
             width: 100%;
-            height: var(--top-strip-height);
-            /* Use background.png */
-            background-image: url('background.png'); /* !!! MAKE SURE background.png EXISTS !!! */
-            background-color: var(--mc-black-bg); /* Fallback */
-            background-repeat: repeat-x;
-            background-position: top center;
-            background-size: auto var(--top-strip-height);
+            height: var(--grass-height); /* Use variable for grass height */
+            background-image: url('background.png'); /* Full image */
+            background-color: var(--mc-dirt-fallback); /* Fallback */
+            background-repeat: repeat-x; /* Repeat the strip horizontally */
+            background-position: top center; /* Align to top to show grass */
+            background-size: auto var(--grass-height); /* Fit height */
             image-rendering: var(--mc-pixelated);
-            z-index: -1; /* Behind everything else */
+            z-index: -1; /* Behind content, above body's repeating dirt */
+            border-bottom: 4px solid var(--mc-grass-border); /* Dark line under grass */
         }
 
         .site-title {
             font-size: var(--font-size-title);
             color: var(--mc-text-light);
-            text-shadow: 2px 2px #373737; /* Subtle shadow */
+            text-shadow: 2px 2px #373737;
             text-align: center;
-            margin-top: 30px; /* Space below top strip */
+            /* Adjust margin-top to clear the pseudo-element grass area */
+            margin-top: calc(var(--grass-height) + 25px);
             margin-bottom: 20px;
             letter-spacing: 1px;
-            width: 100%; /* Take full width for centering */
+            width: 100%;
+            position: relative; /* Ensure title is above pseudo-element */
+            z-index: 1;
         }
 
-        /* --- MC Panel Style (Applied directly to container) --- */
+        /* --- MC Panel Style --- */
         .inventory-container {
             max-width: var(--inventory-max-width);
-            width: 95%; /* Responsive width */
+            width: 95%;
             background-color: var(--mc-bg);
             border: 2px solid;
             border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            /* Inner shadow achieved by children's borders/backgrounds */
-            padding: 0; /* No padding on container, handled by children */
+            padding: 0;
             display: flex;
-            margin-bottom: 20px; /* Space before hotbar */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Optional subtle shadow */
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative; /* Ensure panel is above pseudo-element */
+            z-index: 1;
         }
 
         /* --- Inventory Layout --- */
-        .inventory-sidebar { /* DESKTOP ONLY */
-            width: var(--sidebar-width);
-            background-color: var(--mc-bg-dark);
-            border-right: 2px solid var(--mc-border-dark); /* Dark line separating panels */
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .main-inventory {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            background-color: var(--mc-bg); /* Light bg for content area */
-        }
-
-        .inventory-header {
-            padding: 6px 12px;
-            border-bottom: 2px solid var(--mc-border-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .inventory-title {
-            font-size: var(--font-size-panel-header);
-            color: var(--mc-text-darker); /* Darker text */
-            font-weight: normal;
-            text-shadow: 1px 1px #FFFFFF; /* White shadow like MC */
-        }
-        .mobile-filter-trigger { display: none; } /* Hide mobile button on desktop */
-
-        .pc-grid-area {
-            flex-grow: 1;
-            padding: 12px;
-            overflow-y: auto;
-            min-height: 350px; /* Ensure decent grid height */
-        }
-        .pc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr));
-            gap: var(--grid-gap);
-        }
+        .inventory-sidebar { width: var(--sidebar-width); background-color: var(--mc-bg-dark); border-right: 2px solid var(--mc-border-dark); padding: 10px; display: flex; flex-direction: column; flex-shrink: 0; }
+        .main-inventory { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; background-color: var(--mc-bg); }
+        .inventory-header { padding: 6px 12px; border-bottom: 2px solid var(--mc-border-dark); display: flex; justify-content: space-between; align-items: center; }
+        .inventory-title { font-size: var(--font-size-panel-header); color: var(--mc-text-darker); font-weight: normal; text-shadow: 1px 1px #FFFFFF; }
+        .mobile-filter-trigger { display: none; }
+        .pc-grid-area { flex-grow: 1; padding: 12px; overflow-y: auto; min-height: 350px; }
+        .pc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); gap: var(--grid-gap); }
 
         /* --- Sidebar Components (Desktop Styling) --- */
-         .inventory-sidebar .search-bar {
-            display: flex; align-items: center;
-            background-color: var(--mc-border-inset-dark); /* Very dark bg */
-            border: 1px solid var(--mc-border-dark); /* Darker outer border */
-            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.7); /* Stronger inset shadow */
-            margin-bottom: 12px; padding: 5px 6px;
-        }
-        .inventory-sidebar .search-icon { display: none; } /* No icon in screenshot */
-        .inventory-sidebar .search-input {
-            flex-grow: 1; background-color: transparent; border: none;
-            color: var(--mc-text-light); font-family: 'Minecraft', monospace;
-            padding: 2px; font-size: 14px; outline: none;
-        }
+         .inventory-sidebar .search-bar { display: flex; align-items: center; background-color: var(--mc-border-inset-dark); border: 1px solid var(--mc-border-dark); box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.7); margin-bottom: 12px; padding: 5px 6px; }
+         .inventory-sidebar .search-icon { display: none; }
+         .inventory-sidebar .search-input { flex-grow: 1; background-color: transparent; border: none; color: var(--mc-text-light); font-family: 'Minecraft', monospace; padding: 2px; font-size: 14px; outline: none; }
          .inventory-sidebar .search-input::placeholder { color: #999; }
+         .inventory-sidebar .inventory-tabs { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+         .inventory-sidebar .inventory-tab { display: flex; align-items: center; background-color: var(--mc-bg-dark); border: 1px solid transparent; border-top-color: var(--mc-border-light); border-bottom-color: var(--mc-border-dark); padding: 9px 10px; cursor: pointer; color: var(--mc-text-light); text-shadow: 1px 1px #373737; font-size: var(--font-size-tab); transition: background-color 0.1s ease; position: relative; margin: 0 -1px; }
+         .inventory-sidebar .inventory-tab:first-child { border-top-color: transparent;}
+         .inventory-sidebar .inventory-tab:hover { background-color: #9A9A9A; }
+         .inventory-sidebar .inventory-tab.active { background-color: var(--mc-bg); color: var(--mc-text-darker); text-shadow: 1px 1px #FFFFFF; z-index: 1; border-left: 1px solid var(--mc-border-dark); border-right: 1px solid var(--mc-border-light); border-top-color: var(--mc-border-dark); border-bottom-color: var(--mc-border-light); }
+         .inventory-sidebar .inventory-tab.active::before { content: ''; position: absolute; left: -9px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-right: 7px solid var(--mc-bg); }
+         .inventory-sidebar .tab-icon { width: 24px; height: 24px; margin-right: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; image-rendering: var(--mc-pixelated); flex-shrink: 0; }
+         .inventory-sidebar .tab-icon img { max-width: 100%; max-height: 100%; display: block; }
 
-        .inventory-sidebar .inventory-tabs { display: flex; flex-direction: column; gap: 0; /* No gap */ margin-top: 0; }
-        .inventory-sidebar .inventory-tab {
-            display: flex; align-items: center; background-color: var(--mc-bg-dark);
-            border: 1px solid transparent; /* Base transparent border */
-            border-top-color: var(--mc-border-light); /* Light line top */
-            border-bottom-color: var(--mc-border-dark); /* Dark line bottom */
-            padding: 9px 10px; cursor: pointer; color: var(--mc-text-light); text-shadow: 1px 1px #373737;
-            font-size: var(--font-size-tab); transition: background-color 0.1s ease; position: relative; margin: 0 -1px; /* Overlap border slightly */
-        }
-        .inventory-sidebar .inventory-tab:first-child { border-top-color: transparent;} /* No top line on first */
-        .inventory-sidebar .inventory-tab:hover { background-color: #9A9A9A; } /* Slightly different hover */
-
-        .inventory-sidebar .inventory-tab.active {
-            background-color: var(--mc-bg); /* Active tab is light */
-            color: var(--mc-text-darker); text-shadow: 1px 1px #FFFFFF; z-index: 1;
-            border-left: 1px solid var(--mc-border-dark); /* Overwrite margin overlap */
-            border-right: 1px solid var(--mc-border-light);
-            border-top-color: var(--mc-border-dark); /* Inset look */
-            border-bottom-color: var(--mc-border-light);
-        }
-        .inventory-sidebar .inventory-tab.active::before { /* Triangle marker */
-           content: ''; position: absolute; left: -9px; top: 50%; transform: translateY(-50%); width: 0; height: 0;
-           border-top: 7px solid transparent; border-bottom: 7px solid transparent;
-           border-right: 7px solid var(--mc-bg); /* Match active tab background */
-        }
-        .inventory-sidebar .tab-icon {
-            width: 24px; height: 24px; margin-right: 10px; display: flex; justify-content: center; align-items: center;
-            font-size: 18px; /* For emoji icons */
-            image-rendering: var(--mc-pixelated); flex-shrink: 0;
-        }
-         .inventory-sidebar .tab-icon img { /* Style for actual image icons */
-             max-width: 100%; max-height: 100%; display: block;
-         }
-
-        /* --- Inventory Slot --- */
-        .inventory-slot {
-            width: var(--slot-size); height: var(--slot-size);
-            background-color: var(--mc-bg-dark); /* Dark bg */
-            border: 1px solid var(--mc-border-inset-dark); /* Dark inset border */
-            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6), /* Inner shadow */
-                        1px 1px 0px var(--mc-border-light); /* Outer highlight bottom/right */
-            display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative;
-            overflow: hidden; transition: background-color 0.1s ease;
-        }
-        .inventory-slot:hover { background-color: #7E7E7E; } /* Darker hover */
-        .inventory-slot:hover::after { /* Remove simple overlay hover */ content: none; }
-
-        .inventory-slot img, .item-icon { /* Target both image tags and icon divs */
-            max-width: var(--slot-icon-size); max-height: var(--slot-icon-size);
-            image-rendering: var(--mc-pixelated);
-            display: block; /* Ensure no extra space */
-        }
-        .item-icon { width: var(--slot-icon-size); height: var(--slot-icon-size); background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
-        .item-price-tag {
-            position: absolute; bottom: 3px; right: 3px;
-            font-size: var(--font-size-slot-price); color: var(--mc-item-price);
-            text-shadow: 1px 1px 1px #000; /* Stronger shadow */
-            background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 1px;
-        }
+         /* --- Inventory Slot --- */
+         .inventory-slot { width: var(--slot-size); height: var(--slot-size); background-color: var(--mc-bg-dark); border: 1px solid var(--mc-border-inset-dark); box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6), 1px 1px 0px var(--mc-border-light); display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: background-color 0.1s ease; }
+         .inventory-slot:hover { background-color: #7E7E7E; }
+         .inventory-slot:hover::after { content: none; }
+         .inventory-slot img, .item-icon { max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); image-rendering: var(--mc-pixelated); display: block; }
+         .item-icon { width: var(--slot-icon-size); height: var(--slot-icon-size); background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
+         .item-price-tag { position: absolute; bottom: 3px; right: 3px; font-size: var(--font-size-slot-price); color: var(--mc-item-price); text-shadow: 1px 1px 1px #000; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 1px; }
 
         /* --- Navigation Hotbar --- */
-        .site-navigation {
-            display: flex; justify-content: center; gap: 2px; /* Minimal gap */
-            margin-top: 0; /* Positioned directly below inventory */
-            margin-bottom: 30px; /* Space at bottom */
-            border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            background-color: var(--mc-bg-dark); padding: 4px;
-            width: fit-content; /* Size to content */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Optional shadow */
-        }
-        .nav-slot {
-            width: var(--nav-slot-size); height: var(--nav-slot-size); background-color: var(--mc-bg);
-            border: 1px solid var(--mc-border-inset-dark);
-            box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: center; align-items: center;
-        }
-         .nav-slot a { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; text-decoration: none; }
-         .nav-slot img { max-width: var(--nav-icon-size); max-height: var(--nav-icon-size); image-rendering: var(--mc-pixelated); }
-         .nav-slot.selected { border: 2px solid var(--mc-border-light); box-shadow: none; }
+        .site-navigation { display: flex; justify-content: center; gap: 2px; margin-top: 0; margin-bottom: 30px; border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); background-color: var(--mc-bg-dark); padding: 4px; width: fit-content; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 1; }
+        .nav-slot { width: var(--nav-slot-size); height: var(--nav-slot-size); background-color: var(--mc-bg); border: 1px solid var(--mc-border-inset-dark); box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; }
+        .nav-slot a { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; text-decoration: none; }
+        .nav-slot img { max-width: var(--nav-icon-size); max-height: var(--nav-icon-size); image-rendering: var(--mc-pixelated); }
+        .nav-slot.selected { border: 2px solid var(--mc-border-light); box-shadow: none; }
 
-        /* --- Tooltip (Desktop Only) --- */
-        .product-details-tooltip {
-             position: absolute; background-color: var(--mc-tooltip-bg); border: 2px solid var(--mc-tooltip-border);
-             color: var(--mc-text-light); padding: 10px; max-width: 300px; z-index: 1100;
-             display: none; font-size: 14px; pointer-events: none; line-height: 1.5;
-             box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
-         }
-        .tooltip-name { color: var(--mc-item-name); margin-bottom: 6px; font-size: 15px; }
-        .tooltip-specs ul { padding-left: 12px; margin: 0; list-style: none;}
-        .tooltip-specs li::before { content: "• "; color: #808080; }
-        .tooltip-ench { color: var(--mc-item-ench); margin-bottom: 6px; font-style: italic; }
-        .tooltip-price { color: var(--mc-item-price); margin-top: 10px; font-weight: bold; font-size: 15px; }
+         /* --- Tooltip (Desktop Only) --- */
+         .product-details-tooltip { position: absolute; background-color: var(--mc-tooltip-bg); border: 2px solid var(--mc-tooltip-border); color: var(--mc-text-light); padding: 10px; max-width: 300px; z-index: 1100; display: none; font-size: 14px; pointer-events: none; line-height: 1.5; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8); }
+         .tooltip-name { color: var(--mc-item-name); margin-bottom: 6px; font-size: 15px; }
+         .tooltip-specs ul { padding-left: 12px; margin: 0; list-style: none;}
+         .tooltip-specs li::before { content: "• "; color: #808080; }
+         .tooltip-ench { color: var(--mc-item-ench); margin-bottom: 6px; font-style: italic; }
+         .tooltip-price { color: var(--mc-item-price); margin-top: 10px; font-weight: bold; font-size: 15px; }
 
         /* --- Modal --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; font-family: 'Minecraft', 'Courier New', monospace; }
@@ -287,9 +190,7 @@
         .modal-ench { font-size: var(--font-size-base); color: var(--mc-item-ench); font-style: italic; margin-bottom: 18px; }
         .modal-price { font-size: calc(var(--font-size-base) + 4px); color: var(--mc-item-price); font-weight: bold; margin-bottom: 25px; text-shadow: 1px 1px #373737; }
         .modal-buttons { display: flex; gap: 15px; margin-top: auto; }
-        .mc-button { /* General button style */
-            font-family: 'Minecraft', monospace; font-size: var(--font-size-button); color: var(--mc-text-light); text-shadow: 1px 1px #373737; background-color: var(--mc-bg-dark); border: 3px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light); padding: var(--button-padding); cursor: pointer; text-align: center; display: inline-block; text-decoration: none; flex-grow: 1;
-        }
+        .mc-button { font-family: 'Minecraft', monospace; font-size: var(--font-size-button); color: var(--mc-text-light); text-shadow: 1px 1px #373737; background-color: var(--mc-bg-dark); border: 3px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light); padding: var(--button-padding); cursor: pointer; text-align: center; display: inline-block; text-decoration: none; flex-grow: 1; }
         .mc-button:hover { background-color: #A0A0A0; }
         .mc-button:active { background-color: var(--mc-bg); border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.25), inset -2px -2px 0px rgba(255, 255, 255, 0.5); color: var(--mc-text); text-shadow: 1px 1px #FFFFFF; }
         .mc-button.primary { background-color: #559955; border-color: #AADD99 var(--mc-border-dark) var(--mc-border-dark) #AADD99; }
@@ -299,14 +200,15 @@
         .modal-close-btn:active { background-color: #884444; border-color: var(--mc-border-dark) #FFAAAA #FFAAAA var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.25); }
 
         /* --- Block Icons --- */
-        .icon-chest::before { content: "📦"; }
-        .icon-pickaxe::before { content: "⛏️"; }
-        .icon-book::before { content: "📒"; }
-        .icon-bricks::before { content: "🧱"; }
-        .icon-wrench-gear::before { content: "🛠️"; }
-        .icon-mouse::before { content: "🖱️"; }
-        /* Add .icon-keyboard if needed */
-        .icon-keyboard::before { content: "⌨️"; } /* Example */
+        .icon-chest::before { content: "📦"; } .icon-pickaxe::before { content: "⛏️"; } .icon-book::before { content: "📒"; } .icon-bricks::before { content: "🧱"; } .icon-wrench-gear::before { content: "🛠️"; } .icon-mouse::before { content: "🖱️"; } .icon-keyboard::before { content: "⌨️"; }
+        /* Add specific .icon-* rules if using background-image for icons */
+        .icon-diamond { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+'); }
+        .icon-netherite { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+'); }
+        .icon-iron { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+'); }
+        .icon-emerald { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDA5OTQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMTZDQzVFIi8+PC9zdmc+'); }
+        .icon-redstone { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzgwMDAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkYwMDAwIi8+PC9zdmc+'); }
+        .icon-gold { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjRkZERTAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkZGRkREIi8+PC9zdmc+'); }
+        .icon-wood { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQTM3QjRBIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOEI2NzNCQiIvPjwvc3ZnPg=='); }
 
 
         /* ======================================== */
@@ -314,15 +216,7 @@
         /* ======================================== */
 
         /* --- Mobile Filter Panel --- */
-        #filter-panel {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(10, 0, 10, 0.92); z-index: 1500;
-            padding: 15px; padding-top: calc(var(--top-strip-height) + 10px);
-            display: flex; flex-direction: column; transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out; color: var(--mc-text-light);
-            font-family: 'Minecraft', 'Courier New', monospace;
-            border-right: 3px solid var(--mc-tooltip-border); /* Panel border */
-        }
+        #filter-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 0, 10, 0.92); z-index: 1500; padding: 15px; padding-top: calc(var(--grass-height) + 10px); /* Adjusted */ display: flex; flex-direction: column; transform: translateX(-100%); transition: transform 0.3s ease-in-out; color: var(--mc-text-light); font-family: 'Minecraft', 'Courier New', monospace; border-right: 3px solid var(--mc-tooltip-border); }
         #filter-panel.active { transform: translateX(0); }
         #filter-panel .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--mc-tooltip-border); }
         #filter-panel .filter-title { font-size: 18px; color: var(--mc-item-name); }
@@ -331,12 +225,7 @@
         #filter-panel .search-input { flex-grow: 1; background: transparent; border: none; color: var(--mc-text-light); font-size: 15px; outline: none; padding: 2px; }
         #filter-panel .search-input::placeholder { color: #888; }
         #filter-panel .filter-categories { display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex-grow: 1; }
-        #filter-panel .filter-category-btn {
-            font-family: 'Minecraft', monospace; font-size: 15px; color: var(--mc-text-light); text-shadow: 1px 1px #373737;
-            background-color: var(--mc-bg-dark); border: 1px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-            padding: 10px 12px; cursor: pointer; text-align: left; display: flex; align-items: center;
-            width: 100%; text-decoration: none;
-        }
+        #filter-panel .filter-category-btn { font-family: 'Minecraft', monospace; font-size: 15px; color: var(--mc-text-light); text-shadow: 1px 1px #373737; background-color: var(--mc-bg-dark); border: 1px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light); padding: 10px 12px; cursor: pointer; text-align: left; display: flex; align-items: center; width: 100%; text-decoration: none; }
         #filter-panel .filter-category-btn .tab-icon { width: 22px; height: 22px; margin-right: 8px; font-size: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         #filter-panel .filter-category-btn.active { background-color: rgba(80, 0, 255, 0.3); border-color: var(--mc-tooltip-border); color: var(--mc-item-name); text-shadow: none; box-shadow: none; }
 
@@ -344,105 +233,69 @@
         @media (max-width: 768px) {
             :root {
                 /* Mobile Sizes */
-                --font-size-base: 14px;
-                --font-size-title: 26px;
-                --font-size-panel-header: 15px;
-                --font-size-tab: 14px; /* Filter button text */
-                --font-size-slot-price: 11px;
-                --font-size-modal-title: 18px;
-                --font-size-button: 14px;
-                --slot-size: 64px; /* Keep reasonably large */
-                --slot-icon-size: 44px;
-                --nav-slot-size: 40px;
-                --nav-icon-size: 30px;
-                --top-strip-height: 50px; /* Smaller strip */
-                --modal-max-width: 95%;
-                --modal-image-size: 150px;
-                --modal-padding: 15px;
-                --grid-gap: 6px;
-                --button-padding: 9px 16px;
+                --font-size-base: 14px; --font-size-title: 26px; --font-size-panel-header: 15px; --font-size-tab: 14px; --font-size-slot-price: 11px; --font-size-modal-title: 18px; --font-size-button: 14px;
+                --slot-size: 64px; --slot-icon-size: 44px; --nav-slot-size: 40px; --nav-icon-size: 30px; --grass-height: 50px; /* Adjusted */ --modal-max-width: 95%; --modal-image-size: 150px; --modal-padding: 15px; --grid-gap: 6px; --button-padding: 9px 16px;
             }
 
-            body { padding-top: var(--top-strip-height); padding-bottom: 60px; }
-            #top-background-strip { height: var(--top-strip-height); background-size: auto var(--top-strip-height); border-bottom-width: 3px;}
-            .site-title { font-size: var(--font-size-title); margin-top: 20px; margin-bottom: 15px; }
+            body { padding-top: 0; padding-bottom: 60px; }
+             body::before { height: var(--grass-height); border-bottom-width: 3px;}
 
-            /* --- Hide Desktop Sidebar, Show Mobile Trigger --- */
+            .site-title { margin-top: calc(var(--grass-height) + 20px); font-size: var(--font-size-title); margin-bottom: 15px; }
+
             .inventory-sidebar { display: none !important; }
-            .mobile-filter-trigger {
-                display: inline-block; /* Show button */
-                 font-size: 13px; color: var(--mc-text-darker); text-shadow: 1px 1px #FFFFFF;
-                 background-color: var(--mc-bg); border: 1px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-                 padding: 4px 8px; cursor: pointer; text-align: center; margin-left: auto;
-            }
-             .mobile-filter-trigger:active { background-color: #B0B0B0; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0,0,0,0.2); }
+            .mobile-filter-trigger { display: inline-block; font-size: 13px; color: var(--mc-text-darker); text-shadow: 1px 1px #FFFFFF; background-color: var(--mc-bg); border: 1px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light); padding: 4px 8px; cursor: pointer; text-align: center; margin-left: auto; }
+            .mobile-filter-trigger:active { background-color: #B0B0B0; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0,0,0,0.2); }
 
-
-            /* --- Mobile Inventory Layout --- */
             .inventory-container { flex-direction: column; border-width: 1px; width: 95%; margin-bottom: 15px; padding: 3px; }
-            .main-inventory { border-top: 2px solid var(--mc-border-dark); } /* Add top border for separation */
+            .main-inventory { border-top: 2px solid var(--mc-border-dark); }
             .inventory-header { padding: 5px 8px; border-bottom-width: 1px; }
             .inventory-title { font-size: var(--font-size-panel-header); }
-
             .pc-grid-area { padding: 8px; min-height: 250px; }
             .pc-grid { grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); }
-
-            /* --- Mobile Slot --- */
             .inventory-slot { border-width: 1px; box-shadow: inset 1px 1px 1px rgba(0,0,0,0.5), 1px 1px 0px var(--mc-border-light); }
             .inventory-slot img, .item-icon { max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); }
             .item-price-tag { font-size: var(--font-size-slot-price); padding: 1px 3px; }
 
-            /* --- Mobile Navigation (Bottom Hotbar) --- */
-            .site-navigation {
-                position: fixed; bottom: 0; left: 0; width: 100%; max-width: 100%; margin: 0;
-                padding: 4px; gap: 4px; border-width: 2px; border-top-color: var(--mc-border-light);
-                border-bottom: none; border-left: none; border-right: none; z-index: 900;
-                justify-content: space-around; background-color: var(--mc-bg-dark);
-            }
+            .site-navigation { position: fixed; bottom: 0; left: 0; width: 100%; max-width: 100%; margin: 0; padding: 4px; gap: 4px; border-width: 2px; border-top-color: var(--mc-border-light); border-bottom: none; border-left: none; border-right: none; z-index: 900; justify-content: space-around; background-color: var(--mc-bg-dark); }
             .nav-slot { width: var(--nav-slot-size); height: var(--nav-slot-size); border-width: 1px; flex-shrink: 0; }
             .nav-slot img { max-width: var(--nav-icon-size); max-height: var(--nav-icon-size); }
             .nav-slot.selected { border-width: 2px; }
             .nav-slot:empty { display: none; }
-            .nav-slot:nth-child(n+7) { display: none; } /* Show maybe 6 icons */
+            .nav-slot:nth-child(n+7) { display: none; }
 
-            /* --- Mobile Tooltip --- */
             .product-details-tooltip { display: none !important; }
 
-            /* --- Mobile Modal (Vertical Layout) --- */
-             .modal-content { flex-direction: column; align-items: center; padding: var(--modal-padding); gap: 15px; border-width: 3px; }
-             .modal-image-area { width: var(--modal-image-size); height: var(--modal-image-size); margin-bottom: 10px; border-width: 2px; }
-             .modal-image-area img { max-width: calc(var(--modal-image-size) - 15px); max-height: calc(var(--modal-image-size) - 15px); }
-             .modal-details-area { width: 100%; text-align: center; overflow-y: visible; }
-             .modal-title { font-size: var(--font-size-modal-title); margin-bottom: 10px; }
-             .modal-specs { font-size: 13px; margin-bottom: 8px; text-align: left; padding-left: 10px;}
-             .modal-specs ul { padding-left: 15px; }
-             .modal-ench { font-size: 13px; margin-bottom: 12px; }
-             .modal-price { font-size: 16px; margin-bottom: 15px; }
-             .modal-buttons { flex-direction: column; width: 90%; margin: 15px auto 0; gap: 10px;}
-             .mc-button { padding: var(--button-padding); font-size: var(--font-size-button); border-width: 2px;}
-             .modal-close-btn { width: 26px; height: 26px; line-height: 22px; font-size: 14px; top: 5px; right: 5px;}
+            .modal-content { flex-direction: column; align-items: center; padding: var(--modal-padding); gap: 15px; border-width: 3px; }
+            .modal-image-area { width: var(--modal-image-size); height: var(--modal-image-size); margin-bottom: 10px; border-width: 2px; }
+            .modal-image-area img { max-width: calc(var(--modal-image-size) - 15px); max-height: calc(var(--modal-image-size) - 15px); }
+            .modal-details-area { width: 100%; text-align: center; overflow-y: visible; }
+            .modal-title { font-size: var(--font-size-modal-title); margin-bottom: 10px; }
+            .modal-specs { font-size: 13px; margin-bottom: 8px; text-align: left; padding-left: 10px;}
+            .modal-specs ul { padding-left: 15px; }
+            .modal-ench { font-size: 13px; margin-bottom: 12px; }
+            .modal-price { font-size: 16px; margin-bottom: 15px; }
+            .modal-buttons { flex-direction: column; width: 90%; margin: 15px auto 0; gap: 10px;}
+            .mc-button { padding: var(--button-padding); font-size: var(--font-size-button); border-width: 2px;}
+            .modal-close-btn { width: 26px; height: 26px; line-height: 22px; font-size: 14px; top: 5px; right: 5px;}
         }
 
-         /* Smallest screens */
         @media (max-width: 480px) {
-            :root {
-                --slot-size: 56px; --slot-icon-size: 38px; --nav-slot-size: 38px; --nav-icon-size: 28px; --top-strip-height: 40px;
-            }
-             body { padding-bottom: 50px; }
-             .site-title { font-size: 22px; }
-             .mobile-filter-trigger { font-size: 12px; padding: 3px 6px; }
-             .inventory-title { font-size: 14px; }
-             .modal-image-size { width: 130px; height: 130px; }
-             .modal-image-area img { max-width: 110px; max-height: 110px; }
-             #filter-panel .filter-category-btn { font-size: 14px; padding: 8px 10px; }
-             #filter-panel .filter-category-btn .tab-icon { width: 20px; height: 20px;}
+            :root { --slot-size: 56px; --slot-icon-size: 38px; --nav-slot-size: 38px; --nav-icon-size: 28px; --grass-height: 40px; }
+            body { padding-bottom: 50px; }
+             body::before { height: var(--grass-height); }
+            .site-title { margin-top: calc(var(--grass-height) + 15px); font-size: 22px; }
+            .mobile-filter-trigger { font-size: 12px; padding: 3px 6px; }
+            .inventory-title { font-size: 14px; }
+            .modal-image-size { width: 130px; height: 130px; }
+            .modal-image-area img { max-width: 110px; max-height: 110px; }
+            #filter-panel .filter-category-btn { font-size: 14px; padding: 8px 10px; }
+            #filter-panel .filter-category-btn .tab-icon { width: 20px; height: 20px;}
         }
 
     </style>
 </head>
 <body>
-    <!-- Top Background Strip -->
-    <div id="top-background-strip"></div>
+    <!-- Grass layer is now handled by body::before -->
 
     <!-- Mobile Filter Panel (Initially Hidden) -->
     <div id="filter-panel">
@@ -584,7 +437,7 @@
                   slot.appendChild(img);
              } else if (product.icon) {
                   const iconDiv = document.createElement('div');
-                  iconDiv.className = `item-icon ${product.icon}`; // Use the icon class from productData
+                  iconDiv.className = `item-icon ${product.icon}`;
                   slot.appendChild(iconDiv);
              }
 
@@ -610,10 +463,10 @@
 
         // --- Populate Grid ---
         function populateGrid() {
-            pcGrid.innerHTML = '';
+            pcGrid.innerHTML = ''; // Clear grid first
             Object.entries(productData).forEach(([id, product]) => {
                 const searchTermLower = currentSearchTerm.toLowerCase();
-                // Make checks safer with optional chaining or default values
+                // Make checks safer
                 const nameMatch = product.name.toLowerCase().includes(searchTermLower);
                 const categoryMatch = (product.category && product.category.some(cat => cat.toLowerCase().includes(searchTermLower)));
                 const specMatch = (product.specs && product.specs.some(spec => spec.toLowerCase().includes(searchTermLower)));
@@ -665,23 +518,15 @@
         // --- Setup Filter Controls ---
         function setupFilters() {
             const categories = ['all', ...new Set(Object.values(productData).flatMap(p => p.category || []))];
-            const categoryData = { // Make sure keys match category values in productData
-                 all: { name: "All Rigs", iconClass: "icon-chest" },
-                 gaming: { name: "Gaming", iconClass: "icon-pickaxe" },
-                 workstation: { name: "Workstations", iconClass: "icon-book" },
-                 budget: { name: "Budget", iconClass: "icon-bricks" },
-                 custom: { name: "Custom", iconClass: "icon-wrench-gear" },
-                 peripheral: { name: "Peripherals", iconClass: "icon-mouse" },
+            const categoryData = {
+                 all: { name: "All Rigs", iconClass: "icon-chest" }, gaming: { name: "Gaming", iconClass: "icon-pickaxe" }, workstation: { name: "Workstations", iconClass: "icon-book" }, budget: { name: "Budget", iconClass: "icon-bricks" }, custom: { name: "Custom", iconClass: "icon-wrench-gear" }, peripheral: { name: "Peripherals", iconClass: "icon-mouse" },
              };
 
-             desktopTabsList.innerHTML = ''; filterCategoriesList.innerHTML = ''; // Clear existing
+             desktopTabsList.innerHTML = ''; filterCategoriesList.innerHTML = '';
 
              categories.forEach(catKey => {
                  const data = categoryData[catKey];
-                 if (!data) { // Skip if category isn't defined in categoryData
-                      console.warn(`Category data missing for key: ${catKey}`);
-                      return;
-                 }
+                 if (!data) { console.warn(`Category data missing for key: ${catKey}`); return; }
                  const isActive = catKey === currentFilter;
 
                  // Desktop Tab
@@ -701,31 +546,18 @@
                  filterCategoriesList.appendChild(mobileButton);
              });
 
-             // Add search listeners only if the elements exist
-             if (desktopSearchInput) {
-                desktopSearchInput.addEventListener('input', (e) => applySearch(e.target.value));
-             }
-             if (filterSearchInput) {
-                filterSearchInput.addEventListener('input', (e) => applySearch(e.target.value));
-             }
+             if (desktopSearchInput) { desktopSearchInput.addEventListener('input', (e) => applySearch(e.target.value)); }
+             if (filterSearchInput) { filterSearchInput.addEventListener('input', (e) => applySearch(e.target.value)); }
         }
 
         // --- Mobile Filter Panel Toggle ---
-        function openFilterPanel() { filterPanel.classList.add('active'); }
-        function closeFilterPanel() { filterPanel.classList.remove('active'); }
-        // Add listeners only if the buttons exist
-        if (mobileFilterButton) {
-            mobileFilterButton.addEventListener('click', openFilterPanel);
-        }
-        if (filterCloseButton) {
-            filterCloseButton.addEventListener('click', closeFilterPanel);
-        }
-        if (filterPanel) {
-             filterPanel.addEventListener('click', (e) => { if (e.target === filterPanel) closeFilterPanel(); });
-        }
+        function openFilterPanel() { if(filterPanel) filterPanel.classList.add('active'); }
+        function closeFilterPanel() { if(filterPanel) filterPanel.classList.remove('active'); }
+        if (mobileFilterButton) { mobileFilterButton.addEventListener('click', openFilterPanel); }
+        if (filterCloseButton) { filterCloseButton.addEventListener('click', closeFilterPanel); }
+        if (filterPanel) { filterPanel.addEventListener('click', (e) => { if (e.target === filterPanel) closeFilterPanel(); }); }
 
         // --- Initialisation ---
-        // Ensure DOM is ready before running setup (optional but good practice)
         document.addEventListener('DOMContentLoaded', () => {
             setupFilters();
             populateGrid();
