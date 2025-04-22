@@ -21,25 +21,15 @@
             --mc-item-ench: #FF55FF; --mc-dirt-fallback: #8A6545; --mc-grass-fallback: #59A632;
             --mc-grass-border: #5F3A1F;
 
-            /* Tier Colors (Base, Light, Dark - Add all needed) */
-            --mc-diamond-base: #5DECF5; --mc-diamond-light: #9CF5F2; --mc-diamond-dark: #4BDDBE;
-            --mc-netherite-base: #4C4545; --mc-netherite-light: #5E5858; --mc-netherite-dark: #3B3636;
-            --mc-iron-base: #D9D9D9; --mc-iron-light: #FFFFFF; --mc-iron-dark: #A8A8A8;
-            --mc-emerald-base: #17D04E; --mc-emerald-light: #54F77A; --mc-emerald-dark: #119C3A;
-            --mc-redstone-base: #FF0000; --mc-redstone-light: #FF5555; --mc-redstone-dark: #B80000;
-            --mc-gold-base: #FAF08A; --mc-gold-light: #FFFFE0; --mc-gold-dark: #E4CC4C;
-            --mc-wood-base: #A0754F; --mc-wood-light: #BDA588; --mc-wood-dark: #7A5A3D;
-            --mc-peripheral-base: var(--mc-bg-dark); /* Default grey for peripherals */
-            --mc-peripheral-light: var(--mc-border-light);
-            --mc-peripheral-dark: var(--mc-border-dark);
+            /* Tier colors removed */
 
             /* Sizing (Desktop Defaults) */
             --font-size-base: 16px; --font-size-title: 42px; --font-size-modal-title: 24px;
             --font-size-button: 16px;
-            /* Slot represents the colored block */
+            /* Slot size (still larger desktop) */
             --slot-size: 180px;
-            /* Icon is the image INSIDE the block */
-            --slot-icon-size: 120px; /* Smaller image centered in the slot */
+            /* Icon size INSIDE the slot */
+            --slot-icon-size: 160px; /* Image smaller than slot */
             --nav-slot-size: 56px; --nav-icon-size: 32px;
             --category-icon-font-size: 28px;
             --grass-header-height: 80px; --container-max-width: 1100px; --inventory-max-width: 1000px;
@@ -86,33 +76,24 @@
         .icon-budget::before { content: "🧱"; } .icon-custom::before { content: "🛠️"; } .icon-peripheral::before { content: "🖱️"; }
 
         /* --- Inventory Slot Styling --- */
+        /* FIX: Reverted to standard grey slot style */
         .inventory-slot {
             width: var(--slot-size); height: var(--slot-size);
-            /* Default slot styling (like peripheral) */
-            background-color: var(--mc-peripheral-base);
-            border: 3px solid; /* Use consistent border width */
-            border-color: var(--mc-peripheral-light) var(--mc-peripheral-dark) var(--mc-peripheral-dark) var(--mc-peripheral-light);
-            box-shadow: inset 3px 3px 0px rgba(255, 255, 255, 0.1), inset -3px -3px 0px rgba(0, 0, 0, 0.15);
+            background-color: var(--mc-bg-dark); /* Default dark grey */
+            border: 2px solid var(--mc-border-inset-dark); /* Inset border */
+            box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5); /* Inset shadow */
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; position: relative; overflow: hidden;
             transition: background-color 0.1s ease;
         }
-        .inventory-slot:hover { /* Add a subtle hover brightness */
-             filter: brightness(1.15);
-        }
-        /* Tier-specific overrides for background and border */
-        .slot-tier-diamond { background-color: var(--mc-diamond-base); border-color: var(--mc-diamond-light) var(--mc-diamond-dark) var(--mc-diamond-dark) var(--mc-diamond-light); }
-        .slot-tier-netherite { background-color: var(--mc-netherite-base); border-color: var(--mc-netherite-light) var(--mc-netherite-dark) var(--mc-netherite-dark) var(--mc-netherite-light); }
-        .slot-tier-iron { background-color: var(--mc-iron-base); border-color: var(--mc-iron-light) var(--mc-iron-dark) var(--mc-iron-dark) var(--mc-iron-light); }
-        .slot-tier-emerald { background-color: var(--mc-emerald-base); border-color: var(--mc-emerald-light) var(--mc-emerald-dark) var(--mc-emerald-dark) var(--mc-emerald-light); }
-        .slot-tier-redstone { background-color: var(--mc-redstone-base); border-color: var(--mc-redstone-light) var(--mc-redstone-dark) var(--mc-redstone-dark) var(--mc-redstone-light); }
-        .slot-tier-gold { background-color: var(--mc-gold-base); border-color: var(--mc-gold-light) var(--mc-gold-dark) var(--mc-gold-dark) var(--mc-gold-light); }
-        .slot-tier-wood { background-color: var(--mc-wood-base); border-color: var(--mc-wood-light) var(--mc-wood-dark) var(--mc-wood-dark) var(--mc-wood-light); }
-        /* Peripheral uses default styles, no override needed unless desired */
+        .inventory-slot:hover { background-color: #A8A8A8; } /* Standard hover */
+        .inventory-slot:hover::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.2); pointer-events: none; }
+
+        /* Tier-specific classes removed */
 
         /* Image INSIDE the slot */
         .inventory-slot img {
-            width: var(--slot-icon-size); height: var(--slot-icon-size);
+            width: var(--slot-icon-size); height: var(--slot-icon-size); /* Adjusted smaller size */
             max-width: var(--slot-icon-size); max-height: var(--slot-icon-size);
             object-fit: contain; image-rendering: var(--mc-pixelated);
             display: block; margin: auto; /* Center the image */
@@ -150,7 +131,7 @@
                 --font-size-button: 14px;
                 /* Mobile slots */
                 --slot-size: 80px;
-                --slot-icon-size: 60px; /* Image size inside mobile slot */
+                --slot-icon-size: 65px; /* Image smaller than slot */
                 --nav-slot-size: 52px; --nav-icon-size: 32px; --category-icon-font-size: 24px;
                 --grass-header-height: 60px; --container-max-width: 100%; --inventory-max-width: 100%;
                 --modal-max-width: 95%; --modal-image-size: 150px; --modal-padding: 15px;
@@ -164,8 +145,15 @@
             .main-inventory { width: 100%; } .inventory-header { padding: 5px 10px; border-bottom-width: 2px; margin-bottom: 10px; } .inventory-title { font-size: 15px; }
             .pc-grid-area { padding: 10px; min-height: 350px; border-width: 1px; background-color: var(--mc-bg); box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3); border: 2px solid var(--mc-border-inset-dark); }
             .pc-grid { grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); gap: var(--grid-gap); }
-            .inventory-slot { border-width: 3px; /* Match desktop border width */ width: var(--slot-size); height: var(--slot-size); display: flex; justify-content: center; align-items: center; }
-            /* Tier classes apply background/border */
+            /* Mobile slot uses default grey style */
+            .inventory-slot {
+                border-width: 2px; /* Match desktop border width */
+                 width: var(--slot-size); height: var(--slot-size);
+                 display: flex; justify-content: center; align-items: center;
+                 background-color: var(--mc-bg-dark); /* Ensure bg color */
+                 border-color: var(--mc-border-inset-dark); /* Use standard inset border */
+                 box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5); /* Standard inset shadow */
+            }
             .inventory-slot img { width: var(--slot-icon-size); height: var(--slot-icon-size); max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); }
             .item-price-tag { font-size: 10px; padding: 1px 2px; bottom: 2px; right: 2px; }
             .site-navigation { max-width: 95%; gap: 6px; padding: 6px; overflow-x: visible; white-space: normal; justify-content: center; flex-wrap: wrap; margin-top: 25px; background-color: var(--mc-bg-dark); border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25); }
@@ -249,16 +237,16 @@
     <script>
         // --- Product Data ---
         const productData = {
-            // FIX: Added 'tier' property, removed 'gridIcon', using 'imageSrc' for image inside the slot
-           "gaming-diamond": { name: "Diamond Gaming PC + Decal", tier: "diamond", imageSrc: "Zealcraft.png", /* Modal uses same img */ category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
-           "workstation-netherite": { name: "Netherite Workstation + Decal", tier: "netherite", imageSrc: "RapidCraft.png", /* Modal uses same img */ category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
-           "budget-iron": { name: "Iron Budget Tower + Decal", tier: "iron", imageSrc: "CloudCraft.png", /* Modal uses same img */ category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
-           "streaming-emerald": { name: "Emerald Stream Rig + Decal", tier: "emerald", imageSrc: "GCraft.png", /* Modal uses same img */ category: ["gaming", "workstation"], price: "$1699", specs: ["GeForce RTX 5070", "32GB DDR5 RAM", "2TB NVMe SSD", "Ryzen 7 CPU"], ench: "Built-in Capture Card", shopifyUrl: "https://www.google.com" },
-           "mini-redstone": { name: "Redstone Mini PC + Decal", tier: "redstone", imageSrc: "CloudCraft.png", /* Modal uses same img */ category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://www.google.com" },
-           "highend-gold": { name: "Gilded Elite PC + Decal", tier: "gold", imageSrc: "dCraft.png", /* Modal uses same img */ category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://www.google.com" },
-           "budget-wood": { name: "Oak Starter PC + Decal", tier: "wood", imageSrc: "Gcraft.png", /* Modal uses same img */ category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
-           "mouse-pro": { name: "Diamond Pro Mouse + Decal", tier: "peripheral", imageSrc: "", /* Modal uses same img */ category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
-           "keyboard-mech": { name: "Netherite Mech Keyboard + Decal", tier: "peripheral", imageSrc: "", /* Modal uses same img */ category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
+            // FIX: Removed 'tier' property, using 'imageSrc' for image inside the slot
+           "gaming-diamond": { name: "Diamond Gaming PC + Decal", imageSrc: "Zealcraft.png", /* Modal uses same img */ category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
+           "workstation-netherite": { name: "Netherite Workstation + Decal", imageSrc: "RapidCraft.png", /* Modal uses same img */ category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
+           "budget-iron": { name: "Iron Budget Tower + Decal", imageSrc: "CloudCraft.png", /* Modal uses same img */ category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
+           "streaming-emerald": { name: "Emerald Stream Rig + Decal", imageSrc: "Gcraft.png", /* Modal uses same img */ category: ["gaming", "workstation"], price: "$1699", specs: ["GeForce RTX 5070", "32GB DDR5 RAM", "2TB NVMe SSD", "Ryzen 7 CPU"], ench: "Built-in Capture Card", shopifyUrl: "https://www.google.com" },
+           "mini-redstone": { name: "Redstone Mini PC + Decal", imageSrc: "CloudCraft.png", /* Modal uses same img */ category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://www.google.com" },
+           "highend-gold": { name: "Gilded Elite PC + Decal", imageSrc: "dCraft.png", /* Modal uses same img */ category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://www.google.com" },
+           "budget-wood": { name: "Oak Starter PC + Decal", imageSrc: "Gcraft.png", /* Modal uses same img */ category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
+           "mouse-pro": { name: "Diamond Pro Mouse + Decal", imageSrc: "", /* Modal uses same img */ category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
+           "keyboard-mech": { name: "Netherite Mech Keyboard + Decal", imageSrc: "", /* Modal uses same img */ category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
         };
 
         // --- DOM Elements ---
@@ -278,7 +266,7 @@
         const inventoryTitle = document.querySelector('.inventory-title');
         let inventorySlots; // Populated after grid build
 
-        // --- Helper/Core Logic --- (Keep unchanged - Condensed)
+        // --- Helper/Core Logic --- (Condensed - Keep unchanged)
         function isMobile() { return window.innerWidth <= 768; }
         function positionTooltip(e) { if (!tooltip) return; const tW = tooltip.offsetWidth, tH = tooltip.offsetHeight, m=15; let l=e.pageX+m, t=e.pageY+m; if(l+tW > window.innerWidth+window.scrollX-m)l=e.pageX-tW-m; if(t+tH > window.innerHeight+window.scrollY-m)t=e.pageY-tH-m; if(l<window.scrollX+m)l=window.scrollX+m; if(t<window.scrollY+m)t=window.scrollY+m; tooltip.style.left=`${l}px`; tooltip.style.top=`${t}px`;}
         function openModal(productId) { const d=productData[productId]; if(!d || !modalOverlay){console.error("Missing data/modal:",productId); return;} if(modalTitle)modalTitle.textContent=d.name; if(modalPrice)modalPrice.textContent=d.price; if(modalImage){modalImage.innerHTML=''; if(d.imageSrc){const i=document.createElement('img');i.src=d.imageSrc;i.alt=d.name;modalImage.appendChild(i);} else{modalImage.innerHTML='<p style="color:#555;">No Image</p>';}} if(modalSpecs){let s=d.specs?'<ul>'+d.specs.map(i=>`<li>${i}</li>`).join('')+'</ul>':'<p>Details n/a.</p>';modalSpecs.innerHTML=s;} if(modalEnch){modalEnch.innerHTML=d.ench?`${d.ench}`:'';modalEnch.style.display=d.ench?'block':'none';} if(modalBuyButton){modalBuyButton.href=d.shopifyUrl||'#'; if(!d.shopifyUrl){modalBuyButton.style.opacity='0.5';modalBuyButton.style.pointerEvents='none';modalBuyButton.textContent='Unavailable';}else{modalBuyButton.style.opacity='1';modalBuyButton.style.pointerEvents='auto';modalBuyButton.textContent='Buy Now';}} modalOverlay.classList.add('active'); }
@@ -297,14 +285,14 @@
                  const item = productData[productId];
                  if (!item) return; // Skip if item data is missing
                  const slotDiv = document.createElement('div');
-                 // Add base class and tier-specific class for styling
-                 slotDiv.className = `inventory-slot slot-tier-${item.tier || 'peripheral'}`; // Default to peripheral style if no tier
+                 // FIX: Remove tier class, use base class only
+                 slotDiv.className = 'inventory-slot';
                  slotDiv.setAttribute('data-product', productId);
                  if (item.category) { // Add categories for filtering
                     slotDiv.setAttribute('data-category', item.category.join(' '));
                  }
 
-                 // FIX: Add the actual product image INSIDE the styled slot
+                 // Add the actual product image INSIDE the styled slot
                  const productImg = document.createElement('img');
                  productImg.src = item.imageSrc || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // Use item imageSrc
                  productImg.alt = item.name; // Alt text
