@@ -1,584 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlockTech PCs - Build Your Rig!</title>
-    <style>
-        /* --- Base Styles & Variables --- */
-        @font-face {
-            font-family: 'Minecraft';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-minecraft/1.0.0/minecraft.woff2') format('woff2'); /* Consider hosting locally */
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        :root {
-            /* Colors */
-            --mc-bg: #C6C6C6;
-            --mc-bg-dark: #8B8B8B;
-            --mc-border-light: #FFFFFF;
-            --mc-border-dark: #5B5B5B;
-            --mc-border-inset-dark: #373737;
-            --mc-text: #404040;
-            --mc-text-light: #FFFFFF;
-            --mc-tooltip-bg: #100010;
-            --mc-tooltip-border: #5000FF;
-            --mc-item-name: #55FFFF; /* Cyan */
-            --mc-item-spec: #AAAAAA; /* Gray */
-            --mc-item-price: #FFFF55; /* Yellow */
-            --mc-item-ench: #FF55FF; /* Magenta */
-            --mc-dirt-fallback: #8A6545;
-            --mc-grass-fallback: #59A632;
-            --mc-grass-border: #5F3A1F;
-
-            /* Sizing (Desktop Defaults) */
-            --font-size-base: 16px;
-            --font-size-title: 42px;
-            --font-size-modal-title: 24px;
-            --font-size-button: 16px;
-            --slot-size: 64px;
-            --slot-icon-size: 48px; /* Default Icon size in grid */
-            --nav-slot-size: 56px;
-            --nav-icon-size: 40px; /* Default Icon size in hotbar */
-            --grass-header-height: 80px;
-            --container-max-width: 1100px;
-            --inventory-max-width: 1000px;
-            --sidebar-width: 240px;
-            --modal-max-width: 750px;
-            --modal-image-size: 250px;
-            --modal-padding: 25px;
-            --grid-gap: 10px;
-            --button-padding: 10px 20px;
-
-            /* Rendering */
-            --mc-pixelated: pixelated;
-        }
-
-        html { box-sizing: border-box; }
-        *, *:before, *:after { box-sizing: inherit; }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Minecraft', 'Courier New', monospace;
-            font-size: var(--font-size-base);
-            /* Dirt Texture Background (Desktop) */
-            background-color: var(--mc-dirt-fallback);
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABGSURBVDhPY2RgYDjAwAgYBDAZAQMDFQMuAfMPgIyMjIzMLAwMzEzMDAxMzAAhBgYGBkbmAwA0MDT+FwwCQQaGAIQMDAwMDEz8gAADNwAAg3N/d9c4228AAAAASUVORK5CYII=');
-            background-size: 48px 48px;
-            background-repeat: repeat;
-            image-rendering: var(--mc-pixelated);
-            color: var(--mc-text-light);
-            overflow-x: hidden;
-            padding-top: var(--grass-header-height);
-        }
-
-        #grass-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--grass-header-height);
-            background-image: url('minecraft_bg.png'); /* Needs minecraft_bg.png */
-            background-color: var(--mc-grass-fallback);
-            background-repeat: repeat-x;
-            background-position: top center;
-            background-size: auto var(--grass-header-height);
-            image-rendering: var(--mc-pixelated);
-            z-index: 5;
-            border-bottom: 5px solid var(--mc-grass-border);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .container {
-            max-width: var(--container-max-width);
-            margin: 30px auto;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .site-title {
-            font-size: var(--font-size-title);
-            color: var(--mc-text-light);
-            text-shadow: 3px 3px var(--mc-grass-border);
-            text-align: center;
-            margin-bottom: 40px;
-            letter-spacing: 1.5px;
-        }
-
-        /* --- MC Panel Style --- */
-        .mc-panel {
-            background-color: var(--mc-bg);
-            border: 3px solid;
-            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            box-shadow: inset 3px 3px 0px rgba(255, 255, 255, 0.5), inset -3px -3px 0px rgba(0, 0, 0, 0.25);
-            padding: 10px;
-        }
-
-        /* --- Inventory Layout (Desktop) --- */
-        .inventory-container {
-            display: flex;
-            max-width: var(--inventory-max-width);
-            margin: 0 auto;
-            background-color: var(--mc-bg);
-            border: 3px solid;
-            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            box-shadow: inset 3px 3px 0px rgba(255, 255, 255, 0.5), inset -3px -3px 0px rgba(0, 0, 0, 0.25);
-            padding: 10px;
-        }
-
-        .inventory-sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--mc-bg-dark);
-            border-right: 3px solid var(--mc-border-inset-dark);
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .main-inventory {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-
-        .inventory-header {
-            padding: 6px 12px;
-            background-color: var(--mc-bg);
-            border-bottom: 3px solid var(--mc-border-dark);
-            /* Added margin for separation on mobile */
-            margin-bottom: 10px;
-        }
-
-         .inventory-title {
-            font-size: calc(var(--font-size-base) + 2px);
-            color: var(--mc-text);
-            font-weight: normal;
-        }
-
-        .pc-grid-area {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: var(--mc-bg);
-            min-height: 450px;
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
-            border: 2px solid var(--mc-border-inset-dark);
-        }
-
-        .pc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr));
-            gap: var(--grid-gap);
-        }
-
-        /* --- Sidebar Components (Desktop) --- */
-         .search-bar {
-            display: flex; align-items: center; background-color: var(--mc-bg-dark);
-            border: 1px solid var(--mc-border-inset-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.5);
-            margin-bottom: 15px; padding: 5px;
-        }
-        .search-icon {
-            width: 20px; height: 20px; margin-right: 6px;
-             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVDhPtY5BCsIwEATR91B7B+kNepfCU3gNXsTdi+LSBn/SkQSFTchDQ3xzD7EDD2w2m5s+jw/cGAsG+C9iLhGjH0e8Jv1A/Gvz2L2iL2wPQLyvvS54+TkQCcACkFzrWw90/N0EaM5H+b7nx/I2AN7nO10j+AIArNvrAMAR0LweCR6GcgBo/v1w9B5A1/N8E1YAnAEAfN9sB8B3QRwAYhXAMQLAOlEAMALAWoIBYARAFQEAEQDWERcAFQEAC+gB/4AAuA3/jG1m1kSEAAAAAElFTkSuQmCC') center center no-repeat;
-             background-size: contain; image-rendering: var(--mc-pixelated);
-        }
-        .search-input {
-            flex-grow: 1; background-color: #373737; border: none;
-            color: #AAAAAA; font-family: 'Minecraft', monospace;
-            padding: 4px; font-size: calc(var(--font-size-base) - 2px); outline: none;
-        }
-        .inventory-tabs { display: flex; flex-direction: column; gap: 3px; margin-top: 10px; }
-        .inventory-tab {
-            display: flex; align-items: center; background-color: var(--mc-bg-dark);
-            border: 2px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-            padding: 8px 10px; cursor: pointer; color: var(--mc-text-light);
-            text-shadow: 1px 1px #373737; font-size: calc(var(--font-size-base) - 1px);
-            transition: background-color 0.1s ease; position: relative;
-        }
-        .inventory-tab:hover { background-color: #A0A0A0; }
-        .inventory-tab.active {
-            background-color: var(--mc-bg);
-            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.25), inset -2px -2px 0px rgba(255, 255, 255, 0.5);
-            color: var(--mc-text); text-shadow: 1px 1px #FFFFFF; z-index: 1;
-        }
-        .inventory-tab.active::before {
-           content: ''; position: absolute; left: -13px;
-           top: 50%; transform: translateY(-50%); width: 0; height: 0;
-           border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-           border-right: 8px solid var(--mc-bg);
-        }
-        .tab-icon { width: 32px; height: 32px; margin-right: 10px; display: flex; justify-content: center; align-items: center; font-size: 24px; image-rendering: var(--mc-pixelated); flex-shrink: 0; }
-        .tab-icon img { max-width: 100%; max-height: 100%; image-rendering: var(--mc-pixelated); }
-
-        /* --- Inventory Slot --- */
-        .inventory-slot {
-            width: var(--slot-size); height: var(--slot-size);
-            background-color: var(--mc-bg-dark);
-            border: 2px solid var(--mc-border-inset-dark);
-            box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; position: relative; overflow: hidden;
-            transition: background-color 0.1s ease;
-        }
-        .inventory-slot:hover { background-color: #A8A8A8; }
-        .inventory-slot:hover::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.2); pointer-events: none;
-        }
-        /* Target both img and div icons in the grid */
-        .inventory-slot img,
-        .inventory-slot .item-icon {
-            max-width: var(--slot-icon-size);
-            max-height: var(--slot-icon-size);
-            image-rendering: var(--mc-pixelated);
-            /* Ensure icons are centered if smaller than max */
-            display: block;
-            margin: auto;
-        }
-        .item-icon { width: var(--slot-icon-size); height: var(--slot-icon-size); background-size: contain; background-repeat: no-repeat; background-position: center; }
-        .item-price-tag {
-            position: absolute; bottom: 2px; right: 3px; font-size: 12px;
-            color: var(--mc-item-price); text-shadow: 1px 1px 0 #000;
-            background: rgba(0,0,0,0.6); padding: 1px 3px; border-radius: 2px;
-        }
-
-        /* --- Navigation Hotbar --- */
-        .site-navigation {
-            display: flex; justify-content: center; gap: 5px; margin-top: 30px;
-            border: 3px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            background-color: var(--mc-bg-dark); padding: 5px;
-            max-width: 600px;
-            margin-left: auto; margin-right: auto;
-        }
-        .nav-slot {
-            width: var(--nav-slot-size); height: var(--nav-slot-size); background-color: var(--mc-bg);
-            border: 2px solid var(--mc-border-inset-dark); box-shadow: inset 2px 2px 1px rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: center; align-items: center;
-            position: relative;
-        }
-        /* Ensure link fills the slot for clicking */
-        .nav-slot a {
-            display: flex; justify-content: center; align-items: center;
-            width: 100%; height: 100%; text-decoration: none; cursor: pointer;
-        }
-        /* Style for the image within the hotbar */
-        .nav-slot img {
-            max-width: var(--nav-icon-size);
-            max-height: var(--nav-icon-size);
-            image-rendering: var(--mc-pixelated);
-            display: block; /* Helps prevent extra space */
-        }
-        .nav-slot.selected { /* Desktop selection style */
-            border: 3px solid var(--mc-border-light);
-            box-shadow: 0 0 5px var(--mc-border-light), inset 0 0 3px rgba(255,255,255,0.5);
-            background-color: #D6D6D6;
-        }
-
-        /* --- Tooltip --- */
-        /* (Keep tooltip styles as they are mostly desktop) */
-        .product-details-tooltip {
-            position: absolute; background-color: var(--mc-tooltip-bg); border: 2px solid var(--mc-tooltip-border);
-            color: var(--mc-text-light); padding: 10px; max-width: 300px; z-index: 1100;
-            display: none; font-size: 14px; pointer-events: none; line-height: 1.5;
-            box-shadow: 3px 3px 0 1px rgba(0, 0, 0, 0.8);
-            image-rendering: var(--mc-pixelated);
-        }
-        .tooltip-name { color: var(--mc-item-name); margin-bottom: 6px; font-size: 15px; }
-        .tooltip-specs { color: var(--mc-item-spec); margin-bottom: 6px;}
-        .tooltip-specs ul { padding-left: 15px; margin: 0; list-style: none;}
-        .tooltip-specs li::before { content: "• "; color: #808080; padding-right: 4px;}
-        .tooltip-ench { color: var(--mc-item-ench); margin-bottom: 6px; font-style: italic; }
-        .tooltip-price { color: var(--mc-item-price); margin-top: 10px; font-weight: bold; font-size: 15px; }
-
-        /* --- Modal --- */
-        /* (Keep modal styles largely the same) */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); display: none;
-            justify-content: center; align-items: center; z-index: 1000; padding: 20px;
-            font-family: 'Minecraft', 'Courier New', monospace;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-content {
-            background-color: var(--mc-bg-dark); border: 4px solid;
-            border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-            box-shadow: 0 0 0 4px var(--mc-border-inset-dark), inset 4px 4px 0px rgba(255, 255, 255, 0.1);
-            padding: var(--modal-padding); max-width: var(--modal-max-width); width: 90%;
-            display: flex; gap: 25px; position: relative; color: var(--mc-text-light);
-        }
-        .modal-image-area {
-            width: var(--modal-image-size); height: var(--modal-image-size);
-            background-color: var(--mc-bg); border: 3px solid var(--mc-border-inset-dark);
-            box-shadow: inset 3px 3px 0px rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: center; align-items: center; flex-shrink: 0;
-            overflow: hidden;
-        }
-        .modal-image-area img { max-width: calc(var(--modal-image-size) - 20px); max-height: calc(var(--modal-image-size) - 20px); display: block; image-rendering: var(--mc-pixelated); }
-        .modal-details-area { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; }
-        .modal-title { font-size: var(--font-size-modal-title); color: var(--mc-item-name); margin-bottom: 15px; text-shadow: 1px 1px #373737; }
-        .modal-specs { font-size: var(--font-size-base); color: var(--mc-item-spec); margin-bottom: 12px; line-height: 1.6; }
-        .modal-specs ul { padding-left: 18px; margin: 5px 0; list-style: none; }
-        .modal-specs li::before { content: "• "; color: #808080; padding-right: 5px; }
-        .modal-ench { font-size: var(--font-size-base); color: var(--mc-item-ench); font-style: italic; margin-bottom: 18px; }
-        .modal-price { font-size: calc(var(--font-size-base) + 4px); color: var(--mc-item-price); font-weight: bold; margin-bottom: 25px; text-shadow: 1px 1px #373737; }
-        .modal-buttons { display: flex; gap: 15px; margin-top: auto; }
-        .mc-button {
-            font-family: 'Minecraft', monospace; font-size: var(--font-size-button); color: var(--mc-text-light);
-            text-shadow: 1px 1px #373737; background-color: var(--mc-bg-dark); border: 3px solid;
-            border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-            padding: var(--button-padding); cursor: pointer; text-align: center; display: inline-block;
-            text-decoration: none; flex-grow: 1; image-rendering: var(--mc-pixelated);
-            transition: background-color 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
-        }
-        .mc-button:hover { background-color: #A0A0A0; }
-        .mc-button:active {
-            background-color: var(--mc-bg); border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.25), inset -2px -2px 0px rgba(255, 255, 255, 0.5);
-            color: var(--mc-text); text-shadow: 1px 1px #FFFFFF; transform: translate(1px, 1px);
-        }
-        .mc-button.primary { background-color: #559955; border-color: #AADD99 var(--mc-border-dark) var(--mc-border-dark) #AADD99; }
-        .mc-button.primary:hover { background-color: #66AA66; }
-        .mc-button.primary:active { background-color: #448844; border-color: var(--mc-border-dark) #AADD99 #AADD99 var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.25); transform: translate(1px, 1px); }
-        .modal-close-btn {
-            position: absolute; top: 8px; right: 8px; background-color: #AA5555; border: 2px solid;
-            border-color: #FFAAAA var(--mc-border-dark) var(--mc-border-dark) #FFAAAA; color: var(--mc-text-light);
-            font-family: 'Minecraft', monospace; width: 30px; height: 30px; line-height: 27px;
-            text-align: center; cursor: pointer; font-size: 16px; padding: 0; text-shadow: 1px 1px #373737;
-             image-rendering: var(--mc-pixelated); transition: background-color 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
-        }
-        .modal-close-btn:hover { background-color: #CC6666; }
-        .modal-close-btn:active { background-color: #884444; border-color: var(--mc-border-dark) #FFAAAA #FFAAAA var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.25); transform: translate(1px, 1px); }
-
-        /* --- Block Icons --- */
-        .icon-wood { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQTM3QjRBIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOEI2NzNCQiIvPjwvc3ZnPg=='); }
-        .icon-stone { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNzA3MDcwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjODA4MDgwIi8+PC9zdmc+'); }
-        .icon-iron { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+'); }
-        .icon-gold { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjRkZERTAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkZGRkREIi8+PC9zdmc+'); }
-        .icon-diamond { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+'); }
-        .icon-emerald { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjMDA5OTQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjMTZDQzVFIi8+PC9zdmc+'); }
-        .icon-redstone { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzgwMDAwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRkYwMDAwIi8+PC9zdmc+'); }
-        .icon-netherite { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+'); }
-        .icon-pc { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE0IiBoZWlnaHQ9IjEwIiB4PSIxIiB5PSIxIiBmaWxsPSIjNjY2Ii8+PHJlY3Qgd2lkdGg9IjEyIiBoZWlnaHQ9IjgiIHg9IjIiIHk9IjIiIGZpbGw9IiMzMzMiLz48cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSIyIiB4PSI1IiB5PSIxMyIgZmlsbD0iIzY2NiIvPjwvc3ZnPg=='); }
-        .icon-all::before { content: "📦"; } .icon-gaming::before { content: "⛏️"; }
-        .icon-work::before { content: "📒"; } .icon-custom::before { content: "🛠️"; }
-        .icon-peripheral::before { content: "🖱️"; } .icon-budget::before { content: "🧱"; }
+// --- DOM Elements ---
+const inventorySlots = document.querySelectorAll('.inventory-slot[data-product]');
+const tooltip = document.getElementById('item-tooltip');
+const tabs = document.querySelectorAll('.inventory-tab');
+const pcGrid = document.getElementById('pc-grid');
+const modalOverlay = document.getElementById('product-modal');
+const modalImage = document.getElementById('modal-image');
+const modalTitle = document.getElementById('modal-title');
+const modalSpecs = document.getElementById('modal-specs');
+const modalEnch = document.getElementById('modal-ench');
+const modalPrice = document.getElementById('modal-price');
+const modalBuyButton = document.getElementById('modal-buy-button');
+const modalCloseButton = document.getElementById('modal-close-button');
+const navLinks = document.querySelectorAll('.site-navigation .nav-slot a');
+const navSlots = document.querySelectorAll('.site-navigation .nav-slot');
+const inventoryTitle = document.querySelector('.inventory-title'); // Get the title element
 
 
-        /* ======================================== */
-        /* --- Mobile Optimised Version (768px and below) --- */
-        /* ======================================== */
-        @media (max-width: 768px) {
-            :root {
-                /* Override sizes for mobile */
-                --font-size-base: 14px;
-                --font-size-title: 28px;
-                --font-size-modal-title: 20px;
-                --font-size-button: 14px;
-                --slot-size: 64px; /* Increase slot size slightly for touch */
-                /* FIX 3: Increase grid icon size */
-                --slot-icon-size: 52px; /* Make icons fill more of the slot */
-                --nav-slot-size: 52px; /* Make hotbar slots bigger */
-                --nav-icon-size: 40px; /* Make hotbar icons bigger */
-                --grass-header-height: 60px;
-                --container-max-width: 100%;
-                --inventory-max-width: 100%;
-                --sidebar-width: 100%;
-                --modal-max-width: 95%;
-                --modal-image-size: 150px;
-                --modal-padding: 15px;
-                --grid-gap: 8px;
-                --button-padding: 10px 18px;
-            }
+// --- Product Data ---
+// !! Make sure your productData is complete and correct here !!
+const productData = {
+   "gaming-diamond": { name: "Diamond Gaming PC + Minecraft Decal Bundle", icon: "icon-diamond", imageSrc: "https://via.placeholder.com/230/4BDDBE/FFFFFF?text=Diamond+PC+Large", category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
+   "workstation-netherite": { name: "Netherite Workstation + Minecraft Decal Bundle", icon: "icon-netherite", imageSrc: "https://via.placeholder.com/230/404040/FFFFFF?text=Netherite+WS+Large", category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
+   "budget-iron": { name: "Iron Budget Tower + Minecraft Decal Bundle", icon: "icon-iron", imageSrc: "https://via.placeholder.com/230/C1C5C5/000000?text=Iron+PC+Large", category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
+   "streaming-emerald": { name: "Emerald Stream Rig + Minecraft Decal Bundle", icon: "icon-emerald", imageSrc: "https://via.placeholder.com/230/009940/FFFFFF?text=Emerald+Rig+Large", category: ["gaming", "workstation"], price: "$1699", specs: ["GeForce RTX 5070", "32GB DDR5 RAM", "2TB NVMe SSD", "Ryzen 7 CPU"], ench: "Built-in Capture Card", shopifyUrl: "https://www.google.com" },
+   "mini-redstone": { name: "Redstone Mini PC + Minecraft Decal Bundle", icon: "icon-redstone", imageSrc: "https://via.placeholder.com/230/C80000/FFFFFF?text=Redstone+Mini+Large", category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://www.google.com" },
+   "highend-gold": { name: "Gilded Elite PC + Minecraft Decal Bundle", icon: "icon-gold", imageSrc: "https://via.placeholder.com/230/FFD700/000000?text=Gold+Elite+Large", category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://www.google.com" },
+   "budget-wood": { name: "Oak Starter PC + Minecraft Decal Bundle", icon: "icon-wood", imageSrc: "https://via.placeholder.com/230/A37B4A/FFFFFF?text=Oak+Starter+Large", category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
+   "mouse-pro": { name: "Diamond Pro Mouse + Minecraft Decal Bundle", imageSrc: 'https://via.placeholder.com/230/CCCCCC/000000?text=Pro+Mouse+Large', category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
+   "keyboard-mech": { name: "Netherite Mech Keyboard + Minecraft Decal Bundle", imageSrc: 'https://via.placeholder.com/230/333333/FFFFFF?text=Mech+KB+Large', category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
+};
 
-            body {
-                padding-top: var(--grass-header-height);
-                background-image: none; /* Solid color background */
-                background-color: var(--mc-dirt-fallback);
-            }
+// --- Helper Function ---
+ function isMobile() {
+     return window.innerWidth <= 768;
+ }
 
-            #grass-header {
-                 background-size: auto var(--grass-header-height);
-                 border-bottom-width: 4px;
-            }
+// --- Tooltip Logic ---
+function positionTooltip(e) {
+    if (!tooltip) return; // Safety check
+    const tooltipWidth = tooltip.offsetWidth;
+    const tooltipHeight = tooltip.offsetHeight;
+    const margin = 15; let left = e.pageX + margin; let top = e.pageY + margin;
+    if (left + tooltipWidth > window.innerWidth + window.scrollX - margin) { left = e.pageX - tooltipWidth - margin; }
+    if (top + tooltipHeight > window.innerHeight + window.scrollY - margin) { top = e.pageY - tooltipHeight - margin; }
+    if (left < window.scrollX + margin) left = window.scrollX + margin;
+    if (top < window.scrollY + margin) top = window.scrollY + margin;
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+}
 
-            .container { margin: 15px auto; padding: 10px; }
-            .site-title { margin-bottom: 25px; font-size: var(--font-size-title); }
+// --- Modal Logic ---
+function openModal(productId) {
+    const data = productData[productId];
+    if (!data || !modalOverlay || !modalTitle || !modalPrice || !modalImage || !modalSpecs || !modalEnch || !modalBuyButton) return; // Safety checks
 
-            /* --- Mobile Inventory Layout --- */
-            .inventory-container {
-                flex-direction: column;
-                border-width: 2px;
-                padding: 8px;
-                 /* Apply mc-panel style directly */
-                 background-color: var(--mc-bg);
-                 border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-                 box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25);
-            }
+    modalTitle.textContent = data.name;
+    modalPrice.textContent = data.price;
 
-            .inventory-sidebar { display: none; } /* Hide sidebar */
+    modalImage.innerHTML = '';
+    if (data.imageSrc) {
+        const img = document.createElement('img');
+        img.src = data.imageSrc;
+        img.alt = data.name;
+        modalImage.appendChild(img);
+    } else if (data.icon) {
+         const iconDiv = document.createElement('div');
+         iconDiv.className = `item-icon ${data.icon}`;
+         iconDiv.style.width = '80%';
+         iconDiv.style.height = '80%';
+         modalImage.appendChild(iconDiv);
+    } else {
+         modalImage.innerHTML = '<p style="color: #555;">No Image</p>';
+    }
 
-            /* --- Main Grid Area (Mobile) --- */
-            .main-inventory { }
-            .inventory-header {
-                 padding: 5px 10px;
-                 border-bottom-width: 2px;
-                 margin-bottom: 10px; /* Space above grid */
-            }
-            .inventory-title { font-size: 15px; }
+    let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '<p>Details not available.</p>';
+    modalSpecs.innerHTML = specsHtml;
 
-            .pc-grid-area {
-                 padding: 10px;
-                 min-height: 350px;
-                 border-width: 1px;
-            }
-            /* Adjust grid columns based on new slot size */
-            .pc-grid { grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); }
+    modalEnch.innerHTML = data.ench ? `${data.ench}` : '';
+    modalEnch.style.display = data.ench ? 'block' : 'none';
 
-            /* --- Mobile Slot --- */
-            .inventory-slot {
-                 border-width: 1px;
-                 width: var(--slot-size); height: var(--slot-size);
+    modalBuyButton.href = data.shopifyUrl || '#';
+    if (!data.shopifyUrl) {
+        modalBuyButton.style.opacity = '0.5';
+        modalBuyButton.style.pointerEvents = 'none';
+        modalBuyButton.textContent = 'Unavailable';
+    } else {
+         modalBuyButton.style.opacity = '1';
+         modalBuyButton.style.pointerEvents = 'auto';
+         modalBuyButton.textContent = 'Buy Now';
+    }
+    modalOverlay.classList.add('active');
+}
+
+function closeModal() {
+    if (modalOverlay) modalOverlay.classList.remove('active');
+}
+
+// --- Filter Function ---
+function filterItems(selectedCategory) {
+    inventorySlots.forEach(slot => {
+        const productId = slot.getAttribute('data-product');
+        // Check if product exists in data before accessing category
+        const productInfo = productData[productId];
+        const itemCategories = productInfo?.category || [];
+        const matches = selectedCategory === 'all' || itemCategories.includes(selectedCategory);
+        slot.style.display = matches ? 'flex' : 'none';
+    });
+}
+
+// --- Event Listeners ---
+
+// Inventory Slots (Tooltip and Modal Trigger)
+inventorySlots.forEach(slot => {
+    const productId = slot.getAttribute('data-product');
+    if (!productData[productId]) return; // Skip if product data missing
+
+    slot.addEventListener('mouseenter', (e) => {
+         if (isMobile()) return;
+         const data = productData[productId];
+         if (!data || !tooltip) return;
+         let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '';
+         let enchHtml = data.ench ? `<div class="tooltip-ench">${data.ench}</div>` : '';
+         tooltip.innerHTML = `<div class="tooltip-name">${data.name}</div><div class="tooltip-specs">${specsHtml}</div>${enchHtml}<div class="tooltip-price">${data.price}</div>`;
+         tooltip.style.display = 'block';
+         positionTooltip(e);
+    });
+    slot.addEventListener('mousemove', (e) => {
+         if (isMobile() || !tooltip || tooltip.style.display !== 'block') return;
+         positionTooltip(e);
+     });
+    slot.addEventListener('mouseleave', () => {
+         if (isMobile() || !tooltip) return;
+         tooltip.style.display = 'none';
+     });
+
+    slot.addEventListener('click', () => {
+        openModal(productId);
+    });
+});
+
+// Modal Closing
+if (modalCloseButton) modalCloseButton.addEventListener('click', closeModal);
+if (modalOverlay) modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+        closeModal();
+    }
+});
+
+// Sidebar Tab Filtering (Handles Desktop)
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const selectedCategory = tab.getAttribute('data-category');
+        // Use text content of the tab for the title, fallback to category name
+        const categoryTitle = tab.textContent.trim().split('\n')[0] || selectedCategory; // Get text before icon/newline
+
+        // Update active state for sidebar tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+         // Update active state for hotbar slots
+         navSlots.forEach(navSlot => {
+             const link = navSlot.querySelector('a');
+             if (link && link.getAttribute('data-category') === selectedCategory) {
+                 navSlot.classList.add('selected');
+             } else {
+                 navSlot.classList.remove('selected');
              }
-            /* Icon sizing is handled by the variable override */
-            .item-price-tag { font-size: 10px; padding: 1px 2px; bottom: 1px; right: 1px; }
+         });
 
-            /* --- Mobile Navigation --- */
-            .site-navigation {
-                max-width: 95%;
-                gap: 6px; /* Slightly more gap */
-                padding: 6px;
-                 overflow-x: visible;
-                 white-space: normal;
-                 justify-content: center; /* Center the items */
-                 flex-wrap: wrap; /* Allow wrapping if screen is extremely narrow */
-                 margin-top: 25px; /* Space below grid */
-                 /* Add panel style */
-                 background-color: var(--mc-bg-dark);
-                 border: 2px solid;
-                 border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-                 box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25);
-            }
+         // Update Inventory Title
+         if (inventoryTitle) {
+            inventoryTitle.textContent = categoryTitle;
+         }
 
-             .nav-slot {
-                 width: var(--nav-slot-size); height: var(--nav-slot-size);
-                 border-width: 1px;
-             }
-             /* FIX 1 & 2: Ensure icons display and style selected state */
-             .nav-slot img {
-                 max-width: var(--nav-icon-size); max-height: var(--nav-icon-size);
-                 display: block; /* Crucial for display */
-             }
-             .nav-slot.selected {
-                 border-width: 2px;
-                 border-color: var(--mc-item-price); /* Bright yellow border */
-                 background-color: #E0E0E0; /* Lighter background */
-                 box-shadow: 0 0 6px var(--mc-item-price), inset 0 0 2px rgba(255,255,150,0.7); /* Glow effect */
-             }
+        // Apply the filter
+        filterItems(selectedCategory);
+    });
+});
 
-            /* --- Mobile Tooltip (Hidden) --- */
-             .product-details-tooltip { display: none !important; }
+ // Hotbar Navigation Filtering (Handles Mobile and Desktop Clicks)
+ navLinks.forEach(link => {
+     link.addEventListener('click', (e) => {
+         e.preventDefault(); // Prevent default anchor behavior
+         const selectedCategory = link.getAttribute('data-category');
+         const parentSlot = link.closest('.nav-slot');
+         const categoryTitle = link.getAttribute('title') || selectedCategory; // Use link title
 
-            /* --- Mobile Modal --- */
-             /* (Keep modal mobile styles as they were generally okay) */
-             .modal-content {
-                 flex-direction: column; align-items: center; max-width: 95%;
-                 padding: var(--modal-padding); max-height: 85vh; overflow-y: auto;
-                 gap: 15px; border-width: 3px;
-                 box-shadow: 0 0 0 3px var(--mc-border-inset-dark), inset 3px 3px 0px rgba(255, 255, 255, 0.1);
-             }
-             .modal-image-area {
-                 width: var(--modal-image-size); height: var(--modal-image-size);
-                 margin-bottom: 10px; border-width: 2px;
-             }
-             .modal-image-area img { max-width: calc(var(--modal-image-size) - 15px); max-height: calc(var(--modal-image-size) - 15px); }
-             .modal-details-area { width: 100%; text-align: center; }
-             .modal-title { font-size: var(--font-size-modal-title); margin-bottom: 10px; }
-             .modal-specs { font-size: 13px; margin-bottom: 8px; line-height: 1.5; text-align: left; padding-left: 10px;}
-             .modal-specs ul { padding-left: 15px; }
-             .modal-ench { font-size: 13px; margin-bottom: 12px; }
-             .modal-price { font-size: 18px; margin-bottom: 15px; }
-             .modal-buttons { flex-direction: column; width: 85%; margin: 10px auto 0; gap: 10px;}
-             .mc-button { padding: var(--button-padding); font-size: var(--font-size-button); border-width: 2px;}
-             .modal-close-btn { width: 26px; height: 26px; line-height: 24px; font-size: 14px; top: 6px; right: 6px;}
-        }
+         // 1. Update Hotbar Visual Selection
+         navSlots.forEach(s => s.classList.remove('selected'));
+         if (parentSlot) {
+             parentSlot.classList.add('selected');
+         }
 
-        /* Further adjustments for very small screens */
-        @media (max-width: 480px) {
-             :root {
-                 /* Adjust sizes further if needed */
-                 --slot-size: 56px;
-                 /* FIX 3: Increase grid icon size */
-                 --slot-icon-size: 46px;
-                 --nav-slot-size: 46px;
-                 --nav-icon-size: 34px;
-                 --grass-header-height: 50px;
-                 --font-size-title: 24px;
-             }
-             .site-title { font-size: 22px; }
-             .modal-image-size { width: 120px; height: 120px; }
-             .modal-image-area img { max-width: 100px; max-height: 100px; }
-             .modal-title { font-size: 18px; }
-             .modal-specs, .modal-ench { font-size: 12px; }
-             .modal-price { font-size: 16px; }
-             .modal-buttons { width: 90%; }
-        }
+         // 2. Update Inventory Title
+         if (inventoryTitle) {
+            inventoryTitle.textContent = categoryTitle;
+         }
 
-    </style>
-</head>
-<body>
-    <!-- Grass Header -->
-    <div id="grass-header"></div>
+         // 3. Filter Grid Items
+         filterItems(selectedCategory);
 
-    <div class="container">
-        <h1 class="site-title">BlockTech PCs</h1>
+         // 4. (Desktop) Update Sidebar Tab Selection Visually if sidebar exists
+         const targetTab = document.querySelector(`.inventory-tab[data-category="${selectedCategory}"]`);
+         if(targetTab && !isMobile()) { // Only sync sidebar if visible
+             tabs.forEach(t => t.classList.remove('active'));
+             targetTab.classList.add('active');
+         }
+     });
+ });
 
-        <!-- Container for Inventory (Sidebar hidden on mobile) -->
-        <div class="inventory-container mc-panel">
-            <!-- Left Sidebar: Categories/Filtering (Hidden on Mobile via CSS) -->
-            <div class="inventory-sidebar">
-                <div class="search-bar">
-                    <div class="search-icon"></div>
-                    <input type="text" class="search-input" placeholder="Search items...">
-                </div>
-                <div class="inventory-tabs">
-                    <div class="inventory-tab active" data-category="all"><span class="tab-icon icon-all"></span> All Rigs</div>
-                    <div class="inventory-tab" data-category="gaming"><span class="tab-icon icon-gaming"></span> Gaming</div>
-                    <div class="inventory-tab" data-category="workstation"><span class="tab-icon icon-work"></span> Workstations</div>
-                    <div class="inventory-tab" data-category="budget"><span class="tab-icon icon-budget"></span> Budget</div>
-                    <div class="inventory-tab" data-category="custom"><span class="tab-icon icon-custom"></span> Custom</div>
-                    <div class="inventory-tab" data-category="peripheral"><span class="tab-icon icon-peripheral"></span> Peripherals</div>
-                </div>
-            </div>
 
-            <!-- Main Content Area (Grid) -->
-            <div class="main-inventory">
-                 <div class="inventory-header">
-                    <div class="inventory-title">Available Rigs & Peripherals</div>
-                 </div>
-                 <div class="pc-grid-area">
-                     <div class="pc-grid" id="pc-grid">
-                         <!-- Grid slots populated by JS -->
-                         <!-- Example Structure (content from JS data): -->
-                          <div class="inventory-slot" data-product="gaming-diamond" data-category="gaming">
-                              <div class="item-icon icon-diamond"></div> <div class="item-price-tag">$1999</div>
-                          </div>
-                          </div>
-                           </div>
-                           <!-- ... other slots dynamically added ... -->
-                     </div>
-                 </div>
-            </div>
-        </div>
+// --- Initialisation ---
+// Trigger the click on the initially active *hotbar* slot on page load
+// This ensures filtering and title are set correctly regardless of mobile/desktop
+document.querySelector('.site-navigation .nav-slot.selected a')?.click();
+// Fallback if no hotbar slot is initially selected (shouldn't happen with default HTML)
+if (!document.querySelector('.site-navigation .nav-slot.selected a')) {
+    document.querySelector('.site-navigation .nav-slot a[data-category="all"]')?.click();
+}
 
-        <!-- Hotbar Navigation (Visible on all devices, primary nav on mobile) -->
-        <div class="site-navigation"> <!-- Styling applied via mobile media query -->
-             <!-- Slot 1: All Rigs -->
-             <div class="nav-slot selected">
-                 <a data-category="all" title="All Rigs">
-                     <!-- !! IMPORTANT: Replace with actual Base64 for 'All Rigs' icon (e.g., package box) !! -->
+
+</script>
+
+</body>
+</html>
