@@ -24,14 +24,14 @@
             /* Sizing (Desktop Defaults) */
             --font-size-base: 16px; --font-size-title: 42px; --font-size-modal-title: 24px;
             --font-size-button: 16px;
-            /* FIX: Significantly larger product boxes (slots) */
-            --slot-size: 280px; /* ~4.4x larger than 64px */
-            --slot-icon-size: 270px; /* Icon nearly fills the larger slot */
+            /* FIX: Reduced desktop product box size */
+            --slot-size: 180px; /* Reduced desktop size */
+            --slot-icon-size: 170px; /* Icon nearly fills the reduced slot */
             --nav-slot-size: 56px; --nav-icon-size: 32px; /* Category icon visual size */
             --category-icon-font-size: 28px; /* Font size for EMOJI icons */
             --grass-header-height: 80px; --container-max-width: 1100px; --inventory-max-width: 1000px;
             --sidebar-width: 240px; --modal-max-width: 750px; --modal-image-size: 250px;
-            --modal-padding: 25px; --grid-gap: 15px; /* Increased gap slightly for larger slots */
+            --modal-padding: 25px; --grid-gap: 15px; /* Gap between grid items */
             --button-padding: 10px 20px;
 
             /* Rendering */
@@ -64,12 +64,7 @@
         .inventory-header { padding: 6px 12px; background-color: var(--mc-bg); border-bottom: 3px solid var(--mc-border-dark); margin-bottom: 10px; }
         .inventory-title { font-size: calc(var(--font-size-base) + 2px); color: var(--mc-text); font-weight: normal; }
         .pc-grid-area { flex-grow: 1; padding: 15px; overflow-y: auto; background-color: var(--mc-bg); min-height: 450px; box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3); border: 2px solid var(--mc-border-inset-dark); }
-        .pc-grid {
-            display: grid;
-            /* Grid columns adjust based on the large --slot-size */
-            grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr));
-            gap: var(--grid-gap);
-        }
+        .pc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); gap: var(--grid-gap); }
 
         .search-bar { display: flex; align-items: center; background-color: var(--mc-bg-dark); border: 1px solid var(--mc-border-inset-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.5); margin-bottom: 15px; padding: 5px; }
         .search-icon { width: 20px; height: 20px; margin-right: 6px; flex-shrink: 0; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVDhPtY5BCsIwEATR91B7B+kNepfCU3gNXsTdi+LSBn/SkQSFTchDQ3xzD7EDD2w2m5s+jw/cGAsG+C9iLhGjH0e8Jv1A/Gvz2L2iL2wPQLyvvS54+TkQCcACkFzrWw90/N0EaM5H+b7nx/I2AN7nO10j+AIArNvrAMAR0LweCR6GcgBo/v1w9B5A1/N8E1YAnAEAfN9sB8B3QRwAYhXAMQLAOlEAMALAWoIBYARAFQEAEQDWERcAFQEAC+gB/4AAuA3/jG1m1kSEAAAAAElFTkSuQmCC') center center no-repeat; background-size: contain; image-rendering: var(--mc-pixelated); }
@@ -89,15 +84,15 @@
         .inventory-slot { width: var(--slot-size); height: var(--slot-size); background-color: var(--mc-bg-dark); border: 2px solid var(--mc-border-inset-dark); box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: background-color 0.1s ease; }
         .inventory-slot:hover { background-color: #A8A8A8; }
         .inventory-slot:hover::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.2); pointer-events: none; }
-        /* Grid icons fill the slot */
+        /* Grid icons nearly fill the slot */
         .inventory-slot img,
         .inventory-slot .item-icon {
             width: var(--slot-icon-size); height: var(--slot-icon-size); max-width: var(--slot-icon-size); max-height: var(--slot-icon-size);
             object-fit: contain; image-rendering: var(--mc-pixelated); display: block; margin: auto;
         }
         .item-icon { background-size: contain; background-repeat: no-repeat; background-position: center; }
-        /* Price tag adjusted for larger slots */
-        .item-price-tag { position: absolute; bottom: 5px; right: 5px; font-size: 14px; /* Slightly larger text */ color: var(--mc-item-price); text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; /* Stronger shadow */ background: rgba(0,0,0,0.7); padding: 2px 5px; border-radius: 3px; z-index: 1; }
+        /* Price tag position/size adjusted relative to slot size */
+        .item-price-tag { position: absolute; bottom: 8px; right: 8px; font-size: 14px; color: var(--mc-item-price); text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; background: rgba(0,0,0,0.7); padding: 3px 6px; border-radius: 3px; z-index: 1; }
 
         /* --- Navigation Hotbar --- */
         .site-navigation { display: flex; justify-content: center; gap: 5px; margin-top: 30px; border: 3px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); background-color: var(--mc-bg-dark); padding: 5px; max-width: 600px; margin-left: auto; margin-right: auto; }
@@ -125,7 +120,7 @@
             :root {
                 --font-size-base: 14px; --font-size-title: 28px; --font-size-modal-title: 20px;
                 --font-size-button: 14px;
-                /* Keep mobile slots smaller */
+                /* Mobile slots are kept reasonably small */
                 --slot-size: 80px;
                 --slot-icon-size: 75px; /* Icon nearly fills mobile slot */
                 --nav-slot-size: 52px; --nav-icon-size: 32px; --category-icon-font-size: 24px;
@@ -143,14 +138,14 @@
             .pc-grid { grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); gap: var(--grid-gap); }
             .inventory-slot { border-width: 1px; width: var(--slot-size); height: var(--slot-size); display: flex; justify-content: center; align-items: center; }
             .inventory-slot img, .inventory-slot .item-icon { width: var(--slot-icon-size); height: var(--slot-icon-size); max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); } /* Mobile grid icon size */
-            .item-price-tag { font-size: 10px; padding: 1px 2px; bottom: 1px; right: 1px; } /* Keep price tag small */
+            .item-price-tag { font-size: 10px; padding: 1px 2px; bottom: 2px; right: 2px; } /* Adjusted slightly */
             .site-navigation { max-width: 95%; gap: 6px; padding: 6px; overflow-x: visible; white-space: normal; justify-content: center; flex-wrap: wrap; margin-top: 25px; background-color: var(--mc-bg-dark); border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25); }
             .nav-slot { width: var(--nav-slot-size); height: var(--nav-slot-size); border-width: 1px; display: flex; justify-content: center; align-items: center; }
             .nav-slot a { color: var(--mc-text); }
-            .nav-icon { font-size: var(--category-icon-font-size); } /* Use variable for emoji size */
+            .nav-icon { font-size: var(--category-icon-font-size); }
             .nav-slot.selected { border-width: 2px; border-color: var(--mc-item-price); background-color: #E0E0E0; box-shadow: 0 0 6px var(--mc-item-price), inset 0 0 2px rgba(255,255,150,0.7); }
             .nav-slot.selected a { color: var(--mc-text); }
-            .product-details-tooltip { display: none !important; } /* Hide tooltip */
+            .product-details-tooltip { display: none !important; }
             .modal-content { flex-direction: column; align-items: center; max-width: 95%; padding: var(--modal-padding); max-height: 85vh; overflow-y: auto; gap: 15px; border-width: 3px; box-shadow: 0 0 0 3px var(--mc-border-inset-dark), inset 3px 3px 0px rgba(255, 255, 255, 0.1); }
             .modal-image-area { width: var(--modal-image-size); height: var(--modal-image-size); margin-bottom: 10px; border-width: 2px; } .modal-image-area img { max-width: calc(var(--modal-image-size) - 15px); max-height: calc(var(--modal-image-size) - 15px); }
             .modal-details-area { width: 100%; text-align: center; } .modal-title { font-size: var(--font-size-modal-title); margin-bottom: 10px; }
@@ -183,10 +178,7 @@
         <div class="inventory-container mc-panel">
             <!-- Left Sidebar (Desktop Only) -->
             <div class="inventory-sidebar">
-                <div class="search-bar">
-                    <div class="search-icon"></div>
-                    <input type="text" class="search-input" placeholder="Search items...">
-                </div>
+                <div class="search-bar"> <div class="search-icon"></div> <input type="text" class="search-input" placeholder="Search items..."> </div>
                 <!-- Sidebar uses emoji icons -->
                 <div class="inventory-tabs">
                     <div class="inventory-tab active" data-category="all" title="All Rigs"> <span class="tab-icon icon-all"></span> All Rigs </div>
@@ -200,14 +192,8 @@
 
             <!-- Main Content Area -->
             <div class="main-inventory">
-                 <div class="inventory-header">
-                    <div class="inventory-title">All Rigs</div> <!-- Title updated by JS -->
-                 </div>
-                 <div class="pc-grid-area">
-                     <div class="pc-grid" id="pc-grid">
-                         <!-- Grid slots populated by JS -->
-                     </div>
-                 </div>
+                 <div class="inventory-header"> <div class="inventory-title">All Rigs</div> </div>
+                 <div class="pc-grid-area"> <div class="pc-grid" id="pc-grid"> <!-- Grid slots populated by JS --> </div> </div>
             </div>
         </div>
 
@@ -228,25 +214,12 @@
 
     <!-- Product Details Modal -->
     <div class="modal-overlay" id="product-modal">
-         <div class="modal-content">
-            <button class="modal-close-btn" id="modal-close-button">X</button>
-            <div class="modal-image-area" id="modal-image"></div>
-            <div class="modal-details-area">
-                <h2 class="modal-title" id="modal-title"></h2>
-                <div class="modal-specs" id="modal-specs"></div>
-                <div class="modal-ench" id="modal-ench"></div>
-                <div class="modal-price" id="modal-price"></div>
-                <div class="modal-buttons">
-                    <a href="#" id="modal-buy-button" class="mc-button primary" target="_blank" rel="noopener noreferrer">Buy Now</a>
-                </div>
-            </div>
-        </div>
+         <div class="modal-content"> <button class="modal-close-btn" id="modal-close-button">X</button> <div class="modal-image-area" id="modal-image"></div> <div class="modal-details-area"> <h2 class="modal-title" id="modal-title"></h2> <div class="modal-specs" id="modal-specs"></div> <div class="modal-ench" id="modal-ench"></div> <div class="modal-price" id="modal-price"></div> <div class="modal-buttons"> <a href="#" id="modal-buy-button" class="mc-button primary" target="_blank" rel="noopener noreferrer">Buy Now</a> </div> </div> </div>
     </div>
 
     <script>
         // --- Product Data ---
-        const productData = {
-            // Added gridIcon for specific images in grid slots
+        const productData = { /* ... (product data remains the same as previous version) ... */
            "gaming-diamond": { name: "Diamond Gaming PC + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/4BDDBE/FFFFFF?text=Diamond+PC", /* Modal: ~230x230px */ category: ["gaming"], price: "$1999", specs: ["GeForce RTX 5080", "32GB DDR5 RAM", "2TB NVMe SSD", "Liquid Cooled CPU"], ench: "Prismarine RGB Lighting", shopifyUrl: "https://www.google.com" },
            "workstation-netherite": { name: "Netherite Workstation + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/404040/FFFFFF?text=Netherite+WS", /* Modal: ~230x230px */ category: ["workstation"], price: "$2999", specs: ["GeForce RTX 5090", "64GB DDR5 RAM", "4TB NVMe SSD", "AMD Threadripper Pro"], ench: "Unbreaking Durability Build", shopifyUrl: "https://www.google.com" },
            "budget-iron": { name: "Iron Budget Tower + Decal", gridIcon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+", imageSrc: "https://via.placeholder.com/250/C1C5C5/000000?text=Iron+PC", /* Modal: ~230x230px */ category: ["budget", "gaming"], price: "$999", specs: ["GeForce RTX 4060", "16GB DDR4 RAM", "1TB NVMe SSD", "Intel Core i5"], shopifyUrl: "https://www.google.com" },
@@ -275,23 +248,15 @@
         const inventoryTitle = document.querySelector('.inventory-title');
         let inventorySlots; // Populated after grid build
 
-        // --- Helper Function ---
+        // --- Helper/Core Logic --- (Condensed)
         function isMobile() { return window.innerWidth <= 768; }
-
-        // --- Tooltip/Modal Logic --- (Keep unchanged - Condensed for brevity)
         function positionTooltip(e) { if (!tooltip) return; const tW = tooltip.offsetWidth, tH = tooltip.offsetHeight, m=15; let l=e.pageX+m, t=e.pageY+m; if(l+tW > window.innerWidth+window.scrollX-m)l=e.pageX-tW-m; if(t+tH > window.innerHeight+window.scrollY-m)t=e.pageY-tH-m; if(l<window.scrollX+m)l=window.scrollX+m; if(t<window.scrollY+m)t=window.scrollY+m; tooltip.style.left=`${l}px`; tooltip.style.top=`${t}px`;}
         function openModal(productId) { const d=productData[productId]; if(!d || !modalOverlay){console.error("Missing data/modal:",productId); return;} if(modalTitle)modalTitle.textContent=d.name; if(modalPrice)modalPrice.textContent=d.price; if(modalImage){modalImage.innerHTML=''; if(d.imageSrc){const i=document.createElement('img');i.src=d.imageSrc;i.alt=d.name;modalImage.appendChild(i);} else{modalImage.innerHTML='<p style="color:#555;">No Image</p>';}} if(modalSpecs){let s=d.specs?'<ul>'+d.specs.map(i=>`<li>${i}</li>`).join('')+'</ul>':'<p>Details n/a.</p>';modalSpecs.innerHTML=s;} if(modalEnch){modalEnch.innerHTML=d.ench?`${d.ench}`:'';modalEnch.style.display=d.ench?'block':'none';} if(modalBuyButton){modalBuyButton.href=d.shopifyUrl||'#'; if(!d.shopifyUrl){modalBuyButton.style.opacity='0.5';modalBuyButton.style.pointerEvents='none';modalBuyButton.textContent='Unavailable';}else{modalBuyButton.style.opacity='1';modalBuyButton.style.pointerEvents='auto';modalBuyButton.textContent='Buy Now';}} modalOverlay.classList.add('active'); }
         function closeModal() { if (modalOverlay) modalOverlay.classList.remove('active'); }
-
-        // --- Filter & Selection Logic --- (Keep unchanged - Condensed for brevity)
         function filterItems(selectedCategory) { const aC=document.querySelector(`.inventory-tab.active`) || document.querySelector(`.site-navigation .nav-slot.selected a > span`); let cTT="All Rigs"; if(aC){const pL=aC.closest('a'); const pT=aC.closest('.inventory-tab'); if(pL) cTT=pL.getAttribute('title'); else if(pT) cTT=pT.getAttribute('title'); else cTT=selectedCategory;} else if(selectedCategory==='all'){const aC=document.querySelector(`.inventory-tab[data-category="all"]`) || document.querySelector(`.site-navigation a[data-category="all"]`); if(aC)cTT=aC.getAttribute('title')||'All Rigs';} if(inventoryTitle){inventoryTitle.textContent=cTT;} if(!inventorySlots) return; inventorySlots.forEach(s=>{const pI=s.getAttribute('data-product'); const d=productData[pI]; if(!d){s.style.display='none'; return;} const iC=d.category||[]; const m=selectedCategory==='all'||iC.includes(selectedCategory); s.style.display=m?'flex':'none';}); }
         function updateSelectionVisuals(selectedCategory) { tabs.forEach(t=>{t.classList.toggle('active',t.getAttribute('data-category')===selectedCategory);}); navSlots.forEach(nS=>{const l=nS.querySelector('a');nS.classList.toggle('selected',l&&l.getAttribute('data-category')===selectedCategory);}); }
-
-        // --- Listener Attachment --- (Keep unchanged - Condensed for brevity)
         function attachSlotListeners() { if (!inventorySlots) return; inventorySlots.forEach(slot => { const productId = slot.getAttribute('data-product'); if (!productData[productId]) return; slot.addEventListener('mouseenter', (e) => { if (isMobile() || !tooltip) return; const data = productData[productId]; if (!data) return; let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : ''; let enchHtml = data.ench ? `<div class="tooltip-ench">${data.ench}</div>` : ''; tooltip.innerHTML = `<div class="tooltip-name">${data.name}</div><div class="tooltip-specs">${specsHtml}</div>${enchHtml}<div class="tooltip-price">${data.price}</div>`; tooltip.style.display = 'block'; positionTooltip(e); }); slot.addEventListener('mousemove', (e) => { if (isMobile() || !tooltip || tooltip.style.display !== 'block') return; positionTooltip(e); }); slot.addEventListener('mouseleave', () => { if (isMobile() || !tooltip) return; tooltip.style.display = 'none'; }); slot.addEventListener('click', () => { openModal(productId); }); }); }
         function attachControlListeners() { if (modalCloseButton) modalCloseButton.addEventListener('click', closeModal); if (modalOverlay) modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); }); tabs.forEach(tab => { tab.addEventListener('click', () => { const selectedCategory = tab.getAttribute('data-category'); updateSelectionVisuals(selectedCategory); filterItems(selectedCategory); }); }); navLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const selectedCategory = link.getAttribute('data-category'); updateSelectionVisuals(selectedCategory); filterItems(selectedCategory); }); }); }
-
-        // --- Build Grid from Data ---
         function buildGrid() { if (!pcGrid) return; pcGrid.innerHTML = ''; Object.keys(productData).forEach(productId => { const item = productData[productId]; if (!item) return; const slotDiv = document.createElement('div'); slotDiv.className = 'inventory-slot'; slotDiv.setAttribute('data-product', productId); if (item.category) { slotDiv.setAttribute('data-category', item.category.join(' ')); } const iconImg = document.createElement('img'); iconImg.src = item.gridIcon || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; iconImg.alt = item.name + " icon"; slotDiv.appendChild(iconImg); const priceTag = document.createElement('div'); priceTag.className = 'item-price-tag'; priceTag.textContent = item.price; slotDiv.appendChild(priceTag); pcGrid.appendChild(slotDiv); }); inventorySlots = document.querySelectorAll('#pc-grid .inventory-slot'); }
 
         // --- Initialisation ---
