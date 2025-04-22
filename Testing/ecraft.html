@@ -64,11 +64,12 @@
             padding: 0;
             font-family: 'Minecraft', 'Courier New', monospace;
             font-size: var(--font-size-base);
-            /* Dirt Texture Background (Desktop) */
-            background-color: var(--mc-dirt-fallback);
+            /* FIX 3: Ensure Desktop Background Image Rule is Correct */
+            background-color: var(--mc-dirt-fallback); /* Fallback Color */
+            /* The Base64 dirt tile image */
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABGSURBVDhPY2RgYDjAwAgYBDAZAQMDFQMuAfMPgIyMjIzMLAwMzEzMDAxMzAAhBgYGBkbmAwA0MDT+FwwCQQaGAIQMDAwMDEz8gAADNwAAg3N/d9c4228AAAAASUVORK5CYII=');
-            background-size: 48px 48px;
-            background-repeat: repeat;
+            background-size: 48px 48px; /* Tile size */
+            background-repeat: repeat; /* Repeat the tile */
             image-rendering: var(--mc-pixelated);
             color: var(--mc-text-light);
             overflow-x: hidden;
@@ -226,7 +227,9 @@
             background-color: var(--mc-bg-dark);
             border: 2px solid var(--mc-border-inset-dark);
             box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: center; align-items: center;
+            /* Use flex to allow items inside to be displayed */
+            display: flex;
+            justify-content: center; align-items: center;
             cursor: pointer; position: relative; overflow: hidden;
             transition: background-color 0.1s ease;
         }
@@ -249,6 +252,7 @@
             position: absolute; bottom: 2px; right: 3px; font-size: 12px;
             color: var(--mc-item-price); text-shadow: 1px 1px 0 #000;
             background: rgba(0,0,0,0.6); padding: 1px 3px; border-radius: 2px;
+            z-index: 1; /* Ensure price is above icon */
         }
 
         /* --- Navigation Hotbar --- */
@@ -273,7 +277,7 @@
             max-width: var(--nav-icon-size);
             max-height: var(--nav-icon-size);
             image-rendering: var(--mc-pixelated);
-            display: block; /* Prevent extra space */
+            display: block; /* Ensure image displays */
         }
         .nav-slot.selected { /* Desktop selection style */
             border: 3px solid var(--mc-border-light);
@@ -397,7 +401,8 @@
 
             body {
                 padding-top: var(--grass-header-height);
-                background-image: none; /* Solid dirt color on mobile */
+                /* FIX 3: Mobile uses solid background */
+                background-image: none;
                 background-color: var(--mc-dirt-fallback);
             }
 
@@ -448,6 +453,10 @@
             .inventory-slot {
                  border-width: 1px;
                  width: var(--slot-size); height: var(--slot-size);
+                 /* Ensure flex display is inherited or set */
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
              }
             .inventory-slot img,
             .inventory-slot .item-icon { /* Use variables for sizing */
@@ -477,10 +486,16 @@
              .nav-slot { /* Use variables for sizing */
                  width: var(--nav-slot-size); height: var(--nav-slot-size);
                  border-width: 1px;
+                 /* Ensure flex context for alignment if needed */
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
              }
-             .nav-slot img { /* Use variables for sizing */
+             /* FIX 2: Ensure mobile icons display */
+             .nav-slot img {
                  max-width: var(--nav-icon-size); max-height: var(--nav-icon-size);
-                 display: block; /* Ensure image displays correctly */
+                 display: block; /* Crucial */
+                 image-rendering: var(--mc-pixelated);
              }
              /* Mobile Selected State for Hotbar */
              .nav-slot.selected {
@@ -573,12 +588,36 @@
                  </div>
                  <div class="pc-grid-area">
                      <div class="pc-grid" id="pc-grid">
-                         <!-- Grid slots populated by JS -->
-                         <!-- Example Structure (content filled by JS): -->
-                          <!-- <div class="inventory-slot" data-product="gaming-diamond" data-category="gaming">
-                              <div class="item-icon icon-diamond"></div>
-                              <div class="item-price-tag">$1999</div>
-                          </div> -->
+                         <!-- Grid slots populated by JS based on productData -->
+                         <!-- Static examples removed, JS will handle based on data -->
+                         <!-- If using static HTML, add slots here matching productData keys -->
+                          <div class="inventory-slot" data-product="gaming-diamond" data-category="gaming">
+                              <div class="item-icon icon-diamond"></div> <div class="item-price-tag">$1999</div>
+                          </div>
+                           <div class="inventory-slot" data-product="workstation-netherite" data-category="workstation">
+                               <div class="item-icon icon-netherite"></div> <div class="item-price-tag">$2999</div>
+                           </div>
+                           <div class="inventory-slot" data-product="budget-iron" data-category="budget gaming">
+                               <div class="item-icon icon-iron"></div><div class="item-price-tag">$999</div>
+                           </div>
+                           <div class="inventory-slot" data-product="streaming-emerald" data-category="gaming workstation">
+                                <div class="item-icon icon-emerald"></div><div class="item-price-tag">$1699</div>
+                           </div>
+                          <div class="inventory-slot" data-product="mini-redstone" data-category="budget custom">
+                               <div class="item-icon icon-redstone"></div><div class="item-price-tag">$799</div>
+                           </div>
+                          <div class="inventory-slot" data-product="highend-gold" data-category="gaming workstation">
+                               <div class="item-icon icon-gold"></div><div class="item-price-tag">$3499</div>
+                           </div>
+                           <div class="inventory-slot" data-product="budget-wood" data-category="budget">
+                               <div class="item-icon icon-wood"></div><div class="item-price-tag">$599</div>
+                           </div>
+                           <div class="inventory-slot" data-product="mouse-pro" data-category="peripheral">
+                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==" alt="Pro Mouse"><div class="item-price-tag">$79</div>
+                           </div>
+                           <div class="inventory-slot" data-product="keyboard-mech" data-category="peripheral">
+                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=" alt="Mechanical Keyboard"><div class="item-price-tag">$129</div>
+                           </div>
                      </div>
                  </div>
             </div>
@@ -586,43 +625,37 @@
 
         <!-- Hotbar Navigation (Visible on all devices, primary nav on mobile) -->
         <div class="site-navigation"> <!-- Styled as panel on mobile -->
-             <!-- Slot 1: All Rigs -->
+             <!-- FIX 2: Ensure icons have correct src -->
              <div class="nav-slot selected">
                  <a data-category="all" title="All Rigs">
                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABZSURBVFhH7cwxAQAACASg+P+nLgQbDBII8K823QATgAnABGACYAEwAZgATAAmlCbABGACYAEwAZgATAAmaBPABGACYAEwAZgATAAmsCXABGACYAEwAZgATAAmALcNAPwNAd4j3eEAAAAASUVORK5CYII=" alt="All Rigs">
                  </a>
              </div>
-             <!-- Slot 2: Gaming -->
              <div class="nav-slot">
                  <a data-category="gaming" title="Gaming Rigs">
                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEJSURBVFhH7dfBDYMwEATQXgJgAQF4wA5YgAQcgAOHgQUcgAOHk3QA6/w996S1sQhL+x7Jy4fSgJ/7k6e79a/3n94OAF8E/ASwABTAAMgAYAAoAAYABAAMABmACgABwAxABBACgABYAMgAMgAUgAtABABpAEgAVgBWACmAFIAEgBSAVoAUAFqALAATgBSAPwAM4H8AEwAxAAGAEIBqAP8ATAByAEgAqgBkAEwAEgCpAUgAMgApADYAAoABsACgAEwAYAAkAPQDmAA4AGgAUgBWANwAIANoAtABkAEgAUAAgABoAIAAsgDAACoAmAAYA4wAWgEUAUwBmALYATAA+AE0AmAASAAmgDcA5AG0HAgBLiRjH1+4AAAAASUVORK5CYII=" alt="Gaming Rigs">
                  </a>
              </div>
-             <!-- Slot 3: Workstations -->
              <div class="nav-slot">
                  <a data-category="workstation" title="Workstations">
                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD6SURBVFhH7dZRDgIxDETRHkHuwZ14F17Dk3gKT+JpPFYej1s045wz8S8o+JCMtP+k8T/5i38A4B0ALwD6AfgAOABGAAYAHYBxAPAAzAMgBSAFYASAFIAQgBEA4gCgABgByACmARAAQAAkAAIACAAEABsACYANgAnABMAGYAOwAZgATAA2ADEAewCqAHAAygDoACQDkAGwAfAAaAGIAUgAUAAwAO4AMwA7ABsAEYARgBCAEkAQgCEAF4ALgAlADIAagB6AGYAewCeABuA7wB4AJoAvgCcAYgAWgBgAGIAJAA7ADmAawDFADsAvgBsAMIAWAAmADsAGgCgADQA3QDSAOQBkAAAeB7jC540qNwAAAAASUVORK5CYII=" alt="Workstations">
                  </a>
              </div>
-             <!-- Slot 4: Budget -->
               <div class="nav-slot">
                  <a data-category="budget" title="Budget Builds">
                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABgSURBVFhH7cwxAQAwEAOh+P/nLoQNKhgkeFc12wATgAnABGACYAEwAZgATAAmlCbABGACYAEwAZgATAAmaBPABGACYAEwAZgATAAmsCXABGACYAEwAZgATAAmAPcOAgD2tL/y3QAAAABJRU5ErkJggg==" alt="Budget Builds">
                  </a>
              </div>
-             <!-- Slot 5: Custom -->
              <div class="nav-slot">
                  <a data-category="custom" title="Custom Rigs">
                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACMSURBVFhH7daxDYAwEATR/38wGgEVQATE8xXJkb0k55b39Qz+vq/eHwA/ANgA/AL8A/gBOAAMAEwAMABMAAYAE8AHgAXgAWAAMAEeADMAEoABwARgAzAAkACMAFYAJAAjADsAEoAdgAjAAkAEYAIgAWACEAIQAzADkAMQAzAD8AEQAzADkAPwC5AB+AO4AAHk8/j6G2lYCAAAAAElFTkSuQmCC" alt="Custom Rigs">
                  </a>
              </div>
-             <!-- Slot 6: Peripherals -->
              <div class="nav-slot">
                   <a data-category="peripheral" title="Peripherals">
                       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==" alt="Peripherals">
                   </a>
               </div>
-             <!-- Removed empty slots for cleaner wrapping on mobile -->
         </div>
     </div>
 
@@ -666,11 +699,10 @@
            "budget-wood": { name: "Oak Starter PC + Minecraft Decal Bundle", icon: "icon-wood", imageSrc: "https://via.placeholder.com/250/A37B4A/FFFFFF?text=Oak+Starter", category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://www.google.com" },
            "mouse-pro": { name: "Diamond Pro Mouse + Minecraft Decal Bundle", imageSrc: 'https://via.placeholder.com/250/CCCCCC/000000?text=Pro+Mouse', category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Programmable Buttons", "RGB Illumination", "Lightweight Design"], shopifyUrl: "https://www.google.com" },
            "keyboard-mech": { name: "Netherite Mech Keyboard + Minecraft Decal Bundle", imageSrc: 'https://via.placeholder.com/250/333333/FFFFFF?text=Mech+Keyboard', category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover", "Aluminum Plate"], ench: "Sound Dampening Foam", shopifyUrl: "https://www.google.com" },
-           // Add more products here if needed
         };
 
         // --- DOM Elements ---
-        const inventorySlots = document.querySelectorAll('.inventory-slot[data-product]');
+        // Use const for elements that shouldn't be reassigned
         const tooltip = document.getElementById('item-tooltip');
         const tabs = document.querySelectorAll('.inventory-tab'); // Sidebar tabs
         const pcGrid = document.getElementById('pc-grid');
@@ -685,33 +717,27 @@
         const navLinks = document.querySelectorAll('.site-navigation .nav-slot a'); // Hotbar links
         const navSlots = document.querySelectorAll('.site-navigation .nav-slot'); // Hotbar slots
         const inventoryTitle = document.querySelector('.inventory-title'); // Title above the grid
+        // FIX 1: Select slots *after* potential dynamic population or ensure they exist
+        // We query this *inside* the initialization now, assuming static HTML for now.
+        let inventorySlots = document.querySelectorAll('#pc-grid .inventory-slot');
 
         // --- Helper Function ---
          function isMobile() {
-             // Match the CSS media query breakpoint
              return window.innerWidth <= 768;
          }
 
         // --- Tooltip Logic ---
         function positionTooltip(e) {
-            if (!tooltip) return; // Safety check
+            if (!tooltip) return;
             const tooltipWidth = tooltip.offsetWidth;
             const tooltipHeight = tooltip.offsetHeight;
             const margin = 15;
             let left = e.pageX + margin;
             let top = e.pageY + margin;
-
-            // Adjust position if tooltip goes off-screen
-            if (left + tooltipWidth > window.innerWidth + window.scrollX - margin) {
-                left = e.pageX - tooltipWidth - margin;
-            }
-            if (top + tooltipHeight > window.innerHeight + window.scrollY - margin) {
-                top = e.pageY - tooltipHeight - margin;
-            }
-            // Ensure tooltip doesn't go off the left/top edges
+            if (left + tooltipWidth > window.innerWidth + window.scrollX - margin) { left = e.pageX - tooltipWidth - margin; }
+            if (top + tooltipHeight > window.innerHeight + window.scrollY - margin) { top = e.pageY - tooltipHeight - margin; }
             if (left < window.scrollX + margin) left = window.scrollX + margin;
             if (top < window.scrollY + margin) top = window.scrollY + margin;
-
             tooltip.style.left = `${left}px`;
             tooltip.style.top = `${top}px`;
         }
@@ -719,54 +745,34 @@
         // --- Modal Logic ---
         function openModal(productId) {
             const data = productData[productId];
-            // Ensure all required elements and data exist
             if (!data || !modalOverlay || !modalTitle || !modalPrice || !modalImage || !modalSpecs || !modalEnch || !modalBuyButton) {
                 console.error("Missing data or modal elements for product:", productId);
                 return;
             }
-
             modalTitle.textContent = data.name;
             modalPrice.textContent = data.price;
-
-            modalImage.innerHTML = ''; // Clear previous image/icon
+            modalImage.innerHTML = '';
             if (data.imageSrc) {
                 const img = document.createElement('img');
-                img.src = data.imageSrc; // Use the specified image source
+                img.src = data.imageSrc;
                 img.alt = data.name;
                 modalImage.appendChild(img);
-            } else if (data.icon) { // Fallback to icon if no imageSrc
+            } else if (data.icon) {
                  const iconDiv = document.createElement('div');
-                 iconDiv.className = `item-icon ${data.icon}`; // Use icon class from data
-                 // Adjust size for modal view if needed
-                 iconDiv.style.width = '80%';
-                 iconDiv.style.height = '80%';
+                 iconDiv.className = `item-icon ${data.icon}`;
+                 iconDiv.style.width = '80%'; iconDiv.style.height = '80%';
                  modalImage.appendChild(iconDiv);
-            } else { // Absolute fallback
-                 modalImage.innerHTML = '<p style="color: #555;">No Image</p>';
-            }
-
-            // Populate Specs
+            } else { modalImage.innerHTML = '<p style="color: #555;">No Image</p>'; }
             let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '<p>Details not available.</p>';
             modalSpecs.innerHTML = specsHtml;
-
-            // Populate Enchantment (if any)
             modalEnch.innerHTML = data.ench ? `${data.ench}` : '';
-            modalEnch.style.display = data.ench ? 'block' : 'none'; // Show/hide based on presence
-
-            // Set Buy Button Link (points to Google as per data)
+            modalEnch.style.display = data.ench ? 'block' : 'none';
             modalBuyButton.href = data.shopifyUrl || '#';
-            // Visually disable button if no link (though all have one now)
             if (!data.shopifyUrl) {
-                modalBuyButton.style.opacity = '0.5';
-                modalBuyButton.style.pointerEvents = 'none';
-                modalBuyButton.textContent = 'Unavailable';
+                modalBuyButton.style.opacity = '0.5'; modalBuyButton.style.pointerEvents = 'none'; modalBuyButton.textContent = 'Unavailable';
             } else {
-                 modalBuyButton.style.opacity = '1';
-                 modalBuyButton.style.pointerEvents = 'auto';
-                 modalBuyButton.textContent = 'Buy Now';
+                 modalBuyButton.style.opacity = '1'; modalBuyButton.style.pointerEvents = 'auto'; modalBuyButton.textContent = 'Buy Now';
             }
-
-            // Show the modal
             modalOverlay.classList.add('active');
         }
 
@@ -776,13 +782,16 @@
 
         // --- Filter Function (Shared Logic) ---
         function filterItems(selectedCategory) {
-             // Get the display text for the category (from tab or link title)
-             const activeControl = document.querySelector(`.inventory-tab[data-category="${selectedCategory}"]`) || document.querySelector(`.site-navigation a[data-category="${selectedCategory}"]`);
-             let categoryTitleText = "Rigs & Peripherals"; // Default
-             if (activeControl) {
-                 categoryTitleText = activeControl.getAttribute('title') || activeControl.textContent.trim().split('\n')[0] || selectedCategory;
-             }
-
+            // Determine the display title based on the active control
+            const activeControl = document.querySelector(`.inventory-tab.active`) || document.querySelector(`.site-navigation .nav-slot.selected a`);
+            let categoryTitleText = "All Rigs"; // Default title
+            if (activeControl) {
+                categoryTitleText = activeControl.getAttribute('title') || activeControl.textContent.trim().split('\n')[0] || selectedCategory;
+            } else if (selectedCategory === 'all') {
+                 // Special case if 'all' is default but no control found initially
+                 const allControl = document.querySelector(`.inventory-tab[data-category="all"]`) || document.querySelector(`.site-navigation a[data-category="all"]`);
+                 if (allControl) categoryTitleText = allControl.getAttribute('title') || allControl.textContent.trim().split('\n')[0] || 'All Rigs';
+            }
              // Update Inventory Title
              if (inventoryTitle) {
                 inventoryTitle.textContent = categoryTitleText;
@@ -791,166 +800,108 @@
             // Filter grid slots
             inventorySlots.forEach(slot => {
                 const productId = slot.getAttribute('data-product');
-                const productInfo = productData[productId]; // Get data for the slot's product
-                if (!productInfo) { // If data is missing for a slot, hide it
-                     slot.style.display = 'none';
+                const productInfo = productData[productId];
+                if (!productInfo) {
+                     slot.style.display = 'none'; // Hide slots without data
                      return;
                 }
-                const itemCategories = productInfo.category || []; // Get categories for this item
-                // Check if 'all' is selected OR if the item's categories include the selected one
+                const itemCategories = productInfo.category || [];
                 const matches = selectedCategory === 'all' || itemCategories.includes(selectedCategory);
-                // Use 'flex' display as defined in CSS
+                 // FIX 1: Use flex display for visible items
                 slot.style.display = matches ? 'flex' : 'none';
             });
         }
 
          // --- Update Selection Visuals (Shared Logic) ---
          function updateSelectionVisuals(selectedCategory) {
-             // Update sidebar tabs (if visible)
+             // Update sidebar tabs
              tabs.forEach(t => {
-                 if (t.getAttribute('data-category') === selectedCategory) {
-                     t.classList.add('active');
-                 } else {
-                     t.classList.remove('active');
-                 }
+                 t.classList.toggle('active', t.getAttribute('data-category') === selectedCategory);
              });
              // Update hotbar slots
              navSlots.forEach(navSlot => {
                  const link = navSlot.querySelector('a');
-                 if (link && link.getAttribute('data-category') === selectedCategory) {
-                     navSlot.classList.add('selected');
-                 } else {
-                     navSlot.classList.remove('selected');
-                 }
+                 navSlot.classList.toggle('selected', link && link.getAttribute('data-category') === selectedCategory);
              });
          }
 
-        // --- Event Listeners ---
+        // --- Attach Listeners to Inventory Slots ---
+        // Encapsulated to call after ensuring slots exist/are selected
+        function attachSlotListeners() {
+             inventorySlots.forEach(slot => {
+                const productId = slot.getAttribute('data-product');
+                if (!productData[productId]) return; // Skip slots with no data
 
-        // Inventory Slots (Tooltip and Modal Trigger)
-        inventorySlots.forEach(slot => {
-            const productId = slot.getAttribute('data-product');
-            if (!productData[productId]) {
-                console.warn(`No product data found for slot: ${productId}`);
-                slot.style.display = 'none'; // Hide slots with no data
-                return; // Skip attaching listeners
-            }
+                // --- Tooltip Listeners (Desktop Only) ---
+                slot.addEventListener('mouseenter', (e) => {
+                    if (isMobile() || !tooltip) return;
+                    const data = productData[productId];
+                    if (!data) return;
+                    let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '';
+                    let enchHtml = data.ench ? `<div class="tooltip-ench">${data.ench}</div>` : '';
+                    tooltip.innerHTML = `<div class="tooltip-name">${data.name}</div><div class="tooltip-specs">${specsHtml}</div>${enchHtml}<div class="tooltip-price">${data.price}</div>`;
+                    tooltip.style.display = 'block';
+                    positionTooltip(e);
+                });
+                slot.addEventListener('mousemove', (e) => {
+                    if (isMobile() || !tooltip || tooltip.style.display !== 'block') return;
+                    positionTooltip(e);
+                });
+                slot.addEventListener('mouseleave', () => {
+                    if (isMobile() || !tooltip) return;
+                    tooltip.style.display = 'none';
+                });
 
-            // Tooltip listeners (desktop only)
-            slot.addEventListener('mouseenter', (e) => {
-                 if (isMobile() || !tooltip) return; // Exit if mobile or tooltip element missing
-                 const data = productData[productId];
-                 if (!data) return; // Exit if no data for this product
-
-                 let specsHtml = data.specs ? '<ul>' + data.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '';
-                 let enchHtml = data.ench ? `<div class="tooltip-ench">${data.ench}</div>` : '';
-                 tooltip.innerHTML = `<div class="tooltip-name">${data.name}</div><div class="tooltip-specs">${specsHtml}</div>${enchHtml}<div class="tooltip-price">${data.price}</div>`;
-
-                 tooltip.style.display = 'block';
-                 positionTooltip(e); // Position immediately
+                // --- Modal Activation Listener ---
+                slot.addEventListener('click', () => {
+                    openModal(productId);
+                });
             });
-            slot.addEventListener('mousemove', (e) => {
-                 // Only reposition if tooltip is visible and not on mobile
-                 if (isMobile() || !tooltip || tooltip.style.display !== 'block') return;
-                 positionTooltip(e);
-             });
-            slot.addEventListener('mouseleave', () => {
-                 if (isMobile() || !tooltip) return;
-                 tooltip.style.display = 'none'; // Hide tooltip
-             });
-
-            // Modal Activation Listener (works on mobile & desktop)
-            slot.addEventListener('click', () => {
-                openModal(productId);
-            });
-        });
-
-        // Modal Closing Listeners
-        if (modalCloseButton) modalCloseButton.addEventListener('click', closeModal);
-        if (modalOverlay) modalOverlay.addEventListener('click', (e) => {
-            // Close only if clicking the dark background overlay itself
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
-        });
-
-        // Sidebar Tab Filtering (Handles Desktop Clicks)
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const selectedCategory = tab.getAttribute('data-category');
-                updateSelectionVisuals(selectedCategory);
-                filterItems(selectedCategory);
-            });
-        });
-
-         // Hotbar Navigation Filtering (Handles Mobile and Desktop Clicks)
-         navLinks.forEach(link => {
-             link.addEventListener('click', (e) => {
-                 e.preventDefault(); // Stop link default behaviour
-                 const selectedCategory = link.getAttribute('data-category');
-                 updateSelectionVisuals(selectedCategory);
-                 filterItems(selectedCategory);
-             });
-         });
-
-
-        // --- Initialisation ---
-        // Function to set the initial state based on the default selected control
-        function initializeView() {
-            // Find the initially selected control (prefer hotbar as it's always visible)
-            const initiallySelectedLink = document.querySelector('.site-navigation .nav-slot.selected a');
-            const initiallySelectedTab = document.querySelector('.inventory-tab.active');
-            let initialCategory = 'all'; // Default fallback
-
-            if (initiallySelectedLink) {
-                initialCategory = initiallySelectedLink.getAttribute('data-category') || 'all';
-            } else if (initiallySelectedTab && !isMobile()) { // Use tab only if on desktop
-                 initialCategory = initiallySelectedTab.getAttribute('data-category') || 'all';
-            }
-
-            // Ensure visuals match the determined category
-            updateSelectionVisuals(initialCategory);
-            // Perform initial filtering and title update
-            filterItems(initialCategory);
-
-             // Populate grid initially (important if slots are not hardcoded)
-             // Example: If you were creating slots dynamically:
-             // const grid = document.getElementById('pc-grid');
-             // grid.innerHTML = ''; // Clear any static examples
-             // Object.keys(productData).forEach(productId => {
-             //     const item = productData[productId];
-             //     const slotDiv = document.createElement('div');
-             //     slotDiv.className = 'inventory-slot';
-             //     slotDiv.setAttribute('data-product', productId);
-             //     // Add categories for initial filtering if needed
-             //     if (item.category) slotDiv.setAttribute('data-category', item.category.join(' '));
-             //
-             //     // Add icon (prefer image, fallback to class)
-             //     if (item.imageSrc && item.category?.includes('peripheral')) { // Example: Use image for peripherals
-             //         const img = document.createElement('img');
-             //         img.src = item.imageSrc; // Or a dedicated small icon src
-             //         img.alt = item.name;
-             //         slotDiv.appendChild(img);
-             //     } else if (item.icon) {
-             //         const iconDiv = document.createElement('div');
-             //         iconDiv.className = `item-icon ${item.icon}`;
-             //         slotDiv.appendChild(iconDiv);
-             //     }
-             //     // Add price tag
-             //     const priceTag = document.createElement('div');
-             //     priceTag.className = 'item-price-tag';
-             //     priceTag.textContent = item.price;
-             //     slotDiv.appendChild(priceTag);
-             //
-             //     grid.appendChild(slotDiv);
-             // });
-             // // Re-select slots and attach listeners if created dynamically
-             // inventorySlots = document.querySelectorAll('.inventory-slot[data-product]');
-             // attachSlotListeners(); // You'd need to wrap listener attachment in a function
         }
 
-        // Run initialization on page load
-        document.addEventListener('DOMContentLoaded', initializeView);
+
+        // --- Attach Listeners to Controls ---
+        function attachControlListeners() {
+            // Modal Closing Listeners
+            if (modalCloseButton) modalCloseButton.addEventListener('click', closeModal);
+            if (modalOverlay) modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // Sidebar Tab Filtering (Desktop Clicks)
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const selectedCategory = tab.getAttribute('data-category');
+                    updateSelectionVisuals(selectedCategory);
+                    filterItems(selectedCategory);
+                });
+            });
+
+             // Hotbar Navigation Filtering (Mobile & Desktop Clicks)
+             navLinks.forEach(link => {
+                 link.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     const selectedCategory = link.getAttribute('data-category');
+                     updateSelectionVisuals(selectedCategory);
+                     filterItems(selectedCategory);
+                 });
+             });
+        }
+
+        // --- Initialisation ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure slots are selected after DOM is ready
+            inventorySlots = document.querySelectorAll('#pc-grid .inventory-slot');
+
+            // Attach all listeners
+            attachSlotListeners();
+            attachControlListeners();
+
+            // Set initial view state
+            const initialCategory = 'all'; // Default to 'all'
+            updateSelectionVisuals(initialCategory);
+            filterItems(initialCategory); // Apply initial filter
+        });
 
 
     </script>
