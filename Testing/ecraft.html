@@ -14,23 +14,24 @@
         }
 
         :root {
-            /* Colors (Based on Prompt #11's code - which you preferred for colors) */
-            --mc-bg: #C6C6C6;
-            --mc-bg-dark: #8B8B8B;
-            --mc-border-light: #FFFFFF; /* Use white from prompt #11 */
-            --mc-border-dark: #5B5B5B;
-            --mc-border-inset-dark: #373737;
-            --mc-text: #404040;
-            --mc-text-light: #FFFFFF; /* Use white from prompt #11 */
-            --mc-tooltip-bg: #100010;
-            --mc-tooltip-border: #5000FF;
-            --mc-item-name: #55FFFF; /* Cyan */
-            --mc-item-spec: #AAAAAA; /* Gray */
-            --mc-item-price: #FFFF55; /* Yellow */
-            --mc-item-ench: #FF55FF; /* Magenta */
-            --mc-black-bg: #000000; /* Black background requested */
+             /* Colors (Based on Prompt #11's code) */
+             --mc-bg: #C6C6C6; /* Light grey panel */
+             --mc-bg-dark: #8B8B8B; /* Dark grey sidebar/slot */
+             --mc-border-light: #FFFFFF; /* White highlight */
+             --mc-border-dark: #5B5B5B; /* Dark shadow border */
+             --mc-border-inset-dark: #373737; /* Darkest inset (search, slot border) */
+             --mc-text: #404040; /* Dark text (on light bg) */
+             --mc-text-light: #E0E0E0; /* Light Text (on dark bg) */
+             --mc-text-darker: #3A3A3A; /* Text for search input */
+             --mc-tooltip-bg: #100010;
+             --mc-tooltip-border: #5000FF;
+             --mc-item-name: #55FFFF; /* Cyan */
+             --mc-item-spec: #AAAAAA; /* Gray */
+             --mc-item-price: #FFFF55; /* Yellow */
+             --mc-item-ench: #FF55FF; /* Magenta */
+             --mc-black-bg: #000000; /* Black background */
 
-            /* Sizing (Desktop Defaults - Merged & Adjusted) */
+             /* Sizing (Desktop Defaults - Merged & Adjusted) */
             --font-size-base: 16px;
             --font-size-title: 36px;
             --font-size-panel-header: 16px;
@@ -64,7 +65,7 @@
             font-size: var(--font-size-base);
             /* Black Background - As requested */
             background-color: var(--mc-black-bg);
-            color: var(--mc-text-light); /* Light text for elements outside panels */
+            color: var(--mc-text-light); /* Default light text */
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -73,7 +74,7 @@
             padding-bottom: 60px; /* Space for fixed bottom nav on mobile */
         }
 
-        /* Removed #grass-header and body::before */
+        /* REMOVED #top-background-strip and body::before */
 
         .site-title {
             font-size: var(--font-size-title);
@@ -88,26 +89,30 @@
             z-index: 1;
         }
 
-        /* --- Inventory Container - Using styling closer to Prompt #11 --- */
+        /* --- Inventory Container - Using styling from Prompt #11 --- */
         .inventory-container {
             max-width: var(--inventory-max-width);
             width: 95%;
             background-color: var(--mc-bg); /* Light background */
-            border: 2px solid; /* Standard border */
-            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); /* Prompt #11 border colors */
-            box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25); /* Prompt #11 shadow */
+            border: 2px solid;
+            border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); /* White highlight */
+             /* Using box-shadow approach from #11 for inset effect */
+             /* box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.5), inset -2px -2px 0px rgba(0, 0, 0, 0.25); */
+             /* OR use border/bg like screenshot (below) */
             padding: 0; /* No padding on outer container */
             display: flex;
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
+             /* Optional subtle drop shadow */
+             /* box-shadow: 0 4px 10px rgba(0,0,0,0.3); */
         }
 
         /* --- Inventory Layout --- */
         .inventory-sidebar { /* DESKTOP ONLY */
             width: var(--sidebar-width);
             background-color: var(--mc-bg-dark); /* Darker sidebar bg */
-            border-right: 2px solid var(--mc-border-inset-dark); /* Use inset dark for divider */
+            border-right: 2px solid var(--mc-border-dark); /* Dark line divider */
             padding: 10px;
             display: flex;
             flex-direction: column;
@@ -119,21 +124,21 @@
             display: flex;
             flex-direction: column;
             min-width: 0;
-            background-color: var(--mc-bg); /* Match container bg */
+            background-color: var(--mc-bg); /* Main area light bg */
         }
 
         .inventory-header {
             padding: 6px 12px;
-            border-bottom: 2px solid var(--mc-border-dark); /* Dark border */
+            border-bottom: 2px solid var(--mc-border-dark); /* Dark line below header */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .inventory-title {
             font-size: var(--font-size-panel-header);
-            color: var(--mc-text); /* Dark text */
+            color: var(--mc-text-darker); /* Darker text for title */
             font-weight: normal;
-            text-shadow: 1px 1px var(--mc-border-light); /* Light shadow */
+            text-shadow: 1px 1px var(--mc-border-light); /* White shadow */
         }
         .mobile-filter-trigger { display: none; }
 
@@ -149,67 +154,73 @@
             gap: var(--grid-gap);
         }
 
-        /* --- Sidebar Components (Desktop Styling - Based on Prompt #11) --- */
+        /* --- Sidebar Components (Desktop Styling - Based on Prompt #11 Screenshot) --- */
          .inventory-sidebar .search-bar {
             display: flex; align-items: center;
-            background-color: var(--mc-bg-dark); /* Match sidebar bg */
-            border: 1px solid var(--mc-border-inset-dark); /* Inset border */
-            box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.5); /* Inset shadow */
-            margin-bottom: 15px; padding: 5px;
+            background-color: var(--mc-border-inset-dark); /* Very dark bg like screenshot */
+            border: 1px solid var(--mc-border-dark); /* Dark border */
+            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.7); /* Strong inset shadow */
+            margin-bottom: 12px; padding: 5px 6px;
         }
-         .inventory-sidebar .search-icon { /* Using the search icon style from #11 */
-             width: 16px; height: 16px; margin-right: 5px;
-             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVDhPtY5BCsIwEATR91B7B+kNepfCU3gNXsTdi+LSBn/SkQSFTchDQ3xzD7EDD2w2m5s+jw/cGAsG+C9iLhGjH0e8Jv1A/Gvz2L2iL2wPQLyvvS54+TkQCcACkFzrWw90/N0EaM5H+b7nx/I2AN7nO10j+AIArNvrAMAR0LweCR6GcgBo/v1w9B5A1/N8E1YAnAEAfN9sB8B3QRwAYhXAMQLAOlEAMALAWoIBYARAFQEAEQDWERcAFQEAC+gB/4AAuA3/jG1m1kSEAAAAAElFTkSuQmCC') center center no-repeat;
-             background-size: contain; image-rendering: var(--mc-pixelated);
+         .inventory-sidebar .search-icon { display: none; } /* No icon in screenshot */
+         .inventory-sidebar .search-input {
+             flex-grow: 1; background-color: transparent; border: none;
+             color: var(--mc-text-light); font-family: 'Minecraft', monospace;
+             padding: 2px; font-size: 14px; outline: none;
          }
-         .inventory-sidebar .search-input { /* Input style from #11 */
-             flex-grow: 1; background-color: #373737; border: none;
-             color: #AAAAAA; font-family: 'Minecraft', monospace;
-             padding: 2px; font-size: 12px; outline: none;
-         }
-         .inventory-sidebar .search-input::placeholder { color: #AAAAAA; }
+         .inventory-sidebar .search-input::placeholder { color: #A0A0A0; } /* Lighter placeholder */
 
-        .inventory-sidebar .inventory-tabs { display: flex; flex-direction: column; gap: 3px; margin-top: 10px; } /* Tabs from #11 */
-        .inventory-sidebar .inventory-tab {
+        .inventory-sidebar .inventory-tabs { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+        .inventory-sidebar .inventory-tab { /* Tab style from screenshot */
             display: flex; align-items: center; background-color: var(--mc-bg-dark);
-            border: 2px solid; border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
-            padding: 8px 10px; cursor: pointer; color: var(--mc-text-light); text-shadow: 1px 1px #373737;
-            font-size: calc(var(--font-size-base) - 2px); transition: background-color 0.1s ease; position: relative;
+            border: 1px solid transparent; /* Base */
+            border-top-color: var(--mc-border-light); /* White line top */
+            border-bottom-color: var(--mc-border-dark); /* Dark line bottom */
+            padding: 9px 10px; cursor: pointer; color: var(--mc-text-light); text-shadow: 1px 1px #373737;
+            font-size: var(--font-size-tab); transition: background-color 0.1s ease; position: relative; margin: 0 -1px; /* Overlap slightly */
         }
-        .inventory-sidebar .inventory-tab:hover { background-color: #A0A0A0; }
-        .inventory-sidebar .inventory-tab.active {
-            background-color: var(--mc-bg); border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
-            box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.25), inset -2px -2px 0px rgba(255, 255, 255, 0.5);
-            color: var(--mc-text); text-shadow: 1px 1px #FFFFFF; z-index: 1;
-        }
-        .inventory-sidebar .inventory-tab.active::before { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right: 8px solid var(--mc-bg); }
-        .inventory-sidebar .tab-icon { width: 24px; height: 24px; margin-right: 8px; display: flex; justify-content: center; align-items: center; font-size: 18px; image-rendering: var(--mc-pixelated); flex-shrink: 0; }
-        .inventory-sidebar .tab-icon img { max-width: 100%; max-height: 100%; display: block; image-rendering: var(--mc-pixelated); }
+         .inventory-sidebar .inventory-tab:first-child { border-top-color: transparent;}
+         .inventory-sidebar .inventory-tab:hover { background-color: #9A9A9A; } /* Subtle hover */
+         .inventory-sidebar .inventory-tab.active { /* Active tab style from screenshot */
+             background-color: var(--mc-bg); /* Light bg */
+             color: var(--mc-text-darker); text-shadow: 1px 1px #FFFFFF; z-index: 1;
+             border-left: 1px solid var(--mc-border-dark); /* Dark left */
+             border-right: 1px solid var(--mc-border-light); /* Light right */
+             border-top-color: var(--mc-border-dark); /* Dark top */
+             border-bottom-color: var(--mc-border-light); /* Light bottom */
+         }
+         .inventory-sidebar .inventory-tab.active::before { /* Triangle marker */
+            content: ''; position: absolute; left: -9px; top: 50%; transform: translateY(-50%); width: 0; height: 0;
+            border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+            border-right: 7px solid var(--mc-bg); /* Match active bg */
+         }
+         .inventory-sidebar .tab-icon { width: 24px; height: 24px; margin-right: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; image-rendering: var(--mc-pixelated); flex-shrink: 0; }
+         .inventory-sidebar .tab-icon img { max-width: 100%; max-height: 100%; display: block; image-rendering: var(--mc-pixelated); }
 
-
-        /* --- Inventory Slot (Using style from #11) --- */
+        /* --- Inventory Slot (Using style from #11 Screenshot) --- */
         .inventory-slot {
             width: var(--slot-size); height: var(--slot-size);
-            background-color: var(--mc-bg-dark); /* Darker slot bg */
-            border: 1px solid var(--mc-border-inset-dark); /* Thinner inset border */
-            box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5); /* Softer inset shadow */
+            background-color: var(--mc-bg-dark); /* Dark bg */
+            border: 1px solid var(--mc-border-inset-dark); /* Darkest inset border */
+            box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5), /* Inner shadow */
+                        1px 1px 0px var(--mc-border-light); /* White highlight bottom/right */
             display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative;
             overflow: hidden; transition: background-color 0.1s ease;
         }
-        .inventory-slot:hover { background-color: #A8A8A8; } /* Lighter hover */
-        .inventory-slot:hover::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.2); }
+        .inventory-slot:hover { background-color: #7E7E7E; } /* Darker hover */
+        .inventory-slot:hover::after { content: none; } /* No overlay hover */
         .inventory-slot img, .item-icon { max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); image-rendering: var(--mc-pixelated); display: block; }
         .item-icon { width: var(--slot-icon-size); height: var(--slot-icon-size); background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
-        .item-price-tag { position: absolute; bottom: 2px; right: 3px; font-size: 12px; color: var(--mc-item-price); text-shadow: 1px 1px 0 #000; background: rgba(0,0,0,0.4); padding: 1px 3px; }
+        .item-price-tag { position: absolute; bottom: 3px; right: 3px; font-size: var(--font-size-slot-price); color: var(--mc-item-price); text-shadow: 1px 1px 1px #000; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 1px; }
 
-        /* --- Navigation Hotbar (Using style from #11) --- */
-        .site-navigation { display: flex; justify-content: center; gap: 4px; margin-top: 20px; border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); background-color: var(--mc-bg-dark); padding: 4px; max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 30px; position: relative; z-index: 1; }
+        /* --- Navigation Hotbar (Using style from #11 Screenshot) --- */
+        .site-navigation { display: flex; justify-content: center; gap: 2px; margin-top: 0; margin-bottom: 30px; border: 2px solid; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); background-color: var(--mc-bg-dark); padding: 4px; width: fit-content; position: relative; z-index: 1; }
         .nav-slot { width: var(--nav-slot-size); height: var(--nav-slot-size); background-color: var(--mc-bg); border: 1px solid var(--mc-border-inset-dark); box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; }
         .nav-slot a { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; text-decoration: none; }
         .nav-slot img { max-width: var(--nav-icon-size); max-height: var(--nav-icon-size); image-rendering: var(--mc-pixelated); }
         .nav-slot.selected { border: 2px solid var(--mc-border-light); box-shadow: none; }
 
-         /* --- Tooltip --- (Using style from #11) */
+         /* --- Tooltip --- */
          .product-details-tooltip { position: absolute; background-color: var(--mc-tooltip-bg); border: 2px solid var(--mc-tooltip-border); color: var(--mc-text-light); padding: 8px; max-width: 250px; z-index: 1100; display: none; font-size: 12px; pointer-events: none; line-height: 1.4; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8); }
          .tooltip-name { color: var(--mc-item-name); margin-bottom: 5px; font-size: 13px; }
          .tooltip-specs ul { padding-left: 10px; margin: 0; list-style: none;}
@@ -240,13 +251,11 @@
         .modal-close-btn:hover { background-color: #CC6666; }
         .modal-close-btn:active { background-color: #884444; border-color: var(--mc-border-dark) #FFAAAA #FFAAAA var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.25); }
 
-        /* --- Block Icons --- (Using emojis as fallback from #11) */
-        .icon-all::before { content: "📦"; } .icon-gaming::before { content: "⛏️"; }
-        .icon-work::before { content: "📒"; } .icon-custom::before { content: "🛠️"; }
-        .icon-peripheral::before { content: "🖱️"; } .icon-budget::before { content: "🧱"; }
-        .icon-keyboard::before { content: "⌨️"; }
 
-        /* Add specific icon classes if needed, like the SVGs from #11 */
+        /* --- Block Icons --- */
+        /* Define actual icons or use ::before */
+        .icon-chest::before { content: "📦"; } .icon-pickaxe::before { content: "⛏️"; } .icon-book::before { content: "📒"; } .icon-bricks::before { content: "🧱"; } .icon-wrench-gear::before { content: "🛠️"; } .icon-mouse::before { content: "🖱️"; } .icon-keyboard::before { content: "⌨️"; }
+        /* SVG icons if preferred */
         .icon-diamond { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNEJERUJFIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjOUNGNUYyIi8+PC9zdmc+'); }
         .icon-netherite { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNDA0MDQwIi8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjNDg0NDQzIi8+PC9zdmc+'); }
         .icon-iron { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSIjQzFDNUM1Ii8+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEyIiBmaWxsPSIjRDlEOUQ5Ii8+PC9zdmc+'); }
@@ -257,20 +266,12 @@
 
 
         /* ======================================== */
-        /* === MOBILE OPTIMISED UI/UX (Merged from Prompt #8 logic) === */
+        /* === MOBILE OPTIMISED UI/UX === */
         /* ======================================== */
 
-        /* --- Mobile Filter Panel (Merged) --- */
-        #filter-panel {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(10, 0, 10, 0.92); z-index: 1500;
-            padding: 15px; padding-top: calc(var(--grass-header-height) + 10px); /* Use header height */
-            display: none; /* Hidden initially */ flex-direction: column;
-            transform: translateX(-100%); transition: transform 0.3s ease-in-out;
-            color: var(--mc-text-light); font-family: 'Minecraft', 'Courier New', monospace;
-            border-right: 3px solid var(--mc-tooltip-border);
-        }
-        #filter-panel.active { transform: translateX(0); display: flex; } /* Show when active */
+        /* --- Mobile Filter Panel --- */
+        #filter-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 0, 10, 0.92); z-index: 1500; padding: 15px; padding-top: 20px; /* No need to account for grass header here */ display: none; flex-direction: column; transform: translateX(-100%); transition: transform 0.3s ease-in-out; color: var(--mc-text-light); font-family: 'Minecraft', 'Courier New', monospace; border-right: 3px solid var(--mc-tooltip-border); }
+        #filter-panel.active { transform: translateX(0); display: flex; }
         #filter-panel .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--mc-tooltip-border); }
         #filter-panel .filter-title { font-size: 18px; color: var(--mc-item-name); }
         #filter-panel .filter-close-btn { background-color: #AA5555; border: 2px solid; border-color: #FFAAAA var(--mc-border-dark) var(--mc-border-dark) #FFAAAA; width: 26px; height: 26px; line-height: 22px; font-size: 14px; cursor: pointer; text-align: center; padding: 0; color: var(--mc-text-light); text-shadow: 1px 1px #373737; }
@@ -286,48 +287,38 @@
         @media (max-width: 768px) {
             :root {
                 /* Mobile Size Overrides */
-                --font-size-base: 14px; --font-size-title: 28px; --font-size-modal-title: 20px; --font-size-button: 14px;
+                --font-size-base: 14px; --font-size-title: 26px; --font-size-panel-header: 15px; --font-size-tab: 14px; --font-size-slot-price: 11px; --font-size-modal-title: 18px; --font-size-button: 14px;
                 --slot-size: 58px; --slot-icon-size: 40px;
-                --nav-slot-size: 40px; --nav-icon-size: 30px; --grass-header-height: 60px;
+                --nav-slot-size: 40px; --nav-icon-size: 30px;
                 --inventory-max-width: 100%; --modal-max-width: 95%; --modal-image-size: 160px;
                 --modal-padding: 15px; --grid-gap: 6px; --button-padding: 9px 16px;
             }
 
-            body {
-                padding-top: var(--grass-header-height); /* Adjust padding */
-                padding-bottom: 60px; /* Space for bottom nav */
-                background-size: 32px 32px; /* Smaller dirt tile */
-            }
+            body { padding-top: 0; padding-bottom: 60px; /* Space for fixed nav */ }
+            /* No #grass-header to style */
 
-            #grass-header { height: var(--grass-header-height); border-bottom-width: 4px; background-size: auto var(--grass-header-height); }
-            .container { margin: 15px auto; padding: 10px; }
-            .site-title { font-size: var(--font-size-title); margin-bottom: 20px; }
+            .site-title { margin-top: 25px; font-size: var(--font-size-title); margin-bottom: 15px; }
 
-            /* --- Hide Desktop Sidebar, Show Mobile Trigger --- */
             .inventory-sidebar { display: none !important; }
             .mobile-filter-trigger {
                 display: inline-block;
-                font-size: 13px; color: var(--mc-text); /* Match desktop tab text */ text-shadow: 1px 1px #FFFFFF;
-                background-color: var(--mc-bg); /* Match desktop tab bg */ border: 1px solid;
+                font-size: 13px; color: var(--mc-text); text-shadow: 1px 1px #FFFFFF;
+                background-color: var(--mc-bg); border: 1px solid;
                 border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
                 padding: 4px 8px; cursor: pointer; margin-left: auto;
             }
              .mobile-filter-trigger:active { background-color: #B0B0B0; border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark); box-shadow: inset 1px 1px 0px rgba(0,0,0,0.2); }
 
-            /* --- Mobile Inventory Layout --- */
             .inventory-container { flex-direction: column; border-width: 2px; width: 95%; margin-bottom: 15px; padding: 5px; }
             .main-inventory { border-top: 3px solid var(--mc-border-inset-dark); }
             .inventory-header { padding: 5px 10px; border-bottom-width: 2px; }
-            .inventory-title { font-size: 15px; }
+            .inventory-title { font-size: var(--font-size-panel-header); }
             .pc-grid-area { padding: 10px; min-height: 300px; }
             .pc-grid { grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr)); }
-
-            /* --- Mobile Slot --- */
             .inventory-slot { border-width: 1px; }
             .inventory-slot img, .item-icon { max-width: var(--slot-icon-size); max-height: var(--slot-icon-size); }
-            .item-price-tag { font-size: 11px; padding: 1px 2px; }
+            .item-price-tag { font-size: var(--font-size-slot-price); padding: 1px 2px; }
 
-            /* --- Mobile Navigation (Bottom Hotbar) --- */
             .site-navigation { position: fixed; bottom: 0; left: 0; width: 100%; max-width: 100%; margin: 0; padding: 4px; gap: 4px; border-width: 2px; border-top-color: var(--mc-border-light); border-bottom: none; border-left: none; border-right: none; z-index: 900; justify-content: space-around; background-color: var(--mc-bg-dark); }
             .nav-slot { width: var(--nav-slot-size); height: var(--nav-slot-size); border-width: 1px; flex-shrink: 0; }
             .nav-slot img { max-width: var(--nav-icon-size); max-height: var(--nav-icon-size); }
@@ -335,10 +326,8 @@
             .nav-slot:empty { display: none; }
             .nav-slot:nth-child(n+7) { display: none; }
 
-            /* --- Mobile Tooltip --- */
             .product-details-tooltip { display: none !important; }
 
-            /* --- Mobile Modal (Vertical Layout) --- */
              .modal-content { flex-direction: column; align-items: center; padding: var(--modal-padding); gap: 15px; border-width: 3px; }
              .modal-image-area { width: var(--modal-image-size); height: var(--modal-image-size); margin-bottom: 10px; border-width: 2px; }
              .modal-image-area img { max-width: calc(var(--modal-image-size) - 15px); max-height: calc(var(--modal-image-size) - 15px); }
@@ -353,14 +342,10 @@
              .modal-close-btn { width: 26px; height: 26px; line-height: 22px; font-size: 14px; top: 5px; right: 5px;}
         }
 
-        /* Further adjustments for very small screens */
         @media (max-width: 480px) {
-             :root {
-                --slot-size: 52px; --slot-icon-size: 36px; --nav-slot-size: 38px; --nav-icon-size: 28px; --grass-header-height: 50px;
-             }
-             body { background-size: 24px 24px; padding-bottom: 50px; padding-top: var(--grass-header-height); }
-             #grass-header { height: var(--grass-header-height); border-bottom-width: 3px; background-size: auto var(--grass-header-height); }
-             .site-title { font-size: 22px; }
+             :root { --slot-size: 52px; --slot-icon-size: 36px; --nav-slot-size: 38px; --nav-icon-size: 28px; }
+             body { padding-bottom: 50px; }
+             .site-title { font-size: 22px; margin-top: 20px;}
              .mobile-filter-trigger { font-size: 12px; padding: 3px 6px; }
              .inventory-title { font-size: 14px; }
              .modal-image-size { width: 120px; height: 120px; }
@@ -372,8 +357,7 @@
     </style>
 </head>
 <body>
-    <!-- Grass Header Div -->
-    <div id="grass-header"></div>
+    <!-- No grass header div needed -->
 
     <!-- Mobile Filter Panel (Initially Hidden) -->
     <div id="filter-panel">
@@ -389,57 +373,56 @@
         </div>
     </div>
 
-    <!-- Container for main content below header -->
-    <div class="container">
-        <h1 class="site-title">BlockTech PCs</h1>
+    <!-- Site Title -->
+    <h1 class="site-title">BlockTech PCs</h1>
 
-        <div class="inventory-container"> <!-- Using prompt #11's container style implicitly via variables -->
-            <!-- Desktop Sidebar -->
-            <div class="inventory-sidebar">
-                <div class="search-bar">
-                    <div class="search-icon"></div>
-                    <input type="text" class="search-input" id="desktop-search-input" placeholder="Search items...">
-                </div>
-                <div class="inventory-tabs" id="desktop-tabs-list">
-                    <!-- Desktop Tabs Populated by JS -->
-                </div>
+    <!-- Main Inventory Panel -->
+    <div class="inventory-container">
+        <!-- Desktop Sidebar -->
+        <div class="inventory-sidebar">
+            <div class="search-bar">
+                <div class="search-icon"></div> <!-- Icon from #11 style -->
+                <input type="text" class="search-input" id="desktop-search-input" placeholder="Search items...">
             </div>
-
-            <!-- Main Content Area (Grid) -->
-            <div class="main-inventory">
-                 <div class="inventory-header">
-                    <div class="inventory-title">Available Rigs & Peripherals</div>
-                    <button class="mobile-filter-trigger" id="mobile-filter-button">Filter</button>
-                 </div>
-                 <div class="pc-grid-area">
-                     <div class="pc-grid" id="pc-grid">
-                         <!-- Product Slots Populated by JS -->
-                     </div>
-                 </div>
+            <div class="inventory-tabs" id="desktop-tabs-list">
+                <!-- Desktop Tabs Populated by JS -->
             </div>
         </div>
 
-        <!-- Bottom Navigation Hotbar -->
-        <div class="site-navigation">
-            <!-- !!! REPLACE base64/placeholders with actual icon URLs or use specific classes defined in CSS !!! -->
-            <div class="nav-slot selected"><a href="#home" title="Home"><img src="data:image/png;base64,..." alt="Home"></a></div>
-            <div class="nav-slot"><a href="#shop" title="Shop"><img src="data:image/png;base64,..." alt="Shop"></a></div>
-            <div class="nav-slot"><a href="#about" title="About"><img src="data:image/png;base64,..." alt="About"></a></div>
-            <div class="nav-slot"><a href="#support" title="Support"><img src="data:image/png;base64,..." alt="Support"></a></div>
-            <div class="nav-slot"><a href="#contact" title="Contact"><img src="data:image/png;base64,..." alt="Contact"></a></div>
-            <div class="nav-slot"><a href="#cart" title="Cart"><img src="data:image/png;base64,..." alt="Cart"></a></div>
-            <div class="nav-slot"></div> <!-- Empty Slot -->
-            <div class="nav-slot"></div> <!-- Empty Slot -->
-            <div class="nav-slot"></div> <!-- Empty Slot -->
+        <!-- Main Content Area (Grid) -->
+        <div class="main-inventory">
+             <div class="inventory-header">
+                <div class="inventory-title">Available Rigs & Peripherals</div>
+                <button class="mobile-filter-trigger" id="mobile-filter-button">Filter</button>
+             </div>
+             <div class="pc-grid-area">
+                 <div class="pc-grid" id="pc-grid">
+                     <!-- Product Slots Populated by JS -->
+                 </div>
+             </div>
         </div>
-    </div> <!-- End .container -->
+    </div>
+
+    <!-- Bottom Navigation Hotbar -->
+    <div class="site-navigation">
+         <!-- !!! REPLACE base64/placeholders with actual icon URLs or use specific classes defined in CSS !!! -->
+         <div class="nav-slot selected"><a href="#home" title="Home"><img src="data:image/png;base64,..." alt="Home"></a></div>
+         <div class="nav-slot"><a href="#shop" title="Shop"><img src="data:image/png;base64,..." alt="Shop"></a></div>
+         <div class="nav-slot"><a href="#about" title="About"><img src="data:image/png;base64,..." alt="About"></a></div>
+         <div class="nav-slot"><a href="#support" title="Support"><img src="data:image/png;base64,..." alt="Support"></a></div>
+         <div class="nav-slot"><a href="#contact" title="Contact"><img src="data:image/png;base64,..." alt="Contact"></a></div>
+         <div class="nav-slot"><a href="#cart" title="Cart"><img src="data:image/png;base64,..." alt="Cart"></a></div>
+         <div class="nav-slot"></div> <!-- Empty Slot -->
+         <div class="nav-slot"></div> <!-- Empty Slot -->
+         <div class="nav-slot"></div> <!-- Empty Slot -->
+    </div>
 
     <!-- Tooltip Div (Desktop Only) -->
     <div class="product-details-tooltip" id="item-tooltip"></div>
 
     <!-- Product Details Modal -->
     <div class="modal-overlay" id="product-modal">
-         <!-- Modal structure unchanged -->
+        <!-- Modal structure unchanged -->
          <div class="modal-content">
              <button class="modal-close-btn" id="modal-close-button">X</button>
              <div class="modal-image-area" id="modal-image"></div>
@@ -466,29 +449,28 @@
              "mini-redstone": { type: 'pc', name: "Redstone Mini PC", icon: "icon-redstone", imageSrc: "https://via.placeholder.com/220/C80000/FFFFFF?text=Redstone", category: ["budget", "custom"], price: "$799", specs: ["GeForce RTX 4050", "16GB DDR4 RAM", "1TB NVMe SSD", "Compact ITX Case"], shopifyUrl: "https://your-store.com/products/placeholder-5" },
              "highend-gold": { type: 'pc', name: "Gilded Elite PC", icon: "icon-gold", imageSrc: "https://via.placeholder.com/220/FFD700/000000?text=Gold", category: ["gaming", "workstation"], price: "$3499", specs: ["GeForce RTX 5090 Ti", "128GB DDR5 RAM", "8TB NVMe SSD (RAID)", "Intel Core i9 Extreme"], ench: "Custom Gold-Accent Cooling", shopifyUrl: "https://your-store.com/products/placeholder-6" },
              "budget-wood": { type: 'pc', name: "Oak Starter PC", icon: "icon-wood", imageSrc: "https://via.placeholder.com/220/A37B4A/FFFFFF?text=Oak", category: ["budget"], price: "$599", specs: ["Integrated AMD Graphics", "16GB DDR4 RAM", "512GB SATA SSD", "Ryzen 5 APU"], shopifyUrl: "https://your-store.com/products/placeholder-7" },
-             "mouse-pro": { type: 'peripheral', name: "Diamond Pro Mouse", icon: "icon-mouse", imageSrc: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==', category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Buttons", "RGB", "Lightweight"], shopifyUrl: "https://your-store.com/products/placeholder-8" },
+             "mouse-pro": { type: 'peripheral', name: "Diamond Pro Mouse", icon: "icon-peripheral", imageSrc: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACWSURBVFhH7daxDYAwEERRBOX/4A+BiAqIkL9VkiCOLkns9FzeNJHf9+uT/WHvrnN3fRzADoC7AKcL0C5AKwACgBbgZQAJwABwN1wAkACsLhwADABWC58ANQDWCt4ARADwCv0BQATAK/MFQATAK3MHQATACswAEAFYBd8BfgVYBX8BfgVYFX8ABQBWwdcAVYCr4gMAVgEvgAEAuQD63gK3/wWk4wAAAABJRU5ErkJggg==', category: ["peripheral"], price: "$79", specs: ["16,000 DPI Sensor", "5 Buttons", "RGB", "Lightweight"], shopifyUrl: "https://your-store.com/products/placeholder-8" }, // Note: Changed icon to generic peripheral
              "keyboard-mech": { type: 'peripheral', name: "Netherite Mech Keyboard", icon: "icon-keyboard", imageSrc: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEBSURBVFhH7ZYhDsUgEERzzBHEGbjZuwRX8GNeAxfxFkfzc3AzkIgjEEbKwP4SSCYk6YLYBxKkpPl++h6p8T4L/NuA/TYAjwEAAABsARsAPkU7AB9A6wAHgH4AHUACACSADgALAEgAGQB+AZIANsAZgC8AmAAyAEUARQCXARQBFAAUARQBFAEUALTqCgDKADwASAHIAHwA9AGmATSAUgBlAEUAMwBOAPMArADYAmYBPAFYALACYAuYA3AO4AqAGQB3AKcBzAE8AzADYAYACQB7AKAATAEoAPQA+AFEAHwAXAMsAbQCqAHYAbABTAHAAcgD2ABoArQCsAFgAzADAAMANQEOAIoBXAOoAkgBCAEAA+gBsM/0Af7IesQJ76KQAAAAASUVORK5CYII=', category: ["peripheral"], price: "$129", specs: ["Hot-swappable Switches", "Per-Key RGB", "N-Key Rollover"], ench: "Sound Dampening Foam", shopifyUrl: "https://your-store.com/products/placeholder-9" },
         };
 
         // --- DOM Elements ---
-         // (Same definitions as before, ensure they match HTML IDs)
-         const pcGrid = document.getElementById('pc-grid');
-         const tooltip = document.getElementById('item-tooltip');
-         const modalOverlay = document.getElementById('product-modal');
-         const modalImage = document.getElementById('modal-image');
-         const modalTitle = document.getElementById('modal-title');
-         const modalSpecs = document.getElementById('modal-specs');
-         const modalEnch = document.getElementById('modal-ench');
-         const modalPrice = document.getElementById('modal-price');
-         const modalBuyButton = document.getElementById('modal-buy-button');
-         const modalCloseButton = document.getElementById('modal-close-button');
-         const desktopTabsList = document.getElementById('desktop-tabs-list');
-         const desktopSearchInput = document.getElementById('desktop-search-input');
-         const mobileFilterButton = document.getElementById('mobile-filter-button');
-         const filterPanel = document.getElementById('filter-panel');
-         const filterCloseButton = document.getElementById('filter-close-button');
-         const filterCategoriesList = document.getElementById('filter-categories-list');
-         const filterSearchInput = document.getElementById('filter-search-input');
+        const pcGrid = document.getElementById('pc-grid');
+        const tooltip = document.getElementById('item-tooltip');
+        const modalOverlay = document.getElementById('product-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSpecs = document.getElementById('modal-specs');
+        const modalEnch = document.getElementById('modal-ench');
+        const modalPrice = document.getElementById('modal-price');
+        const modalBuyButton = document.getElementById('modal-buy-button');
+        const modalCloseButton = document.getElementById('modal-close-button');
+        const desktopTabsList = document.getElementById('desktop-tabs-list');
+        const desktopSearchInput = document.getElementById('desktop-search-input');
+        const mobileFilterButton = document.getElementById('mobile-filter-button');
+        const filterPanel = document.getElementById('filter-panel');
+        const filterCloseButton = document.getElementById('filter-close-button');
+        const filterCategoriesList = document.getElementById('filter-categories-list');
+        const filterSearchInput = document.getElementById('filter-search-input');
 
         let currentFilter = 'all';
         let currentSearchTerm = '';
@@ -522,12 +504,10 @@
                   iconDiv.className = `item-icon ${product.icon}`;
                   slot.appendChild(iconDiv);
              } else {
-                  // Fallback if no image or icon
                   const fallbackIcon = document.createElement('span');
-                  fallbackIcon.textContent = '?'; // Simple fallback
+                  fallbackIcon.textContent = '?';
                   slot.appendChild(fallbackIcon);
              }
-
 
              const priceTag = document.createElement('div');
              priceTag.className = 'item-price-tag';
@@ -584,7 +564,7 @@
             modalSpecs.innerHTML = (product.specs && product.specs.length > 0) ? '<ul>' + product.specs.map(s => `<li>${s}</li>`).join('') + '</ul>' : '<p>Details not available.</p>';
             modalEnch.innerHTML = product.ench || ''; modalEnch.style.display = product.ench ? 'block' : 'none';
             modalBuyButton.href = product.shopifyUrl || '#';
-            if (!product.shopifyUrl || product.shopifyUrl === "..." || product.shopifyUrl === "#") { // Check for placeholder or invalid link
+            if (!product.shopifyUrl || product.shopifyUrl === "..." || product.shopifyUrl === "#") {
                  modalBuyButton.style.opacity = '0.5'; modalBuyButton.style.pointerEvents = 'none'; modalBuyButton.textContent = 'Unavailable';
             } else {
                  modalBuyButton.style.opacity = '1'; modalBuyButton.style.pointerEvents = 'auto'; modalBuyButton.textContent = 'Buy Now';
@@ -615,8 +595,13 @@
         function setupFilters() {
              if (!desktopTabsList || !filterCategoriesList) { console.error("Filter list containers not found!"); return; }
             const categories = ['all', ...new Set(Object.values(productData).flatMap(p => p.category || []))];
-            const categoryData = {
-                 all: { name: "All Rigs", iconClass: "icon-all" }, gaming: { name: "Gaming", iconClass: "icon-gaming" }, workstation: { name: "Workstations", iconClass: "icon-work" }, budget: { name: "Budget", iconClass: "icon-budget" }, custom: { name: "Custom", iconClass: "icon-custom" }, peripheral: { name: "Peripherals", iconClass: "icon-peripheral" },
+            const categoryData = { // Match these keys to your productData categories
+                 all: { name: "All Rigs", iconClass: "icon-all" },
+                 gaming: { name: "Gaming", iconClass: "icon-gaming" },
+                 workstation: { name: "Workstations", iconClass: "icon-work" },
+                 budget: { name: "Budget", iconClass: "icon-budget" },
+                 custom: { name: "Custom", iconClass: "icon-custom" },
+                 peripheral: { name: "Peripherals", iconClass: "icon-peripheral" },
              };
 
              desktopTabsList.innerHTML = ''; filterCategoriesList.innerHTML = '';
