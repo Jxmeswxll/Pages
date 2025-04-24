@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEM TOURNAMENT ARSENAL | Elite Performance Systems</title>
+    <!-- Optional: Add Font Awesome for icons -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+    <style>
+        :root {
+            --primary-bg: #080a0f;
+            --secondary-bg: #0c0f16;
+            --accent-1: #ff2d55; /* Vivid Pink/Red */
+            --accent-2: #0055ff; /* Electric Blue */
+            --accent-3: #00f7ff; /* Cyan Glow */
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --card-bg: rgba(16, 20, 34, 0.7);
+            --glass-effect: rgba(25, 32, 52, 0.4);
+            --border-glow: rgba(255, 45, 85, 0.5);
+            --header-height: 80px; /* Define header height */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif; /* Added Inter as primary */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23101422' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+        }
+
+        main {
+           padding-top: var(--header-height); /* Prevent overlap with fixed header */
+        }
+
+        /* Section Base Styles */
+        section {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden; /* Prevent glows from causing scrollbars */
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            border-radius: 2px;
+        }
+
+        /* Cyber-glow effects */
+        .glow-text {
+            text-shadow: 0 0 8px var(--accent-1), 0 0 16px rgba(255, 45, 85, 0.3);
+        }
+
+        .glow-box {
+            box-shadow: 0 0 15px rgba(255, 45, 85, 0.25), 0 0 30px rgba(255, 45, 85, 0.1);
+        }
+
+        .glow-blue {
+            text-shadow: 0 0 8px var(--accent-2), 0 0 16px rgba(0, 85, 255, 0.3);
+        }
+
+        .glow-box-blue {
+            box-shadow: 0 0 15px rgba(0, 85, 255, 0.25), 0 0 30px rgba(0, 85, 255, 0.1);
+        }
+
+        .glow-cyan {
+            text-shadow: 0 0 8px var(--accent-3), 0 0 16px rgba(0, 247, 255, 0.3);
+        }
+
+        /* Glass morphism */
+        .glass {
+            background: var(--glass-effect);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px; /* Slightly larger radius */
+        }
+
+        /* Neon borders */
+        .neon-border {
+            position: relative;
+            border-radius: 18px; /* Match glass + 2px */
+            overflow: hidden;
+            padding: 2px; /* Add padding to contain the inner element */
+        }
+
+        .neon-border > * { /* Style the direct child */
+             border-radius: 16px; /* Match glass radius */
+             overflow: hidden; /* Ensure content respects border */
+        }
+
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-1));
+            z-index: -1;
+            border-radius: 18px; /* Match outer radius */
+            animation: border-animate 4s linear infinite;
+            background-size: 400%;
+        }
+
+        @keyframes border-animate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        header {
+            padding: 15px 0; /* Reduced padding */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+            height: var(--header-height);
+            display: flex; /* Center content vertically */
+            align-items: center; /* Center content vertically */
+        }
+
+        header.scrolled {
+            background: rgba(8, 10, 15, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 22px; /* Adjusted size */
+            font-weight: 900;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-decoration: none; /* Ensure logo is clickable */
+        }
+        .logo span { /* Style the second part differently if needed */
+             margin-left: 5px;
+             background: linear-gradient(to right, var(--accent-2), var(--accent-3));
+             -webkit-background-clip: text;
+             background-clip: text;
+        }
+
+        .logo img {
+            height: 35px; /* Adjusted size */
+            margin-right: 10px;
+            filter: drop-shadow(0 0 6px var(--accent-1));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px; /* Adjusted gap */
+            list-style: none;
+        }
+
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px; /* Adjusted size */
+            padding: 8px 4px; /* Added horizontal padding */
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-3); /* Change color on hover */
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px; /* Adjusted size */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            z-index: 1;
+            border: none; /* Remove potential default border */
+            box-shadow: 0 5px 15px rgba(255, 45, 85, 0.2);
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%; /* Start hidden */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+            transition: left 0.4s ease; /* Animate left property */
+            z-index: -1;
+        }
+
+        .nav-cta:hover {
+             box-shadow: 0 8px 20px rgba(0, 85, 255, 0.3);
+             transform: translateY(-2px); /* Subtle lift */
+        }
+
+        .nav-cta:hover::before {
+            left: 0; /* Slide in */
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s linear;
+            position: relative;
+            transform-origin: 1px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0; /* Remove section padding, use container */
+        }
+
+        .hero .container {
+            padding-top: 60px; /* Space below header */
+            padding-bottom: 60px;
+        }
+
+        .hero-content {
+            grid-column: 1 / span 7; /* Span 7 columns */
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-images {
+            grid-column: 8 / span 5; /* Span 5 columns */
+            position: relative;
+            min-height: 500px; /* Ensure space for image */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-subtitle {
+            font-size: 14px; /* Adjusted size */
+            text-transform: uppercase;
+            letter-spacing: 2px; /* Adjusted spacing */
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(255, 45, 85, 0.15);
+            border-left: 3px solid var(--accent-1);
+            border-radius: 4px;
+            color: var(--accent-1);
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-size: 64px; /* Adjusted size */
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            display: block;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 17px; /* Adjusted size */
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            max-width: 550px; /* Adjusted width */
+            line-height: 1.7;
+        }
+
+        .hero-image-wrapper {
+             position: relative;
+             width: 100%;
+             max-width: 650px; /* Max size of image */
+             aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0; /* Fill wrapper */
+            width: 100%;
+            height: 100%;
+            background-image: url('/api/placeholder/650/488/tech/gaming-pc'); /* Placeholder */
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(8, 10, 15, 0.6);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            z-index: 1;
+        }
+         .hero-image:hover {
+             transform: scale(1.03) rotate(1deg);
+             box-shadow: 0 30px 70px rgba(0, 85, 255, 0.3);
+         }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(255, 45, 85, 0.1), rgba(0, 85, 255, 0.15));
+            border-radius: 20px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+         .hero-image:hover::before {
+             opacity: 0.5;
+         }
+
+        .hero-stats {
+            display: flex;
+            gap: 30px; /* Adjusted gap */
+            margin-top: 50px;
+        }
+
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align stats */
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 32px; /* Adjusted size */
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-stat-label {
+            font-size: 13px; /* Adjusted size */
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 30px; /* Adjusted padding */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px; /* Adjusted size */
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: white;
+            box-shadow: 0 8px 18px rgba(255, 45, 85, 0.25);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(0, 85, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-left: 20px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-3);
+            color: var(--accent-3);
+            transform: translateY(-2px);
+        }
+
+        /* Placeholder Sections */
+        #bundles, #partners {
+            min-height: 400px; /* Give some height */
+            background-color: rgba(12, 15, 22, 0.3); /* Slightly different bg */
+        }
+        #bundles .container, #partners .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        #bundles h2, #partners h2 { /* Use section-title class */
+             margin-bottom: 30px;
+        }
+        #bundles p, #partners p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        /* Specs Breakdown Section */
+        .specs-section {
+            padding: 100px 0; /* Adjusted padding */
+            position: relative;
+        }
+
+        .specs-card-wrapper { /* Wrapper for neon border */
+             margin-top: 60px;
+        }
+
+        .specs-card {
+            background: var(--card-bg);
+            border-radius: 16px; /* Match glass */
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Border is handled by neon-border wrapper */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .specs-title {
+            font-size: 22px; /* Adjusted size */
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            color: var(--accent-3); /* Use accent color */
+        }
+
+        .specs-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-3), var(--accent-2));
+            border-radius: 2px;
+        }
+
+        .specs-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px; /* Increased margin */
+        }
+
+        .specs-tab {
+            padding: 15px 25px; /* Adjusted padding */
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            border: none; /* Remove default button border */
+            background: none; /* Remove default button background */
+        }
+
+        .specs-tab.active {
+            color: var(--text-primary);
+        }
+
+        .specs-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; /* Align with border-bottom */
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .specs-tab.active::after {
+            width: 100%;
+        }
+        .specs-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .specs-content {
+            display: none; /* Hidden by default, requires JS to show */
+        }
+        .specs-content.active {
+            display: block; /* Show active content */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .specs-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .specs-table td {
+            padding: 18px 15px; /* Adjusted padding */
+            vertical-align: top; /* Align content top */
+        }
+
+        .specs-table td:first-child { /* Category */
+            width: 25%; /* Adjusted width */
+            font-weight: 600;
+            color: var(--accent-3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 13px; /* Adjusted size */
+        }
+
+        .specs-table td:nth-child(2) { /* Specification */
+            width: 45%;
+            font-weight: 500; /* Slightly bolder */
+            color: var(--text-primary);
+        }
+
+        .specs-table td:last-child { /* Notes/Details */
+            width: 30%; /* Adjusted width */
+            color: var(--text-secondary);
+            font-size: 13px; /* Adjusted size */
+        }
+
+        .specs-highlight {
+            color: var(--accent-1);
+            font-weight: 700; /* Bolder highlight */
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 0; /* Increased padding */
+            background: linear-gradient(rgba(8, 10, 15, 0.85), rgba(8, 10, 15, 0.85)), url('/api/placeholder/1440/600/abstract/circuit-board') no-repeat center center/cover;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(255, 45, 85, 0.1), rgba(0, 85, 255, 0.15));
+            opacity: 0.7;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 44px; /* Adjusted size */
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+         .cta-title .glow-text { /* Apply glow specifically */
+             display: inline-block; /* Needed for text-shadow */
+         }
+
+        .cta-description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 650px; /* Adjusted width */
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .exclusive-badge {
+            display: inline-block;
+            padding: 10px 25px; /* Adjusted padding */
+            background: var(--accent-1);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700; /* Bolder */
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 35px; /* Adjusted margin */
+            animation: pulse 2s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--accent-1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px var(--accent-1); }
+            100% { transform: scale(1); box-shadow: 0 0 15px var(--accent-1); }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-bg);
+            padding: 80px 0 30px;
+            position: relative;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Subtle top border */
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-about .footer-logo { /* Target logo within about section */
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+         .footer-about .footer-logo span {
+             margin-left: 5px;
+             background: linear-gradient(to right, var(--accent-2), var(--accent-3));
+             -webkit-background-clip: text;
+             background-clip: text;
+         }
+
+        .footer-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.7; /* Adjusted line height */
+            font-size: 14px; /* Adjusted size */
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social-link {
+            width: 38px; /* Adjusted size */
+            height: 38px; /* Adjusted size */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 16px; /* Icon size */
+            border: 1px solid transparent; /* Placeholder for hover effect */
+        }
+
+        .footer-social-link:hover {
+            background: var(--accent-1);
+            transform: translateY(-3px); /* Slightly more lift */
+            border-color: var(--accent-1);
+            box-shadow: 0 0 10px var(--accent-1);
+        }
+        /* Example: Style specific icons differently */
+        .footer-social-link.twitter:hover { background: #1DA1F2; border-color: #1DA1F2; box-shadow: 0 0 10px #1DA1F2;}
+        .footer-social-link.facebook:hover { background: #1877F2; border-color: #1877F2; box-shadow: 0 0 10px #1877F2;}
+
+
+        .footer-heading {
+            font-size: 16px; /* Adjusted size */
+            font-weight: 700;
+            margin-bottom: 25px; /* Adjusted margin */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px; /* Space for underline */
+        }
+
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0; /* Position at bottom of padding */
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-1), var(--accent-2));
+            border-radius: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            margin-bottom: 12px; /* Adjusted margin */
+        }
+
+        .footer-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block; /* Allows transform */
+            position: relative;
+            font-size: 14px; /* Adjusted size */
+            padding-left: 18px; /* Space for pseudo-element */
+        }
+
+        .footer-link a::before {
+            content: '>'; /* Use chevron or similar */
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-1);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .footer-link a:hover {
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .footer-link a:hover::before {
+            color: var(--accent-2);
+            opacity: 1;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 18px; /* Adjusted margin */
+        }
+
+        .footer-contact-icon {
+            width: 35px; /* Adjusted size */
+            height: 35px; /* Adjusted size */
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            color: var(--accent-3); /* Icon color */
+            font-size: 15px; /* Icon size */
+        }
+
+        .footer-contact-content {
+            flex-grow: 1;
+        }
+
+        .footer-contact-label {
+            font-size: 11px; /* Adjusted size */
+            color: var(--text-secondary);
+            margin-bottom: 3px; /* Adjusted margin */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block; /* Ensure it takes full width */
+        }
+
+        .footer-contact-value {
+            color: var(--text-primary);
+            font-size: 14px; /* Adjusted size */
+            line-height: 1.4;
+        }
+         .footer-contact-value a { /* Style links in contact info */
+             color: var(--accent-3);
+             text-decoration: none;
+             transition: color 0.3s ease;
+         }
+         .footer-contact-value a:hover {
+             color: var(--accent-1);
+             text-decoration: underline;
+         }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 30px;
+            margin-top: 60px; /* Added margin top */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 13px; /* Adjusted size */
+        }
+
+        .copyright-links {
+            display: flex;
+            gap: 25px; /* Adjusted gap */
+        }
+
+        .copyright-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .copyright-link:hover {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-content { grid-column: 1 / span 6; }
+            .hero-images { grid-column: 7 / span 6; }
+            .hero-title { font-size: 56px; }
+            .specs-table td:first-child { width: 30%; }
+            .specs-table td:nth-child(2) { width: 40%; }
+            .specs-table td:last-child { width: 30%; }
+        }
+
+        @media (max-width: 992px) {
+            .section-title { font-size: 36px; }
+            .hero { min-height: auto; text-align: center; }
+            .hero .grid { grid-template-columns: 1fr; gap: 40px; } /* Stack hero content */
+            .hero-content { grid-column: 1 / -1; }
+            .hero-subtitle { display: inline-block; }
+            .hero-description { margin-left: auto; margin-right: auto; max-width: 600px; }
+            .hero-stats { justify-content: center; gap: 40px; }
+            .hero-images { grid-column: 1 / -1; min-height: 400px; }
+            .hero-image-wrapper { max-width: 500px; margin: 0 auto; }
+
+            .nav-links { display: none; /* Hide desktop nav */ }
+            .menu-toggle { display: flex; /* Show mobile menu toggle */ }
+            .nav-cta { display: none; /* Optionally hide CTA on mobile nav bar */ }
+
+            .specs-tabs { flex-wrap: wrap; justify-content: center; }
+            .specs-tab { flex-grow: 1; text-align: center; }
+
+            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; } /* Adjust footer grid */
+        }
+
+        @media (max-width: 768px) {
+            :root { --header-height: 70px; } /* Adjust header height */
+            main { padding-top: var(--header-height); }
+            section { padding: 80px 0; }
+            .container { padding: 0 20px; }
+            .hero-title { font-size: 44px; }
+            .cta-title { font-size: 34px; }
+            .cta-description { max-width: 90%; }
+
+            .specs-card { padding: 30px; }
+            .specs-table { display: block; overflow-x: auto; white-space: nowrap; } /* Make table scrollable */
+            .specs-table td { padding: 15px 10px; }
+            .specs-table td:first-child { width: 120px; } /* Fixed width for first column */
+            .specs-table td:nth-child(2) { width: 200px; } /* Fixed width */
+            .specs-table td:last-child { width: 150px; } /* Fixed width */
+
+            .footer-grid { grid-template-columns: 1fr; text-align: center; } /* Stack footer columns */
+            .footer-about .footer-logo { justify-content: center; }
+            .footer-social { justify-content: center; }
+            .footer-heading::after { left: 50%; transform: translateX(-50%); }
+            .footer-contact-item { flex-direction: column; align-items: center; text-align: center; }
+            .footer-contact-icon { margin-right: 0; margin-bottom: 10px; }
+
+            .copyright { flex-direction: column; gap: 15px; text-align: center; }
+            .copyright-links { justify-content: center; gap: 20px; }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title { font-size: 36px; }
+            .hero-description { font-size: 16px; }
+            .hero-stats { flex-direction: column; gap: 20px; align-items: center; }
+            .hero-stat-number { font-size: 28px; }
+            .hero-stat-label { font-size: 12px; }
+            .btn { width: 100%; margin-bottom: 15px; font-size: 13px; padding: 12px 25px; }
+            .btn-secondary { margin-left: 0; }
+
+            .specs-tab { padding: 12px 15px; font-size: 12px; }
+            .cta-title { font-size: 28px; }
+            .cta-description { font-size: 16px; }
+            .exclusive-badge { font-size: 12px; padding: 8px 20px; }
+
+            .footer-heading { font-size: 15px; }
+            .footer-link a, .footer-description, .footer-contact-value { font-size: 13px; }
+            .copyright { font-size: 12px; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#hero" class="logo">
+                    <!-- Placeholder Logo -->
+                    <img src="/api/placeholder/40/35/FFFFFF/FF2D55?text=IEM" alt="IEM Logo">
+                    IEM <span>ARSENAL</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#bundles" class="nav-link">Bundles</a></li>
+                    <li><a href="#partners" class="nav-link">Partners</a></li>
+                    <li><a href="#specs" class="nav-link">Specs</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <a href="#cta" class="nav-cta">Pre-Order Now</a>
+                <!-- Mobile Menu Toggle Button -->
+                <button class="menu-toggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="grid">
+                    <div class="hero-content">
+                        <div class="hero-subtitle">IEM Official Tournament Rig</div>
+                        <h1 class="hero-title">
+                            Dominate The Arena
+                            <span>With Elite Power</span>
+                        </h1>
+                        <p class="hero-description">
+                            Engineered for champions, the IEM Tournament Arsenal delivers uncompromising performance. Experience peak framerates, instant response times, and the reliability demanded by esports pros.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#bundles" class="btn btn-primary">Explore Bundles</a>
+                            <a href="#specs" class="btn btn-secondary">View Specs</a>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">5.8GHz+</div>
+                                <div class="hero-stat-label">Peak Clock Speed</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">32GB DDR5</div>
+                                <div class="hero-stat-label">Next-Gen Memory</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">RTX 4090</div>
+                                <div class="hero-stat-label">Max Graphics Power</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-images">
+                        <div class="hero-image-wrapper">
+                           <div class="hero-image" title="IEM Tournament Arsenal PC"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bundles Section (Placeholder) -->
+        <section id="bundles" class="bundles-section">
+            <div class="container">
+                <h2 class="section-title glow-blue">Complete Your Setup</h2>
+                <p>Choose from curated bundles including pro-grade peripherals and exclusive IEM gear. Content coming soon!</p>
+                <!-- Bundle cards would go here -->
+            </div>
+        </section>
+
+        <!-- Partners Section (Placeholder) -->
+        <section id="partners" class="partners-section">
+            <div class="container">
+                <h2 class="section-title glow-cyan">Powered By The Best</h2>
+                <p>Built with industry-leading components from our trusted partners. Logos and details coming soon!</p>
+                <!-- Partner logos would go here -->
+            </div>
+        </section>
+
+        <!-- Specs Breakdown Section -->
+        <section class="specs-section" id="specs">
+            <div class="container">
+                <h2 class="section-title glow-text">Technical Specifications</h2>
+
+                <div class="neon-border glow-box">
+                    <div class="specs-card glass">
+                        <div class="specs-tabs" role="tablist">
+                            <button class="specs-tab active" id="tab-btn-core" role="tab" aria-selected="true" aria-controls="tab-content-core">Core System</button>
+                            <button class="specs-tab" id="tab-btn-peripherals" role="tab" aria-selected="false" aria-controls="tab-content-peripherals">Peripherals</button>
+                            <button class="specs-tab" id="tab-btn-software" role="tab" aria-selected="false" aria-controls="tab-content-software">Software & OS</button>
+                        </div>
+
+                        <!-- Tab Content: Core System (Visible by default) -->
+                        <div class="specs-content active" id="tab-content-core" role="tabpanel" aria-labelledby="tab-btn-core">
+                            <h3 class="specs-title">Core Components</h3>
+                            <table class="specs-table">
+                                <tbody>
+                                    <tr>
+                                        <td>CPU</td>
+                                        <td><span class="specs-highlight">Intel® Core™ i9-14900K</span> Processor</td>
+                                        <td>24 Cores / 32 Threads, Up to 6.0 GHz Boost</td>
+                                    </tr>
+                                    <tr>
+                                        <td>GPU</td>
+                                        <td><span class="specs-highlight">NVIDIA® GeForce RTX™ 4090</span></td>
+                                        <td>24GB GDDR6X, DLSS 3, Ray Tracing</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Motherboard</td>
+                                        <td>ASUS ROG MAXIMUS Z790 HERO</td>
+                                        <td>Wi-Fi 6E, PCIe 5.0 Ready, Thunderbolt™ 4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Memory (RAM)</td>
+                                        <td><span class="specs-highlight">32GB Corsair Dominator Platinum RGB DDR5</span></td>
+                                        <td>6000MHz CL36 (2x16GB)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Storage (SSD)</td>
+                                        <td><span class="specs-highlight">2TB Samsung 990 PRO NVMe M.2 SSD</span></td>
+                                        <td>Gen4 Speeds, Up to 7450 MB/s Read</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Cooling</td>
+                                        <td>Custom EKWB Liquid Cooling Loop</td>
+                                        <td>CPU & GPU Blocks, 360mm Radiator</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Power Supply</td>
+                                        <td>Corsair AX1200i 80+ Titanium</td>
+                                        <td>1200W Fully Modular, Digital Control</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Case</td>
+                                        <td>Lian Li PC-O11 Dynamic EVO (Custom IEM Edition)</td>
+                                        <td>Tempered Glass, Optimized Airflow</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Tab Content: Peripherals (Hidden by default) -->
+                        <div class="specs-content" id="tab-content-peripherals" role="tabpanel" aria-labelledby="tab-btn-peripherals">
+                             <h3 class="specs-title">Recommended Peripherals</h3>
+                             <table class="specs-table">
+                                <tbody>
+                                    <tr>
+                                        <td>Monitor</td>
+                                        <td>ASUS ROG Swift PG27AQN</td>
+                                        <td>27" QHD (2560x1440), <span class="specs-highlight">360Hz Refresh Rate</span>, G-SYNC</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keyboard</td>
+                                        <td>SteelSeries Apex Pro TKL</td>
+                                        <td>OmniPoint Adjustable Switches, OLED Display</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mouse</td>
+                                        <td>Logitech G PRO X SUPERLIGHT</td>
+                                        <td><span class="specs-highlight">Ultra-Lightweight (63g)</span>, HERO 25K Sensor</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Headset</td>
+                                        <td>EPOS H6PRO Closed Acoustic</td>
+                                        <td>Tournament-Grade Audio, Detachable Mic</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Tab Content: Software (Hidden by default) -->
+                        <div class="specs-content" id="tab-content-software" role="tabpanel" aria-labelledby="tab-btn-software">
+                             <h3 class="specs-title">Operating System & Software</h3>
+                             <table class="specs-table">
+                                <tbody>
+                                    <tr>
+                                        <td>Operating System</td>
+                                        <td><span class="specs-highlight">Windows 11 Pro</span> (Optimized Build)</td>
+                                        <td>Pre-installed, minimal bloatware</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Drivers</td>
+                                        <td>Latest NVIDIA & Chipset Drivers</td>
+                                        <td>Performance-tuned and stability tested</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Utilities</td>
+                                        <td>ASUS Armoury Crate, Corsair iCUE</td>
+                                        <td>System monitoring and customization</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Warranty</td>
+                                        <td>3-Year Premium Warranty</td>
+                                        <td>Includes parts, labor, and priority support</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section" id="cta">
+            <div class="container cta-content">
+                <div class="exclusive-badge">Limited IEM Edition</div>
+                <h2 class="cta-title">
+                    <span class="glow-text">Join The Elite.</span> Secure Your Arsenal.
+                </h2>
+                <p class="cta-description">
+                    Don't just compete – dominate. Pre-order the official IEM Tournament Arsenal today and experience the pinnacle of gaming performance. Limited quantities available.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg">Pre-Order Now & Get Exclusive Swag</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Footer About -->
+                <div class="footer-about">
+                    <a href="#hero" class="footer-logo">
+                         <img src="/api/placeholder/40/35/FFFFFF/FF2D55?text=IEM" alt="IEM Logo">
+                         IEM <span>ARSENAL</span>
+                    </a>
+                    <p class="footer-description">
+                        The official tournament-grade PC system, engineered by Elite Performance Systems for IEM events. Built for victory.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-link twitter" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i> T</a> <!-- Placeholder Icon -->
+                        <a href="#" class="footer-social-link facebook" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i> F</a> <!-- Placeholder Icon -->
+                        <a href="#" class="footer-social-link instagram" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i> I</a> <!-- Placeholder Icon -->
+                        <a href="#" class="footer-social-link twitch" aria-label="Twitch" title="Twitch"><i class="fab fa-twitch"></i> Tw</a> <!-- Placeholder Icon -->
+                    </div>
+                </div>
+
+                <!-- Footer Quick Links -->
+                <div class="footer-links-col">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#hero">Home</a></li>
+                        <li class="footer-link"><a href="#bundles">Bundles</a></li>
+                        <li class="footer-link"><a href="#specs">Specifications</a></li>
+                        <li class="footer-link"><a href="#cta">Pre-Order</a></li>
+                        <li class="footer-link"><a href="#partners">Partners</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer Support Links -->
+                <div class="footer-links-col">
+                    <h4 class="footer-heading">Support</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">FAQ</a></li>
+                        <li class="footer-link"><a href="#">Warranty Info</a></li>
+                        <li class="footer-link"><a href="#">Driver Downloads</a></li>
+                        <li class="footer-link"><a href="#">Contact Support</a></li>
+                        <li class="footer-link"><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer Contact Info -->
+                <div class="footer-contact-col">
+                    <h4 class="footer-heading">Contact Us</h4>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i> L</div> <!-- Placeholder Icon -->
+                        <div class="footer-contact-content">
+                            <span class="footer-contact-label">Address</span>
+                            <span class="footer-contact-value">123 Gaming Lane, Esports City, CA 90210</span>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon"><i class="fas fa-phone-alt"></i> P</div> <!-- Placeholder Icon -->
+                        <div class="footer-contact-content">
+                            <span class="footer-contact-label">Phone</span>
+                            <span class="footer-contact-value"><a href="tel:+18001234567">+1 (800) 123-4567</a></span>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon"><i class="fas fa-envelope"></i> E</div> <!-- Placeholder Icon -->
+                        <div class="footer-contact-content">
+                            <span class="footer-contact-label">Email</span>
+                            <span class="footer-contact-value"><a href="mailto:support@iemarsenal.com">support@iemarsenal.com</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>© 2024 IEM Tournament Arsenal by Elite Performance Systems. All Rights Reserved.</p>
+                <div class="copyright-links">
+                    <a href="#" class="copyright-link">Privacy Policy</a>
+                    <a href="#" class="copyright-link">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Basic JavaScript for Header Scroll Effect & Tab Switching -->
+    <script>
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Basic Tab Switching Logic (Requires unique IDs as set in HTML)
+        const tabButtons = document.querySelectorAll('.specs-tab');
+        const tabContents = document.querySelectorAll('.specs-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Get target content ID from aria-controls
+                const targetContentId = button.getAttribute('aria-controls');
+                const targetContent = document.getElementById(targetContentId);
+
+                // Deactivate all buttons and hide all content
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                // Activate clicked button and show corresponding content
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+        // Basic Mobile Menu Toggle (Example - Needs more styling for open state)
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links'); // Assuming you'd show this in a mobile overlay
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                // This is just a placeholder action.
+                // You would typically toggle a class on the body or header
+                // to show/hide a mobile navigation menu.
+                console.log('Menu toggled!');
+                // Example: document.body.classList.toggle('mobile-nav-active');
+            });
+        }
+
+    </script>
+
+</body>
+</html>

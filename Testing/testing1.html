@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aftershock x Minecraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+    .status-bar {
+      padding: 10px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      background: #000;
+      color: white;
+    }
+    .notch {
+      width: 200px;
+      height: 30px;
+      background: #111;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      margin: auto;
+    }
+    .hero {
+      position: relative;
+      background: #000 url('https://www.transparenttextures.com/patterns/asfalt-dark.png') repeat;
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/pixel-weave.png') repeat;
+      opacity: 0.2;
+    }
+    .hero img {
+      position: relative;
+      width: 200px;
+      margin-bottom: 20px;
+    }
+    .hero h1, .hero h2 {
+      font-family: 'Press Start 2P', cursive;
+      margin: 10px 0;
+    }
+    .hero h2 {
+      font-size: 12px;
+    }
+    .subheading {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .features {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px;
+    }
+    .feature-card {
+      min-width: 240px;
+      background: #111;
+      border: 2px solid #0f0;
+      border-radius: 10px;
+      padding: 20px;
+      flex-shrink: 0;
+      font-family: 'Press Start 2P';
+    }
+    .feature-card:hover {
+      box-shadow: 0 0 10px #0f0;
+    }
+    .cta-banner {
+      background: #222;
+      border-top: 3px solid green;
+      border-bottom: 3px solid green;
+      padding: 30px;
+      text-align: center;
+    }
+    .cta-banner button {
+      background: #005500;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      font-family: 'Press Start 2P';
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .cta-banner button:hover {
+      transform: translateY(2px);
+      background: #007700;
+    }
+    .preorder {
+      background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+      padding: 40px;
+      text-align: center;
+    }
+    .preorder button {
+      background: #33aa33;
+      border: none;
+      padding: 20px;
+      font-family: 'Press Start 2P';
+      font-size: 16px;
+      box-shadow: 0 4px #1e1e1e;
+      cursor: pointer;
+    }
+    .preorder button:hover {
+      background: #44cc44;
+    }
+    .testimonials {
+      display: flex;
+      overflow-x: auto;
+      padding: 20px;
+      gap: 15px;
+      background: #1a1a1a;
+    }
+    .testimonial {
+      min-width: 300px;
+      background: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 2px 2px #654321;
+    }
+    .footer {
+      background: url('https://www.transparenttextures.com/patterns/brushed-alum.png');
+      padding: 20px;
+      text-align: center;
+      color: gray;
+      font-size: 12px;
+    }
+    .footer a {
+      color: #33ff33;
+      text-decoration: underline;
+      font-family: 'Press Start 2P';
+    }
+    .creeper-egg {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="status-bar">
+    <div>9:41</div>
+    <div>📶 🔋 75%</div>
+  </div>
+  <div class="notch"></div>
+
+  <div class="hero">
+    <img src="/path-to-minecraft-aftershock-pc.png" alt="Minecraft x Aftershock PC" />
+    <h1>CRAFTED FOR CREATORS</h1>
+    <h2>BUILT FOR BATTLE</h2>
+    <div class="subheading">A rig as limitless as your imagination.</div>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">💎 RTX 4090 Power<br /><small>“Smooth frames in any biome.”</small></div>
+    <div class="feature-card">🌱 Block-by-Block Design<br /><small>“Themed to feel right at home in your world.”</small></div>
+    <div class="feature-card">☠️ Limited Edition<br /><small>“Only 300 rigs. Will you craft yours?”</small></div>
+  </div>
+
+  <div class="cta-banner">
+    <button>View in AR</button>
+    <div class="subheading">See it on your desk — tap to launch AR preview.</div>
+  </div>
+
+  <div class="preorder">
+    <button>PRE-ORDER NOW</button>
+    <p>Ships in October. Free Minecraft key included.</p>
+  </div>
+
+  <div class="testimonials">
+    <div class="testimonial">🧱 @PixelSmithYT<br />“This is literally my dream PC. Glows like a beacon, runs like a dream.”</div>
+    <!-- Add more testimonials here -->
+  </div>
+
+  <div class="footer">
+    By pre-ordering, you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
+  </div>
+
+  <img class="creeper-egg" src="/tiny-creeper-face.png" alt="Creeper Egg" />
+  <script>
+    let egg = document.querySelector('.creeper-egg');
+    let timer;
+    function showEgg() {
+      egg.style.display = 'block';
+    }
+    document.body.addEventListener('mousemove', () => {
+      clearTimeout(timer);
+      egg.style.display = 'none';
+      timer = setTimeout(showEgg, 5000);
+    });
+    egg.addEventListener('click', () => {
+      alert("Sssssurprise! Just checking your specs.");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Smooth Scrolling for internal links ---
+    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+
+    smoothScrollLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+
+            // Check if it's a valid internal link (not just "#")
+            if (href.length > 1 && document.querySelector(href)) {
+                e.preventDefault(); // Prevent default jump
+                const targetElement = document.querySelector(href);
+                const offsetTop = targetElement.offsetTop; // Get position
+
+                // Smooth scroll using scrollIntoView (modern browsers)
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Fallback or alternative manual scroll (less common now)
+                // window.scrollTo({
+                //     top: offsetTop - 80, // Adjust offset if you have a fixed header
+                //     behavior: 'smooth'
+                // });
+            }
+        });
+    });
+
+    // --- Basic Form Handling Example (Giveaway) ---
+    const giveawayForm = document.getElementById('giveaway-form');
+
+    if (giveawayForm) {
+        giveawayForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the actual form submission
+
+            // --- !! IMPORTANT !! ---
+            // This is where you would typically send the form data
+            // to a server using fetch() or XMLHttpRequest (AJAX)
+            // to process the entry (e.g., save to a database, send an email).
+            // --- !! IMPORTANT !! ---
+
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+
+            console.log('Giveaway Form Submitted:');
+            console.log('Name:', nameInput.value);
+            console.log('Email:', emailInput.value);
+
+            // Provide user feedback (simple example)
+            alert(`Thank you, ${nameInput.value}! Your entry has been received (simulation).`);
+
+            // Optionally clear the form
+            // this.reset();
+
+            // Optionally disable the submit button after submission
+            // this.querySelector('button[type="submit"]').disabled = true;
+            // this.querySelector('button[type="submit"]').textContent = 'Entered!';
+        });
+    }
+
+    // --- Add simple animation/interaction (Optional Example) ---
+    // Fade in sections on scroll (basic example)
+    const sections = document.querySelectorAll('.section'); // Or select specific elements
+
+    const observerOptions = {
+        root: null, // relative to the viewport
+        rootMargin: '0px',
+        threshold: 0.1 // trigger when 10% of the element is visible
+    };
+
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                // Optional: Stop observing once faded in
+                // observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach(section => {
+        // Initial state for animation
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(section);
+    });
+
+
+}); // End DOMContentLoaded
