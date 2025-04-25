@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nail Kit Contents Checklist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b98;
+            --primary-light: #ffd2e3;
+            --primary-dark: #e05485;
+            --secondary: #f8f0f4;
+            --text: #333333;
+            --text-light: #777777;
+            --success: #4CAF50;
+            --success-light: #e8f5e9;
+            --warning: #ff9800;
+            --warning-light: #fff3e0;
+            --gray-light: #f5f5f5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--primary-light) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.6;
+            border-radius: 16px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-top: 8px;
+            position: relative;
+        }
+        
+        /* Progress Bar Styles */
+        .progress-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-icon {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .progress-bar-container {
+            height: 12px;
+            background-color: var(--gray-light);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 8px;
+            color: var(--text-light);
+        }
+        
+        /* Checklist Styles */
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .checklist-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+        
+        .checklist-item.checked {
+            border-color: var(--success-light);
+        }
+        
+        .checklist-item-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            cursor: pointer;
+        }
+        
+        .checklist-item.checked .checklist-item-header {
+            background-color: var(--success-light);
+        }
+        
+        .item-checkbox {
+            min-width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item:hover .item-checkbox {
+            border-color: var(--primary-light);
+        }
+        
+        .item-checkbox:after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 8px;
+            top: 4px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checklist-item.checked .item-checkbox {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .checklist-item.checked .item-checkbox:after {
+            display: block;
+        }
+        
+        .item-image-container {
+            position: relative;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        
+        .item-image {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .zoom-icon {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .item-image-container:hover .zoom-icon {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .item-details {
+            flex-grow: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .item-description {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        /* Image Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 90%;
+            width: 500px;
+            max-height: 90vh;
+            overflow: auto;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--gray-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .modal-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Alert Styles */
+        .missing-alert {
+            background-color: var(--warning-light);
+            border-left: 5px solid var(--warning);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .missing-alert strong {
+            color: var(--warning);
+        }
+        
+        /* Button Styles */
+        .support-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 152, 0.3);
+        }
+        
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 152, 0.4);
+        }
+        
+        .support-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Form Styles */
+        .contact-form {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .contact-form h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--gray-light);
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-container input {
+            width: auto;
+            margin-right: 12px;
+        }
+        
+        .form-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 152, 0.3);
+        }
+        
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 152, 0.4);
+        }
+        
+        /* Thank You Screen */
+        .thank-you {
+            text-align: center;
+            display: none;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .thank-you h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: var(--success);
+            margin-bottom: 20px;
+            animation: bounceIn 0.5s ease;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .checklist-item-header {
+                padding: 12px;
+            }
+            
+            .item-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Nail Kit Contents Checklist</h1>
+            <p class="subtitle">Verify your kit contents below</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-label">
+                <div class="progress-title">
+                    <i class="fas fa-tasks progress-icon"></i>
+                    Completion Progress
+                </div>
+                <div id="percentage">0%</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0/8 items checked</div>
+        </div>
+        
+        <ul class="checklist" id="checklist">
+            <li class="checklist-item" data-item="Nail File" data-description="Professional glass nail file for shaping and smoothing nail edges">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Nail File" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Nail File</div>
+                        <div class="item-description">Professional glass nail file</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Nail Buffer" data-description="Four-sided buffer block for smoothing, buffing, and creating natural shine on nails">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Nail Buffer" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Nail Buffer</div>
+                        <div class="item-description">Four-sided buffer block</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Base Coat" data-description="Clear protective base coat to prevent nail staining and extend polish wear time">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Base Coat" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Base Coat</div>
+                        <div class="item-description">Protective clear base</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Top Coat" data-description="Quick-dry glossy top coat to seal color and add shine">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Top Coat" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Top Coat</div>
+                        <div class="item-description">Quick-dry glossy finish</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Nail Polish - Pink" data-description="Premium pink nail polish with high pigmentation and streak-free application">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Nail Polish - Pink" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Nail Polish - Pink</div>
+                        <div class="item-description">Premium pink shade</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Nail Polish - Red" data-description="Premium red nail polish with high pigmentation and streak-free application">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Nail Polish - Red" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Nail Polish - Red</div>
+                        <div class="item-description">Premium red shade</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Cuticle Oil" data-description="Nourishing cuticle oil with vitamin E to hydrate and protect cuticles">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Cuticle Oil" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Cuticle Oil</div>
+                        <div class="item-description">Nourishing vitamin E formula</div>
+                    </div>
+                </div>
+            </li>
+            <li class="checklist-item" data-item="Nail Clippers" data-description="Precision stainless steel nail clippers for clean, precise cuts">
+                <div class="checklist-item-header">
+                    <div class="item-checkbox" onclick="toggleItem(this.parentNode.parentNode)"></div>
+                    <div class="item-image-container" onclick="openImageModal(this.parentNode.parentNode)">
+                        <img src="/api/placeholder/70/70" alt="Nail Clippers" class="item-image">
+                        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Nail Clippers</div>
+                        <div class="item-description">Precision stainless steel</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        
+        <div class="missing-alert" id="missing-alert">
+            <strong>Missing items?</strong> If any items are missing from your kit, please contact our support team using the button below.
+        </div>
+        
+        <button class="support-btn" id="support-btn">
+            <i class="fas fa-headset"></i> Contact Support
+        </button>
+        
+        <div class="contact-form" id="contact-form">
+            <h2>Report Missing Items</h2>
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="order-number">Order Number</label>
+                <input type="text" id="order-number" placeholder="Enter your order number">
+            </div>
+            <div class="form-group">
+                <label>Missing Items</label>
+                <div id="missing-items-list">
+                    <!-- This will be populated with checkboxes for each missing item -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message">Additional Information</label>
+                <textarea id="message" placeholder="Any additional details about your issue"></textarea>
+            </div>
+            <button class="form-submit" id="submit-form">
+                <i class="fas fa-paper-plane"></i> Submit Report
+            </button>
+        </div>
+        
+        <div class="thank-you" id="thank-you">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>Thank You!</h2>
+            <p>Your report has been submitted successfully. Our support team will contact you within 24 hours.</p>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div class="modal" id="image-modal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <h3 class="modal-title" id="modal-title">Item Name</h3>
+            <img src="" alt="Product Image" class="modal-image" id="modal-image">
+            <p class="modal-description" id="modal-description">Item description</p>
+        </div>
+    </div>
+    
+    <script>
+        // Track items and their checked status
+        const items = Array.from(document.querySelectorAll('.checklist-item'));
+        const total = items.length;
+        let checkedCount = 0;
+        
+        // Function to toggle item checked state
+        function toggleItem(item) {
+            if (item.classList.contains('checked')) {
+                item.classList.remove('checked');
+                checkedCount--;
+            } else {
+                item.classList.add('checked');
+                checkedCount++;
+            }
+            
+            updateProgress();
+            checkForMissingItems();
+        }
+        
+        // Update progress bar and text
+        function updateProgress() {
+            const percentage = Math.round((checkedCount / total) * 100);
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${checkedCount}/${total} items checked`;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+        }
+        
+        // Check if there are missing items after user has gone through the list
+        function checkForMissingItems() {
+            const missingAlert = document.getElementById('missing-alert');
+            
+            if (checkedCount > 0 && checkedCount < total) {
+                missingAlert.style.display = 'block';
+            } else {
+                missingAlert.style.display = 'none';
+            }
+        }
+        
+        // Open image modal
+        function openImageModal(item) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            
+            const itemName = item.getAttribute('data-item');
+            const itemDescription = item.getAttribute('data-description');
+            const imageUrl = item.querySelector('.item-image').src;
+            
+            modalImage.src = imageUrl;
+            modalTitle.textContent = itemName;
+            modalDescription.textContent = itemDescription;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal if user clicks outside the content
+        window.onclick = function(event) {
+            const modal = document.getElementById('image-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Support button click handler
+        document.getElementById('support-btn').addEventListener('click', function() {
+            const contactForm = document.getElementById('contact-form');
+            const missingItemsList = document.getElementById('missing-items-list');
+            
+            // Clear previous content
+            missingItemsList.innerHTML = '';
+            
+            // Populate missing items checkboxes
+            items.forEach(item => {
+                if (!item.classList.contains('checked')) {
+                    const itemName = item.getAttribute('data-item');
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.innerHTML = `
+                        <label class="checkbox-container">
+                            <input type="checkbox" checked name="missing-item" value="${itemName}">
+                            ${itemName}
+                        </label>
+                    `;
+                    missingItemsList.appendChild(checkboxDiv);
+                }
+            });
+            
+            // Show the form
+            contactForm.style.display = 'block';
+            
+            // Scroll to the form
+            contactForm.scrollIntoView({behavior: 'smooth'});
+        });
+        
+        // Form submission handler
+        document.getElementById('submit-form').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Here you would normally send the data to your server
+            // For this demo, we'll just show the thank you message
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('thank-you').style.display = 'block';
+            
+            // Scroll to thank you message
+            document.getElementById('thank-you').scrollIntoView({behavior: 'smooth'});
+        });
+    </script>
+</body>
+</html>
