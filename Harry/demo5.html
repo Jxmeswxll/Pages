@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nail Kit Checklist - Optimized</title>
+    <title>Nail Kit Checklist - Polished</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,9 +12,10 @@
         /* --- Base Styles --- */
          :root {
             --primary: #f75a8f; --primary-light: #fcd2e1; --primary-dark: #d94a7b;
-            --secondary: #fdf6f8; --text: #333333; --text-light: #666666; /* Darker text for better contrast */
-            --success: #28a745; --success-light: #eaf6ec; --warning: #ffc107;
-            --warning-light: #fff8e1; --info: #5a6f8f; --info-light: #eef1f4;
+            --secondary: #fdf6f8; --text: #333333; --text-light: #666666;
+            --success: #28a745; --success-light: #eaf6ec; --success-dark: #1e7e34;
+            --warning: #ffc107; --warning-light: #fff8e1; --warning-dark: #e6ac00;
+            --info: #5a6f8f; --info-light: #eef1f4; --info-dark: #4a5c7a;
             --gray-light: #f1f3f5; --gray-medium: #e9ecef; --white: #ffffff;
             --shadow-color: rgba(0, 0, 0, 0.07); --border-color: #e0e0e0;
             --touch-target-size: 44px; /* Minimum touch target size */
@@ -23,257 +24,244 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-            background-color: var(--secondary); color: var(--text); line-height: 1.6; /* Increased line-height */
-            font-size: 14px; /* Increased base font size */
-            /* Padding set by JS */
+            background-color: var(--secondary); color: var(--text); line-height: 1.6;
+            font-size: 14px;
+            /* Padding top set by JS */
         }
-        .container { max-width: 1100px; margin: 0 auto; padding: 12px; } /* Slightly more padding */
+        .container {
+            max-width: 1100px; margin: 0 auto; padding: 12px;
+            padding-bottom: 60px; /* Increased bottom padding */
+        }
 
         /* Header */
         header { text-align: center; padding: 18px 15px; background-color: var(--white); border-radius: 12px; box-shadow: 0 4px 18px var(--shadow-color); margin-bottom: 18px; }
-        h1 { color: var(--primary); font-size: 20px; font-weight: 600; margin-bottom: 4px; } /* Larger */
-        .subtitle { font-size: 14px; color: var(--text-light); } /* Larger */
+        h1 { color: var(--primary); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        .subtitle { font-size: 14px; color: var(--text-light); }
 
         /* Sticky Progress */
         .progress-container { background: var(--white); border-radius: 12px; padding: 12px 15px; margin-bottom: 18px; box-shadow: 0 4px 18px var(--shadow-color); position: sticky; top: 10px; z-index: 100; transition: top 0.3s ease; }
         .progress-label { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; gap: 5px 10px; }
-        .progress-title { display: flex; align-items: center; font-size: 15px; color: var(--primary-dark); flex-grow: 1; } /* Larger */
-        .progress-icon { color: var(--primary); margin-right: 8px; font-size: 16px; } /* Larger */
-        #percentage { font-weight: 700; color: var(--primary); font-size: 15px; flex-shrink: 0; } /* Larger */
-        .progress-bar-container { height: 8px; background-color: var(--gray-light); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); width: 100%; margin-top: 0; order: 3; } /* Thicker bar */
+        .progress-title { display: flex; align-items: center; font-size: 15px; color: var(--primary-dark); flex-grow: 1; }
+        .progress-icon { color: var(--primary); margin-right: 8px; font-size: 16px; }
+        #percentage { font-weight: 700; color: var(--primary); font-size: 15px; flex-shrink: 0; }
+        .progress-bar-container { height: 8px; background-color: var(--gray-light); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); width: 100%; margin-top: 0; order: 3; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%); border-radius: 4px; width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .progress-text { text-align: right; font-weight: 600; font-size: 12px; margin-top: 5px; color: var(--text-light); width: 100%; order: 4; } /* Larger */
+        .progress-text { text-align: right; font-weight: 600; font-size: 12px; margin-top: 5px; color: var(--text-light); width: 100%; order: 4; }
 
         /* Gallery Sections */
         .gallery-section { margin-bottom: 25px; }
-        .gallery-section h2 { font-size: 17px; font-weight: 600; color: var(--primary-dark); margin-bottom: 12px; padding-left: 10px; border-left: 4px solid var(--primary-light); } /* Larger */
+        .gallery-section h2 { font-size: 17px; font-weight: 600; color: var(--primary-dark); margin-bottom: 15px; padding-left: 10px; border-left: 4px solid var(--primary-light); }
 
         /* --- Mobile First Grid (2 Columns) --- */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Start with 2 columns */
-            gap: 12px; /* Adjusted gap */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* Slightly increased gap */
             padding: 0;
             list-style-type: none;
         }
 
-        /* Base Item Style - Enhanced */
+        /* Base Item Style - Consistent Height */
         .gallery-item {
-            background: var(--white); border-radius: 8px; box-shadow: 0 3px 10px var(--shadow-color);
-            overflow: hidden; transition: all 0.25s ease-out; border: 2px solid var(--border-color); /* Thicker base border */
+            background: var(--white); border-radius: 10px; /* Slightly more rounded */ box-shadow: 0 3px 12px var(--shadow-color);
+            overflow: hidden; transition: all 0.25s ease-out; border: 2px solid var(--border-color);
             position: relative; display: flex; flex-direction: column;
-            cursor: pointer; /* Main item is clickable */
-            min-height: 130px; /* Adjusted min-height */
+            cursor: pointer;
+            /* min-height removed - height determined by content + aspect ratio */
         }
-        .gallery-item:hover { /* Subtle hover for desktop */
+        .gallery-item:hover {
              border-color: var(--primary-light);
-             transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+             transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
         }
         .standard-item.checked {
             border-color: var(--success);
             background-color: var(--success-light);
-            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.2);
+            box-shadow: 0 3px 12px rgba(40, 167, 69, 0.2);
         }
-        /* Checked Indicator (using pseudo-element) */
+        /* Checked Indicator */
         .standard-item.checked::after {
-            content: '\f00c'; /* Font Awesome check icon */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 28px; /* Larger */
-            height: 28px; /* Larger */
-            background-color: var(--success);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px; /* Larger icon */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 3;
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; /* Slightly larger */
+            background-color: var(--success); color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); z-index: 3;
             animation: bounceInCheck 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Image Container */
-        .item-image-container { position: relative; width: 100%; flex-grow: 1; min-height: 80px; /* Increased */ overflow: hidden; background-color: var(--gray-light); display: flex; align-items: center; justify-content: center; }
-        .item-image { max-width: 100%; max-height: 100%; height: auto; width: auto; object-fit: contain; display: block; transition: transform 0.3s ease; padding: 5px; pointer-events: none; /* Image itself isn't interactive */ }
-        .gallery-item:hover .item-image { transform: scale(1.03); } /* Subtle hover zoom */
-
-        /* Zoom Icon - Larger & Better Positioned */
-        .zoom-icon {
-            position: absolute; right: 8px; bottom: 8px; background-color: rgba(255, 255, 255, 0.9);
-            width: 32px; /* Larger */ height: 32px; /* Larger */
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: var(--primary); font-size: 14px; /* Larger */ box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease; backdrop-filter: blur(2px);
-            cursor: pointer; z-index: 2; border: 1px solid rgba(0,0,0,0.05);
+        /* Image Container - Enforces Aspect Ratio */
+        .item-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 2; /* *** KEY CHANGE for consistent height *** */
+            height: auto; /* Height is determined by width + aspect-ratio */
+            overflow: hidden;
+            background-color: var(--gray-light);
+            display: flex; /* Keep flex for centering */
+            align-items: center;
+            justify-content: center;
         }
-        .zoom-icon:hover { background-color: var(--primary); color: white; transform: scale(1.1); }
-        /* Ensure zoom icon has enough tap area */
-        .zoom-icon::before { content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border-radius: 50%; /* Expands tap area invisibly */ }
+        .item-image {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto; /* Let the browser decide width based on height constraint */
+            height: auto; /* Let the browser decide height based on width constraint */
+            object-fit: contain; /* Fit image within container without stretching */
+            transition: transform 0.3s ease;
+            padding: 5px; /* Padding around the image inside the container */
+            pointer-events: none;
+        }
+        .gallery-item:hover .item-image { transform: scale(1.04); }
+
+        /* Zoom Icon */
+        .zoom-icon {
+            position: absolute; right: 10px; bottom: 10px; background-color: rgba(255, 255, 255, 0.92);
+            width: 34px; height: 34px; /* Slightly larger */
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--primary); font-size: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+            transition: all 0.3s ease; backdrop-filter: blur(2px);
+            cursor: pointer; z-index: 2; border: 1px solid rgba(0,0,0,0.08);
+        }
+        .zoom-icon:hover { background-color: var(--primary); color: white; transform: scale(1.12); }
+        .zoom-icon::before { content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border-radius: 50%; }
 
 
-        /* Item Content Area - More Spacious */
-        .item-content { padding: 10px 12px; text-align: center; border-top: 1px solid var(--border-color); background-color: var(--white); }
+        /* Item Content Area */
+        .item-content { padding: 12px 12px; text-align: center; border-top: 1px solid var(--border-color); background-color: var(--white); }
         .item-name {
-            font-weight: 500; font-size: 13px; /* Slightly larger, base is 14px */ line-height: 1.4; color: var(--text);
+            font-weight: 500; font-size: 13px; line-height: 1.45; color: var(--text);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            min-height: calc(1.4em * 2); /* Adjusted min-height */
+            min-height: calc(1.45em * 2); /* Ensure space for 2 lines */
             display: flex; align-items: center; justify-content: center;
         }
 
         /* --- Group Tile Specific Styles --- */
-        .group-tile { cursor: pointer; } /* Already set on .gallery-item */
-        .group-tile:hover { border-color: var(--info); transform: none; box-shadow: 0 3px 10px var(--shadow-color); }
-        .group-tile .item-image-container { cursor: pointer; }
-        .group-tile .item-content { position: relative; cursor: pointer; }
-        .group-tile .item-name { padding-right: 20px; } /* Space for icon */
-        .group-tile .view-set-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--info); opacity: 0.9; pointer-events: none; } /* Slightly larger */
-        .group-tile .group-completion-indicator { position: absolute; top: 8px; right: 8px; z-index: 3; width: 28px; height: 28px; border-radius: 50%; background-color: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; opacity: 0; transform: scale(0.5); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); } /* Larger */
+        .group-tile:hover { border-color: var(--info); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); }
+        .group-tile .item-name { padding-right: 22px; }
+        .group-tile .view-set-icon { right: 12px; font-size: 13px; }
+        .group-tile .group-completion-indicator { top: 10px; right: 10px; width: 30px; height: 30px; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
         .group-tile.completed { border-color: var(--success); background-color: var(--success-light); }
         .group-tile.completed .group-completion-indicator { opacity: 1; transform: scale(1); }
         .group-tile.completed .view-set-icon { display: none; }
-        .group-tile.completed::after { display: none; } /* Hide standard checkmark on completed group */
+        .group-tile.completed::after { display: none; }
 
         /* --- Responsive Grid Adjustments --- */
         @media (min-width: 576px) { /* Small tablets */
-             .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; } /* 3 columns */
+             .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
              .item-name { font-size: 14px; } h1 { font-size: 22px; } .subtitle { font-size: 15px; }
              .progress-title, #percentage { font-size: 16px; } .progress-text { font-size: 13px; }
              .gallery-section h2 { font-size: 18px; }
         }
         @media (min-width: 768px) { /* Tablets */
-            .container { padding: 20px; }
-            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 18px; } /* Auto-fit */
-             h1 { font-size: 24px; } .progress-container { top: 15px; } .gallery-item { min-height: 140px; }
+            .container { padding: 20px; padding-bottom: 70px; } /* More bottom padding */
+            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; } /* Wider minmax */
+             h1 { font-size: 24px; } .progress-container { top: 15px; }
         }
         @media (min-width: 992px) { /* Desktops */
-             .gallery-grid { gap: 20px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
-             .gallery-item { min-height: 150px; } h1 { font-size: 26px; } .gallery-section h2 { font-size: 19px; }
+             .container { padding: 25px; padding-bottom: 80px; } /* More bottom padding */
+             .gallery-grid { gap: 22px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } /* Wider minmax */
+             h1 { font-size: 26px; } .gallery-section h2 { font-size: 19px; }
         }
 
-        /* --- Modal Styles (Enhanced Touch) --- */
-        #image-modal .modal-content { width: 95%; max-width: 400px; } /* Slightly wider */
-        #group-modal .modal-content { width: 95%; max-width: 550px; } /* Slightly wider */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.88); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; animation: fadeIn 0.3s ease; overflow-y: auto; }
-        .modal.active { display: flex; }
-        .modal-content { background-color: var(--white); padding: 20px; border-radius: 12px; margin: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.25); animation: slideUp 0.3s ease; position: relative; }
-        .modal-close {
-            position: absolute; top: 10px; right: 10px;
-            width: 36px; height: 36px; /* Larger touch target */
-            background-color: var(--gray-medium); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease; color: var(--text-light);
-            font-size: 15px; /* Larger icon */ border: none; z-index: 5;
-        }
-        .modal-close:hover { background-color: var(--primary-light); color: var(--primary); transform: rotate(90deg); }
-        .modal-title { font-size: 18px; color: var(--primary); text-align: center; margin-bottom: 15px; font-weight: 600; padding-right: 40px; } /* Larger, padding for close btn */
-        .modal-footer { margin-top: 15px; text-align: center; }
-        /* Group Modal List Items - Improved Touch */
-        #group-modal-list { list-style: none; padding: 0; max-height: 65vh; overflow-y: auto; margin: 0 -15px; /* Offset padding */ }
-        .group-modal-item { display: flex; align-items: center; padding: 10px 15px; gap: 12px; border-bottom: 1px solid var(--gray-light); transition: background-color 0.2s ease; }
-        .group-modal-item:last-child { border-bottom: none; }
-        .group-modal-item.checked { background-color: var(--success-light); }
-        .group-modal-item-img { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 1px solid var(--border-color); flex-shrink: 0; } /* Larger image */
-        .group-modal-item label { font-size: 14px; flex-grow: 1; display: flex; align-items: center; cursor: pointer; padding: 5px 0; /* Add padding to label for easier tap */ }
-        .group-modal-item input[type="checkbox"] {
-             width: 22px; height: 22px; /* Larger checkbox */
-             margin-right: 10px; flex-shrink: 0; accent-color: var(--primary); cursor: pointer;
-             /* Visually hidden but accessible, label handles click */
-             /* opacity: 0; position: absolute; left: -9999px; */
-             /* OR keep visible if preferred */
-        }
-        .group-modal-item label .item-product-name { flex-grow: 1; }
+        /* --- Modal Styles --- */
+        #image-modal .modal-content { width: 95%; max-width: 420px; }
+        #group-modal .modal-content { width: 95%; max-width: 580px; }
+        .modal { background-color: rgba(0, 0, 0, 0.9); padding: 20px; } /* Darker backdrop, more padding */
+        .modal-content { padding: 25px; border-radius: 12px; }
+        .modal-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 16px; }
+        .modal-title { font-size: 19px; margin-bottom: 18px; padding-right: 45px; }
+        #group-modal-list { max-height: 68vh; margin: 0 -20px; }
+        .group-modal-item { padding: 12px 20px; gap: 15px; }
+        .group-modal-item-img { width: 50px; height: 50px; border-radius: 8px; }
+        .group-modal-item label { font-size: 15px; padding: 6px 0; }
+        .group-modal-item input[type="checkbox"] { width: 24px; height: 24px; margin-right: 12px; }
 
-
-        /* --- Support Section, Form, Button Styles (Enhanced Touch) --- */
+        /* --- Support Section, Form, Button Styles (Polished) --- */
         .support-section {
-            margin-top: 35px; padding-top: 25px; border-top: 1px dashed var(--border-color); text-align: center;
+            margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border-color); text-align: center;
+        }
+        .support-section .btn {
+            margin-bottom: 12px; /* Spacing when buttons wrap */
+            margin-left: 5px; /* Ensure minimal spacing when side-by-side */
+            margin-right: 5px;
         }
         .btn {
             display: inline-flex; align-items: center; justify-content: center;
-            padding: 12px 20px; /* More padding */ font-size: 14px; /* Larger text */ font-weight: 600; /* Bolder */
+            padding: 12px 22px; font-size: 15px; font-weight: 600;
             border: none; border-radius: 8px; cursor: pointer;
             background-color: var(--primary); color: var(--white);
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            text-decoration: none; gap: 8px; /* Space between icon and text */
-            min-height: var(--touch-target-size); /* Ensure min height */
-            line-height: 1.2; /* Prevent text wrapping issues */
+            transition: all 0.25s ease; /* Smooth transition for all properties */
+            text-decoration: none; gap: 8px;
+            min-height: var(--touch-target-size); line-height: 1.3;
+            box-shadow: 0 2px 5px rgba(0,0,0, 0.1); /* Subtle shadow */
+            /* Subtle Gradient */
+            background-image: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0.05));
         }
-        .btn:hover { background-color: var(--primary-dark); }
-        .btn:active { transform: scale(0.97); }
-        .btn i { font-size: 1.1em; /* Relative icon size */ }
+        .btn:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0, 0.15); /* Enhanced shadow */
+            transform: translateY(-2px); /* Lift effect */
+        }
+        .btn:active {
+            transform: scale(0.97) translateY(0); /* Press effect */
+            box-shadow: 0 1px 3px rgba(0,0,0, 0.1); /* Reduced shadow */
+            filter: brightness(0.95); /* Slightly darken */
+        }
+        .btn i { font-size: 1.1em; }
 
-        .support-btn { background-color: var(--warning); color: var(--text); }
-        .support-btn:hover { background-color: #e6ac00; }
+        /* Specific Button Colors & Hovers */
+        .support-btn { background-color: var(--warning); color: var(--text); background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(0,0,0,0.05)); }
+        .support-btn:hover { background-color: var(--warning-dark); color: var(--text); }
 
-        .website-btn { background-color: var(--info); margin-left: 10px; }
-        .website-btn:hover { background-color: #4a5c7a; }
+        .website-btn { background-color: var(--info); background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(0,0,0,0.05)); }
+        .website-btn:hover { background-color: var(--info-dark); }
+
+        .contact-form .btn[type="submit"] { background-color: var(--primary-dark); }
+        .contact-form .btn[type="submit"]:hover { background-color: var(--primary); filter: brightness(1.1); } /* Slightly lighten dark primary on hover */
+
+        .contact-form .btn[type="button"] { background-color: var(--gray-medium); color: var(--text); background-image: none; box-shadow: none; }
+        .contact-form .btn[type="button"]:hover { background-color: #d3d9df; transform: translateY(-1px); }
+        .contact-form .btn[type="button"]:active { transform: scale(0.98); filter: brightness(0.98); }
+
 
         .contact-form {
-            background: var(--white); border-radius: 12px; padding: 20px;
-            margin-top: 25px; text-align: left; box-shadow: 0 4px 18px var(--shadow-color);
+            background: var(--white); border-radius: 12px; padding: 25px;
+            margin-top: 30px; text-align: left; box-shadow: 0 5px 20px var(--shadow-color);
             border: 1px solid var(--border-color);
             animation: fadeIn 0.5s ease;
         }
-        .contact-form h2 { font-size: 18px; color: var(--primary-dark); margin-bottom: 20px; text-align: center;} /* Larger */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; color: var(--text); } /* Larger */
+        .contact-form h2 { font-size: 19px; color: var(--primary-dark); margin-bottom: 25px; text-align: center;}
+        .form-group { margin-bottom: 18px; }
+        .form-group label { font-weight: 600; margin-bottom: 7px; font-size: 14px; }
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group textarea,
         .form-group select {
-            width: 100%; padding: 12px 14px; font-size: 14px; border-radius: 6px; /* Larger padding/text */
-            border: 1px solid var(--border-color); background-color: var(--white);
-            font-family: inherit; color: var(--text);
-            min-height: var(--touch-target-size); /* Ensure min height */
+            padding: 13px 15px; font-size: 14px; border-radius: 8px;
         }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
-        .form-group textarea { height: 80px; resize: vertical; min-height: 80px; }
-        .form-disclaimer { font-size: 12px; color: var(--text-light); margin-bottom: 10px; font-style: italic; } /* Larger */
-        #missing-items-list {
-            max-height: 180px; overflow-y: auto; border: 1px solid var(--border-color);
-            padding: 10px; border-radius: 6px; background: var(--gray-light);
-        }
-        #missing-items-list .checkbox-container label {
-             display: flex; align-items: center; padding: 8px 4px; font-size: 14px; cursor: pointer; /* Larger text, more padding */
-             color: var(--text);
-        }
-         #missing-items-list .checkbox-container input[type="checkbox"] {
-            width: 20px; height: 20px; /* Larger */ margin-right: 12px; accent-color: var(--primary); flex-shrink: 0;
-         }
-        #missing-items-list p { font-size: 13px; color: var(--text-light); font-style: italic; } /* Larger */
-        .contact-form .btn { width: auto; margin-top: 8px; }
-        .contact-form .btn[type="submit"] { background-color: var(--primary-dark); }
-        .contact-form .btn[type="button"] { background-color: var(--gray-medium); color: var(--text); }
-        .contact-form .btn[type="button"]:hover { background-color: #d3d9df; }
+        .form-group textarea { height: 90px; min-height: 90px; }
+        .form-disclaimer { font-size: 13px; margin-bottom: 12px; }
+        #missing-items-list { max-height: 200px; padding: 12px; border-radius: 8px; }
+        #missing-items-list .checkbox-container label { padding: 9px 5px; font-size: 14px; }
+         #missing-items-list .checkbox-container input[type="checkbox"] { width: 20px; height: 20px; margin-right: 14px; }
+        #missing-items-list p { font-size: 14px; }
+        .contact-form .btn { margin-top: 10px; }
 
         /* Alert & Thank You */
-        .missing-alert {
-            display: none; padding: 12px 15px; margin: 20px 0 15px 0; font-size: 14px; /* Larger */
-            background-color: var(--warning-light); color: #856404;
-            border: 1px solid #ffeeba; border-radius: 8px; text-align: center;
-        }
-        .missing-alert strong { color: #664d03; }
-
-        .thank-you {
-            display: none; background: var(--success-light); border: 1px solid var(--success);
-            border-radius: 12px; padding: 25px 20px; margin-top: 25px; text-align: center;
-            animation: bounceIn 0.5s ease;
-        }
-        .thank-you h2 { font-size: 20px; color: var(--success); margin-bottom: 8px; } /* Larger */
-        .success-icon { font-size: 40px; color: var(--success); margin-bottom: 12px; display: block; } /* Larger */
-        .thank-you p { font-size: 15px; color: var(--text); } /* Larger */
+        .missing-alert { padding: 14px 18px; margin: 25px 0 20px 0; font-size: 14px; border-radius: 10px; }
+        .thank-you { border-radius: 12px; padding: 30px 20px; margin-top: 30px; }
+        .thank-you h2 { font-size: 22px; margin-bottom: 10px; }
+        .success-icon { font-size: 45px; margin-bottom: 15px; }
+        .thank-you p { font-size: 16px; }
 
         /* Animations */
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-        @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
         @keyframes bounceIn { 0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.9)}100%{transform:scale(1)} }
-        @keyframes bounceInCheck { 0%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.1)}100%{transform:scale(1)} }
+        @keyframes bounceInCheck { 0%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.15)}100%{transform:scale(1)} } /* More bounce */
 
     </style>
 </head>
@@ -346,7 +334,7 @@
                         <label>Select Missing Items:</label>
                         <p class="form-disclaimer">Only items currently unchecked in the list above will appear here.</p>
                         <div id="missing-items-list">
-                            <p>Loading missing items...</p>
+                            <p>Loading missing items...</p> <!-- JS will replace this -->
                         </div>
                     </div>
                     <div class="form-group">
@@ -378,8 +366,8 @@
          <div class="modal-content">
              <button class="modal-close" data-action="close-modal" aria-label="Close image modal"><i class="fas fa-times"></i></button>
              <h3 class="modal-title" id="modal-image-title">Item Image</h3>
-             <img src="" alt="Product Image" class="modal-image" id="modal-image-element" style="width: 100%; max-height: 70vh; object-fit: contain; display: block; margin-bottom: 15px;">
-             <div class="modal-details" style="font-size: 13px; line-height: 1.5;">
+             <img src="" alt="Product Image" class="modal-image" id="modal-image-element" style="width: 100%; max-height: 75vh; object-fit: contain; display: block; margin-bottom: 15px;"> <!-- Increased max-height -->
+             <div class="modal-details" style="font-size: 14px; line-height: 1.6;"> <!-- Slightly larger text -->
                  <div><strong class="modal-detail-label" style="color: var(--text-light);">Code:</strong> <span class="modal-detail-value" id="modal-image-code"></span></div>
                  <div><strong class="modal-detail-label" style="color: var(--text-light);">Product:</strong> <span class="modal-detail-value" id="modal-image-product"></span></div>
              </div>
@@ -436,12 +424,11 @@
             missingItemsList: document.getElementById('missing-items-list'),
             cancelReportBtn: document.getElementById('cancel-report-btn'),
             thankYouMsg: document.getElementById('thank-you'),
-            modals: document.querySelectorAll('.modal') // Cache all modals
+            modals: document.querySelectorAll('.modal')
         };
 
         // --- Initialization ---
         function initializeChecklist() {
-            // Clear loading placeholders
             DOMElements.groupGallery.innerHTML = '';
             DOMElements.standardItemGallery.innerHTML = '';
             totalCheckableItems = 0;
@@ -449,7 +436,6 @@
             const savedState = localStorage.getItem('nailKitChecklistState');
             itemStates = savedState ? JSON.parse(savedState) : {};
 
-            // Separate items and groups
             const standardItems = [];
             const groupItems = [];
 
@@ -460,14 +446,12 @@
                 } else {
                     totalCheckableItems++;
                     if (itemStates[key] === undefined) itemStates[key] = false;
-                    // Only add to standard gallery if NOT part of a group
                     if (!item.groupId) {
                         standardItems.push({ id: key, data: item });
                     }
                 }
             });
 
-            // Populate galleries using DocumentFragment for performance
             const standardFragment = document.createDocumentFragment();
             standardItems.forEach(item => standardFragment.appendChild(createStandardItemTile(item.id, item.data)));
             DOMElements.standardItemGallery.appendChild(standardFragment);
@@ -476,29 +460,28 @@
             groupItems.forEach(group => groupFragment.appendChild(createGroupTile(group.id, group.data)));
             DOMElements.groupGallery.appendChild(groupFragment);
 
-
             if (!DOMElements.standardItemGallery.hasChildNodes()) {
-                DOMElements.standardItemGallery.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">No individual items found.</div>';
+                DOMElements.standardItemGallery.innerHTML = '<div class="loading-placeholder" style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">No individual items found.</div>';
             }
             if (!DOMElements.groupGallery.hasChildNodes()) {
-                DOMElements.groupGallery.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">No product sets found.</div>';
+                DOMElements.groupGallery.innerHTML = '<div class="loading-placeholder" style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">No product sets found.</div>';
             }
 
             updateProgress();
             updateAllGroupCompletionVisuals();
             adjustBodyPadding();
-            setupEventListeners(); // Setup listeners AFTER elements are in the DOM
+            setupEventListeners();
         }
 
-        // --- Create HTML Elements (No inline JS!) ---
+        // --- Create HTML Elements ---
         function createStandardItemTile(itemNo, item) {
             const div = document.createElement('div');
             div.className = 'gallery-item standard-item';
-            div.dataset.itemCode = itemNo; // Identify item
-            div.dataset.action = 'toggle'; // Default action is toggle
+            div.dataset.itemCode = itemNo;
+            div.dataset.action = 'toggle';
             if (itemStates[itemNo]) div.classList.add('checked');
 
-            const placeholderUrl = `https://via.placeholder.com/150x100/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // Larger placeholder
+            const placeholderUrl = `https://via.placeholder.com/180x120/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // 3:2 ratio placeholder
 
             div.innerHTML = `
                 <div class="item-image-container">
@@ -516,9 +499,9 @@
         function createGroupTile(groupId, groupInfo) {
             const div = document.createElement('div');
             div.className = 'gallery-item group-tile';
-            div.dataset.groupId = groupId; // Identify group
-            div.dataset.action = 'open-group'; // Action is to open modal
-            const placeholderUrl = `https://via.placeholder.com/150x100/eef1f4/5a6f8f?text=Set`;
+            div.dataset.groupId = groupId;
+            div.dataset.action = 'open-group';
+            const placeholderUrl = `https://via.placeholder.com/180x120/eef1f4/5a6f8f?text=Set`; // 3:2 ratio placeholder
             div.innerHTML = `
                  <div class="item-image-container">
                     <img src="${placeholderUrl}" alt="${groupInfo.customerName}" class="item-image" loading="lazy">
@@ -528,32 +511,27 @@
                      <div class="item-name">${groupInfo.customerName}</div>
                      <i class="fas fa-box-open view-set-icon" aria-hidden="true"></i>
                  </div>`;
-             checkGroupCompletion(groupId, div); // Check completion status during creation
+             checkGroupCompletion(groupId, div);
             return div;
         }
 
-        // --- Core Logic ---
+        // --- Core Logic (State, Toggles, Progress, Groups) ---
         function saveState() {
             localStorage.setItem('nailKitChecklistState', JSON.stringify(itemStates));
         }
 
         function toggleItem(itemNo) {
             const itemElement = DOMElements.standardItemGallery.querySelector(`.standard-item[data-item-code="${itemNo}"]`);
-            // Only proceed if it's a standard item or group member
             if (!itemData[itemNo] || itemData[itemNo].isGroup) return;
 
             itemStates[itemNo] = !itemStates[itemNo];
 
-            // Update visual state for standard items (if it exists in the main gallery)
             if (itemElement) {
                 itemElement.classList.toggle('checked', itemStates[itemNo]);
             }
-
-            // If the item belongs to a group, update that group's completion status
-             if (itemData[itemNo]?.groupId) {
+            if (itemData[itemNo]?.groupId) {
                  checkGroupCompletion(itemData[itemNo].groupId);
              }
-
             updateProgress();
             saveState();
         }
@@ -595,10 +573,9 @@
                 }
             });
 
-             // Recalculate total if it wasn't set correctly initially
              if (totalCheckableItems === 0 && Object.keys(itemData).length > 0) {
                  console.warn("Recalculating total checkable items...");
-                 totalCheckableItems = 0; // Reset before recount
+                 totalCheckableItems = 0;
                  Object.keys(itemData).forEach(key => { if(!itemData[key].isGroup) totalCheckableItems++; });
                  console.warn("Recalculated total:", totalCheckableItems);
              }
@@ -619,12 +596,10 @@
 
              if (DOMElements.missingAlert) DOMElements.missingAlert.style.display = shouldShowAlert ? 'block' : 'none';
 
-            // Hide form if alert is hidden
             if (!shouldShowAlert && DOMElements.contactForm && DOMElements.contactForm.style.display !== 'none') {
                 DOMElements.contactForm.style.display = 'none';
                 if (DOMElements.reportForm) DOMElements.reportForm.reset();
             }
-             // Hide thank you message if user unchecks an item
              if(shouldShowAlert && DOMElements.thankYouMsg && DOMElements.thankYouMsg.style.display !== 'none') {
                  DOMElements.thankYouMsg.style.display = 'none';
              }
@@ -641,12 +616,10 @@
         function closeModal(modalElement) {
             if (!modalElement) return;
             modalElement.classList.remove('active');
-            // Only unblock scroll if no other modals are active
             const anyActiveModals = document.querySelector('.modal.active');
             if (!anyActiveModals) {
                 document.body.style.overflow = 'auto';
             }
-            // Update group visuals when group modal is closed
             if(modalElement.id === 'group-modal') {
                  const groupId = modalElement.dataset.currentGroup;
                  if(groupId) checkGroupCompletion(groupId);
@@ -655,26 +628,26 @@
 
         function openImageModal(itemNo, isFromGroup = false) {
             const item = itemData[itemNo]; if (!item || item.isGroup) return;
-            const placeholderUrl = `https://via.placeholder.com/400x300/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`;
+            const placeholderUrl = `https://via.placeholder.com/450x300/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // Larger 3:2 placeholder
             DOMElements.modalImageElement.src = placeholderUrl;
             DOMElements.modalImageElement.alt = item.customerName;
             DOMElements.modalImageTitle.textContent = item.customerName;
             DOMElements.modalImageCode.textContent = itemNo;
             DOMElements.modalImageProduct.textContent = item.product || 'N/A';
-            openModal(DOMElements.imageModal, isFromGroup ? 1010 : 1000); // Higher z-index if opened from group modal
+            openModal(DOMElements.imageModal, isFromGroup ? 1010 : 1000);
         }
 
         function openGroupModal(groupId) {
             const groupInfo = itemData[groupId]; const members = groupInfo?.groupMembers; if (!members) return;
             DOMElements.groupModalTitle.textContent = groupInfo.customerName;
-            DOMElements.groupModalList.innerHTML = ''; // Clear previous items
+            DOMElements.groupModalList.innerHTML = '';
 
             const listFragment = document.createDocumentFragment();
             members.forEach(itemNo => {
                 const item = itemData[itemNo]; if (!item) return;
                 const li = document.createElement('li');
                 li.className = 'group-modal-item'; if (itemStates[itemNo]) li.classList.add('checked');
-                const thumbPlaceholder = `https://via.placeholder.com/80x80/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // Larger thumb
+                const thumbPlaceholder = `https://via.placeholder.com/90x90/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // Larger square thumb
                 li.innerHTML = `
                     <img src="${thumbPlaceholder}" alt="${item.product || item.customerName}" class="group-modal-item-img" data-action="zoom-group-item" data-item-code="${itemNo}" aria-label="Zoom image for ${item.product || item.customerName}">
                     <label for="modal-check-${itemNo}">
@@ -689,7 +662,6 @@
         }
 
         function blockBodyScroll() {
-             // Block scroll only if it's not already blocked
              if (document.querySelectorAll('.modal.active').length <= 1) {
                  document.body.style.overflow = 'hidden';
              }
@@ -698,13 +670,12 @@
         // --- Support Form Logic ---
         function populateMissingItemsList() {
             if (!DOMElements.missingItemsList) return;
-            DOMElements.missingItemsList.innerHTML = ''; // Clear previous list
+            DOMElements.missingItemsList.innerHTML = '';
             let hasMissingItems = false;
             const listFragment = document.createDocumentFragment();
 
             Object.keys(itemData).forEach(key => {
                 const item = itemData[key];
-                // Include if it's a checkable item AND it's currently NOT checked
                 if (!item.isGroup && itemStates[key] === false) {
                     hasMissingItems = true;
                     const div = document.createElement('div');
@@ -726,16 +697,16 @@
             }
         }
 
-        // --- Event Listeners Setup (NO INLINE JS!) ---
+        // --- Event Listeners Setup ---
         function setupEventListeners() {
-            // --- Event Delegation for Galleries ---
+            // Gallery Event Delegation
             DOMElements.standardItemGallery.addEventListener('click', (event) => {
                 const target = event.target;
                 const zoomButton = target.closest('.zoom-icon[data-action="zoom"]');
                 const itemTile = target.closest('.standard-item[data-action="toggle"]');
 
                 if (zoomButton && zoomButton.dataset.itemCode) {
-                    event.stopPropagation(); // Prevent tile click if zoom is clicked
+                    event.stopPropagation();
                     openImageModal(zoomButton.dataset.itemCode);
                 } else if (itemTile && itemTile.dataset.itemCode) {
                     toggleItem(itemTile.dataset.itemCode);
@@ -745,26 +716,21 @@
             DOMElements.groupGallery.addEventListener('click', (event) => {
                 const target = event.target;
                 const groupTile = target.closest('.group-tile[data-action="open-group"]');
-
                 if (groupTile && groupTile.dataset.groupId) {
                     openGroupModal(groupTile.dataset.groupId);
                 }
             });
 
-            // --- Event Delegation for Group Modal List ---
+            // Group Modal List Event Delegation
             DOMElements.groupModalList.addEventListener('click', (event) => {
                 const target = event.target;
-                const checkbox = target.closest('input[type="checkbox"][data-action="toggle-group-item"]');
                 const image = target.closest('img[data-action="zoom-group-item"]');
-
-                if (checkbox && checkbox.dataset.itemCode && checkbox.dataset.groupId) {
-                    // Let the 'change' event handle the logic to avoid double toggling if label is clicked
-                } else if (image && image.dataset.itemCode) {
-                    event.stopPropagation(); // Prevent potential label click
-                    openImageModal(image.dataset.itemCode, true); // Open image modal from group
+                if (image && image.dataset.itemCode) {
+                    event.stopPropagation();
+                    openImageModal(image.dataset.itemCode, true);
                 }
+                // Checkbox toggling handled by 'change' event
             });
-             // Use 'change' event for checkboxes for better reliability
              DOMElements.groupModalList.addEventListener('change', (event) => {
                  const target = event.target;
                  const checkbox = target.closest('input[type="checkbox"][data-action="toggle-group-item"]');
@@ -773,11 +739,9 @@
                  }
              });
 
-
-            // --- Modal Closing ---
+            // Modal Closing
             DOMElements.modals.forEach(modal => {
                 modal.addEventListener('click', function(event) {
-                    // Close if backdrop is clicked OR close button is clicked
                     if (event.target === modal || event.target.closest('[data-action="close-modal"]')) {
                         closeModal(modal);
                     }
@@ -790,7 +754,7 @@
                 }
             });
 
-            // --- Support Section Buttons & Form ---
+            // Support Section Buttons & Form
             if (DOMElements.supportBtn) {
                 DOMElements.supportBtn.addEventListener('click', () => {
                     if (DOMElements.contactForm && DOMElements.thankYouMsg) {
@@ -838,30 +802,26 @@
         function adjustBodyPadding() {
              try {
                  if (!DOMElements.progressContainer) return;
-                 // Ensure styles are computed
                  window.requestAnimationFrame(() => {
                      const h = DOMElements.progressContainer.offsetHeight;
-                     document.body.style.paddingTop = `${h + 15}px`; // Add spacing below sticky header
+                     // Add extra space (e.g., 15px) below the sticky header
+                     document.body.style.paddingTop = `${h + 15}px`;
                  });
              } catch (e) {
                  console.error("Error adjusting body padding:", e);
-                 document.body.style.paddingTop = '80px'; // Fallback padding
+                 document.body.style.paddingTop = '85px'; // Increased fallback padding
              }
          }
 
         // --- Run ---
         document.addEventListener('DOMContentLoaded', () => {
             initializeChecklist();
-            // Adjust padding once on load, and on resize/orientation change
             window.addEventListener('load', adjustBodyPadding);
             window.addEventListener('resize', adjustBodyPadding);
-            window.addEventListener('orientationchange', adjustBodyPadding); // Handle orientation changes
-
-            // Adjust padding after fonts load if possible
+            window.addEventListener('orientationchange', adjustBodyPadding);
             if (document.fonts) {
                 document.fonts.ready.then(adjustBodyPadding);
             } else {
-                // Fallback for browsers without document.fonts
                 setTimeout(adjustBodyPadding, 500);
             }
         });
