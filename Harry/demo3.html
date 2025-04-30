@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty School Product Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- Basic Reset & Body --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* --- Container --- */
+        .container {
+            max-width: 1200px; /* Adjust max-width as needed */
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            color: #e83e8c; /* A nice pink shade */
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        header p {
+            color: #6c757d; /* Gray text */
+            font-size: 1.1em;
+        }
+
+        /* --- Product Grid --- */
+        .product-grid {
+            display: grid;
+            /* Responsive grid: Adjust minmax width for desired item size */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px; /* Spacing between grid items */
+            margin-bottom: 40px;
+        }
+
+        /* --- Product Card --- */
+        .product-card {
+            background-color: #ffffff; /* White card background */
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes content apart */
+            min-height: 250px; /* Ensure cards have a minimum height */
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image-container {
+            height: 130px; /* Fixed height for image area */
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            max-height: 100%; /* Ensure image fits container */
+            object-fit: contain; /* Scale image while preserving aspect ratio */
+            display: block; /* Remove extra space below image */
+            margin: 0 auto; /* Center image if smaller than container */
+        }
+
+        /* Style for cards with missing images */
+        .product-card.no-image .product-image-container {
+            background-color: #f1f3f5; /* Light placeholder background */
+            border: 1px dashed #ced4da;
+            border-radius: 4px;
+            color: #6c757d;
+            font-size: 0.9em;
+            display: flex; /* Use flex to center text */
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .product-details {
+            margin-top: auto; /* Pushes details to the bottom if content is short */
+        }
+
+        .product-card .product-code {
+            font-size: 0.85em;
+            color: #6c757d; /* Gray text */
+            display: block; /* Ensure it takes its own line */
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .product-card .product-name {
+            font-size: 1em;
+            font-weight: 400; /* Regular weight */
+            color: #343a40; /* Darker text */
+            line-height: 1.3; /* Adjust for better readability */
+        }
+
+        /* --- Website Link & Support Section --- */
+        .support-section {
+            text-align: center;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        .website-link {
+            display: block; /* Make it a block element */
+            margin-bottom: 25px; /* Space between link and support text */
+            font-size: 1.1em;
+        }
+
+        .website-link a {
+            color: #007bff; /* Standard link blue */
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .website-link a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .support-section p {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .support-button {
+            display: inline-block;
+            background-color: #e83e8c; /* Match header pink */
+            color: #ffffff;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px; /* Pill shape */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .support-button:hover {
+            background-color: #d9347f; /* Darker pink on hover */
+            transform: scale(1.03);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 20px;
+            }
+            .product-card {
+                padding: 15px;
+                min-height: 230px;
+            }
+             .product-image-container {
+                height: 110px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                 padding: 0 10px;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+             header p {
+                font-size: 1em;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            .product-card {
+                padding: 12px;
+                min-height: 210px;
+            }
+             .product-image-container {
+                height: 100px;
+            }
+             .product-card .product-name {
+                font-size: 0.95em;
+            }
+             .product-card .product-code {
+                font-size: 0.8em;
+            }
+             .support-section {
+                 padding: 20px;
+             }
+             .support-button {
+                 padding: 8px 20px;
+                 font-size: 0.95em;
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Beauty School Product Catalog</h1>
+            <p>Complete Kit Contents</p>
+        </header>
+
+        <div class="product-grid" id="product-grid">
+            <!-- Product cards will be inserted here by JavaScript -->
+        </div>
+
+        <div class="support-section">
+            <div class="website-link">
+                Need more details? Visit <a href="https://www.balcobrands.com/beauty-school-products/" target="_blank" rel="noopener noreferrer">Balco Brands Beauty School Products</a>
+            </div>
+            <p>Have questions or missing an item?</p>
+            <!-- You can change the href to a mailto link or a contact page URL -->
+            <a href="mailto:support@example.com?subject=Issue%20with%20Beauty%20Kit" class="support-button">Contact Support</a>
+        </div>
+
+    </div>
+
+    <footer>
+        © <span id="year"></span> Your Company/School Name. All rights reserved.
+    </footer>
+
+    <script>
+        // --- Product Data ---
+        const products = [
+            { code: "BE0029", name: "Dappen Dish", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0029-Dappen-Dish-247x247.png" },
+            { code: "BE0069", name: "Cuticle Oil - 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0069-Cuticle-Oil-15ml-247x247.png" },
+            { code: "BE0073", name: "Acetone - 125ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0073-Acetone-125ml-247x247.png" },
+            { code: "BE0076", name: "Edge Cutter", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0076-Edge-Cutter-247x247.png" },
+            { code: "BE0077", name: "Plastic Eye Dropper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0077-Plastic-Eye-Dropper-247x247.png" },
+            { code: "BE0078", name: "Buffer Block 180", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0078-Buffer-Block-180-247x247.png" },
+            { code: "BE0079", name: "Nail Clipper - 8mm", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0079-Nail-Clipper-8mm-247x247.png" },
+            { code: "BE0083", name: "Double Thick Nail Form - 30 pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0083-Double-Thick-Nail-Form-30-pieces-247x247.png" },
+            { code: "BE0084", name: "Powder Dust Brush - Pink", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0084-Powder-Dust-Brush-Pink-247x247.png" },
+            { code: "BE0086", name: "Gel Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0086-Gel-Brush-247x247.png" },
+            { code: "BE0088-A", name: "UV LED Light Lamp - Australia", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0088-A-UV-LED-Light-Lamp-Australia-247x247.png" },
+            { code: "BE0099", name: "Gel Nail Polish Base Coat 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0099-Gel-Nail-Polish-Base-Coat-15ml-247x247.png" },
+            { code: "BE0100", name: "Gel Nail Polish Big Red Apple 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0100-Gel-Nail-Polish-Big-Red-Apple-15ml-247x247.png" },
+            { code: "BE0102", name: "Cotton Balls - 100 pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0102-Cotton-Balls-100-pieces-247x247.png" },
+            { code: "BE0103", name: "Nail Drill with Ceramic Pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0103-Nail-Drill-with-Ceramic-Pieces-247x247.png" },
+            { code: "BE0105", name: "Practice Hand", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0105-Practice-Hand-247x247.png" },
+            { code: "BE0108", name: "Nail Tech Course Brochure", imageUrl: null }, // No image
+            { code: "BE0111", name: "Gel Polish Top Coat Glossy", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0111-Gel-Polish-Top-Coat-Glossy-247x247.png" },
+            { code: "BE0136", name: "Brush - Multiple Thickness x6", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0136-Brush-Multiple-Thickness-x6-247x247.png" },
+            { code: "BE0167", name: "Cuticle Sticks x 10pcs", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0167-Cuticle-Sticks-x-10pcs-247x247.png" },
+            { code: "BE0198", name: "Nail Tech Mailing Box", imageUrl: null }, // No image
+            { code: "BE0211", name: "Acrylic Practice Sheet Laminated", imageUrl: null }, // No image
+            { code: "BE0226", name: "Nail Tech User Manual", imageUrl: null }, // No image
+            { code: "BE0264", name: "Cuticle Nipper 5mm 2 arm", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0264-Cuticle-Nipper-5mm-2-arm-247x247.png" },
+            { code: "BE0265", name: "Gauze Nail Wipes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0265-Gauze-Nail-Wipes-247x247.png" },
+            { code: "BE0266", name: "Premium Nail File 80/80 blue black", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0266-Premium-Nail-File-80-80-blue-black-colour-printed-grit-247x247.png" },
+            { code: "BE0267", name: "Flex File 100/100 Red black", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0267-Flex-File-100-100-Red-black-Colour-printed-grit-247x247.png" },
+            { code: "BE0268", name: "Zebra File 100/100 Purple", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0268-Zebra-File-100-100-Purple-Colour-printed-grit-247x247.png" },
+            { code: "BE0270", name: "Nail Tips 100pc flexible", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0270-Nail-Tips-100pc-flexible-247x247.png" },
+            { code: "BE0271", name: "Hand and Nail Cream", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0271-Hand-and-Nail-Cream-247x247.png" },
+            { code: "BE0277", name: "Isopropyl Alcohol - 125ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0277-Isopropyl-Alcohol-125ml-247x247.png" },
+            { code: "BE0279", name: "Brush on Nail Glue 7g", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0279-Brush-on-Nail-Glue-7g-247x247.png" },
+            { code: "BE0281", name: "Storage Case Tall", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0281-Storage-Case-Tall-247x247.png" },
+            { code: "BE0283", name: "Zebra File 150/150 grit printed", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0283-Zebra-File-150-150-grit-printed-247x247.png" },
+            { code: "BE0284", name: "Zebra File 150/180 grit printed", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0284-Zebra-File-150-180-grit-printed-247x247.png" },
+            { code: "BE0305", name: "4 Way Nail Buffer Block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0305-4-Way-Nail-Buffer-Block-247x247.png" },
+            { code: "BE0308", name: "Shine Buffer with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0308-Shine-Buffer-with-printed-grit-247x247.png" },
+            { code: "BE0309", name: "File 240/240 with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0309-File-240-240-with-printed-grit-247x247.png" },
+            { code: "BE0310", name: "File 200/200 with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0310-File-200-200-with-printed-grit-247x247.png" },
+            { code: "BE0311", name: "Cleaning brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0311-Cleaning-brush-247x247.png" },
+            { code: "BE0312", name: "Gel Polish French Pink", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0312-Gel-Polish-French-Pink-247x247.png" },
+            { code: "BE0313", name: "Gel Polish French White", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0313-Gel-Polish-French-White-247x247.png" },
+            { code: "BE0314", name: "Acrylic Brush x4", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0314-Acrylic-Brush-x4-247x247.png" },
+            { code: "BE0315", name: "Cuticle Pusher", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0315-Cuticle-Pusher-247x247.png" },
+            { code: "BE0318", name: "Ugly Duckling AcryGel Prep 7ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0318-Ugly-Duckling-AcryGel-Prep-7ml-247x247.png" },
+            { code: "BE0319", name: "Ugly Duckling AcryGel Primer 7ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0319-Ugly-Duckling-AcryGel-Primer-7ml-247x247.png" },
+            { code: "BE0320", name: "Ugly Duckling Premium Acrylic Liquid 100ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0320-Ugly-Duckling-Premium-Acrylic-Liquid-100ml-247x247.png" },
+            { code: "BE0321", name: "Ugly Duckling PREMIUM ACRYLIC POWDER - CLEAR 30g", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0321-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-CLEAR-30g-247x247.png" },
+            { code: "BE0322", name: "Ugly Duckling PREMIUM ACRYLIC POWDER - FUFU PINK", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0322-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-FUFU-PINK-247x247.png" },
+            { code: "BE0323", name: "Ugly Duckling - BUILD-A-BASE -CLEAR 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0323-Ugly-Duckling-BUILD-A-BASE-CLEAR-15ml-247x247.png" },
+            { code: "BE0324", name: "Ugly Duckling- BUILD-A-BASE - PINK 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0324-Ugly-Duckling-BUILD-A-BASE-PINK-15ml-247x247.png" }
+        ];
+
+        // --- Function to Create Product Card ---
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.classList.add('product-card');
+
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('product-image-container');
+
+            if (product.imageUrl && product.imageUrl !== 'Not found on page (likely no product image)' && product.imageUrl !== null) {
+                const img = document.createElement('img');
+                img.src = product.imageUrl;
+                img.alt = product.name;
+                // Add error handling for broken images
+                img.onerror = function() {
+                    this.parentElement.innerHTML = '<span>Image unavailable</span>'; // Replace broken image with text
+                    this.parentElement.parentElement.classList.add('no-image'); // Add class to card
+                 };
+                imageContainer.appendChild(img);
+            } else {
+                // Handle missing image case
+                card.classList.add('no-image');
+                imageContainer.innerHTML = '<span>No Image Available</span>';
+            }
+
+            const details = document.createElement('div');
+            details.classList.add('product-details');
+
+            const code = document.createElement('span');
+            code.classList.add('product-code');
+            code.textContent = product.code;
+
+            const name = document.createElement('span'); // Using span for name as well for consistency, could be h3/p
+            name.classList.add('product-name');
+            // Clean up name if needed (e.g., removing extra grit details for brevity)
+            let cleanedName = product.name.replace(/ blue black colour printed grit| Red black Colour printed grit| Purple Colour printed grit| grit printed| with printed grit/gi, '').trim();
+            name.textContent = cleanedName;
+
+            details.appendChild(code);
+            details.appendChild(name);
+
+            card.appendChild(imageContainer);
+            card.appendChild(details);
+
+            return card;
+        }
+
+        // --- Populate Grid & Footer Year ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('product-grid');
+            if (grid) {
+                products.forEach(product => {
+                    const card = createProductCard(product);
+                    grid.appendChild(card);
+                });
+            }
+
+            // Set current year in footer
+            const yearSpan = document.getElementById('year');
+            if(yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+
+</body>
+</html>
