@@ -3,277 +3,800 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauty School Product Catalog</title>
+    <title>Nail Kit Contents Checklist</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- Basic Reset & Body --- */
+        /* --- Root Variables (Color Palette) --- */
+        :root {
+            --primary: #f75a8f; /* Main pink */
+            --primary-light: #fcd2e1; /* Lighter pink */
+            --primary-dark: #d94a7b;  /* Darker pink */
+            --secondary: #fdf6f8; /* Very light pink background */
+            --text: #444444;      /* Dark gray text */
+            --text-light: #777777; /* Lighter gray text */
+            --success: #28a745;   /* Green for checked items */
+            --success-light: #eaf6ec; /* Light green background */
+            --warning: #ffc107;   /* Yellow for alerts */
+            --warning-light: #fff8e1; /* Light yellow background */
+            --gray-light: #f1f3f5;  /* Light gray for borders/backgrounds */
+            --white: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.06); /* Soft shadow */
+        }
+
+        /* --- Base Styles & Reset --- */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+             scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa; /* Light gray background */
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            padding-bottom: 40px; /* Add padding to bottom */
         }
 
         /* --- Container --- */
         .container {
-            max-width: 1200px; /* Adjust max-width as needed */
-            margin: 20px auto;
+            max-width: 850px;
+            margin: 20px auto; /* Added top margin */
             padding: 0 15px;
         }
 
-        /* --- Header --- */
+        /* --- Header Styles --- */
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 40px 20px;
+            background-color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
 
-        header h1 {
-            color: #e83e8c; /* A nice pink shade */
+        header::before { /* Decorative element */
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--primary-light) 0%, rgba(255,255,255,0) 65%);
+            opacity: 0.5;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
             margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Progress Bar Styles --- */
+        .progress-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
             font-weight: 600;
         }
 
-        header p {
-            color: #6c757d; /* Gray text */
-            font-size: 1.1em;
-        }
-
-        /* --- Product Grid --- */
-        .product-grid {
-            display: grid;
-            /* Responsive grid: Adjust minmax width for desired item size */
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 25px; /* Spacing between grid items */
-            margin-bottom: 40px;
-        }
-
-        /* --- Product Card --- */
-        .product-card {
-            background-color: #ffffff; /* White card background */
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle shadow */
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        .progress-title {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Pushes content apart */
-            min-height: 250px; /* Ensure cards have a minimum height */
+            align-items: center;
+            font-size: 18px;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px); /* Lift effect on hover */
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        .progress-icon {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 20px;
         }
 
-        .product-image-container {
-            height: 130px; /* Fixed height for image area */
-            margin-bottom: 15px;
+        #percentage {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .progress-bar-container {
+            height: 14px;
+            background-color: var(--gray-light);
+            border-radius: 7px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
+            border-radius: 7px;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 10px;
+            color: var(--text-light);
+        }
+
+        /* --- Checklist Styles --- */
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 30px; /* Space before alert/button */
+        }
+
+        .checklist-item {
+            background: var(--white);
+            border-radius: 15px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .checklist-item.checked {
+            border-color: var(--success-light);
+            box-shadow: 0 5px 25px rgba(40, 167, 69, 0.1);
+        }
+
+        .checklist-item-header {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .checklist-item.checked .checklist-item-header {
+            background-color: var(--success-light);
+        }
+
+        .item-checkbox {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            border: 2px solid #ccc;
+            border-radius: 50%; /* Circular checkbox */
+            margin-right: 20px;
+            position: relative;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: var(--white);
         }
 
-        .product-card img {
+        .checklist-item:hover .item-checkbox {
+            border-color: var(--primary-light);
+        }
+
+        .item-checkbox i { /* Font Awesome check icon */
+            font-size: 14px;
+            color: white;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .checklist-item.checked .item-checkbox {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .checklist-item.checked .item-checkbox i {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .item-image-container {
+            position: relative;
+            margin-right: 20px;
+            flex-shrink: 0;
+            cursor: pointer;
+            width: 75px; /* Fixed width for alignment */
+            height: 75px; /* Fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-light); /* Add subtle border */
+            border-radius: 10px; /* Match image radius */
+            background-color: var(--white); /* Background for placeholder */
+        }
+
+        .item-image {
             max-width: 100%;
-            max-height: 100%; /* Ensure image fits container */
-            object-fit: contain; /* Scale image while preserving aspect ratio */
-            display: block; /* Remove extra space below image */
-            margin: 0 auto; /* Center image if smaller than container */
+            max-height: 100%;
+            object-fit: contain; /* Changed to contain to see full image */
+            border-radius: 8px; /* Slightly smaller radius than container */
+            transition: transform 0.3s ease;
+            display: block;
         }
 
-        /* Style for cards with missing images */
-        .product-card.no-image .product-image-container {
-            background-color: #f1f3f5; /* Light placeholder background */
-            border: 1px dashed #ced4da;
-            border-radius: 4px;
-            color: #6c757d;
-            font-size: 0.9em;
-            display: flex; /* Use flex to center text */
+         /* Style for items with missing images */
+         .item-image-container.no-image {
+            background-color: var(--gray-light); /* Placeholder background */
+            color: var(--text-light);
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.2;
+         }
+
+        .item-image-container:hover .item-image {
+            transform: scale(1.05);
+        }
+
+        .zoom-icon {
+            position: absolute;
+            right: 6px;
+            bottom: 6px;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            color: var(--primary);
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            opacity: 0; /* Hidden by default */
+        }
+         /* Show zoom icon only if there is an image */
+        .item-image-container:not(.no-image):hover .zoom-icon {
+            opacity: 1; /* Show on hover */
         }
 
-        .product-details {
-            margin-top: auto; /* Pushes details to the bottom if content is short */
+        .item-image-container:not(.no-image):hover .zoom-icon:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
         }
 
-        .product-card .product-code {
-            font-size: 0.85em;
-            color: #6c757d; /* Gray text */
-            display: block; /* Ensure it takes its own line */
-            margin-bottom: 5px;
-            font-weight: 300;
+        .item-details {
+            flex-grow: 1;
+            min-width: 0; /* Prevents text overflow issues */
         }
 
-        .product-card .product-name {
-            font-size: 1em;
-            font-weight: 400; /* Regular weight */
-            color: #343a40; /* Darker text */
-            line-height: 1.3; /* Adjust for better readability */
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 3px; /* Reduced space */
+            font-size: 16px; /* Slightly smaller */
+            color: var(--text);
+            line-height: 1.3; /* Adjust line height */
         }
 
-        /* --- Website Link & Support Section --- */
-        .support-section {
-            text-align: center;
+        .checklist-item.checked .item-name {
+             color: var(--success);
+        }
+
+        .item-code { /* Style for product code */
+            font-size: 13px;
+            color: var(--text-light);
+            display: block; /* Ensure it's on its own line */
+        }
+
+        /* --- Image Modal Styles --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+            padding: 15px;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--white);
             padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-top: 40px;
+            border-radius: 16px;
+            max-width: 90%;
+            width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
-        .website-link {
-            display: block; /* Make it a block element */
-            margin-bottom: 25px; /* Space between link and support text */
-            font-size: 1.1em;
+        .modal.active .modal-content {
+            transform: scale(1);
         }
 
-        .website-link a {
-            color: #007bff; /* Standard link blue */
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background-color: var(--gray-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+            font-size: 16px;
+            border: none;
+        }
+
+        .modal-close:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 60vh; /* Limit image height */
+            object-fit: contain; /* Ensure full image is visible */
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .modal-code { /* Style for code in modal */
+            font-size: 15px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* --- Alert Styles --- */
+        .missing-alert {
+            background-color: var(--warning-light);
+            border-left: 5px solid var(--warning);
+            padding: 18px 20px;
+            margin: 0 0 20px 0; /* Adjusted margin */
+            border-radius: 10px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease;
+            font-size: 15px;
+        }
+
+        .missing-alert strong {
+            color: #c88f03;
+            font-weight: 600;
+        }
+
+         /* --- Website Link Section --- */
+        .website-link-section {
+            text-align: center;
+            margin-bottom: 20px; /* Space before button */
+            padding: 15px;
+            background-color: #fff; /* Optional background */
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            font-size: 16px;
+        }
+
+        .website-link-section a {
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 400;
+            font-weight: 600;
             transition: color 0.2s ease;
         }
 
-        .website-link a:hover {
-            color: #0056b3;
+        .website-link-section a:hover {
+            color: var(--primary-dark);
             text-decoration: underline;
         }
 
-        .support-section p {
-            margin-bottom: 15px;
-            color: #495057;
-        }
-
-        .support-button {
-            display: inline-block;
-            background-color: #e83e8c; /* Match header pink */
-            color: #ffffff;
-            padding: 10px 25px;
+        /* --- Button Styles --- */
+        .btn {
+            color: white;
             border: none;
-            border-radius: 25px; /* Pill shape */
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1em;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 50px; /* Pill shape */
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            gap: 8px;
+            width: 100%; /* Make buttons full width */
         }
 
-        .support-button:hover {
-            background-color: #d9347f; /* Darker pink on hover */
-            transform: scale(1.03);
+        .support-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3);
+            /* margin-top: 30px; Set via JS */
         }
 
-        /* --- Footer --- */
-        footer {
+        .support-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4);
+        }
+
+        /* --- Form Styles --- */
+        .contact-form {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 25px; /* Space above form */
+            box-shadow: 0 5px 25px var(--shadow-color);
+            display: none; /* Hidden by default */
+            animation: slideUp 0.5s ease;
+        }
+
+        .contact-form h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-            color: #6c757d;
-            font-size: 0.9em;
+            font-size: 24px;
+            font-weight: 700;
         }
 
-        /* --- Responsive Adjustments --- */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--gray-light);
+            font-family: inherit;
+            color: var(--text);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            background-color: var(--white);
+        }
+
+        textarea {
+            height: 130px;
+            resize: vertical;
+        }
+
+        /* Custom Checkboxes for Missing Items in Form */
+        #missing-items-list label.checkbox-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: var(--gray-light);
+            transition: background-color 0.3s ease;
+            font-weight: 400;
+            font-size: 14px; /* Slightly smaller font */
+        }
+
+        #missing-items-list label.checkbox-container:hover {
+            background-color: #e9ecef;
+        }
+
+        #missing-items-list input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            top: -1px;
+            transition: all 0.2s ease;
+            background-color: var(--white);
+            flex-shrink: 0;
+        }
+
+        #missing-items-list input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        #missing-items-list input[type="checkbox"]:checked::after {
+            content: '\f00c'; /* Font Awesome check */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+        }
+
+        .form-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3);
+            width: 100%; /* Full width submit */
+        }
+
+        .form-submit:hover {
+             transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4);
+        }
+
+        /* --- Thank You Screen --- */
+        .thank-you {
+            text-align: center;
+            display: none; /* Hidden by default */
+            padding: 50px 30px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+            animation: fadeIn 0.5s ease;
+            margin-top: 30px;
+        }
+
+        .thank-you h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .success-icon {
+            font-size: 70px;
+            color: var(--success);
+            margin-bottom: 25px;
+            animation: bounceIn 0.6s ease;
+            display: inline-block;
+        }
+
+        .thank-you p {
+            color: var(--text-light);
+            font-size: 17px;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Responsive Styles --- */
         @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-                gap: 20px;
-            }
-            .product-card {
-                padding: 15px;
-                min-height: 230px;
-            }
-             .product-image-container {
-                height: 110px;
-            }
+             .container {
+                padding: 0 15px;
+             }
+             h1 { font-size: 28px; }
+             .subtitle { font-size: 16px; }
+             .checklist-item-header { padding: 15px; }
+             .item-image-container { width: 65px; height: 65px; margin-right: 15px;}
+             .item-name { font-size: 15px; }
+             .item-code { font-size: 12px; }
+             .modal-content { padding: 25px; }
+             .modal-title { font-size: 20px; }
+             .contact-form { padding: 25px; }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                 padding: 0 10px;
-            }
-            header h1 {
-                font-size: 1.5em;
-            }
-             header p {
-                font-size: 1em;
-            }
-            .product-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 15px;
-            }
-            .product-card {
-                padding: 12px;
-                min-height: 210px;
-            }
-             .product-image-container {
-                height: 100px;
-            }
-             .product-card .product-name {
-                font-size: 0.95em;
-            }
-             .product-card .product-code {
-                font-size: 0.8em;
-            }
-             .support-section {
-                 padding: 20px;
-             }
-             .support-button {
-                 padding: 8px 20px;
-                 font-size: 0.95em;
-             }
+            body { font-size: 15px; }
+            .container { padding: 0 10px; }
+            header { padding: 30px 15px; border-radius: 15px; }
+            h1 { font-size: 24px; }
+            .subtitle { font-size: 15px; }
+            .progress-container, .checklist-item, .contact-form, .thank-you, .website-link-section { border-radius: 15px; }
+            .progress-container { padding: 20px; }
+            .progress-title, #percentage { font-size: 16px; }
+            .progress-bar-container { height: 12px; }
+            .progress-text { font-size: 14px; }
+            .checklist-item-header { padding: 12px; align-items: flex-start; }
+            .item-checkbox { width: 24px; height: 24px; margin-right: 15px; margin-top: 5px; }
+            .item-checkbox i { font-size: 12px; }
+            .item-image-container { width: 60px; height: 60px; margin-right: 12px; }
+            .zoom-icon { width: 24px; height: 24px; font-size: 12px; right: 4px; bottom: 4px; }
+            .item-name { font-size: 14px; margin-bottom: 2px; }
+            .item-code { font-size: 11px; }
+            .btn { padding: 12px 24px; font-size: 15px; }
+            .contact-form { padding: 20px; margin-top: 20px; }
+            .contact-form h2 { font-size: 22px; margin-bottom: 20px; }
+            input[type="text"], input[type="email"], textarea, select { padding: 12px 15px; font-size: 15px; }
+            #missing-items-list label.checkbox-container { padding: 10px 12px; font-size: 13px; }
+            #missing-items-list input[type="checkbox"] { width: 18px; height: 18px; margin-right: 10px; }
+            .thank-you { padding: 30px 20px; }
+            .thank-you h2 { font-size: 24px; }
+            .success-icon { font-size: 60px; }
+            .thank-you p { font-size: 16px; }
+            .modal-content { padding: 20px; width: 95%; }
+            .modal-close { width: 30px; height: 30px; font-size: 14px; top: 10px; right: 10px; }
+            .website-link-section { padding: 12px; font-size: 15px; }
         }
 
     </style>
 </head>
 <body>
-
     <div class="container">
         <header>
-            <h1>Beauty School Product Catalog</h1>
-            <p>Complete Kit Contents</p>
+            <h1>Nail Kit Contents Checklist</h1>
+            <p class="subtitle">Verify all items are present in your kit</p>
         </header>
 
-        <div class="product-grid" id="product-grid">
-            <!-- Product cards will be inserted here by JavaScript -->
-        </div>
-
-        <div class="support-section">
-            <div class="website-link">
-                Need more details? Visit <a href="https://www.balcobrands.com/beauty-school-products/" target="_blank" rel="noopener noreferrer">Balco Brands Beauty School Products</a>
+        <div class="progress-container">
+            <div class="progress-label">
+                <div class="progress-title">
+                    <i class="fas fa-clipboard-check progress-icon"></i>
+                    Completion Progress
+                </div>
+                <div id="percentage">0%</div>
             </div>
-            <p>Have questions or missing an item?</p>
-            <!-- You can change the href to a mailto link or a contact page URL -->
-            <a href="mailto:support@example.com?subject=Issue%20with%20Beauty%20Kit" class="support-button">Contact Support</a>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <!-- Progress text will be updated by JS -->
+            <div class="progress-text" id="progress-text">0/0 items checked</div>
         </div>
 
+        <ul class="checklist" id="checklist">
+            <!-- Checklist items will be populated by JavaScript -->
+        </ul>
+
+        <div class="missing-alert" id="missing-alert">
+            <strong>Missing items?</strong> If any items are missing from your kit, please check the items above that you *did* receive, then contact support using the button below.
+        </div>
+
+         <!-- Website Link -->
+        <div class="website-link-section">
+            Need product details? Visit the
+            <a href="https://www.balcobrands.com/beauty-school-products/" target="_blank" rel="noopener noreferrer">
+                Balco Brands Product Page <i class="fas fa-external-link-alt fa-xs"></i>
+            </a>
+        </div>
+
+        <button class="btn support-btn" id="support-btn">
+            <i class="fas fa-headset"></i> Report Missing Items
+        </button>
+
+        <div class="contact-form" id="contact-form">
+            <h2>Report Missing Items</h2>
+            <form id="report-form">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="order-number">Order Number / Student ID (Optional)</label>
+                    <input type="text" id="order-number" placeholder="Enter your order number or ID">
+                </div>
+                <div class="form-group">
+                    <label>Items Missing (Uncheck any you actually received)</label>
+                    <div id="missing-items-list">
+                        <!-- Dynamically populated with UNCHECKED items from main list -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Additional Information (Optional)</label>
+                    <textarea id="message" placeholder="e.g., Damaged item, details about the issue..."></textarea>
+                </div>
+                <button type="submit" class="btn form-submit" id="submit-form">
+                    <i class="fas fa-paper-plane"></i> Submit Report
+                </button>
+            </form>
+        </div>
+
+        <div class="thank-you" id="thank-you">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>Thank You!</h2>
+            <p>Your report has been submitted. Our support team will contact you shortly.</p>
+        </div>
     </div>
 
-    <footer>
-        © <span id="year"></span> Your Company/School Name. All rights reserved.
-    </footer>
+    <!-- Image Modal -->
+    <div class="modal" id="image-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="" alt="Product Image" class="modal-image" id="modal-image">
+            <h3 class="modal-title" id="modal-title">Item Name</h3>
+            <span class="modal-code" id="modal-code">Item Code</span> <!-- Added code display -->
+            <!-- Description could be added here if needed -->
+            <!-- <p class="modal-description" id="modal-description">Item description</p> -->
+        </div>
+    </div>
 
-    <script>
-        // --- Product Data ---
+    <script defer>
+        // --- Product Data (Your Full List) ---
         const products = [
             { code: "BE0029", name: "Dappen Dish", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0029-Dappen-Dish-247x247.png" },
             { code: "BE0069", name: "Cuticle Oil - 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0069-Cuticle-Oil-15ml-247x247.png" },
@@ -328,69 +851,290 @@
             { code: "BE0324", name: "Ugly Duckling- BUILD-A-BASE - PINK 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0324-Ugly-Duckling-BUILD-A-BASE-PINK-15ml-247x247.png" }
         ];
 
-        // --- Function to Create Product Card ---
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.classList.add('product-card');
+        // --- DOM Elements ---
+        const checklist = document.getElementById('checklist');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const percentageText = document.getElementById('percentage');
+        const missingAlert = document.getElementById('missing-alert');
+        const supportBtn = document.getElementById('support-btn');
+        const contactForm = document.getElementById('contact-form');
+        const reportForm = document.getElementById('report-form');
+        const thankYouMsg = document.getElementById('thank-you');
+        const missingItemsList = document.getElementById('missing-items-list');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCode = document.getElementById('modal-code'); // Added modal code element
 
+        let items = []; // Will store references to the LI elements
+        const total = products.length; // Total number of products
+        let checkedCount = 0;
+
+        // --- Function to Create Checklist Item ---
+        function createChecklistItem(product, index) {
+            const li = document.createElement('li');
+            li.classList.add('checklist-item');
+            li.setAttribute('data-item', product.name); // Used for form population
+            li.setAttribute('data-code', product.code); // Store code
+            li.setAttribute('data-index', index); // Store original index if needed
+
+            const header = document.createElement('div');
+            header.classList.add('checklist-item-header');
+            header.onclick = () => toggleItem(li); // Click header to toggle
+
+            // Checkbox
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('item-checkbox');
+            checkbox.innerHTML = '<i class="fas fa-check"></i>';
+
+            // Image Container
             const imageContainer = document.createElement('div');
-            imageContainer.classList.add('product-image-container');
+            imageContainer.classList.add('item-image-container');
+            const hasImage = product.imageUrl && product.imageUrl !== null;
 
-            if (product.imageUrl && product.imageUrl !== 'Not found on page (likely no product image)' && product.imageUrl !== null) {
+            if (hasImage) {
                 const img = document.createElement('img');
                 img.src = product.imageUrl;
                 img.alt = product.name;
-                // Add error handling for broken images
-                img.onerror = function() {
-                    this.parentElement.innerHTML = '<span>Image unavailable</span>'; // Replace broken image with text
-                    this.parentElement.parentElement.classList.add('no-image'); // Add class to card
-                 };
+                img.classList.add('item-image');
+                img.onerror = function() { // Handle broken images
+                    this.parentElement.innerHTML = '<span>Image<br>Error</span>';
+                    this.parentElement.classList.add('no-image');
+                };
                 imageContainer.appendChild(img);
+
+                // Zoom icon only if image exists
+                const zoom = document.createElement('div');
+                zoom.classList.add('zoom-icon');
+                zoom.innerHTML = '<i class="fas fa-search-plus"></i>';
+                zoom.onclick = (event) => {
+                    event.stopPropagation(); // Prevent toggle when clicking zoom
+                    openImageModal(li);
+                };
+                 imageContainer.appendChild(zoom);
+
             } else {
-                // Handle missing image case
-                card.classList.add('no-image');
-                imageContainer.innerHTML = '<span>No Image Available</span>';
+                imageContainer.classList.add('no-image');
+                imageContainer.innerHTML = '<span>No Image</span>';
             }
 
+            // Details (Name and Code)
             const details = document.createElement('div');
-            details.classList.add('product-details');
+            details.classList.add('item-details');
 
-            const code = document.createElement('span');
-            code.classList.add('product-code');
-            code.textContent = product.code;
-
-            const name = document.createElement('span'); // Using span for name as well for consistency, could be h3/p
-            name.classList.add('product-name');
-            // Clean up name if needed (e.g., removing extra grit details for brevity)
+            const nameSpan = document.createElement('span');
+            nameSpan.classList.add('item-name');
+             // Simple name cleanup (optional)
             let cleanedName = product.name.replace(/ blue black colour printed grit| Red black Colour printed grit| Purple Colour printed grit| grit printed| with printed grit/gi, '').trim();
-            name.textContent = cleanedName;
+            nameSpan.textContent = cleanedName;
 
-            details.appendChild(code);
-            details.appendChild(name);
+            const codeSpan = document.createElement('span');
+            codeSpan.classList.add('item-code');
+            codeSpan.textContent = product.code;
 
-            card.appendChild(imageContainer);
-            card.appendChild(details);
+            details.appendChild(nameSpan);
+            details.appendChild(codeSpan);
 
-            return card;
+            // Assemble header
+            header.appendChild(checkbox);
+            header.appendChild(imageContainer);
+            header.appendChild(details);
+
+            li.appendChild(header);
+            return li;
         }
 
-        // --- Populate Grid & Footer Year ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('product-grid');
-            if (grid) {
-                products.forEach(product => {
-                    const card = createProductCard(product);
-                    grid.appendChild(card);
-                });
+        // --- Function to Toggle Item Checked State ---
+        function toggleItem(item) {
+            const wasChecked = item.classList.contains('checked');
+            if (wasChecked) {
+                item.classList.remove('checked');
+                checkedCount--;
+            } else {
+                item.classList.add('checked');
+                checkedCount++;
             }
+            updateProgress();
+            checkForMissingItems();
+            // Hide form if all items get checked after opening it
+            if (checkedCount === total && contactForm.style.display === 'block') {
+                 contactForm.style.display = 'none';
+                 missingAlert.style.display = 'none'; // Hide alert too
+                 supportBtn.style.marginTop = '0px'; // Reset margin if alert was shown
+            } else if (!wasChecked && checkedCount === total) {
+                 // If the last item was just checked, hide alert
+                 missingAlert.style.display = 'none';
+                 supportBtn.style.marginTop = '0px'; // Reset margin if alert was shown
+            }
+        }
 
-            // Set current year in footer
-            const yearSpan = document.getElementById('year');
-            if(yearSpan) {
-                yearSpan.textContent = new Date().getFullYear();
+        // --- Update Progress Bar and Text ---
+        function updateProgress() {
+            const percentage = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = `${checkedCount}/${total} items checked`;
+            percentageText.textContent = `${percentage}%`;
+        }
+
+        // --- Check if Alert for Missing Items Should Show ---
+        function checkForMissingItems() {
+            // Show alert only if user has checked at least one item AND not all items are checked
+            const userInteracted = checkedCount > 0;
+            if (userInteracted && checkedCount < total) {
+                missingAlert.style.display = 'block';
+                supportBtn.style.marginTop = '0px'; // Remove top margin from button when alert shows
+            } else {
+                missingAlert.style.display = 'none';
+                supportBtn.style.marginTop = '0px'; // Keep margin consistent now link is above
+            }
+            // Hide contact form if all items become checked
+            if (checkedCount === total && contactForm.style.display === 'block') {
+                contactForm.style.display = 'none';
+            }
+        }
+
+        // --- Open Image Modal ---
+        function openImageModal(item) {
+            const itemName = item.getAttribute('data-item');
+            const itemCode = item.getAttribute('data-code');
+            const imageElement = item.querySelector('.item-image'); // Get the image element
+
+            if (!imageElement) return; // Don't open modal if no image exists
+
+            modalImage.src = imageElement.src; // Use existing src from the item's image
+            modalImage.alt = itemName;
+            modalTitle.textContent = itemName;
+            modalCode.textContent = itemCode; // Set the code in the modal
+
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        // --- Close Modal ---
+        function closeModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // --- Event Listeners ---
+        imageModal.addEventListener('click', function(event) { // Close modal on backdrop click
+            if (event.target === imageModal) {
+                closeModal();
             }
         });
-    </script>
 
+        document.addEventListener('keydown', function(event) { // Close modal with Escape key
+            if (event.key === "Escape" && imageModal.classList.contains('active')) {
+                closeModal();
+            }
+         });
+
+        supportBtn.addEventListener('click', function() {
+            // Ensure thank you message is hidden
+            thankYouMsg.style.display = 'none';
+
+            // Populate the form's checklist with UNCHECKED items
+            missingItemsList.innerHTML = ''; // Clear previous list
+            let hasMissingItems = false;
+
+            items.forEach(item => { // Iterate over the created LI elements
+                if (!item.classList.contains('checked')) {
+                    hasMissingItems = true;
+                    const itemName = item.getAttribute('data-item');
+                    const itemCode = item.getAttribute('data-code');
+                    const formItemName = `${itemName} (${itemCode})`; // Combine name and code for clarity
+
+                    const checkboxDiv = document.createElement('div');
+                    // Use the custom checkbox structure for the form
+                    checkboxDiv.innerHTML = `
+                        <label class="checkbox-container">
+                            <input type="checkbox" checked name="missing_item[]" value="${formItemName}">
+                            ${formItemName}
+                        </label>
+                    `;
+                    missingItemsList.appendChild(checkboxDiv);
+                }
+            });
+
+            // Only show the form if there are actually items marked as missing
+            if (hasMissingItems) {
+                contactForm.style.display = 'block';
+                contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                 // Alert if all items are checked
+                 alert("You've checked all items! If something is wrong, please describe it in the form (uncheck an item first if needed).");
+                 // Optionally still show the form, but maybe without pre-checked items
+                 // contactForm.style.display = 'block';
+                 // missingItemsList.innerHTML = '<p>All items were checked. Please describe the issue.</p>';
+                 // contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                 contactForm.style.display = 'none'; // Default: hide form if all checked
+            }
+        });
+
+        reportForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default page reload
+
+            // --- Simulation: Log data and show thank you ---
+            const formData = new FormData(reportForm);
+            const data = Object.fromEntries(formData.entries());
+            // Get missing items (checked checkboxes in the form)
+             data.missing_items = formData.getAll('missing_item[]'); // Gets array of values
+            console.log("Submitting Report (Simulation):", data);
+
+            // Hide form and alert, show thank you
+            contactForm.style.display = 'none';
+            missingAlert.style.display = 'none';
+            thankYouMsg.style.display = 'block';
+            thankYouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Reset form fields (optional)
+            // reportForm.reset();
+            // --- End Simulation ---
+
+            /* --- Real-world scenario: ---
+            fetch('/your-api-endpoint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Success:', result);
+                contactForm.style.display = 'none';
+                missingAlert.style.display = 'none';
+                thankYouMsg.style.display = 'block';
+                thankYouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your report. Please try again or contact support directly.');
+            });
+            */
+        });
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate checklist
+            products.forEach((product, index) => {
+                const listItem = createChecklistItem(product, index);
+                checklist.appendChild(listItem);
+            });
+
+            // Update items array AFTER population
+            items = Array.from(document.querySelectorAll('.checklist-item'));
+
+            // Initial UI update
+            updateProgress();
+            checkForMissingItems(); // Initial check (hides alert)
+             supportBtn.style.marginTop = '0px'; // Set initial margin correctly
+        });
+
+    </script>
 </body>
 </html>
