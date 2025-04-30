@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nail Kit Checklist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- Base Styles --- */
+         :root {
+            --primary: #f75a8f; --primary-light: #fcd2e1; --primary-dark: #d94a7b;
+            --secondary: #fdf6f8; --text: #444444; --text-light: #777777;
+            --success: #28a745; --success-light: #eaf6ec; --warning: #ffc107;
+            --warning-light: #fff8e1; --info: #5a6f8f; --info-light: #eef1f4;
+            --gray-light: #f1f3f5; --gray-medium: #e9ecef; --white: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.06); --border-color: #e0e0e0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--secondary); color: var(--text); line-height: 1.5;
+            font-size: 13px; /* Adjusted base font size */
+             /* Padding set by JS */
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 10px; }
+
+        /* Header */
+        header { text-align: center; padding: 15px 15px; background-color: var(--white); border-radius: 10px; box-shadow: 0 3px 15px var(--shadow-color); margin-bottom: 15px; }
+        h1 { color: var(--primary); font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+        .subtitle { font-size: 12px; color: var(--text-light); }
+
+        /* Sticky Progress */
+        .progress-container { background: var(--white); border-radius: 10px; padding: 10px 12px; margin-bottom: 15px; box-shadow: 0 3px 15px var(--shadow-color); position: sticky; top: 10px; z-index: 100; transition: top 0.3s ease; }
+        .progress-label { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 600; gap: 5px 10px; }
+        .progress-title { display: flex; align-items: center; font-size: 13px; color: var(--primary-dark); flex-grow: 1; }
+        .progress-icon { color: var(--primary); margin-right: 6px; font-size: 14px; }
+        #percentage { font-weight: 700; color: var(--primary); font-size: 13px; flex-shrink: 0; }
+        .progress-bar-container { height: 6px; background-color: var(--gray-light); border-radius: 3px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); width: 100%; margin-top: 0; order: 3; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%); border-radius: 3px; width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-text { text-align: right; font-weight: 600; font-size: 10px; margin-top: 4px; color: var(--text-light); width: 100%; order: 4; }
+
+        /* Gallery Sections */
+        .gallery-section { margin-bottom: 20px; }
+        .gallery-section h2 { font-size: 15px; font-weight: 600; color: var(--primary-dark); margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--primary-light); }
+        /* --- 3 Column Grid Base --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Default to 3 columns */
+            gap: 10px; /* Slightly reduced gap for mobile */
+            padding: 0;
+            list-style-type: none;
+        }
+
+        /* Base Item Style - Smaller */
+        .gallery-item {
+            background: var(--white); border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);
+            overflow: hidden; transition: all 0.25s ease-out; border: 1px solid var(--border-color);
+            position: relative; display: flex; flex-direction: column;
+            min-height: 115px; /* Reduced min-height */
+        }
+        .standard-item:hover { transform: translateY(-2px); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); }
+        .standard-item.checked { border-color: var(--success); background-color: var(--success-light); }
+
+        /* Image Container */
+        .item-image-container { position: relative; width: 100%; flex-grow: 1; min-height: 65px; /* Reduced */ overflow: hidden; background-color: var(--gray-light); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .item-image { max-width: 100%; max-height: 100%; height: auto; width: auto; object-fit: contain; display: block; transition: transform 0.3s ease; padding: 4px; pointer-events: none; }
+        .item-image-container:hover .item-image { transform: scale(1.05); }
+
+        /* Zoom Icon - Slightly Smaller */
+        .zoom-icon {
+            position: absolute; right: 6px; bottom: 6px; background-color: rgba(255, 255, 255, 0.85);
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--primary); font-size: 11px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: all 0.3s ease; backdrop-filter: blur(1px);
+            cursor: pointer; z-index: 2;
+        }
+        .zoom-icon:hover { background-color: var(--primary); color: white; transform: scale(1.1); }
+
+        /* Checkbox - Slightly Smaller */
+        .item-checkbox-container { position: absolute; top: 6px; right: 6px; z-index: 3; cursor: pointer; }
+        .item-checkbox { width: 22px; height: 22px; border: 1.5px solid #bbb; border-radius: 50%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(1px); pointer-events: none; }
+        .standard-item:hover .item-checkbox { border-color: var(--primary-light); }
+        .item-checkbox i.fa-check { font-size: 10px; color: white; opacity: 0; transform: scale(0.5); transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .standard-item.checked .item-checkbox { background-color: var(--success); border-color: var(--success); }
+        .standard-item.checked .item-checkbox i.fa-check { opacity: 1; transform: scale(1); }
+
+        /* Item Content Area - Smaller */
+        .item-content { padding: 6px 8px; text-align: center; border-top: 1px solid var(--border-color); background-color: var(--white); cursor: default; }
+        .item-name {
+            font-weight: 500; font-size: 11px; /* Reduced font size */ line-height: 1.3; color: var(--text);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            min-height: calc(1.3em * 2); /* Adjusted min-height */
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- Group Tile Specific Styles --- */
+        /* (Mostly unchanged, inherits size reductions) */
+        .group-tile { cursor: pointer; }
+        .group-tile:hover { border-color: var(--info); transform: none; box-shadow: 0 2px 8px var(--shadow-color); }
+        .group-tile .item-image-container { cursor: pointer; }
+        .group-tile .item-content { position: relative; cursor: pointer; }
+        .group-tile .item-checkbox-container { display: none; }
+        .group-tile .item-name { padding-right: 15px; }
+        .group-tile .view-set-icon { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--info); opacity: 0.8; pointer-events: none; }
+        .group-tile .group-completion-indicator { position: absolute; top: 6px; right: 6px; z-index: 3; width: 22px; height: 22px; border-radius: 50%; background-color: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; opacity: 0; transform: scale(0.5); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
+        .group-tile.completed { border-color: var(--success); background-color: var(--success-light); }
+        .group-tile.completed .group-completion-indicator { opacity: 1; transform: scale(1); }
+        .group-tile.completed .view-set-icon { display: none; }
+
+        /* --- Desktop+ Grid Styles --- */
+        /* Adjust breakpoints if needed, keep auto-fit for larger screens */
+        @media (min-width: 576px) { /* Small tablets - maybe keep 3 columns or go to 4? */
+             .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; } /* Example: Auto-fit earlier */
+             .item-name { font-size: 12px; } h1 { font-size: 20px; } .subtitle { font-size: 13px; }
+             .progress-title, #percentage { font-size: 14px; } .progress-text { font-size: 11px; }
+             .gallery-section h2 { font-size: 16px; }
+        }
+        @media (min-width: 768px) { /* Tablets */
+            .container { padding: 15px; }
+            .gallery-grid { gap: 15px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+             h1 { font-size: 22px; } .progress-container { top: 15px; } .gallery-item { min-height: 130px; } /* Slightly taller */
+        }
+        @media (min-width: 992px) { /* Desktops */
+             .gallery-grid { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+             .gallery-item { min-height: 140px; } h1 { font-size: 24px; } .gallery-section h2 { font-size: 17px; }
+        }
+
+        /* --- Modal Styles (Slight adjustments for consistency) --- */
+        #image-modal .modal-content { width: 95%; max-width: 360px; }
+        #group-modal .modal-content { width: 95%; max-width: 500px; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 10px; animation: fadeIn 0.3s ease; overflow-y: auto; }
+        .modal.active { display: flex; }
+        .modal-content { background-color: var(--white); padding: 15px; border-radius: 8px; margin: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; position: relative; }
+        .modal-close { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background-color: var(--gray-medium); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; color: var(--text-light); font-size: 12px; border: none; z-index: 5; }
+        .modal-close:hover { background-color: var(--primary-light); color: var(--primary); transform: rotate(90deg); }
+        .modal-title { font-size: 15px; color: var(--primary); text-align: center; margin-bottom: 12px; font-weight: 600; padding-right: 30px; }
+        .modal-footer { margin-top: 12px; text-align: center; }
+        /* Group Modal List Items */
+        #group-modal-list { list-style: none; padding: 0; max-height: 60vh; overflow-y: auto; margin: 0 -10px; /* Offset padding */ }
+        .group-modal-item { display: flex; align-items: center; padding: 6px 10px; gap: 8px; border-bottom: 1px solid var(--gray-light); transition: background-color 0.2s ease; }
+        .group-modal-item:last-child { border-bottom: none; }
+        .group-modal-item.checked { background-color: var(--success-light); }
+        .group-modal-item-img { width: 35px; height: 35px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); }
+        .group-modal-item input[type="checkbox"] { width: 18px; height: 18px; margin-right: 5px; flex-shrink: 0; accent-color: var(--primary); cursor: pointer;}
+        .group-modal-item label { font-size: 12px; flex-grow: 1; display: flex; align-items: center; cursor: pointer; }
+        .group-modal-item label .item-product-name { flex-grow: 1; }
+
+
+        /* --- Support Section, Form, Button Styles --- */
+        .support-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+            text-align: center;
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 8px 15px; font-size: 13px; font-weight: 500;
+            border: none; border-radius: 6px; cursor: pointer;
+            background-color: var(--primary); color: var(--white);
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            text-decoration: none; /* For potential <a> buttons */
+            gap: 6px; /* Space between icon and text */
+        }
+        .btn:hover { background-color: var(--primary-dark); }
+        .btn:active { transform: scale(0.98); }
+        .btn i { font-size: 0.9em; /* Relative icon size */ }
+
+        .support-btn { background-color: var(--warning); color: var(--text); }
+        .support-btn:hover { background-color: #e6ac00; } /* Darker warning */
+
+        .website-btn { background-color: var(--info); margin-left: 10px; }
+        .website-btn:hover { background-color: #4a5c7a; } /* Darker info */
+
+        .contact-form {
+            background: var(--white); border-radius: 8px; padding: 15px;
+            margin-top: 20px; text-align: left; box-shadow: 0 3px 15px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease;
+        }
+        .contact-form h2 { font-size: 16px; color: var(--primary-dark); margin-bottom: 15px; text-align: center;}
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 4px; font-size: 12px; color: var(--text); }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%; padding: 8px 10px; font-size: 13px; border-radius: 4px;
+            border: 1px solid var(--border-color); background-color: var(--white);
+            font-family: inherit; color: var(--text);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px var(--primary-light);
+        }
+        .form-group textarea { height: 70px; resize: vertical; }
+        .form-disclaimer { font-size: 11px; color: var(--text-light); margin-bottom: 8px; font-style: italic; }
+        #missing-items-list {
+            max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color);
+            padding: 8px; border-radius: 4px; background: var(--gray-light);
+        }
+        #missing-items-list .checkbox-container label {
+             display: flex; align-items: center; padding: 4px 0; font-size: 12px; cursor: pointer;
+             color: var(--text);
+        }
+         #missing-items-list .checkbox-container input[type="checkbox"] {
+            width: 16px; height: 16px; margin-right: 8px; accent-color: var(--primary); flex-shrink: 0;
+         }
+        #missing-items-list p { font-size: 12px; color: var(--text-light); font-style: italic; }
+        .contact-form .btn { width: auto; margin-top: 5px; } /* Allow form buttons to size naturally */
+        .contact-form .btn[type="submit"] { background-color: var(--primary-dark); }
+        .contact-form .btn[type="button"] { background-color: var(--gray-medium); color: var(--text); }
+        .contact-form .btn[type="button"]:hover { background-color: #d3d9df; }
+
+        /* Alert & Thank You */
+        .missing-alert {
+            display: none; /* Hidden by default */
+            padding: 8px 12px; margin: 15px 0 10px 0; font-size: 12px;
+            background-color: var(--warning-light); color: #856404; /* Darker warning text */
+            border: 1px solid #ffeeba; border-radius: 6px; text-align: center;
+        }
+        .missing-alert strong { color: #664d03; } /* Even darker */
+
+        .thank-you {
+            display: none; /* Hidden by default */
+            background: var(--success-light); border: 1px solid var(--success);
+            border-radius: 8px; padding: 20px 15px; margin-top: 20px; text-align: center;
+            animation: bounceIn 0.5s ease;
+        }
+        .thank-you h2 { font-size: 18px; color: var(--success); margin-bottom: 5px; }
+        .success-icon { font-size: 35px; color: var(--success); margin-bottom: 10px; display: block; }
+        .thank-you p { font-size: 13px; color: var(--text); }
+
+        /* Animations */
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes bounceIn { 0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.9)}100%{transform:scale(1)} }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+         <header>
+             <h1>Nail Kit Checklist</h1>
+             <p class="subtitle">Check off the items you have</p>
+         </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress-label">
+                <div class="progress-title">
+                    <i class="fas fa-clipboard-check progress-icon"></i>
+                    Completion Progress
+                </div>
+                <div id="percentage">0%</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0/0 items checked</div>
+        </div>
+
+        <!-- Gallery Sections -->
+        <div class="gallery-section">
+            <h2>Individual Items</h2>
+            <div class="gallery-grid" id="standard-item-gallery">
+                 <div style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">Loading items...</div>
+            </div>
+        </div>
+
+        <div class="gallery-section">
+             <h2>Product Sets</h2>
+            <div class="gallery-grid" id="group-gallery">
+                 <div style="grid-column: 1 / -1; text-align: center; padding: 20px 0; color: var(--text-light);">Loading sets...</div>
+            </div>
+        </div>
+
+        <!-- Alert for Missing Items -->
+        <div class="missing-alert" id="missing-alert">
+             <strong>Missing items?</strong> Use the button below to report them.
+        </div>
+
+        <!-- Support Section: Buttons + Form + Thank You -->
+        <div class="support-section">
+            <button class="btn support-btn" id="support-btn">
+                <i class="fas fa-headset"></i> Report Missing/Support
+            </button>
+            <button class="btn website-btn" id="website-btn">
+                 <i class="fas fa-globe"></i> Visit Website
+             </button>
+
+            <!-- Contact Form (Initially Hidden) -->
+            <div class="contact-form" id="contact-form" style="display: none;">
+                <h2>Report Missing Items / Contact Support</h2>
+                <form id="report-form">
+                    <div class="form-group">
+                        <label for="reporter-name">Your Name:</label>
+                        <input type="text" id="reporter-name" name="reporter-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reporter-email">Your Email:</label>
+                        <input type="email" id="reporter-email" name="reporter-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Missing Items:</label>
+                        <p class="form-disclaimer">Only items currently unchecked in the list above will appear here.</p>
+                        <div id="missing-items-list">
+                            <p>Loading missing items...</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="support-message">Additional Message (Optional):</label>
+                        <textarea id="support-message" name="support-message" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Send Report
+                    </button>
+                    <button type="button" class="btn" id="cancel-report-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </form>
+            </div>
+
+             <!-- Thank You Message (Initially Hidden) -->
+             <div class="thank-you" id="thank-you" style="display: none;">
+                 <i class="fas fa-check-circle success-icon"></i>
+                 <h2>Thank You!</h2>
+                 <p>Your report has been submitted.</p>
+             </div>
+        </div>
+
+    </div> <!-- End Container -->
+
+    <!-- Modals (Structure remains the same) -->
+    <!-- Image Modal -->
+    <div class="modal" id="image-modal">
+         <div class="modal-content">
+             <button class="modal-close" onclick="closeModal('image-modal')" aria-label="Close image modal"><i class="fas fa-times"></i></button>
+             <h3 class="modal-title" id="modal-image-title">Item Image</h3>
+             <img src="" alt="Product Image" class="modal-image" id="modal-image-element" style="width: 100%; max-height: 60vh; object-fit: contain; display: block; margin-bottom: 10px;">
+             <div class="modal-details" style="font-size: 11px; line-height: 1.4;">
+                 <div><strong class="modal-detail-label" style="color: var(--text-light);">Code:</strong> <span class="modal-detail-value" id="modal-image-code"></span></div>
+                 <div><strong class="modal-detail-label" style="color: var(--text-light);">Product:</strong> <span class="modal-detail-value" id="modal-image-product"></span></div>
+             </div>
+         </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div class="modal" id="group-modal">
+        <div class="modal-content">
+              <button class="modal-close" onclick="closeModal('group-modal')" aria-label="Close group modal"><i class="fas fa-times"></i></button>
+              <h3 class="modal-title" id="group-modal-title">Set Items</h3>
+              <ul id="group-modal-list">
+                <!-- li items populated by JS -->
+              </ul>
+              <div class="modal-footer">
+                 <button class="btn" onclick="closeModal('group-modal')" style="background-color: var(--primary-dark);">
+                     <i class="fas fa-check"></i> Done
+                 </button>
+              </div>
+        </div>
+    </div>
+
+    <script defer>
+        // --- Data Setup (Assume itemData is the same as provided before) ---
+         const itemData = { /* ... Same itemData object from previous step ... */
+             'group-gel-colour': { isGroup: true, customerName: '3x gel colour', groupMembers: ['BE0100', 'BE0312', 'BE0313'] }, 'group-nail-files': { isGroup: true, customerName: '7x nail file', groupMembers: ['BE0266', 'BE0267', 'BE0268', 'BE0283', 'BE0284', 'BE0309', 'BE0310'] }, 'group-liner-brushes': { isGroup: true, customerName: '6x fine liner brushes', groupMembers: ['BE0136'] }, 'group-acrylic-powder': { isGroup: true, customerName: 'Acrylic powder (clear,Pink)', groupMembers: ['BE0321', 'BE0322'] }, 'group-builder-gels': { isGroup: true, customerName: '2x Builder gels (clear and pink)', groupMembers: ['BE0323', 'BE0324'] }, 'BE0281': { product: 'Storage Case Tall', customerName: 'Beauty School Case' },'BE0029': { product: 'Dappen Dish', customerName: 'Dappen Dish' },'BE0069': { product: 'Cuticle Oil - 15ml', customerName: 'Cuticle Oil - 15ml' },'BE0073': { product: 'Acetone - 125ml', customerName: 'Acetone - 125ml' },'BE0076': { product: 'Edge Cutter', customerName: 'Edge Cutter' },'BE0077': { product: 'Plastic Eye Dropper', customerName: 'Eye Dropper' },'BE0078': { product: 'Buffer Block 180', customerName: 'Buffer Block' },'BE0079': { product: 'Nail Clipper - 8mm', customerName: 'Nail Clipper' },'BE0083': { product: 'Double Thick Nail Form - 30 pieces', customerName: 'Nail forms' },'BE0084': { product: 'Powder Dust Brush - Pink', customerName: 'Powder dust Brush' },'BE0086': { product: 'Gel Brush', customerName: 'Gel Brush' },'BE0088-A': { product: 'UV LED Light Lamp - Australia', customerName: 'UV Lamp' },'BE0099': { product: 'Gel Nail Polish Base Coat 15ml', customerName: 'Gel Base' },'BE0100': { product: 'Gel Nail Polish Big Red Apple 15ml', customerName: 'X3 gel colour', groupId: 'group-gel-colour' },'BE0312': { product: 'Gel Polish French Pink', customerName: '3x gel colour', groupId: 'group-gel-colour' },'BE0313': { product: 'Gel Polish French White', customerName: '3x gel colour', groupId: 'group-gel-colour' },'BE0102': { product: 'Cotton Balls - 100 pieces', customerName: 'Cotton Balls' },'BE0103': { product: 'Nail Drill with Ceramic Pieces', customerName: 'Nail Drill With Drill bits' },'BE0105': { product: 'Practice Hand', customerName: 'Practice Hand' },'BE0111': { product: 'Gel Polish Top Coat Glossy', customerName: 'Gel Top Coat' },'BE0211': { product: 'Acrylic Practice Sheet Laminated', customerName: 'Practice Sheet' },'BE0264': { product: 'Cuticle Nipper 5mm 2 arm', customerName: 'Cuticle nipper' },'BE0265': { product: 'Gauze Nail Wipes', customerName: 'Lint Free wipes' },'BE0266': { product: 'Premium Nail File 80/80 blue black colour printed grit', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0267': { product: 'Flex File 100/100 Red black Colour printed grit', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0268': { product: 'Zebra File 100/100 Purple Colour printed grit', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0283': { product: 'Zebra File 150/150 grit printed', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0284': { product: 'Zebra File 150/180 grit printed', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0309': { product: 'File 240/240 with printed grit', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0310': { product: 'File 200/200 with printed grit', customerName: '7x nail file', groupId: 'group-nail-files'},'BE0270': { product: 'Nail Tips 100pc flexible', customerName: 'Nail Tips' },'BE0271': { product: 'Hand and Nail Cream', customerName: 'Hand and Nail Cream' },'BE0277': { product: 'Isopropyl Alcohol - 125ml', customerName: 'isopropyl Alcohol' },'BE0279': { product: 'Brush on Nail Glue 7g', customerName: 'Nail Glue' },'BE0308': { product: 'Shine Buffer with printed grit', customerName: 'Shine buffer' },'BE0305': { product: '4 Way Nail Buffer Block', customerName: '4 way buffer block' },'BE0311': { product: 'Cleaning brush', customerName: 'Cleaning brush' },'BE0136': { product: 'Brush - Multiple Thickness x6', customerName: '6x fine liner brushes', groupId: 'group-liner-brushes'},'BE0314': { product: 'Acrylic Brush 314', customerName: 'Acrylic Brush' },'BE0315': { product: 'Cuticle Pusher', customerName: 'Cuticle Pusher' },'BE0167': { product: 'Cuticle Sticks x 10pcs', customerName: 'Orange Sticks' },'BE0318': { product: 'Ugly Duckling AcryGel Prep 7ml', customerName: 'Nail Dehydrator' },'BE0319': { product: 'Ugly Duckling AcryGel Primer 7ml', customerName: 'Nail Primer' },'BE0320': { product: 'Ugly Duckling Premium Acrylic Liquid 100ml', customerName: 'Acrylic Liquid' },'BE0321': { product: 'Ugly Duckling PREMIUM ACRYLIC POWDER - CLEAR 30g', customerName: 'Acrylic powder (clear,Pink)', groupId: 'group-acrylic-powder'},'BE0322': { product: 'Ugly Duckling PREMIUM ACRYLIC POWDER - FUFU PINK 30g', customerName: 'Acrylic powder (clear,Pink)', groupId: 'group-acrylic-powder'},'BE0323': { product: 'Ugly Duckling - BUILD-A-BASE -CLEAR 15ml', customerName: '2x Builder gels (clear and pink)', groupId: 'group-builder-gels'},'BE0324': { product: 'Ugly Duckling- BUILD-A-BASE - PINK 15ml', customerName: '2x Builder gels (clear and pink)', groupId: 'group-builder-gels'},
+         };
+
+        // --- State Management ---
+        let itemStates = {};
+        let totalCheckableItems = 0;
+
+        // --- DOM Elements ---
+        const groupGallery = document.getElementById('group-gallery');
+        const standardItemGallery = document.getElementById('standard-item-gallery');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const percentageText = document.getElementById('percentage');
+        const progressContainer = document.getElementById('progress-container');
+        // Modals
+        const imageModal = document.getElementById('image-modal');
+        const modalImageElement = document.getElementById('modal-image-element');
+        const modalImageTitle = document.getElementById('modal-image-title');
+        const modalImageCode = document.getElementById('modal-image-code');
+        const modalImageProduct = document.getElementById('modal-image-product');
+        const groupModal = document.getElementById('group-modal');
+        const groupModalTitle = document.getElementById('group-modal-title');
+        const groupModalList = document.getElementById('group-modal-list');
+        // Support Section Elements
+        const missingAlert = document.getElementById('missing-alert');
+        const supportBtn = document.getElementById('support-btn');
+        const websiteBtn = document.getElementById('website-btn');
+        const contactForm = document.getElementById('contact-form');
+        const reportForm = document.getElementById('report-form');
+        const missingItemsList = document.getElementById('missing-items-list');
+        const cancelReportBtn = document.getElementById('cancel-report-btn');
+        const thankYouMsg = document.getElementById('thank-you');
+
+        // --- Initialization ---
+        function initializeChecklist() {
+            groupGallery.innerHTML = ''; standardItemGallery.innerHTML = ''; totalCheckableItems = 0;
+            const savedState = localStorage.getItem('nailKitChecklistState');
+            itemStates = savedState ? JSON.parse(savedState) : {};
+
+            Object.keys(itemData).forEach(key => {
+                const item = itemData[key];
+                if (!item.isGroup) {
+                    totalCheckableItems++;
+                    if (itemStates[key] === undefined) itemStates[key] = false;
+                    if (!item.groupId) {
+                         standardItemGallery.appendChild(createStandardItemTile(key, item));
+                    }
+                 }
+             });
+
+             Object.keys(itemData).forEach(key => {
+                 if (itemData[key].isGroup) {
+                     groupGallery.appendChild(createGroupTile(key, itemData[key]));
+                 }
+             });
+
+            if (!standardItemGallery.hasChildNodes()) standardItemGallery.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 10px 0; color: var(--text-light);">No individual items found.</div>';
+            if (!groupGallery.hasChildNodes()) groupGallery.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 10px 0; color: var(--text-light);">No product sets found.</div>';
+
+            updateProgress(); updateAllGroupCompletionVisuals(); adjustBodyPadding();
+            setupEventListeners(); // Add event listeners after elements are potentially created
+        }
+
+        // --- Create HTML Elements ---
+        function createStandardItemTile(itemNo, item) {
+            const div = document.createElement('div');
+            div.className = 'gallery-item standard-item';
+            div.dataset.itemCode = itemNo;
+            if (itemStates[itemNo]) div.classList.add('checked');
+
+            const placeholderUrl = `https://via.placeholder.com/120x80/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`; // Slightly smaller placeholder
+
+            div.innerHTML = `
+                <div class="item-image-container" onclick="toggleItem('${itemNo}')">
+                    <img src="${placeholderUrl}" alt="${item.customerName}" class="item-image" loading="lazy">
+                    <div class="zoom-icon" onclick="event.stopPropagation(); openImageModal('${itemNo}')">
+                         <i class="fas fa-search-plus"></i>
+                     </div>
+                </div>
+                <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem('${itemNo}')">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-content">
+                    <div class="item-name">${item.customerName}</div>
+                </div>`;
+            return div;
+        }
+
+        function createGroupTile(groupId, groupInfo) {
+            const div = document.createElement('div');
+            div.className = 'gallery-item group-tile';
+            div.dataset.groupId = groupId;
+            div.onclick = () => openGroupModal(groupId);
+            const placeholderUrl = `https://via.placeholder.com/120x80/eef1f4/5a6f8f?text=Set`;
+            div.innerHTML = `
+                 <div class="item-image-container"> <img src="${placeholderUrl}" alt="${groupInfo.customerName}" class="item-image" loading="lazy"> </div>
+                 <div class="group-completion-indicator"><i class="fas fa-check"></i></div>
+                 <div class="item-content">
+                     <div class="item-name">${groupInfo.customerName}</div>
+                     <i class="fas fa-box-open view-set-icon" aria-hidden="true"></i>
+                 </div>`;
+             checkGroupCompletion(groupId, div); // Check completion status during creation
+            return div;
+        }
+
+        // --- Core Logic ---
+        function saveState() { localStorage.setItem('nailKitChecklistState', JSON.stringify(itemStates)); }
+
+        function toggleItem(itemNo) {
+            const itemElement = document.querySelector(`.standard-item[data-item-code="${itemNo}"]`);
+            if (!itemElement && !itemData[itemNo]?.groupId) return; // Only proceed if it's a standard item or group member
+
+            // If it's a group member, find its visual representation if any (though unlikely needed here as groups handle internal checks)
+             // For simplicity, we primarily care about the state itself for group members when toggled outside the group modal.
+
+            itemStates[itemNo] = !itemStates[itemNo];
+
+            // Update visual state for standard items
+            if (itemElement) {
+                itemElement.classList.toggle('checked', itemStates[itemNo]);
+            }
+
+            // If the item belongs to a group, update that group's completion status
+             if (itemData[itemNo]?.groupId) {
+                 checkGroupCompletion(itemData[itemNo].groupId);
+             }
+
+            updateProgress(); saveState();
+        }
+
+        function toggleGroupItem(itemNo, groupId) {
+             itemStates[itemNo] = !itemStates[itemNo];
+             const checkbox = groupModal.querySelector(`input[data-item-code="${itemNo}"]`);
+             if (checkbox) {
+                 checkbox.checked = itemStates[itemNo];
+                 checkbox.closest('.group-modal-item')?.classList.toggle('checked', itemStates[itemNo]);
+             }
+            checkGroupCompletion(groupId); updateProgress(); saveState();
+        }
+
+        function checkGroupCompletion(groupId, tileElement = null) {
+            const groupInfo = itemData[groupId]; if (!groupInfo?.groupMembers) return false;
+            const allComplete = groupInfo.groupMembers.every(memberNo => itemStates[memberNo] === true);
+            const groupTile = tileElement || document.querySelector(`.group-tile[data-group-id="${groupId}"]`);
+            if (groupTile) groupTile.classList.toggle('completed', allComplete); return allComplete;
+        }
+        function updateAllGroupCompletionVisuals() {
+            document.querySelectorAll('.group-tile').forEach(tile => checkGroupCompletion(tile.dataset.groupId, tile));
+        }
+
+        function updateProgress() {
+            let checkedCount = 0;
+            Object.keys(itemStates).forEach(itemNo => {
+                 if (itemData[itemNo] && !itemData[itemNo].isGroup && itemStates[itemNo]) {
+                    checkedCount++;
+                }
+            });
+
+             if (totalCheckableItems === 0 && Object.keys(itemData).length > 0) { // Recalculate if needed and data exists
+                 Object.keys(itemData).forEach(key => { if(!itemData[key].isGroup) totalCheckableItems++; });
+                 console.warn("Recalculated total checkable items:", totalCheckableItems);
+             }
+
+            const percentage = totalCheckableItems > 0 ? Math.round((checkedCount / totalCheckableItems) * 100) : 0;
+
+            if (progressBar) progressBar.style.width = percentage + '%';
+            if (progressText) progressText.textContent = `${checkedCount}/${totalCheckableItems} items checked`;
+            if (percentageText) percentageText.textContent = `${percentage}%`;
+
+            checkForMissingItems(checkedCount);
+        }
+
+        function checkForMissingItems(currentCheckedCount) {
+             const allChecked = currentCheckedCount === totalCheckableItems;
+             // Show alert only if user has started checking items AND not all items are checked
+             const userInteracted = Object.values(itemStates).some(state => state === true);
+             const shouldShowAlert = !allChecked && userInteracted && totalCheckableItems > 0;
+
+             if (missingAlert) missingAlert.style.display = shouldShowAlert ? 'block' : 'none';
+
+            // Hide form if alert is hidden (e.g., user checks the last item)
+            if (!shouldShowAlert && contactForm && contactForm.style.display !== 'none') {
+                contactForm.style.display = 'none';
+                if (reportForm) reportForm.reset();
+            }
+             // Hide thank you message if user unchecks an item after completion/submission
+             if(shouldShowAlert && thankYouMsg && thankYouMsg.style.display !== 'none') {
+                 thankYouMsg.style.display = 'none';
+             }
+        }
+
+        // --- Modal Handling ---
+        function openImageModal(itemNo, isFromGroup = false) {
+            const item = itemData[itemNo]; if (!item || item.isGroup) return;
+            const placeholderUrl = `https://via.placeholder.com/400x300/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`;
+            modalImageElement.src = placeholderUrl; modalImageElement.alt = item.customerName;
+            modalImageTitle.textContent = item.customerName;
+            modalImageCode.textContent = itemNo; modalImageProduct.textContent = item.product || 'N/A';
+            imageModal.style.zIndex = isFromGroup ? '1010' : '1000'; // Ensure image modal is above group modal if opened from it
+            imageModal.classList.add('active');
+            blockBodyScroll();
+        }
+
+        function openGroupModal(groupId) {
+            const groupInfo = itemData[groupId]; const members = groupInfo?.groupMembers; if (!members) return;
+            groupModalTitle.textContent = groupInfo.customerName; groupModalList.innerHTML = '';
+            members.forEach(itemNo => {
+                const item = itemData[itemNo]; if (!item) return;
+                const li = document.createElement('li');
+                li.className = 'group-modal-item'; if (itemStates[itemNo]) li.classList.add('checked');
+                const thumbPlaceholder = `https://via.placeholder.com/60x60/f0f0f0/aaaaaa?text=${itemNo.slice(-4)}`;
+                li.innerHTML = `
+                    <img src="${thumbPlaceholder}" alt="${item.product || item.customerName}" class="group-modal-item-img" onclick="event.stopPropagation(); openImageModal('${itemNo}', true)">
+                    <label for="modal-check-${itemNo}">
+                        <input type="checkbox" id="modal-check-${itemNo}" data-item-code="${itemNo}" ${itemStates[itemNo] ? 'checked' : ''} onchange="toggleGroupItem('${itemNo}', '${groupId}')">
+                        <span class="item-product-name">${item.product || item.customerName}</span>
+                    </label>`;
+                groupModalList.appendChild(li);
+            });
+            groupModal.dataset.currentGroup = groupId; groupModal.style.zIndex = '1005'; groupModal.classList.add('active');
+            blockBodyScroll();
+        }
+
+        function closeModal(modalId) {
+            const modalToClose = document.getElementById(modalId); if (modalToClose) modalToClose.classList.remove('active');
+            // Only unblock scroll if no other modals are active
+            const anyActiveModals = document.querySelector('.modal.active'); if (!anyActiveModals) document.body.style.overflow = 'auto';
+            // Update group visuals when group modal is closed
+            if(modalId === 'group-modal') {
+                 const groupId = groupModal.dataset.currentGroup;
+                 if(groupId) checkGroupCompletion(groupId); // Explicitly re-check the specific group
+                 // updateAllGroupCompletionVisuals(); // Or update all groups
+            }
+        }
+
+        function blockBodyScroll() {
+             // Block scroll only if it's not already blocked by another modal
+             if (document.querySelectorAll('.modal.active').length <= 1) {
+                 document.body.style.overflow = 'hidden';
+             }
+        }
+
+
+        // --- Support Form Logic ---
+        function populateMissingItemsList() {
+            if (!missingItemsList) return;
+            missingItemsList.innerHTML = ''; // Clear previous list
+            let hasMissingItems = false;
+
+            Object.keys(itemData).forEach(key => {
+                const item = itemData[key];
+                // Include if it's a checkable item (not a group definition) AND it's currently NOT checked
+                if (!item.isGroup && itemStates[key] === false) {
+                    hasMissingItems = true;
+                    const div = document.createElement('div');
+                    div.className = 'checkbox-container';
+                    // Use item.customerName for display consistency with tiles
+                    div.innerHTML = `
+                        <label>
+                            <input type="checkbox" name="missingItem[]" value="${key}">
+                            ${item.customerName} (${key})
+                        </label>
+                    `;
+                    missingItemsList.appendChild(div);
+                }
+            });
+
+            if (!hasMissingItems) {
+                missingItemsList.innerHTML = '<p>All items are currently checked.</p>';
+            }
+        }
+
+        // --- Event Listeners Setup ---
+        function setupEventListeners() {
+            // Modal backdrop/escape key closing
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(event) { if (event.target === modal) closeModal(modal.id); });
+            });
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape") {
+                    const activeModal = document.querySelector('.modal.active');
+                    if (activeModal) closeModal(activeModal.id);
+                }
+            });
+
+            // Support Section Buttons
+            if (supportBtn) {
+                supportBtn.addEventListener('click', () => {
+                    if (contactForm && thankYouMsg) {
+                        populateMissingItemsList(); // Populate the list when opening
+                        contactForm.style.display = 'block';
+                        thankYouMsg.style.display = 'none'; // Hide thank you msg
+                        contactForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    } else {
+                        console.error("Contact form or thank you message element not found.");
+                    }
+                });
+            }
+
+            if (cancelReportBtn) {
+                cancelReportBtn.addEventListener('click', () => {
+                    if (contactForm) {
+                        contactForm.style.display = 'none';
+                        if (reportForm) reportForm.reset(); // Reset form fields
+                    }
+                });
+            }
+
+            if (reportForm) {
+                reportForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    console.log("Form submitted (simulated)");
+                    // --- Placeholder for actual submission logic ---
+                    // const formData = new FormData(reportForm);
+                    // fetch('/your-endpoint', { method: 'POST', body: formData })
+                    //   .then(response => response.json())
+                    //   .then(data => { console.log('Success:', data); ... })
+                    //   .catch((error) => { console.error('Error:', error); ... });
+                    // --- End Placeholder ---
+
+                    if (contactForm) contactForm.style.display = 'none';
+                    if (thankYouMsg) thankYouMsg.style.display = 'block';
+                    if (reportForm) reportForm.reset();
+                    thankYouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }
+
+            if (websiteBtn) {
+                 websiteBtn.addEventListener('click', () => {
+                     window.open('https://google.com', '_blank'); // Open google.com in new tab
+                 });
+             }
+        }
+
+        // --- Dynamic Body Padding ---
+        function adjustBodyPadding() {
+             try {
+                 if (!progressContainer) return;
+                 const h = progressContainer.offsetHeight;
+                 document.body.style.paddingTop = `${h + 10}px`; // Add 10px spacing below sticky header
+             } catch (e) {
+                 console.error("Error adjusting body padding:", e);
+                 document.body.style.paddingTop = '70px'; // Fallback padding
+             }
+         }
+
+        // --- Run ---
+        // Use DOMContentLoaded to ensure elements exist before running scripts
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeChecklist();
+            // Adjust padding once on load, and on resize
+            window.addEventListener('load', adjustBodyPadding);
+            window.addEventListener('resize', adjustBodyPadding);
+            // Adjust padding after fonts load if possible
+            if (document.fonts) {
+                document.fonts.ready.then(adjustBodyPadding);
+            } else {
+                // Fallback for browsers without document.fonts
+                setTimeout(adjustBodyPadding, 500);
+            }
+        });
+
+    </script>
+
+</body>
+</html>
