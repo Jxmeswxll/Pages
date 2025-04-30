@@ -261,6 +261,7 @@
             font-size: 0.8em;
             text-align: center;
             line-height: 1.2;
+            padding: 5px; /* Add padding for text */
          }
 
         .item-image-container:hover .item-image {
@@ -796,59 +797,61 @@
     </div>
 
     <script defer>
-        // --- Product Data (Your Full List) ---
+        // --- Product Data (Updated based on spreadsheet & original text list) ---
         const products = [
+            // Using "Customer facing name" where appropriate, and URLs from original text list
+            { code: "BE0281", name: "Beauty School Case", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0281-Storage-Case-Tall-247x247.png" },
             { code: "BE0029", name: "Dappen Dish", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0029-Dappen-Dish-247x247.png" },
-            { code: "BE0069", name: "Cuticle Oil - 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0069-Cuticle-Oil-15ml-247x247.png" },
+            { code: "BE0069", name: "Cuticle Oil - 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0069-Cuticle-Oil-15ml-247x247.png" }, // URL from text list
             { code: "BE0073", name: "Acetone - 125ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0073-Acetone-125ml-247x247.png" },
             { code: "BE0076", name: "Edge Cutter", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0076-Edge-Cutter-247x247.png" },
-            { code: "BE0077", name: "Plastic Eye Dropper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0077-Plastic-Eye-Dropper-247x247.png" },
-            { code: "BE0078", name: "Buffer Block 180", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0078-Buffer-Block-180-247x247.png" },
-            { code: "BE0079", name: "Nail Clipper - 8mm", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0079-Nail-Clipper-8mm-247x247.png" },
-            { code: "BE0083", name: "Double Thick Nail Form - 30 pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0083-Double-Thick-Nail-Form-30-pieces-247x247.png" },
-            { code: "BE0084", name: "Powder Dust Brush - Pink", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0084-Powder-Dust-Brush-Pink-247x247.png" },
+            { code: "BE0077", name: "Eye Dropper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0077-Plastic-Eye-Dropper-247x247.png" },
+            { code: "BE0078", name: "Buffer Block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0078-Buffer-Block-180-247x247.png" },
+            { code: "BE0079", name: "Nail Clipper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0079-Nail-Clipper-8mm-247x247.png" },
+            { code: "BE0083", name: "Nail forms", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0083-Double-Thick-Nail-Form-30-pieces-247x247.png" },
+            { code: "BE0084", name: "Powder dust Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0084-Powder-Dust-Brush-Pink-247x247.png" },
             { code: "BE0086", name: "Gel Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0086-Gel-Brush-247x247.png" },
-            { code: "BE0088-A", name: "UV LED Light Lamp - Australia", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0088-A-UV-LED-Light-Lamp-Australia-247x247.png" },
-            { code: "BE0099", name: "Gel Nail Polish Base Coat 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0099-Gel-Nail-Polish-Base-Coat-15ml-247x247.png" },
+            { code: "BE0088-A", name: "UV Lamp", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0088-A-UV-LED-Light-Lamp-Australia-247x247.png" },
+            { code: "BE0099", name: "Gel Base", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0099-Gel-Nail-Polish-Base-Coat-15ml-247x247.png" }, // URL from text list
             { code: "BE0100", name: "Gel Nail Polish Big Red Apple 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0100-Gel-Nail-Polish-Big-Red-Apple-15ml-247x247.png" },
-            { code: "BE0102", name: "Cotton Balls - 100 pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0102-Cotton-Balls-100-pieces-247x247.png" },
-            { code: "BE0103", name: "Nail Drill with Ceramic Pieces", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0103-Nail-Drill-with-Ceramic-Pieces-247x247.png" },
+            { code: "BE0102", name: "Cotton Balls", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0102-Cotton-Balls-100-pieces-247x247.png" },
+            { code: "BE0103", name: "Nail Drill With Drill bits", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0103-Nail-Drill-with-Ceramic-Pieces-247x247.png" },
             { code: "BE0105", name: "Practice Hand", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0105-Practice-Hand-247x247.png" },
-            { code: "BE0108", name: "Nail Tech Course Brochure", imageUrl: null }, // No image
-            { code: "BE0111", name: "Gel Polish Top Coat Glossy", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0111-Gel-Polish-Top-Coat-Glossy-247x247.png" },
-            { code: "BE0136", name: "Brush - Multiple Thickness x6", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0136-Brush-Multiple-Thickness-x6-247x247.png" },
-            { code: "BE0167", name: "Cuticle Sticks x 10pcs", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0167-Cuticle-Sticks-x-10pcs-247x247.png" },
-            { code: "BE0198", name: "Nail Tech Mailing Box", imageUrl: null }, // No image
-            { code: "BE0211", name: "Acrylic Practice Sheet Laminated", imageUrl: null }, // No image
-            { code: "BE0226", name: "Nail Tech User Manual", imageUrl: null }, // No image
-            { code: "BE0264", name: "Cuticle Nipper 5mm 2 arm", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0264-Cuticle-Nipper-5mm-2-arm-247x247.png" },
-            { code: "BE0265", name: "Gauze Nail Wipes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0265-Gauze-Nail-Wipes-247x247.png" },
-            { code: "BE0266", name: "Premium Nail File 80/80 blue black", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0266-Premium-Nail-File-80-80-blue-black-colour-printed-grit-247x247.png" },
-            { code: "BE0267", name: "Flex File 100/100 Red black", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0267-Flex-File-100-100-Red-black-Colour-printed-grit-247x247.png" },
-            { code: "BE0268", name: "Zebra File 100/100 Purple", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0268-Zebra-File-100-100-Purple-Colour-printed-grit-247x247.png" },
-            { code: "BE0270", name: "Nail Tips 100pc flexible", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0270-Nail-Tips-100pc-flexible-247x247.png" },
+            { code: "BE0111", name: "Gel Top Coat", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0111-Gel-Polish-Top-Coat-Glossy-247x247.png" },
+            { code: "BE0211", name: "Practice Sheet", imageUrl: null }, // No URL in text list
+            { code: "BE0264", name: "Cuticle nipper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0264-Cuticle-Nipper-5mm-2-arm-247x247.png" },
+            { code: "BE0265", name: "Lint Free wipes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0265-Gauze-Nail-Wipes-247x247.png" },
+            { code: "BE0266", name: "Premium Nail File 80/80", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0266-Premium-Nail-File-80-80-blue-black-colour-printed-grit-247x247.png" },
+            { code: "BE0267", name: "Flex File 100/100", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0267-Flex-File-100-100-Red-black-Colour-printed-grit-247x247.png" },
+            { code: "BE0268", name: "Zebra File 100/100", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0268-Zebra-File-100-100-Purple-Colour-printed-grit-247x247.png" },
+            { code: "BE0270", name: "Nail Tips", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0270-Nail-Tips-100pc-flexible-247x247.png" },
             { code: "BE0271", name: "Hand and Nail Cream", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0271-Hand-and-Nail-Cream-247x247.png" },
-            { code: "BE0277", name: "Isopropyl Alcohol - 125ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0277-Isopropyl-Alcohol-125ml-247x247.png" },
-            { code: "BE0279", name: "Brush on Nail Glue 7g", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0279-Brush-on-Nail-Glue-7g-247x247.png" },
-            { code: "BE0281", name: "Storage Case Tall", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0281-Storage-Case-Tall-247x247.png" },
-            { code: "BE0283", name: "Zebra File 150/150 grit printed", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0283-Zebra-File-150-150-grit-printed-247x247.png" },
-            { code: "BE0284", name: "Zebra File 150/180 grit printed", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0284-Zebra-File-150-180-grit-printed-247x247.png" },
-            { code: "BE0305", name: "4 Way Nail Buffer Block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0305-4-Way-Nail-Buffer-Block-247x247.png" },
-            { code: "BE0308", name: "Shine Buffer with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0308-Shine-Buffer-with-printed-grit-247x247.png" },
-            { code: "BE0309", name: "File 240/240 with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0309-File-240-240-with-printed-grit-247x247.png" },
-            { code: "BE0310", name: "File 200/200 with printed grit", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0310-File-200-200-with-printed-grit-247x247.png" },
+            { code: "BE0277", name: "isopropyl Alcohol", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0277-Isopropyl-Alcohol-125ml-247x247.png" },
+            { code: "BE0279", name: "Nail Glue", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0279-Brush-on-Nail-Glue-7g-247x247.png" },
+            { code: "BE0283", name: "Zebra File 150/150", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0283-Zebra-File-150-150-grit-printed-247x247.png" },
+            { code: "BE0284", name: "Zebra File 150/180", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0284-Zebra-File-150-180-grit-printed-247x247.png" },
+            { code: "BE0305", name: "4 way buffer block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0305-4-Way-Nail-Buffer-Block-247x247.png" },
+            { code: "BE0308", name: "Shine buffer", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0308-Shine-Buffer-with-printed-grit-247x247.png" },
+            { code: "BE0309", name: "File 240/240", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0309-File-240-240-with-printed-grit-247x247.png" },
+            { code: "BE0310", name: "File 200/200", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0310-File-200-200-with-printed-grit-247x247.png" },
             { code: "BE0311", name: "Cleaning brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0311-Cleaning-brush-247x247.png" },
             { code: "BE0312", name: "Gel Polish French Pink", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0312-Gel-Polish-French-Pink-247x247.png" },
             { code: "BE0313", name: "Gel Polish French White", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0313-Gel-Polish-French-White-247x247.png" },
-            { code: "BE0314", name: "Acrylic Brush x4", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0314-Acrylic-Brush-x4-247x247.png" },
+            { code: "BE0136", name: "6x fine liner brushes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0136-Brush-Multiple-Thickness-x6-247x247.png" },
+            { code: "BE0314", name: "Acrylic Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0314-Acrylic-Brush-x4-247x247.png" },
             { code: "BE0315", name: "Cuticle Pusher", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0315-Cuticle-Pusher-247x247.png" },
-            { code: "BE0318", name: "Ugly Duckling AcryGel Prep 7ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0318-Ugly-Duckling-AcryGel-Prep-7ml-247x247.png" },
-            { code: "BE0319", name: "Ugly Duckling AcryGel Primer 7ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0319-Ugly-Duckling-AcryGel-Primer-7ml-247x247.png" },
-            { code: "BE0320", name: "Ugly Duckling Premium Acrylic Liquid 100ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0320-Ugly-Duckling-Premium-Acrylic-Liquid-100ml-247x247.png" },
-            { code: "BE0321", name: "Ugly Duckling PREMIUM ACRYLIC POWDER - CLEAR 30g", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0321-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-CLEAR-30g-247x247.png" },
-            { code: "BE0322", name: "Ugly Duckling PREMIUM ACRYLIC POWDER - FUFU PINK", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0322-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-FUFU-PINK-247x247.png" },
-            { code: "BE0323", name: "Ugly Duckling - BUILD-A-BASE -CLEAR 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0323-Ugly-Duckling-BUILD-A-BASE-CLEAR-15ml-247x247.png" },
-            { code: "BE0324", name: "Ugly Duckling- BUILD-A-BASE - PINK 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0324-Ugly-Duckling-BUILD-A-BASE-PINK-15ml-247x247.png" }
+            { code: "BE0167", name: "Orange Sticks", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0167-Cuticle-Sticks-x-10pcs-247x247.png" }, // Note: BE0167 listed twice in spreadsheet, using data from row 45
+            { code: "BE0318", name: "Nail Dehydrator", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0318-Ugly-Duckling-AcryGel-Prep-7ml-247x247.png" },
+            { code: "BE0319", name: "Nail Primer", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0319-Ugly-Duckling-AcryGel-Primer-7ml-247x247.png" },
+            { code: "BE0320", name: "Acrylic Liquid", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0320-Ugly-Duckling-Premium-Acrylic-Liquid-100ml-247x247.png" },
+            { code: "BE0321", name: "Acrylic powder (clear)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0321-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-CLEAR-30g-247x247.png" },
+            { code: "BE0322", name: "Acrylic powder (Pink)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0322-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-FUFU-PINK-247x247.png" },
+            { code: "BE0323", name: "Builder gel (clear)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0323-Ugly-Duckling-BUILD-A-BASE-CLEAR-15ml-247x247.png" },
+            { code: "BE0324", name: "Builder gel (pink)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0324-Ugly-Duckling-BUILD-A-BASE-PINK-15ml-247x247.png" },
+            // Adding items from original text list missing from spreadsheet image (BE0108, BE0198, BE0226)
+            { code: "BE0108", name: "Nail Tech Course Brochure", imageUrl: null },
+            { code: "BE0198", name: "Nail Tech Mailing Box", imageUrl: null },
+            { code: "BE0226", name: "Nail Tech User Manual", imageUrl: null },
         ];
 
         // --- DOM Elements ---
@@ -901,6 +904,9 @@
                 img.onerror = function() { // Handle broken images
                     this.parentElement.innerHTML = '<span>Image<br>Error</span>';
                     this.parentElement.classList.add('no-image');
+                    // Ensure no zoom icon if image fails to load
+                    const zoomIcon = this.parentElement.querySelector('.zoom-icon');
+                    if (zoomIcon) zoomIcon.remove();
                 };
                 imageContainer.appendChild(img);
 
@@ -916,7 +922,10 @@
 
             } else {
                 imageContainer.classList.add('no-image');
-                imageContainer.innerHTML = '<span>No Image</span>';
+                // Display placeholder text like product name if no image
+                 imageContainer.innerHTML = `<span>${product.name.split(' ')[0]}<br>${product.name.split(' ').slice(1,3).join(' ')}</span>`; // Show first few words
+                 // Or simply 'No Image'
+                 // imageContainer.innerHTML = '<span>No Image</span>';
             }
 
             // Details (Name and Code)
@@ -925,9 +934,7 @@
 
             const nameSpan = document.createElement('span');
             nameSpan.classList.add('item-name');
-             // Simple name cleanup (optional)
-            let cleanedName = product.name.replace(/ blue black colour printed grit| Red black Colour printed grit| Purple Colour printed grit| grit printed| with printed grit/gi, '').trim();
-            nameSpan.textContent = cleanedName;
+            nameSpan.textContent = product.name; // Use the name directly from the updated array
 
             const codeSpan = document.createElement('span');
             codeSpan.classList.add('item-code');
@@ -1063,11 +1070,7 @@
                 contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                  // Alert if all items are checked
-                 alert("You've checked all items! If something is wrong, please describe it in the form (uncheck an item first if needed).");
-                 // Optionally still show the form, but maybe without pre-checked items
-                 // contactForm.style.display = 'block';
-                 // missingItemsList.innerHTML = '<p>All items were checked. Please describe the issue.</p>';
-                 // contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                 alert("You've checked all items! If something is wrong (e.g., damaged), please uncheck the item and describe the issue in the form.");
                  contactForm.style.display = 'none'; // Default: hide form if all checked
             }
         });
