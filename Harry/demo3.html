@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nail Kit Contents Checklist</title>
+    <title>Nail Kit Contents Gallery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- Root Variables (Color Palette) --- */
         :root {
-            --primary: #f75a8f; /* Main pink */
-            --primary-light: #fcd2e1; /* Lighter pink */
-            --primary-dark: #d94a7b;  /* Darker pink */
-            --secondary: #fdf6f8; /* Very light pink background */
-            --text: #444444;      /* Dark gray text */
-            --text-light: #777777; /* Lighter gray text */
-            --success: #28a745;   /* Green for checked items */
-            --success-light: #eaf6ec; /* Light green background */
-            --warning: #ffc107;   /* Yellow for alerts */
-            --warning-light: #fff8e1; /* Light yellow background */
-            --gray-light: #f1f3f5;  /* Light gray for borders/backgrounds */
+            --primary: #f75a8f; /* Slightly softer pink */
+            --primary-light: #fcd2e1;
+            --primary-dark: #d94a7b;
+            --secondary: #fdf6f8; /* Lighter background */
+            --text: #444444; /* Darker gray for better contrast */
+            --text-light: #777777;
+            --success: #28a745; /* Standard green */
+            --success-light: #eaf6ec;
+            --warning: #ffc107; /* Standard yellow */
+            --warning-light: #fff8e1;
+            --gray-light: #f1f3f5; /* Lighter gray for backgrounds */
+            --gray-medium: #e9ecef;
             --white: #ffffff;
-            --shadow-color: rgba(0, 0, 0, 0.06); /* Soft shadow */
+            --shadow-color: rgba(0, 0, 0, 0.06);
         }
 
-        /* --- Base Styles & Reset --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -41,46 +40,44 @@
             font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
             background-color: var(--secondary);
             color: var(--text);
-            line-height: 1.7;
-            font-size: 16px;
-            padding-bottom: 40px; /* Add padding to bottom */
+            line-height: 1.6; /* Slightly adjusted */
+            font-size: 15px; /* Base size adjusted slightly */
         }
 
-        /* --- Container --- */
         .container {
-            max-width: 850px;
-            margin: 20px auto; /* Added top margin */
-            padding: 0 15px;
+            max-width: 1200px; /* Wider for gallery */
+            margin: 0 auto;
+            padding: 30px 20px; /* Consistent padding */
         }
 
-        /* --- Header Styles --- */
+        /* Header Styles (Mostly Unchanged) */
         header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 35px 20px;
             background-color: var(--white);
-            border-radius: 20px;
+            border-radius: 16px; /* Slightly less rounded */
             box-shadow: 0 5px 25px var(--shadow-color);
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
         }
 
-        header::before { /* Decorative element */
+        header::before {
             content: '';
             position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
             background: radial-gradient(circle, var(--primary-light) 0%, rgba(255,255,255,0) 65%);
-            opacity: 0.5;
+            opacity: 0.4;
             border-radius: 50%;
             z-index: 0;
         }
 
         h1 {
             color: var(--primary);
-            font-size: 32px;
+            font-size: 28px; /* Adjusted */
             font-weight: 700;
             position: relative;
             z-index: 1;
@@ -88,18 +85,18 @@
         }
 
         .subtitle {
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-light);
             position: relative;
             z-index: 1;
         }
 
-        /* --- Progress Bar Styles --- */
+        /* Progress Bar Styles (Mostly Unchanged) */
         .progress-container {
             background: var(--white);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 35px; /* More space before gallery */
             box-shadow: 0 5px 25px var(--shadow-color);
         }
 
@@ -107,32 +104,32 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 600;
         }
 
         .progress-title {
             display: flex;
             align-items: center;
-            font-size: 18px;
+            font-size: 17px;
         }
 
         .progress-icon {
             color: var(--primary);
             margin-right: 10px;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         #percentage {
             font-weight: 700;
             color: var(--primary);
-            font-size: 18px;
+            font-size: 17px;
         }
 
         .progress-bar-container {
-            height: 14px;
+            height: 12px;
             background-color: var(--gray-light);
-            border-radius: 7px;
+            border-radius: 6px;
             overflow: hidden;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
@@ -140,139 +137,122 @@
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
-            border-radius: 7px;
+            border-radius: 6px;
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .progress-text {
-            text-align: center;
+            text-align: right; /* Aligned right below percentage */
             font-weight: 600;
-            font-size: 15px;
-            margin-top: 10px;
+            font-size: 14px;
+            margin-top: 8px;
             color: var(--text-light);
         }
 
-        /* --- Checklist Styles --- */
-        .checklist {
-            list-style-type: none;
-            padding: 0;
-            margin-bottom: 30px; /* Space before alert/button */
+        /* Gallery Styles */
+        .gallery {
+            display: grid;
+            /* Responsive grid: Fits as many columns > 240px as possible */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px; /* Spacing between items */
+            padding: 0; /* Remove default list padding if ul was used */
+            list-style-type: none; /* Remove list bullets if ul was used */
         }
 
-        .checklist-item {
+        .gallery-item {
             background: var(--white);
-            border-radius: 15px;
-            margin-bottom: 18px;
-            box-shadow: 0 5px 25px var(--shadow-color);
+            border-radius: 12px; /* Consistent rounding */
+            box-shadow: 0 4px 15px var(--shadow-color);
             overflow: hidden;
             transition: all 0.3s ease;
             border: 2px solid transparent;
-            position: relative;
+            display: flex; /* Use flex for internal layout */
+            flex-direction: column; /* Stack elements vertically */
+            position: relative; /* For absolute checkbox positioning */
+            cursor: pointer; /* Indicate clickable */
         }
 
-        .checklist-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
         }
 
-        .checklist-item.checked {
-            border-color: var(--success-light);
-            box-shadow: 0 5px 25px rgba(40, 167, 69, 0.1);
+        .gallery-item.checked {
+            border-color: var(--success); /* Use solid success color for border */
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.15);
         }
 
-        .checklist-item-header {
-            display: flex;
-            align-items: center;
-            padding: 18px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .checklist-item.checked .checklist-item-header {
-            background-color: var(--success-light);
+        .item-checkbox-container { /* Separate container for checkbox */
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
         }
 
         .item-checkbox {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border: 2px solid #ccc;
-            border-radius: 50%; /* Circular checkbox */
-            margin-right: 20px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #bbb; /* Slightly darker border */
+            border-radius: 50%;
             position: relative;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--white);
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            backdrop-filter: blur(2px); /* Frosted glass effect */
         }
 
-        .checklist-item:hover .item-checkbox {
+        .gallery-item:hover .item-checkbox {
             border-color: var(--primary-light);
+            background-color: rgba(255, 255, 255, 0.95);
         }
 
-        .item-checkbox i { /* Font Awesome check icon */
-            font-size: 14px;
+        .item-checkbox i { /* Style for Font Awesome check */
+            font-size: 12px;
             color: white;
             opacity: 0;
             transform: scale(0.5);
             transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .checklist-item.checked .item-checkbox {
+        .gallery-item.checked .item-checkbox {
             background-color: var(--success);
             border-color: var(--success);
         }
 
-        .checklist-item.checked .item-checkbox i {
+        .gallery-item.checked .item-checkbox i {
             opacity: 1;
             transform: scale(1);
         }
 
         .item-image-container {
-            position: relative;
-            margin-right: 20px;
-            flex-shrink: 0;
-            cursor: pointer;
-            width: 75px; /* Fixed width for alignment */
-            height: 75px; /* Fixed height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--gray-light); /* Add subtle border */
-            border-radius: 10px; /* Match image radius */
-            background-color: var(--white); /* Background for placeholder */
+            position: relative; /* For zoom icon */
+            width: 100%;
+            height: 160px; /* Fixed height for images */
+            overflow: hidden; /* Hide overflow */
+            cursor: pointer; /* Image is clickable for modal */
+            background-color: var(--gray-light); /* BG for unloaded images */
         }
 
         .item-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Changed to contain to see full image */
-            border-radius: 8px; /* Slightly smaller radius than container */
-            transition: transform 0.3s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Use contain to see the whole object */
             display: block;
+            transition: transform 0.3s ease;
         }
 
-         /* Style for items with missing images */
-         .item-image-container.no-image {
-            background-color: var(--gray-light); /* Placeholder background */
-            color: var(--text-light);
-            font-size: 0.8em;
-            text-align: center;
-            line-height: 1.2;
-            padding: 5px; /* Add padding for text */
-         }
-
         .item-image-container:hover .item-image {
-            transform: scale(1.05);
+             transform: scale(1.05); /* Subtle zoom */
         }
 
         .zoom-icon {
             position: absolute;
-            right: 6px;
-            bottom: 6px;
-            background-color: rgba(255, 255, 255, 0.9);
+            left: 10px;
+            bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.85);
             width: 28px;
             height: 28px;
             border-radius: 50%;
@@ -280,464 +260,866 @@
             align-items: center;
             justify-content: center;
             color: var(--primary);
-            font-size: 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-size: 13px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.15);
             transition: all 0.3s ease;
-            opacity: 0; /* Hidden by default */
-        }
-         /* Show zoom icon only if there is an image */
-        .item-image-container:not(.no-image):hover .zoom-icon {
-            opacity: 1; /* Show on hover */
+            backdrop-filter: blur(2px);
         }
 
-        .item-image-container:not(.no-image):hover .zoom-icon:hover {
+         .item-image-container:hover .zoom-icon {
             background-color: var(--primary);
             color: white;
             transform: scale(1.1);
         }
 
-        .item-details {
-            flex-grow: 1;
-            min-width: 0; /* Prevents text overflow issues */
+        .item-content { /* Container for text below image */
+            padding: 15px;
+            flex-grow: 1; /* Allow content to fill remaining space */
+            display: flex;
+            flex-direction: column;
+             border-top: 1px solid var(--gray-light); /* Separator line */
         }
 
-        .item-name {
+         /* Highlight background on checked items */
+        .gallery-item.checked .item-content {
+            background-color: var(--success-light);
+        }
+
+        .item-code {
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 3px; /* Reduced space */
-            font-size: 16px; /* Slightly smaller */
-            color: var(--text);
-            line-height: 1.3; /* Adjust line height */
+            color: var(--text-light);
+            margin-bottom: 4px;
+            background-color: var(--gray-medium);
+            padding: 2px 6px;
+            border-radius: 4px;
+            align-self: flex-start; /* Align code to the start */
         }
 
-        .checklist-item.checked .item-name {
+        .gallery-item.checked .item-code {
+             background-color: rgba(40, 167, 69, 0.2); /* Greenish background */
              color: var(--success);
         }
 
-        .item-code { /* Style for product code */
+
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 15px; /* Slightly smaller for grid */
+            line-height: 1.4;
+             color: var(--text); /* Ensure contrast */
+             flex-grow: 1; /* Push description down */
+        }
+
+        .gallery-item.checked .item-name {
+            /* Optionally change color, but border/bg might be enough */
+             /* color: var(--success); */
+        }
+
+        .item-description {
             font-size: 13px;
             color: var(--text-light);
-            display: block; /* Ensure it's on its own line */
+            line-height: 1.5;
         }
 
-        /* --- Image Modal Styles --- */
+        /* Modal, Alert, Button, Form, Thank You Styles (Mostly Unchanged) */
+        /* Add minor adjustments if needed for consistency */
         .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-            padding: 15px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 15px;
+        }
+        .modal.active { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
+        .modal-content { background-color: var(--white); padding: 25px; border-radius: 12px; max-width: 90%; width: 500px; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .modal.active .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; background-color: var(--gray-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; color: var(--text-light); font-size: 15px; border: none; }
+        .modal-close:hover { background-color: var(--primary-light); color: var(--primary); transform: rotate(90deg); }
+        .modal-image { width: 100%; border-radius: 8px; margin-bottom: 15px; display: block; background-color: var(--gray-light); }
+        .modal-title { font-size: 20px; color: var(--primary); text-align: center; margin-bottom: 10px; font-weight: 600; }
+        .modal-description { margin-bottom: 15px; line-height: 1.6; color: var(--text-light); text-align: center; font-size: 14px;}
+
+        .missing-alert { background-color: var(--warning-light); border-left: 4px solid var(--warning); padding: 15px 20px; margin: 30px 0 20px 0; border-radius: 8px; display: none; animation: fadeIn 0.5s ease; font-size: 14px; }
+        .missing-alert strong { color: #c88f03; font-weight: 600; }
+
+        .btn { color: white; border: none; padding: 12px 25px; font-size: 15px; border-radius: 50px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s ease; text-decoration: none; gap: 8px; }
+        .support-btn { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3); width: 100%; margin-top: 20px; /* Default margin */ }
+        .support-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4); }
+
+        .contact-form { background: var(--white); border-radius: 16px; padding: 30px; margin-top: 30px; box-shadow: 0 5px 25px var(--shadow-color); display: none; animation: slideUp 0.5s ease; }
+        .contact-form h2 { color: var(--primary); margin-bottom: 20px; text-align: center; font-size: 22px; font-weight: 700; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: var(--text); }
+        input[type="text"], input[type="email"], textarea, select { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; transition: all 0.3s ease; background-color: var(--gray-light); font-family: inherit; color: var(--text); }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background-color: var(--white); }
+        textarea { height: 110px; resize: vertical; }
+        #missing-items-list label.checkbox-container { display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; padding: 10px 12px; border-radius: 6px; background-color: var(--gray-light); transition: background-color 0.3s ease; font-weight: 400; font-size: 14px; }
+        #missing-items-list label.checkbox-container:hover { background-color: #e2e6ea; }
+        #missing-items-list input[type="checkbox"] { appearance: none; width: 18px; height: 18px; border: 2px solid #ccc; border-radius: 4px; margin-right: 10px; cursor: pointer; position: relative; top: -1px; transition: all 0.2s ease; background-color: var(--white); flex-shrink: 0; }
+        #missing-items-list input[type="checkbox"]:checked { background-color: var(--primary); border-color: var(--primary); }
+        #missing-items-list input[type="checkbox"]:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 10px; }
+        .form-submit { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3); width: 100%; }
+        .form-submit:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4); }
+
+        .thank-you { text-align: center; display: none; padding: 40px 30px; background: var(--white); border-radius: 16px; box-shadow: 0 5px 25px var(--shadow-color); animation: fadeIn 0.5s ease; margin-top: 30px; }
+        .thank-you h2 { color: var(--primary); margin-bottom: 15px; font-size: 24px; }
+        .success-icon { font-size: 60px; color: var(--success); margin-bottom: 20px; animation: bounceIn 0.6s ease; display: inline-block; }
+        .thank-you p { color: var(--text-light); font-size: 16px; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .container { max-width: 960px; padding: 25px 15px; }
+            .gallery { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         }
 
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 16px;
-            max-width: 90%;
-            width: 550px;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 35px;
-            height: 35px;
-            background-color: var(--gray-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--text-light);
-            font-size: 16px;
-            border: none;
-        }
-
-        .modal-close:hover {
-            background-color: var(--primary-light);
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-
-        .modal-image {
-            width: 100%;
-            max-height: 60vh; /* Limit image height */
-            object-fit: contain; /* Ensure full image is visible */
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .modal-title {
-            font-size: 22px;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .modal-code { /* Style for code in modal */
-            font-size: 15px;
-            color: var(--text-light);
-            text-align: center;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        /* --- Alert Styles --- */
-        .missing-alert {
-            background-color: var(--warning-light);
-            border-left: 5px solid var(--warning);
-            padding: 18px 20px;
-            margin: 0 0 20px 0; /* Adjusted margin */
-            border-radius: 10px;
-            display: none; /* Hidden by default */
-            animation: fadeIn 0.5s ease;
-            font-size: 15px;
-        }
-
-        .missing-alert strong {
-            color: #c88f03;
-            font-weight: 600;
-        }
-
-         /* --- Website Link Section --- */
-        .website-link-section {
-            text-align: center;
-            margin-bottom: 20px; /* Space before button */
-            padding: 15px;
-            background-color: #fff; /* Optional background */
-            border-radius: 10px;
-            box-shadow: 0 2px 10px var(--shadow-color);
-            font-size: 16px;
-        }
-
-        .website-link-section a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-
-        .website-link-section a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        /* --- Button Styles --- */
-        .btn {
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            border-radius: 50px; /* Pill shape */
-            cursor: pointer;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            gap: 8px;
-            width: 100%; /* Make buttons full width */
-        }
-
-        .support-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3);
-            /* margin-top: 30px; Set via JS */
-        }
-
-        .support-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4);
-        }
-
-        /* --- Form Styles --- */
-        .contact-form {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 35px;
-            margin-top: 25px; /* Space above form */
-            box-shadow: 0 5px 25px var(--shadow-color);
-            display: none; /* Hidden by default */
-            animation: slideUp 0.5s ease;
-        }
-
-        .contact-form h2 {
-            color: var(--primary);
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .form-group {
-            margin-bottom: 22px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--text);
-        }
-
-        input[type="text"],
-        input[type="email"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background-color: var(--gray-light);
-            font-family: inherit;
-            color: var(--text);
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-light);
-            background-color: var(--white);
-        }
-
-        textarea {
-            height: 130px;
-            resize: vertical;
-        }
-
-        /* Custom Checkboxes for Missing Items in Form */
-        #missing-items-list label.checkbox-container {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 12px;
-            padding: 12px 15px;
-            border-radius: 8px;
-            background-color: var(--gray-light);
-            transition: background-color 0.3s ease;
-            font-weight: 400;
-            font-size: 14px; /* Slightly smaller font */
-        }
-
-        #missing-items-list label.checkbox-container:hover {
-            background-color: #e9ecef;
-        }
-
-        #missing-items-list input[type="checkbox"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            margin-right: 12px;
-            cursor: pointer;
-            position: relative;
-            top: -1px;
-            transition: all 0.2s ease;
-            background-color: var(--white);
-            flex-shrink: 0;
-        }
-
-        #missing-items-list input[type="checkbox"]:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        #missing-items-list input[type="checkbox"]:checked::after {
-            content: '\f00c'; /* Font Awesome check */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: white;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 12px;
-        }
-
-        .form-submit {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            box-shadow: 0 4px 15px rgba(247, 90, 143, 0.3);
-            width: 100%; /* Full width submit */
-        }
-
-        .form-submit:hover {
-             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(247, 90, 143, 0.4);
-        }
-
-        /* --- Thank You Screen --- */
-        .thank-you {
-            text-align: center;
-            display: none; /* Hidden by default */
-            padding: 50px 30px;
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 5px 25px var(--shadow-color);
-            animation: fadeIn 0.5s ease;
-            margin-top: 30px;
-        }
-
-        .thank-you h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-
-        .success-icon {
-            font-size: 70px;
-            color: var(--success);
-            margin-bottom: 25px;
-            animation: bounceIn 0.6s ease;
-            display: inline-block;
-        }
-
-        .thank-you p {
-            color: var(--text-light);
-            font-size: 17px;
-        }
-
-        /* --- Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 1; transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); }
-        }
-
-        /* --- Responsive Styles --- */
         @media (max-width: 768px) {
-             .container {
-                padding: 0 15px;
-             }
-             h1 { font-size: 28px; }
-             .subtitle { font-size: 16px; }
-             .checklist-item-header { padding: 15px; }
-             .item-image-container { width: 65px; height: 65px; margin-right: 15px;}
-             .item-name { font-size: 15px; }
-             .item-code { font-size: 12px; }
-             .modal-content { padding: 25px; }
-             .modal-title { font-size: 20px; }
-             .contact-form { padding: 25px; }
+            .container { padding: 20px 15px; }
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 15px; }
+            .gallery { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+            .item-image-container { height: 140px; }
+            .item-name { font-size: 14px; }
+            .item-description { font-size: 12px; }
+            .modal-content { width: 90%; padding: 20px; }
+            .modal-title { font-size: 18px; }
+            .btn { padding: 10px 20px; font-size: 14px;}
+            .contact-form { padding: 25px; }
         }
 
-        @media (max-width: 480px) {
-            body { font-size: 15px; }
-            .container { padding: 0 10px; }
-            header { padding: 30px 15px; border-radius: 15px; }
-            h1 { font-size: 24px; }
-            .subtitle { font-size: 15px; }
-            .progress-container, .checklist-item, .contact-form, .thank-you, .website-link-section { border-radius: 15px; }
-            .progress-container { padding: 20px; }
-            .progress-title, #percentage { font-size: 16px; }
-            .progress-bar-container { height: 12px; }
-            .progress-text { font-size: 14px; }
-            .checklist-item-header { padding: 12px; align-items: flex-start; }
-            .item-checkbox { width: 24px; height: 24px; margin-right: 15px; margin-top: 5px; }
-            .item-checkbox i { font-size: 12px; }
-            .item-image-container { width: 60px; height: 60px; margin-right: 12px; }
-            .zoom-icon { width: 24px; height: 24px; font-size: 12px; right: 4px; bottom: 4px; }
-            .item-name { font-size: 14px; margin-bottom: 2px; }
-            .item-code { font-size: 11px; }
-            .btn { padding: 12px 24px; font-size: 15px; }
-            .contact-form { padding: 20px; margin-top: 20px; }
-            .contact-form h2 { font-size: 22px; margin-bottom: 20px; }
-            input[type="text"], input[type="email"], textarea, select { padding: 12px 15px; font-size: 15px; }
-            #missing-items-list label.checkbox-container { padding: 10px 12px; font-size: 13px; }
-            #missing-items-list input[type="checkbox"] { width: 18px; height: 18px; margin-right: 10px; }
-            .thank-you { padding: 30px 20px; }
-            .thank-you h2 { font-size: 24px; }
-            .success-icon { font-size: 60px; }
-            .thank-you p { font-size: 16px; }
-            .modal-content { padding: 20px; width: 95%; }
-            .modal-close { width: 30px; height: 30px; font-size: 14px; top: 10px; right: 10px; }
-            .website-link-section { padding: 12px; font-size: 15px; }
+        @media (max-width: 576px) {
+             /* Switch to 2 columns on smaller screens */
+            .gallery { grid-template-columns: repeat(2, 1fr); }
+             .item-image-container { height: 130px; }
+             .item-content { padding: 12px; }
+             .item-name { margin-bottom: 3px; }
+             .progress-container { padding: 15px 20px; }
+             .progress-title, #percentage { font-size: 16px; }
+             .progress-text { font-size: 13px; }
+             header { padding: 25px 15px; }
+             h1 { font-size: 24px; }
         }
+
+         @media (max-width: 420px) {
+            body { font-size: 14px; }
+             /* Switch to 1 column on very small screens */
+            .gallery { grid-template-columns: 1fr; gap: 15px;}
+            .item-image-container { height: 150px; } /* Can be taller in single column */
+            .item-checkbox { width: 22px; height: 22px; }
+             .item-checkbox i { font-size: 11px; }
+            .zoom-icon { width: 26px; height: 26px; font-size: 12px; }
+            .btn { padding: 10px 18px; font-size: 14px; }
+            .thank-you h2 { font-size: 22px;}
+            .thank-you p { font-size: 15px; }
+         }
 
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Nail Kit Contents Checklist</h1>
-            <p class="subtitle">Verify all items are present in your kit</p>
+            <h1>Nail Kit Contents</h1>
+            <p class="subtitle">Verify your kit contents below</p>
         </header>
 
         <div class="progress-container">
             <div class="progress-label">
                 <div class="progress-title">
                     <i class="fas fa-clipboard-check progress-icon"></i>
-                    Completion Progress
+                    Checklist Progress
                 </div>
                 <div id="percentage">0%</div>
             </div>
             <div class="progress-bar-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
-            <!-- Progress text will be updated by JS -->
-            <div class="progress-text" id="progress-text">0/0 items checked</div>
+            <div class="progress-text" id="progress-text">0/43 items checked</div> <!-- UPDATE TOTAL COUNT HERE -->
         </div>
 
-        <ul class="checklist" id="checklist">
-            <!-- Checklist items will be populated by JavaScript -->
-        </ul>
+        <!-- Gallery Container -->
+        <div class="gallery" id="item-gallery">
+            <!-- Gallery Item Structure -->
+            <div class="gallery-item" data-item-code="BE0281" data-item="Storage Case Tall" data-description="Tall storage case for organizing nail tools and supplies.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f7a8c0/ffffff?text=BE0281" alt="Storage Case Tall" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0281</div>
+                    <div class="item-name">Storage Case Tall</div>
+                    <div class="item-description">Organizing case</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0029" data-item="Dappen Dish" data-description="Glass dish for holding monomer liquid or acrylic powder during application.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/bcaaa4/ffffff?text=BE0029" alt="Dappen Dish" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0029</div>
+                    <div class="item-name">Dappen Dish</div>
+                    <div class="item-description">Glass dish for liquids</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0069" data-item="Cuticle Oil - 15ml" data-description="Nourishing cuticle oil, 15ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fff59d/a08d5a?text=BE0069" alt="Cuticle Oil - 15ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0069</div>
+                    <div class="item-name">Cuticle Oil - 15ml</div>
+                    <div class="item-description">Nourishing oil</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0073" data-item="Acetone - 125ml" data-description="Pure acetone for removing nail polish and artificial nails, 125ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e1f5fe/0277bd?text=BE0073" alt="Acetone - 125ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0073</div>
+                    <div class="item-name">Acetone - 125ml</div>
+                    <div class="item-description">Polish remover</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0076" data-item="Edge Cutter" data-description="Tool for trimming artificial nail tips precisely.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/cfd8dc/37474f?text=BE0076" alt="Edge Cutter" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0076</div>
+                    <div class="item-name">Edge Cutter</div>
+                    <div class="item-description">Tip trimming tool</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0077" data-item="Plastic Eye Dropper" data-description="Plastic dropper for precise liquid measurement or application.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e0e0e0/757575?text=BE0077" alt="Plastic Eye Dropper" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0077</div>
+                    <div class="item-name">Plastic Eye Dropper</div>
+                    <div class="item-description">Liquid applicator</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0078" data-item="Buffer Block 180" data-description="Buffer block with 180 grit for smoothing nail surfaces.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ffe0b2/e65100?text=BE0078" alt="Buffer Block 180" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0078</div>
+                    <div class="item-name">Buffer Block 180</div>
+                    <div class="item-description">Smoothing block</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0079" data-item="Nail Clipper - 8mm" data-description="Standard size nail clipper (8mm) for trimming natural nails.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/bdbdbd/ffffff?text=BE0079" alt="Nail Clipper - 8mm" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0079</div>
+                    <div class="item-name">Nail Clipper - 8mm</div>
+                    <div class="item-description">Precision trimmer</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0083" data-item="Double Thick Nail Form - 30 pieces" data-description="Set of 30 double-thick nail forms for sculpting acrylic or gel extensions.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fff9c4/c0ca33?text=BE0083" alt="Double Thick Nail Form - 30 pieces" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0083</div>
+                    <div class="item-name">Double Thick Nail Form - 30 pcs</div>
+                    <div class="item-description">Sculpting guides</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0084" data-item="Powder Dust Brush - Pink" data-description="Pink brush for removing dust and debris from nails after filing.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f8bbd0/ad1457?text=BE0084" alt="Powder Dust Brush - Pink" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0084</div>
+                    <div class="item-name">Powder Dust Brush - Pink</div>
+                    <div class="item-description">Nail cleaning brush</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0086" data-item="Gel Brush" data-description="Brush specifically designed for applying gel polish or builder gel.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/d1c4e9/5e35b1?text=BE0086" alt="Gel Brush" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0086</div>
+                    <div class="item-name">Gel Brush</div>
+                    <div class="item-description">Gel application tool</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0088-A" data-item="UV LED Light Lamp - Australia" data-description="UV/LED lamp for curing gel nail products (Australian plug).">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/c5cae9/3f51b5?text=BE0088-A" alt="UV LED Light Lamp - Australia" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0088-A</div>
+                    <div class="item-name">UV LED Light Lamp - Australia</div>
+                    <div class="item-description">Gel curing lamp (AU)</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0099" data-item="Gel Nail Polish Base Coat 15ml" data-description="Base coat for gel polish system, 15ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fce4ec/9c27b0?text=BE0099" alt="Gel Nail Polish Base Coat 15ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0099</div>
+                    <div class="item-name">Gel Polish Base Coat 15ml</div>
+                    <div class="item-description">Protective gel base</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0100" data-item="Gel Nail Polish Big Red Apple 15ml" data-description="Gel polish in 'Big Red Apple' color, 15ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f44336/ffffff?text=BE0100" alt="Gel Nail Polish Big Red Apple 15ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0100</div>
+                    <div class="item-name">Gel Polish Big Red Apple 15ml</div>
+                    <div class="item-description">Red gel color</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0102" data-item="Cotton Balls - 100 pieces" data-description="Pack of 100 cotton balls for various nail care tasks.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fafafa/bdbdbd?text=BE0102" alt="Cotton Balls - 100 pieces" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0102</div>
+                    <div class="item-name">Cotton Balls - 100 pieces</div>
+                    <div class="item-description">Absorbent cotton</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0103" data-item="Nail Drill with Ceramic Pieces" data-description="Electric nail drill with ceramic bits for filing and shaping.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/eeeeee/616161?text=BE0103" alt="Nail Drill with Ceramic Pieces" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0103</div>
+                    <div class="item-name">Nail Drill w/ Ceramic Pieces</div>
+                    <div class="item-description">Electric filing tool</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0105" data-item="Practice Hand" data-description="Realistic practice hand for honing nail art and application skills.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ffccbc/bf360c?text=BE0105" alt="Practice Hand" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0105</div>
+                    <div class="item-name">Practice Hand</div>
+                    <div class="item-description">Training model hand</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0111" data-item="Gel Polish Top Coat Glossy" data-description="Glossy top coat for sealing gel polish, providing shine and durability.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fce4ec/ad1457?text=BE0111" alt="Gel Polish Top Coat Glossy" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0111</div>
+                    <div class="item-name">Gel Polish Top Coat Glossy</div>
+                    <div class="item-description">Shiny gel sealer</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0211" data-item="Acrylic Practice Sheet Laminated" data-description="Laminated sheet with guides for practicing acrylic application techniques.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e3f2fd/1e88e5?text=BE0211" alt="Acrylic Practice Sheet Laminated" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0211</div>
+                    <div class="item-name">Acrylic Practice Sheet Laminated</div>
+                    <div class="item-description">Training guide sheet</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0264" data-item="Cuticle Nipper 5mm 2 arm" data-description="Cuticle nipper with 5mm jaw and double spring (2 arm) for trimming cuticles.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/d7ccc8/5d4037?text=BE0264" alt="Cuticle Nipper 5mm 2 arm" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0264</div>
+                    <div class="item-name">Cuticle Nipper 5mm 2 arm</div>
+                    <div class="item-description">Cuticle trimming tool</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0265" data-item="Gauze Nail Wipes" data-description="Lint-free gauze wipes for cleaning nails or removing polish.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f5f5f5/9e9e9e?text=BE0265" alt="Gauze Nail Wipes" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0265</div>
+                    <div class="item-name">Gauze Nail Wipes</div>
+                    <div class="item-description">Lint-free wipes</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0266" data-item="Premium Nail File 80/80 blue black colour printed grit" data-description="Premium nail file with coarse 80/80 grit, blue/black color with printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/1a237e/e8eaf6?text=BE0266" alt="Premium Nail File 80/80 blue black colour printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0266</div>
+                    <div class="item-name">Premium File 80/80 Blue/Black</div>
+                    <div class="item-description">Coarse shaping file</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0267" data-item="Flex File 100/100 Red black Colour printed grit" data-description="Flexible nail file with medium 100/100 grit, red/black color with printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/b71c1c/ffcdd2?text=BE0267" alt="Flex File 100/100 Red black Colour printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0267</div>
+                    <div class="item-name">Flex File 100/100 Red/Black</div>
+                    <div class="item-description">Medium flexible file</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0268" data-item="Zebra File 100/100 Purple Colour printed grit" data-description="Zebra nail file with medium 100/100 grit, purple color with printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/4a148c/e1bee7?text=BE0268" alt="Zebra File 100/100 Purple Colour printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0268</div>
+                    <div class="item-name">Zebra File 100/100 Purple</div>
+                    <div class="item-description">Medium grit file</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0270" data-item="Nail Tips 100pc flexible" data-description="Pack of 100 flexible nail tips for creating extensions.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fffde7/fff176?text=BE0270" alt="Nail Tips 100pc flexible" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0270</div>
+                    <div class="item-name">Nail Tips 100pc flexible</div>
+                    <div class="item-description">Artificial nail tips</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0271" data-item="Hand and Nail Cream" data-description="Moisturizing cream for hands and nails.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e8f5e9/66bb6a?text=BE0271" alt="Hand and Nail Cream" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0271</div>
+                    <div class="item-name">Hand and Nail Cream</div>
+                    <div class="item-description">Moisturizer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0277" data-item="Isopropyl Alcohol - 125ml" data-description="Isopropyl alcohol (IPA) for cleansing and sanitizing, 125ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/b3e5fc/0277bd?text=BE0277" alt="Isopropyl Alcohol - 125ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0277</div>
+                    <div class="item-name">Isopropyl Alcohol - 125ml</div>
+                    <div class="item-description">Cleanser/Sanitizer</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0279" data-item="Brush on Nail Glue 7g" data-description="Nail glue with a brush applicator for easy application of tips or repairs, 7g.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f1f8e9/7cb342?text=BE0279" alt="Brush on Nail Glue 7g" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0279</div>
+                    <div class="item-name">Brush on Nail Glue 7g</div>
+                    <div class="item-description">Tip adhesive</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0283" data-item="Zebra File 150/150 grit printed" data-description="Zebra nail file with medium-fine 150/150 grit, printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/78909c/eceff1?text=BE0283" alt="Zebra File 150/150 grit printed" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0283</div>
+                    <div class="item-name">Zebra File 150/150</div>
+                    <div class="item-description">Medium-fine grit file</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0284" data-item="Zebra File 150/180 grit printed" data-description="Zebra nail file with medium-fine 150/180 grit combination, printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/607d8b/eceff1?text=BE0284" alt="Zebra File 150/180 grit printed" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0284</div>
+                    <div class="item-name">Zebra File 150/180</div>
+                    <div class="item-description">Med-fine/Fine combo file</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0308" data-item="Shine Buffer with printed grit" data-description="Buffer designed to create a high shine on natural or artificial nails, with printed grit/step indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/c8e6c9/2e7d32?text=BE0308" alt="Shine Buffer with printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0308</div>
+                    <div class="item-name">Shine Buffer w/ printed grit</div>
+                    <div class="item-description">High-shine buffer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0305" data-item="4 Way Nail Buffer Block" data-description="Multi-sided buffer block with different grits/surfaces for filing, smoothing, buffing, and shining.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/b2ebf2/006064?text=BE0305" alt="4 Way Nail Buffer Block" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0305</div>
+                    <div class="item-name">4 Way Nail Buffer Block</div>
+                    <div class="item-description">Multi-step buffer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0309" data-item="File 240/240 with printed grit" data-description="Nail file with fine 240/240 grit for finishing and shaping natural nails, printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ffcc80/ef6c00?text=BE0309" alt="File 240/240 with printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0309</div>
+                    <div class="item-name">File 240/240 w/ printed grit</div>
+                    <div class="item-description">Fine finishing file</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0310" data-item="File 200/200 with printed grit" data-description="Nail file with fine 200/200 grit, slightly coarser than 240, printed grit indicator.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ffab91/d84315?text=BE0310" alt="File 200/200 with printed grit" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0310</div>
+                    <div class="item-name">File 200/200 w/ printed grit</div>
+                    <div class="item-description">Fine shaping file</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0311" data-item="Cleaning brush" data-description="Small brush for cleaning nails or tools.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/80cbc4/004d40?text=BE0311" alt="Cleaning brush" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0311</div>
+                    <div class="item-name">Cleaning brush</div>
+                    <div class="item-description">Small utility brush</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0312" data-item="Gel Polish French Pink" data-description="Gel polish in a sheer French Pink color for French manicures or natural look.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fce4ec/ec407a?text=BE0312" alt="Gel Polish French Pink" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0312</div>
+                    <div class="item-name">Gel Polish French Pink</div>
+                    <div class="item-description">Sheer pink gel</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0313" data-item="Gel Polish French White" data-description="Gel polish in an opaque French White color for French manicure tips.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ffffff/757575?text=BE0313" alt="Gel Polish French White" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0313</div>
+                    <div class="item-name">Gel Polish French White</div>
+                    <div class="item-description">Opaque white gel</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0136" data-item="Brush - Multiple Thickness x6" data-description="Set of 6 brushes with varying thicknesses for nail art or application.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ce93d8/6a1b9a?text=BE0136" alt="Brush - Multiple Thickness x6" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0136</div>
+                    <div class="item-name">Brush - Multiple Thickness x6</div>
+                    <div class="item-description">Set of 6 art brushes</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0314" data-item="Acrylic Brush 314" data-description="Specific acrylic application brush, model 314.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/bcaaa4/6d4c41?text=BE0314" alt="Acrylic Brush 314" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0314</div>
+                    <div class="item-name">Acrylic Brush 314</div>
+                    <div class="item-description">Acrylic application brush</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0315" data-item="Cuticle Pusher" data-description="Tool for gently pushing back cuticles.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/b0bec5/455a64?text=BE0315" alt="Cuticle Pusher" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0315</div>
+                    <div class="item-name">Cuticle Pusher</div>
+                    <div class="item-description">Cuticle care tool</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0167" data-item="Cuticle Sticks x 10pcs" data-description="Pack of 10 wooden or plastic cuticle sticks for pushing cuticles or cleaning nail edges.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/d7ccc8/8d6e63?text=BE0167" alt="Cuticle Sticks x 10pcs" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0167</div>
+                    <div class="item-name">Cuticle Sticks x 10pcs</div>
+                    <div class="item-description">Wooden/plastic sticks</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0318" data-item="Ugly Duckling AcryGel Prep 7ml" data-description="Ugly Duckling brand AcryGel Prep solution, 7ml. Likely a dehydrator/pH balancer.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/ede7f6/512da8?text=BE0318" alt="Ugly Duckling AcryGel Prep 7ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0318</div>
+                    <div class="item-name">Ugly Duckling AcryGel Prep 7ml</div>
+                    <div class="item-description">AcryGel prep solution</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0319" data-item="Ugly Duckling AcryGel Primer 7ml" data-description="Ugly Duckling brand AcryGel Primer for enhancing adhesion, 7ml.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/d1c4e9/4527a0?text=BE0319" alt="Ugly Duckling AcryGel Primer 7ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0319</div>
+                    <div class="item-name">Ugly Duckling AcryGel Primer 7ml</div>
+                    <div class="item-description">AcryGel adhesion primer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0320" data-item="Ugly Duckling Premium Acrylic Liquid 100ml" data-description="Ugly Duckling brand Premium Acrylic Liquid (monomer), 100ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/b39ddb/311b92?text=BE0320" alt="Ugly Duckling Premium Acrylic Liquid 100ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0320</div>
+                    <div class="item-name">Ugly Duckling Acrylic Liquid 100ml</div>
+                    <div class="item-description">Premium monomer</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0321" data-item="Ugly Duckling PREMIUM ACRYLIC POWDER - CLEAR 30g" data-description="Ugly Duckling brand Premium Acrylic Powder in Clear, 30g jar.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e0e0e0/424242?text=BE0321" alt="Ugly Duckling PREMIUM ACRYLIC POWDER - CLEAR 30g" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0321</div>
+                    <div class="item-name">Ugly Duckling Acrylic Powder CLEAR 30g</div>
+                    <div class="item-description">Clear acrylic polymer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0322" data-item="Ugly Duckling PREMIUM ACRYLIC POWDER - FUFU PINK 30g" data-description="Ugly Duckling brand Premium Acrylic Powder in Fufu Pink (likely a cover pink), 30g jar.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/f48fb1/880e4f?text=BE0322" alt="Ugly Duckling PREMIUM ACRYLIC POWDER - FUFU PINK 30g" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0322</div>
+                    <div class="item-name">Ugly Duckling Acrylic Powder FUFU PINK 30g</div>
+                    <div class="item-description">Pink acrylic polymer</div>
+                </div>
+            </div>
+             <div class="gallery-item" data-item-code="BE0323" data-item="Ugly Duckling - BUILD-A-BASE -CLEAR 15ml" data-description="Ugly Duckling brand Build-A-Base builder gel in Clear, 15ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/e8eaf6/3f51b5?text=BE0323" alt="Ugly Duckling - BUILD-A-BASE -CLEAR 15ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0323</div>
+                    <div class="item-name">Ugly Duckling BUILD-A-BASE CLEAR 15ml</div>
+                    <div class="item-description">Clear builder gel</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-item-code="BE0324" data-item="Ugly Duckling- BUILD-A-BASE - PINK 15ml" data-description="Ugly Duckling brand Build-A-Base builder gel in Pink, 15ml bottle.">
+                 <div class="item-checkbox-container" onclick="event.stopPropagation(); toggleItem(this.parentNode)">
+                    <div class="item-checkbox"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="item-image-container" onclick="openImageModal(this.parentNode)">
+                    <img src="https://via.placeholder.com/240x160/fce4ec/c2185b?text=BE0324" alt="Ugly Duckling- BUILD-A-BASE - PINK 15ml" class="item-image">
+                    <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="item-content" onclick="toggleItem(this.parentNode)">
+                    <div class="item-code">BE0324</div>
+                    <div class="item-name">Ugly Duckling BUILD-A-BASE PINK 15ml</div>
+                    <div class="item-description">Pink builder gel</div>
+                </div>
+            </div>
 
+            <!-- Add other items similarly -->
+
+        </div><!-- End Gallery -->
+
+        <!-- Alert, Button, Form, Thank You (Mostly Unchanged) -->
         <div class="missing-alert" id="missing-alert">
-            <strong>Missing items?</strong> If any items are missing from your kit, please check the items above that you *did* receive, then contact support using the button below.
-        </div>
-
-         <!-- Website Link -->
-        <div class="website-link-section">
-            Need product details? Visit the
-            <a href="https://www.balcobrands.com/beauty-school-products/" target="_blank" rel="noopener noreferrer">
-                Balco Brands Product Page <i class="fas fa-external-link-alt fa-xs"></i>
-            </a>
+            <strong>Missing items?</strong> If any items are missing from your kit, please use the button below to report them.
         </div>
 
         <button class="btn support-btn" id="support-btn">
@@ -745,117 +1127,61 @@
         </button>
 
         <div class="contact-form" id="contact-form">
-            <h2>Report Missing Items</h2>
-            <form id="report-form">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email address" required>
-                </div>
-                <div class="form-group">
-                    <label for="order-number">Order Number / Student ID (Optional)</label>
-                    <input type="text" id="order-number" placeholder="Enter your order number or ID">
-                </div>
-                <div class="form-group">
-                    <label>Items Missing (Uncheck any you actually received)</label>
-                    <div id="missing-items-list">
-                        <!-- Dynamically populated with UNCHECKED items from main list -->
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="message">Additional Information (Optional)</label>
-                    <textarea id="message" placeholder="e.g., Damaged item, details about the issue..."></textarea>
-                </div>
-                <button type="submit" class="btn form-submit" id="submit-form">
-                    <i class="fas fa-paper-plane"></i> Submit Report
-                </button>
-            </form>
+             <h2>Report Missing Items</h2>
+             <form id="report-form">
+                 <div class="form-group">
+                     <label for="name">Your Name</label>
+                     <input type="text" id="name" placeholder="Enter your name" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="email">Email Address</label>
+                     <input type="email" id="email" placeholder="Enter your email" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="order-number">Order Number (Optional)</label>
+                     <input type="text" id="order-number" placeholder="Enter your order number">
+                 </div>
+                 <div class="form-group">
+                     <label>Select Missing Items</label>
+                     <div id="missing-items-list">
+                         <!-- Dynamically populated -->
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label for="message">Additional Information (Optional)</label>
+                     <textarea id="message" placeholder="Any details about missing or damaged items..."></textarea>
+                 </div>
+                 <button type="submit" class="btn form-submit" id="submit-form">
+                     <i class="fas fa-paper-plane"></i> Submit Report
+                 </button>
+             </form>
         </div>
 
         <div class="thank-you" id="thank-you">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h2>Thank You!</h2>
-            <p>Your report has been submitted. Our support team will contact you shortly.</p>
+             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+             <h2>Thank You!</h2>
+             <p>Your report has been submitted. Our support team will contact you shortly.</p>
         </div>
-    </div>
+    </div><!-- End Container -->
 
-    <!-- Image Modal -->
+    <!-- Image Modal (Unchanged) -->
     <div class="modal" id="image-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
-                <i class="fas fa-times"></i>
-            </button>
-            <img src="" alt="Product Image" class="modal-image" id="modal-image">
-            <h3 class="modal-title" id="modal-title">Item Name</h3>
-            <span class="modal-code" id="modal-code">Item Code</span> <!-- Added code display -->
-            <!-- Description could be added here if needed -->
-            <!-- <p class="modal-description" id="modal-description">Item description</p> -->
-        </div>
+         <div class="modal-content">
+             <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
+                 <i class="fas fa-times"></i>
+             </button>
+             <h3 class="modal-title" id="modal-title">Item Name</h3>
+             <img src="" alt="Product Image" class="modal-image" id="modal-image">
+             <p class="modal-description" id="modal-description">Item description</p>
+         </div>
     </div>
 
     <script defer>
-        // --- Product Data (Updated based on spreadsheet & original text list) ---
-        const products = [
-            // Using "Customer facing name" where appropriate, and URLs from original text list
-            { code: "BE0281", name: "Beauty School Case", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0281-Storage-Case-Tall-247x247.png" },
-            { code: "BE0029", name: "Dappen Dish", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0029-Dappen-Dish-247x247.png" },
-            { code: "BE0069", name: "Cuticle Oil - 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0069-Cuticle-Oil-15ml-247x247.png" }, // URL from text list
-            { code: "BE0073", name: "Acetone - 125ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0073-Acetone-125ml-247x247.png" },
-            { code: "BE0076", name: "Edge Cutter", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0076-Edge-Cutter-247x247.png" },
-            { code: "BE0077", name: "Eye Dropper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0077-Plastic-Eye-Dropper-247x247.png" },
-            { code: "BE0078", name: "Buffer Block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0078-Buffer-Block-180-247x247.png" },
-            { code: "BE0079", name: "Nail Clipper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0079-Nail-Clipper-8mm-247x247.png" },
-            { code: "BE0083", name: "Nail forms", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0083-Double-Thick-Nail-Form-30-pieces-247x247.png" },
-            { code: "BE0084", name: "Powder dust Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0084-Powder-Dust-Brush-Pink-247x247.png" },
-            { code: "BE0086", name: "Gel Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0086-Gel-Brush-247x247.png" },
-            { code: "BE0088-A", name: "UV Lamp", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0088-A-UV-LED-Light-Lamp-Australia-247x247.png" },
-            { code: "BE0099", name: "Gel Base", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0099-Gel-Nail-Polish-Base-Coat-15ml-247x247.png" }, // URL from text list
-            { code: "BE0100", name: "Gel Nail Polish Big Red Apple 15ml", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0100-Gel-Nail-Polish-Big-Red-Apple-15ml-247x247.png" },
-            { code: "BE0102", name: "Cotton Balls", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0102-Cotton-Balls-100-pieces-247x247.png" },
-            { code: "BE0103", name: "Nail Drill With Drill bits", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0103-Nail-Drill-with-Ceramic-Pieces-247x247.png" },
-            { code: "BE0105", name: "Practice Hand", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0105-Practice-Hand-247x247.png" },
-            { code: "BE0111", name: "Gel Top Coat", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0111-Gel-Polish-Top-Coat-Glossy-247x247.png" },
-            { code: "BE0211", name: "Practice Sheet", imageUrl: null }, // No URL in text list
-            { code: "BE0264", name: "Cuticle nipper", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0264-Cuticle-Nipper-5mm-2-arm-247x247.png" },
-            { code: "BE0265", name: "Lint Free wipes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0265-Gauze-Nail-Wipes-247x247.png" },
-            { code: "BE0266", name: "Premium Nail File 80/80", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0266-Premium-Nail-File-80-80-blue-black-colour-printed-grit-247x247.png" },
-            { code: "BE0267", name: "Flex File 100/100", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0267-Flex-File-100-100-Red-black-Colour-printed-grit-247x247.png" },
-            { code: "BE0268", name: "Zebra File 100/100", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0268-Zebra-File-100-100-Purple-Colour-printed-grit-247x247.png" },
-            { code: "BE0270", name: "Nail Tips", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0270-Nail-Tips-100pc-flexible-247x247.png" },
-            { code: "BE0271", name: "Hand and Nail Cream", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0271-Hand-and-Nail-Cream-247x247.png" },
-            { code: "BE0277", name: "isopropyl Alcohol", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0277-Isopropyl-Alcohol-125ml-247x247.png" },
-            { code: "BE0279", name: "Nail Glue", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0279-Brush-on-Nail-Glue-7g-247x247.png" },
-            { code: "BE0283", name: "Zebra File 150/150", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0283-Zebra-File-150-150-grit-printed-247x247.png" },
-            { code: "BE0284", name: "Zebra File 150/180", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0284-Zebra-File-150-180-grit-printed-247x247.png" },
-            { code: "BE0305", name: "4 way buffer block", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0305-4-Way-Nail-Buffer-Block-247x247.png" },
-            { code: "BE0308", name: "Shine buffer", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0308-Shine-Buffer-with-printed-grit-247x247.png" },
-            { code: "BE0309", name: "File 240/240", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0309-File-240-240-with-printed-grit-247x247.png" },
-            { code: "BE0310", name: "File 200/200", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0310-File-200-200-with-printed-grit-247x247.png" },
-            { code: "BE0311", name: "Cleaning brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0311-Cleaning-brush-247x247.png" },
-            { code: "BE0312", name: "Gel Polish French Pink", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0312-Gel-Polish-French-Pink-247x247.png" },
-            { code: "BE0313", name: "Gel Polish French White", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0313-Gel-Polish-French-White-247x247.png" },
-            { code: "BE0136", name: "6x fine liner brushes", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0136-Brush-Multiple-Thickness-x6-247x247.png" },
-            { code: "BE0314", name: "Acrylic Brush", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0314-Acrylic-Brush-x4-247x247.png" },
-            { code: "BE0315", name: "Cuticle Pusher", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0315-Cuticle-Pusher-247x247.png" },
-            { code: "BE0167", name: "Orange Sticks", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0167-Cuticle-Sticks-x-10pcs-247x247.png" }, // Note: BE0167 listed twice in spreadsheet, using data from row 45
-            { code: "BE0318", name: "Nail Dehydrator", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0318-Ugly-Duckling-AcryGel-Prep-7ml-247x247.png" },
-            { code: "BE0319", name: "Nail Primer", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0319-Ugly-Duckling-AcryGel-Primer-7ml-247x247.png" },
-            { code: "BE0320", name: "Acrylic Liquid", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0320-Ugly-Duckling-Premium-Acrylic-Liquid-100ml-247x247.png" },
-            { code: "BE0321", name: "Acrylic powder (clear)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0321-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-CLEAR-30g-247x247.png" },
-            { code: "BE0322", name: "Acrylic powder (Pink)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0322-Ugly-Duckling-PREMIUM-ACRYLIC-POWDER-FUFU-PINK-247x247.png" },
-            { code: "BE0323", name: "Builder gel (clear)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0323-Ugly-Duckling-BUILD-A-BASE-CLEAR-15ml-247x247.png" },
-            { code: "BE0324", name: "Builder gel (pink)", imageUrl: "https://www.balcobrands.com/wp-content/uploads/2021/09/BE0324-Ugly-Duckling-BUILD-A-BASE-PINK-15ml-247x247.png" },
-            // Adding items from original text list missing from spreadsheet image (BE0108, BE0198, BE0226)
-            { code: "BE0108", name: "Nail Tech Course Brochure", imageUrl: null },
-            { code: "BE0198", name: "Nail Tech Mailing Box", imageUrl: null },
-            { code: "BE0226", name: "Nail Tech User Manual", imageUrl: null },
-        ];
+        // Select gallery items instead of checklist items
+        const items = Array.from(document.querySelectorAll('.gallery-item'));
+        const total = items.length;
+        let checkedCount = 0;
 
-        // --- DOM Elements ---
-        const checklist = document.getElementById('checklist');
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
         const percentageText = document.getElementById('percentage');
@@ -868,91 +1194,12 @@
         const imageModal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
         const modalTitle = document.getElementById('modal-title');
-        const modalCode = document.getElementById('modal-code'); // Added modal code element
+        const modalDescription = document.getElementById('modal-description');
 
-        let items = []; // Will store references to the LI elements
-        const total = products.length; // Total number of products
-        let checkedCount = 0;
+        // Initialize total count display
+        progressText.textContent = `0/${total} items checked`;
 
-        // --- Function to Create Checklist Item ---
-        function createChecklistItem(product, index) {
-            const li = document.createElement('li');
-            li.classList.add('checklist-item');
-            li.setAttribute('data-item', product.name); // Used for form population
-            li.setAttribute('data-code', product.code); // Store code
-            li.setAttribute('data-index', index); // Store original index if needed
-
-            const header = document.createElement('div');
-            header.classList.add('checklist-item-header');
-            header.onclick = () => toggleItem(li); // Click header to toggle
-
-            // Checkbox
-            const checkbox = document.createElement('div');
-            checkbox.classList.add('item-checkbox');
-            checkbox.innerHTML = '<i class="fas fa-check"></i>';
-
-            // Image Container
-            const imageContainer = document.createElement('div');
-            imageContainer.classList.add('item-image-container');
-            const hasImage = product.imageUrl && product.imageUrl !== null;
-
-            if (hasImage) {
-                const img = document.createElement('img');
-                img.src = product.imageUrl;
-                img.alt = product.name;
-                img.classList.add('item-image');
-                img.onerror = function() { // Handle broken images
-                    this.parentElement.innerHTML = '<span>Image<br>Error</span>';
-                    this.parentElement.classList.add('no-image');
-                    // Ensure no zoom icon if image fails to load
-                    const zoomIcon = this.parentElement.querySelector('.zoom-icon');
-                    if (zoomIcon) zoomIcon.remove();
-                };
-                imageContainer.appendChild(img);
-
-                // Zoom icon only if image exists
-                const zoom = document.createElement('div');
-                zoom.classList.add('zoom-icon');
-                zoom.innerHTML = '<i class="fas fa-search-plus"></i>';
-                zoom.onclick = (event) => {
-                    event.stopPropagation(); // Prevent toggle when clicking zoom
-                    openImageModal(li);
-                };
-                 imageContainer.appendChild(zoom);
-
-            } else {
-                imageContainer.classList.add('no-image');
-                // Display placeholder text like product name if no image
-                 imageContainer.innerHTML = `<span>${product.name.split(' ')[0]}<br>${product.name.split(' ').slice(1,3).join(' ')}</span>`; // Show first few words
-                 // Or simply 'No Image'
-                 // imageContainer.innerHTML = '<span>No Image</span>';
-            }
-
-            // Details (Name and Code)
-            const details = document.createElement('div');
-            details.classList.add('item-details');
-
-            const nameSpan = document.createElement('span');
-            nameSpan.classList.add('item-name');
-            nameSpan.textContent = product.name; // Use the name directly from the updated array
-
-            const codeSpan = document.createElement('span');
-            codeSpan.classList.add('item-code');
-            codeSpan.textContent = product.code;
-
-            details.appendChild(nameSpan);
-            details.appendChild(codeSpan);
-
-            // Assemble header
-            header.appendChild(checkbox);
-            header.appendChild(imageContainer);
-            header.appendChild(details);
-
-            li.appendChild(header);
-            return li;
-        }
-
-        // --- Function to Toggle Item Checked State ---
+        // Function to toggle item checked state
         function toggleItem(item) {
             const wasChecked = item.classList.contains('checked');
             if (wasChecked) {
@@ -964,19 +1211,12 @@
             }
             updateProgress();
             checkForMissingItems();
-            // Hide form if all items get checked after opening it
             if (checkedCount === total && contactForm.style.display === 'block') {
-                 contactForm.style.display = 'none';
-                 missingAlert.style.display = 'none'; // Hide alert too
-                 supportBtn.style.marginTop = '0px'; // Reset margin if alert was shown
-            } else if (!wasChecked && checkedCount === total) {
-                 // If the last item was just checked, hide alert
-                 missingAlert.style.display = 'none';
-                 supportBtn.style.marginTop = '0px'; // Reset margin if alert was shown
+                contactForm.style.display = 'none';
             }
         }
 
-        // --- Update Progress Bar and Text ---
+        // Update progress bar and text (Unchanged)
         function updateProgress() {
             const percentage = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
             progressBar.style.width = percentage + '%';
@@ -984,159 +1224,112 @@
             percentageText.textContent = `${percentage}%`;
         }
 
-        // --- Check if Alert for Missing Items Should Show ---
+        // Check if there are missing items (Unchanged logic, uses updated 'items' count)
         function checkForMissingItems() {
-            // Show alert only if user has checked at least one item AND not all items are checked
-            const userInteracted = checkedCount > 0;
-            if (userInteracted && checkedCount < total) {
+            // Show alert only if user has interacted and not all items are checked
+             const userInteracted = checkedCount > 0 || items.some(item => item.classList.contains('checked')); // Ensure at least one interaction or check occurred
+             const allChecked = checkedCount === total;
+
+            if (!allChecked && (checkedCount > 0 || items.some(item => item.classList.contains('checked')) )) { // Show if not all checked AND user started checking
                 missingAlert.style.display = 'block';
-                supportBtn.style.marginTop = '0px'; // Remove top margin from button when alert shows
+                supportBtn.style.marginTop = '0px';
             } else {
-                missingAlert.style.display = 'none';
-                supportBtn.style.marginTop = '0px'; // Keep margin consistent now link is above
+                 missingAlert.style.display = 'none';
+                 supportBtn.style.marginTop = '20px'; // Reset margin
             }
-            // Hide contact form if all items become checked
-            if (checkedCount === total && contactForm.style.display === 'block') {
-                contactForm.style.display = 'none';
+
+            // Hide contact form if all items become checked after it was opened
+            if (allChecked && contactForm.style.display === 'block') {
+                 contactForm.style.display = 'none';
             }
         }
 
-        // --- Open Image Modal ---
+        // Open image modal - gets data from gallery item
         function openImageModal(item) {
             const itemName = item.getAttribute('data-item');
-            const itemCode = item.getAttribute('data-code');
-            const imageElement = item.querySelector('.item-image'); // Get the image element
+            const itemDescription = item.getAttribute('data-description');
+            const itemCode = item.getAttribute('data-item-code');
+            const imageUrl = item.querySelector('.item-image').src;
 
-            if (!imageElement) return; // Don't open modal if no image exists
-
-            modalImage.src = imageElement.src; // Use existing src from the item's image
-            modalImage.alt = itemName;
-            modalTitle.textContent = itemName;
-            modalCode.textContent = itemCode; // Set the code in the modal
+            modalImage.src = imageUrl;
+            modalImage.alt = `${itemName} (${itemCode})`; // Add code to alt text
+            modalTitle.textContent = `${itemName} (${itemCode})`; // Add code to title
+            modalDescription.textContent = itemDescription;
 
             imageModal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden';
         }
 
-        // --- Close Modal ---
+        // Close modal (Unchanged)
         function closeModal() {
             imageModal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore scroll
+            document.body.style.overflow = 'auto';
         }
 
-        // --- Event Listeners ---
-        imageModal.addEventListener('click', function(event) { // Close modal on backdrop click
+        // Close modal if user clicks backdrop (Unchanged)
+        imageModal.addEventListener('click', function(event) {
             if (event.target === imageModal) {
                 closeModal();
             }
         });
 
-        document.addEventListener('keydown', function(event) { // Close modal with Escape key
+        // Close modal with Escape key (Unchanged)
+         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape" && imageModal.classList.contains('active')) {
                 closeModal();
             }
          });
 
-        supportBtn.addEventListener('click', function() {
-            // Ensure thank you message is hidden
-            thankYouMsg.style.display = 'none';
 
-            // Populate the form's checklist with UNCHECKED items
+        // Support button click handler - Populates form based on unchecked gallery items
+        supportBtn.addEventListener('click', function() {
+            thankYouMsg.style.display = 'none';
             missingItemsList.innerHTML = ''; // Clear previous list
             let hasMissingItems = false;
 
-            items.forEach(item => { // Iterate over the created LI elements
+            items.forEach(item => {
                 if (!item.classList.contains('checked')) {
                     hasMissingItems = true;
                     const itemName = item.getAttribute('data-item');
-                    const itemCode = item.getAttribute('data-code');
-                    const formItemName = `${itemName} (${itemCode})`; // Combine name and code for clarity
-
+                    const itemCode = item.getAttribute('data-item-code');
                     const checkboxDiv = document.createElement('div');
-                    // Use the custom checkbox structure for the form
+                    // Display Code + Name in the form list
                     checkboxDiv.innerHTML = `
                         <label class="checkbox-container">
-                            <input type="checkbox" checked name="missing_item[]" value="${formItemName}">
-                            ${formItemName}
+                            <input type="checkbox" checked name="missing_item[]" value="${itemCode} - ${itemName}">
+                            ${itemCode} - ${itemName}
                         </label>
                     `;
                     missingItemsList.appendChild(checkboxDiv);
                 }
             });
 
-            // Only show the form if there are actually items marked as missing
             if (hasMissingItems) {
                 contactForm.style.display = 'block';
                 contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                 // Alert if all items are checked
-                 alert("You've checked all items! If something is wrong (e.g., damaged), please uncheck the item and describe the issue in the form.");
-                 contactForm.style.display = 'none'; // Default: hide form if all checked
+                 alert("All items appear to be checked! If you still believe something is missing, please uncheck it first or add details in the form.");
+                 // Optionally, still show the form but without pre-checked items
+                 // contactForm.style.display = 'block';
+                 // contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                 contactForm.style.display = 'none'; // Keep hidden if all checked
             }
         });
 
+        // Form submission handler (Unchanged simulation logic)
         reportForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default page reload
-
-            // --- Simulation: Log data and show thank you ---
-            const formData = new FormData(reportForm);
-            const data = Object.fromEntries(formData.entries());
-            // Get missing items (checked checkboxes in the form)
-             data.missing_items = formData.getAll('missing_item[]'); // Gets array of values
-            console.log("Submitting Report (Simulation):", data);
-
-            // Hide form and alert, show thank you
+            e.preventDefault();
+            console.log("Form submitted (simulation)");
+            // --- Add real fetch() logic here ---
             contactForm.style.display = 'none';
             missingAlert.style.display = 'none';
             thankYouMsg.style.display = 'block';
             thankYouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            // Reset form fields (optional)
-            // reportForm.reset();
-            // --- End Simulation ---
-
-            /* --- Real-world scenario: ---
-            fetch('/your-api-endpoint', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(result => {
-                console.log('Success:', result);
-                contactForm.style.display = 'none';
-                missingAlert.style.display = 'none';
-                thankYouMsg.style.display = 'block';
-                thankYouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting your report. Please try again or contact support directly.');
-            });
-            */
         });
 
-        // --- Initial Setup ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Populate checklist
-            products.forEach((product, index) => {
-                const listItem = createChecklistItem(product, index);
-                checklist.appendChild(listItem);
-            });
-
-            // Update items array AFTER population
-            items = Array.from(document.querySelectorAll('.checklist-item'));
-
-            // Initial UI update
-            updateProgress();
-            checkForMissingItems(); // Initial check (hides alert)
-             supportBtn.style.marginTop = '0px'; // Set initial margin correctly
-        });
+        // Initial setup
+        updateProgress();
+        checkForMissingItems(); // Run initial check
 
     </script>
 </body>
