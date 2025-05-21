@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js PC Model</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        canvas { display: block; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        #controls button {
+            display: block;
+            margin-bottom: 5px;
+            padding: 8px;
+            width: 120px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <h3>Select Component:</h3>
+        <button onclick="highlightComponentByName('cpu')">CPU</button>
+        <button onclick="highlightComponentByName('gpu')">GPU</button>
+        <button onclick="highlightComponentByName('ram1')">RAM Stick 1</button>
+        <button onclick="highlightComponentByName('ram2')">RAM Stick 2</button>
+        <button onclick="highlightComponentByName('motherboard')">Motherboard</button>
+        <button onclick="highlightComponentByName('psu')">PSU</button>
+        <button onclick="highlightComponentByName('ssd')">SSD</button>
+        <button onclick="highlightComponentByName('cooler_fan')">CPU Cooler</button>
+        <button onclick="resetHighlights()">Reset All</button>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        let scene, camera, renderer, controls;
+        let pcCaseGroup;
+        const componentMeshes = {}; // To store references to component meshes
+        const originalMaterials = {}; // To store original materials for reset
+
+        const HIGHLIGHT_COLOR = new THREE.Color(0xffff00); // Yellow highlight
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x222222);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(15, 15, 25);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            document.body.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 5;
+            controls.maxDistance = 100;
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 10, 7.5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+            scene.add(directionalLight);
+
+            // Create PC
+            createPCModel();
+
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize, false);
+
+            animate();
+        }
+
+        function createPCModel() {
+            pcCaseGroup = new THREE.Group();
+            scene.add(pcCaseGroup);
+
+            // --- Case ---
+            const caseWidth = 10;
+            const caseHeight = 20;
+            const caseDepth = 22;
+            const caseWallThickness = 0.3;
+
+            const caseMaterial = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.5, roughness: 0.6 });
+            const transparentMaterial = new THREE.MeshStandardMaterial({
+                color: 0xaaaaaa,
+                metalness: 0.2,
+                roughness: 0.1,
+                transparent: true,
+                opacity: 0.2
+            });
+
+            // Bottom
+            const bottomGeo = new THREE.BoxGeometry(caseWidth, caseWallThickness, caseDepth);
+            const bottomMesh = new THREE.Mesh(bottomGeo, caseMaterial);
+            bottomMesh.position.y = -caseHeight / 2 + caseWallThickness / 2;
+            bottomMesh.castShadow = true;
+            bottomMesh.receiveShadow = true;
+            pcCaseGroup.add(bottomMesh);
+
+            // Top
+            const topMesh = bottomMesh.clone();
+            topMesh.position.y = caseHeight / 2 - caseWallThickness / 2;
+            pcCaseGroup.add(topMesh);
+
+            // Back
+            const backGeo = new THREE.BoxGeometry(caseWidth, caseHeight - caseWallThickness*2, caseWallThickness);
+            const backMesh = new THREE.Mesh(backGeo, caseMaterial);
+            backMesh.position.z = -caseDepth / 2 + caseWallThickness / 2;
+            pcCaseGroup.add(backMesh);
+
+            // Front (partial, could have fan cutouts etc.)
+            const frontMesh = backMesh.clone();
+            frontMesh.position.z = caseDepth / 2 - caseWallThickness / 2;
+            pcCaseGroup.add(frontMesh);
+
+            // Right Side Panel (Solid)
+            const sideGeo = new THREE.BoxGeometry(caseWallThickness, caseHeight - caseWallThickness*2, caseDepth - caseWallThickness*2);
+            const rightSideMesh = new THREE.Mesh(sideGeo, caseMaterial);
+            rightSideMesh.position.x = -caseWidth / 2 + caseWallThickness / 2;
+            pcCaseGroup.add(rightSideMesh);
+
+            // Left Side Panel (Transparent)
+            const leftSideMesh = new THREE.Mesh(sideGeo, transparentMaterial);
+            leftSideMesh.position.x = caseWidth / 2 - caseWallThickness / 2;
+            pcCaseGroup.add(leftSideMesh);
+
+
+            // --- Motherboard ---
+            const mbWidth = caseWidth - 2;
+            const mbHeight = caseHeight * 0.85;
+            const mbDepth = 0.5;
+            const mbGeo = new THREE.BoxGeometry(mbDepth, mbHeight, mbWidth); // Rotated
+            const mbMat = new THREE.MeshStandardMaterial({ color: 0x003300, metalness: 0.3, roughness: 0.7 });
+            const motherboard = new THREE.Mesh(mbGeo, mbMat);
+            motherboard.name = "motherboard";
+            motherboard.position.set(
+                -caseWidth / 2 + caseWallThickness + mbDepth / 2 + 0.2, // Offset from case wall
+                0,
+                0
+            );
+            motherboard.castShadow = true;
+            motherboard.receiveShadow = true;
+            pcCaseGroup.add(motherboard);
+            componentMeshes[motherboard.name] = motherboard;
+            originalMaterials[motherboard.name] = mbMat.clone();
+
+            // --- CPU ---
+            const cpuSize = 1.5;
+            const cpuGeo = new THREE.BoxGeometry(0.3, cpuSize, cpuSize); // Flat on motherboard
+            const cpuMat = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.3 });
+            const cpu = new THREE.Mesh(cpuGeo, cpuMat);
+            cpu.name = "cpu";
+            cpu.position.set(
+                motherboard.position.x + 0.3 / 2 + 0.05, // Slightly on top of MB
+                motherboard.position.y + mbHeight * 0.1, // Position on MB
+                motherboard.position.z - mbWidth * 0.15  // Position on MB
+            );
+            cpu.castShadow = true;
+            pcCaseGroup.add(cpu);
+            componentMeshes[cpu.name] = cpu;
+            originalMaterials[cpu.name] = cpuMat.clone();
+
+            // --- CPU Cooler (Simple Fan + Heatsink) ---
+            const coolerGroup = new THREE.Group();
+            coolerGroup.name = "cooler"; // Group can be highlighted or individual parts
+
+            const heatsinkSize = cpuSize * 1.8;
+            const heatsinkGeo = new THREE.BoxGeometry(1, heatsinkSize, heatsinkSize);
+            const heatsinkMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.7, roughness: 0.4 });
+            const heatsink = new THREE.Mesh(heatsinkGeo, heatsinkMat);
+            heatsink.position.y = cpu.position.y;
+            heatsink.position.z = cpu.position.z;
+            heatsink.position.x = cpu.position.x + 0.3 / 2 + 1 / 2; // On top of CPU
+            coolerGroup.add(heatsink);
+
+            const fanRadius = heatsinkSize * 0.4;
+            const fanThickness = 0.5;
+            const fanGeo = new THREE.CylinderGeometry(fanRadius, fanRadius, fanThickness, 32);
+            const fanMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.2, roughness: 0.8 });
+            const fan = new THREE.Mesh(fanGeo, fanMat);
+            fan.name = "cooler_fan"; // Specific part
+            fan.rotation.z = Math.PI / 2;
+            fan.position.x = heatsink.position.x + 1 / 2 + fanThickness / 2; // On top of heatsink
+            fan.position.y = heatsink.position.y;
+            fan.position.z = heatsink.position.z;
+            coolerGroup.add(fan);
+            pcCaseGroup.add(coolerGroup);
+            componentMeshes[fan.name] = fan; // Highlight fan part
+            originalMaterials[fan.name] = fanMat.clone();
+            // If you want to highlight whole cooler:
+            // componentMeshes[coolerGroup.name] = coolerGroup;
+            // originalMaterials[coolerGroup.name] = { heatsink: heatsinkMat.clone(), fan: fanMat.clone() };
+
+
+            // --- RAM Sticks (2) ---
+            const ramWidth = 0.5;
+            const ramHeight = 2.5;
+            const ramDepth = 0.2; // Thickness on MB
+            const ramGeo = new THREE.BoxGeometry(ramDepth, ramHeight, ramWidth);
+            const ramMat = new THREE.MeshStandardMaterial({ color: 0x222255, metalness: 0.4, roughness: 0.6 });
+
+            for (let i = 0; i < 2; i++) {
+                const ramStick = new THREE.Mesh(ramGeo, ramMat.clone()); // Clone material for individual highlights
+                ramStick.name = `ram${i + 1}`;
+                ramStick.position.set(
+                    motherboard.position.x + ramDepth / 2 + 0.05,
+                    cpu.position.y + (i * (ramHeight * 0.3 + 0.3)) - ramHeight * 0.15, // Adjust Y based on CPU
+                    cpu.position.z + cpuSize / 2 + ramWidth / 2 + 0.5 + (i * (ramWidth + 0.2)) // Next to CPU
+                );
+                ramStick.castShadow = true;
+                pcCaseGroup.add(ramStick);
+                componentMeshes[ramStick.name] = ramStick;
+                originalMaterials[ramStick.name] = ramMat.clone();
+            }
+
+            // --- GPU ---
+            const gpuWidth = mbWidth * 0.6;
+            const gpuHeight = 3;
+            const gpuDepth = 1.2; // Thickness on MB
+            const gpuGeo = new THREE.BoxGeometry(gpuDepth, gpuHeight, gpuWidth);
+            const gpuMat = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.6, roughness: 0.5 });
+            const gpu = new THREE.Mesh(gpuGeo, gpuMat);
+            gpu.name = "gpu";
+            gpu.position.set(
+                motherboard.position.x + gpuDepth / 2 + 0.05,
+                motherboard.position.y - mbHeight * 0.25, // Lower slot on MB
+                motherboard.position.z
+            );
+            gpu.castShadow = true;
+            pcCaseGroup.add(gpu);
+            componentMeshes[gpu.name] = gpu;
+            originalMaterials[gpu.name] = gpuMat.clone();
+
+            // --- PSU (Power Supply Unit) ---
+            const psuWidth = caseWidth * 0.7;
+            const psuHeight = 3;
+            const psuDepth = 5;
+            const psuGeo = new THREE.BoxGeometry(psuWidth, psuHeight, psuDepth);
+            const psuMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.5, roughness: 0.7 });
+            const psu = new THREE.Mesh(psuGeo, psuMat);
+            psu.name = "psu";
+            psu.position.set(
+                0, // Centered horizontally
+                -caseHeight / 2 + caseWallThickness + psuHeight / 2, // Bottom of case
+                -caseDepth / 2 + caseWallThickness + psuDepth / 2 + 1 // Back of case
+            );
+            psu.castShadow = true;
+            pcCaseGroup.add(psu);
+            componentMeshes[psu.name] = psu;
+            originalMaterials[psu.name] = psuMat.clone();
+
+            // --- SSD ---
+            const ssdWidth = 2.5;
+            const ssdHeight = 0.3;
+            const ssdDepth = 3.5;
+            const ssdGeo = new THREE.BoxGeometry(ssdWidth, ssdHeight, ssdDepth);
+            const ssdMat = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.7, roughness: 0.3 });
+            const ssd = new THREE.Mesh(ssdGeo, ssdMat);
+            ssd.name = "ssd";
+            // Position it somewhere in the front, e.g., in a drive bay area
+            ssd.position.set(
+                -caseWidth / 2 + caseWallThickness + 1.5, // Near a side wall
+                -caseHeight/2 + caseWallThickness + psuHeight + ssdHeight/2 + 1, // Above PSU area
+                caseDepth / 2 - caseWallThickness - ssdDepth / 2 - 2 // Front part of case
+            );
+            ssd.castShadow = true;
+            pcCaseGroup.add(ssd);
+            componentMeshes[ssd.name] = ssd;
+            originalMaterials[ssd.name] = ssdMat.clone();
+
+            // Make the entire PC group slightly above ground
+            // pcCaseGroup.position.y = caseHeight / 2;
+        }
+
+
+        let currentlyHighlighted = null;
+
+        window.highlightComponentByName = function(name) {
+            resetHighlights(); // Reset previous before highlighting new one
+
+            const component = componentMeshes[name];
+            if (component) {
+                if (component instanceof THREE.Mesh) {
+                    if (!originalMaterials[component.name]) { // Should always exist due to setup
+                        originalMaterials[component.name] = component.material.clone();
+                    }
+                    component.material = component.material.clone(); // Clone to not affect original
+                    component.material.color.set(HIGHLIGHT_COLOR);
+                    // For a glow effect, you might prefer:
+                    // component.material.emissive.set(HIGHLIGHT_COLOR);
+                    // component.material.emissiveIntensity = 0.8;
+                } else if (component instanceof THREE.Group) {
+                    // Example for highlighting all parts of a group (e.g. cooler)
+                    // This requires more complex original material storage if parts differ
+                    component.traverse((child) => {
+                        if (child instanceof THREE.Mesh) {
+                            if (!originalMaterials[child.uuid]) { // Use UUID for children if names aren't unique
+                                originalMaterials[child.uuid] = child.material.clone();
+                            }
+                            child.material = child.material.clone();
+                            child.material.color.set(HIGHLIGHT_COLOR);
+                        }
+                    });
+                }
+                currentlyHighlighted = component;
+            } else {
+                console.warn("Component not found:", name);
+            }
+        }
+
+        window.resetHighlights = function() {
+            if (currentlyHighlighted) {
+                if (currentlyHighlighted instanceof THREE.Mesh) {
+                     if (originalMaterials[currentlyHighlighted.name]) {
+                        currentlyHighlighted.material = originalMaterials[currentlyHighlighted.name];
+                    }
+                } else if (currentlyHighlighted instanceof THREE.Group) {
+                    currentlyHighlighted.traverse((child) => {
+                        if (child instanceof THREE.Mesh && originalMaterials[child.uuid]) {
+                            child.material = originalMaterials[child.uuid];
+                        }
+                    });
+                }
+                 // If you used emissive, reset it:
+                // if (currentlyHighlighted.material.emissive) {
+                //     currentlyHighlighted.material.emissive.set(0x000000);
+                //     currentlyHighlighted.material.emissiveIntensity = 0;
+                // }
+                currentlyHighlighted = null;
+            }
+            // General reset for all known components (safer)
+            for (const name in componentMeshes) {
+                const component = componentMeshes[name];
+                if (component instanceof THREE.Mesh && originalMaterials[name]) {
+                    component.material = originalMaterials[name];
+                } else if (component instanceof THREE.Group) {
+                    component.traverse((child) => {
+                        if (child instanceof THREE.Mesh && originalMaterials[child.uuid]) { // Assuming child highlighting used UUID
+                            child.material = originalMaterials[child.uuid];
+                        } else if (child instanceof THREE.Mesh && originalMaterials[child.name]) { // Or by child name if unique
+                             child.material = originalMaterials[child.name];
+                        }
+                    });
+                }
+            }
+        }
+
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
