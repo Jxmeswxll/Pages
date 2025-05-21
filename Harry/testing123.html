@@ -1,576 +1,1052 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailed Three.js PC Model (Black)</title>
+    <title>Premium PC Configurator</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; background-color: #111; color: #fff;}
-        canvas { display: block; }
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #E0E0E0;
+            background-color: #1a1a1a;
         }
-        #controls h3 { margin-top: 0; margin-bottom: 10px; }
-        #controls button {
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+            outline: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        #loadingScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            z-index: 100;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: all;
+        }
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #uiContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            pointer-events: none; /* Allow clicks to pass through to canvas by default */
+            z-index: 10;
+        }
+        #sidebar {
+            width: 250px;
+            background-color: rgba(25, 25, 25, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            pointer-events: all; /* Enable clicks on sidebar */
+            transform: translateX(0);
+            transition: transform 0.3s ease-out;
+        }
+        #sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .category-button {
+            background-color: #333;
+            color: #E0E0E0;
+            border: none;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1.1em;
+            border-radius: 5px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .category-button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+        .category-button.active {
+            background-color: #007bff;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+        }
+
+        #componentPanel {
+            position: absolute;
+            top: 0;
+            left: 250px; /* Aligned with sidebar */
+            width: 350px;
+            height: 100%;
+            background-color: rgba(35, 35, 35, 0.95);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            transform: translateX(-100%); /* Hidden by default */
+            transition: transform 0.3s ease-out;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            pointer-events: all;
+        }
+        #componentPanel.visible {
+            transform: translateX(0);
+        }
+        #componentPanel h2 {
+            color: #007bff;
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .component-item {
+            background-color: #444;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .component-item:hover {
+            background-color: #666;
+            transform: translateY(-2px);
+        }
+        .component-item.selected {
+            background-color: #28a745; /* Green for selected */
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+        }
+        .component-item.incompatible {
+            background-color: #dc3545; /* Red for incompatible */
+            cursor: not-allowed;
+        }
+        .component-item span.price {
+            font-weight: bold;
+            color: #FFD700; /* Gold for price */
+        }
+
+        #buildSummary {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(25, 25, 25, 0.9);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            pointer-events: all;
+            width: 300px;
+            max-height: 40%;
+            overflow-y: auto;
+        }
+        #buildSummary h3 {
+            color: #007bff;
+            margin-top: 0;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        #buildSummary ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #buildSummary li {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95em;
+        }
+        #buildSummary li .item-name {
+            color: #B0B0B0;
+        }
+        #buildSummary li .item-price {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        #buildSummary .total-price {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #007bff;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            color: #FFF;
+        }
+
+        /* Customization specific styles */
+        .custom-option {
+            margin-top: 15px;
+        }
+        .custom-option label {
             display: block;
             margin-bottom: 8px;
-            padding: 10px 15px;
-            width: 150px;
-            cursor: pointer;
-            background-color: #333;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 4px;
-            text-align: left;
+            font-weight: bold;
+            color: #007bff;
         }
-        #controls button:hover { background-color: #4CAF50; }
+        .custom-option select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #E0E0E0;
+            font-size: 1em;
+        }
     </style>
+    <!-- Babylon.js CDN -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materials/babylonjs.materials.min.js"></script>
 </head>
 <body>
-    <div id="controls">
-        <h3>Select Component:</h3>
-        <button onclick="highlightComponentByName('cpu_cooler_fan')">CPU Cooler Fan</button>
-        <button onclick="highlightComponentByName('cpu_cooler_heatsink')">CPU Heatsink</button>
-        <button onclick="highlightComponentByName('gpu')">GPU</button>
-        <button onclick="highlightComponentByName('ram1')">RAM Stick 1</button>
-        <button onclick="highlightComponentByName('ram2')">RAM Stick 2</button>
-        <button onclick="highlightComponentByName('motherboard')">Motherboard</button>
-        <button onclick="highlightComponentByName('psu')">PSU</button>
-        <button onclick="highlightComponentByName('ssd')">SSD</button>
-        <button onclick="highlightComponentByName('case_fan_top1')">Top Fan 1</button>
-        <button onclick="highlightComponentByName('case_fan_rear')">Rear Fan</button>
-        <button onclick="resetHighlights()">Reset All</button>
+    <div id="loadingScreen">
+        <div class="loading-spinner"></div>
+        Loading Premium PC Configurator...
+    </div>
+    <canvas id="renderCanvas"></canvas>
+
+    <div id="uiContainer">
+        <div id="sidebar">
+            <h2>BUILD YOUR PC</h2>
+            <button class="category-button" data-category="cpu">CPU</button>
+            <button class="category-button" data-category="motherboard">Motherboard</button>
+            <button class="category-button" data-category="ram">RAM</button>
+            <button class="category-button" data-category="gpu">GPU</button>
+            <button class="category-button" data-category="psu">PSU</button>
+            <button class="category-button" data-category="cpuCooling">CPU Cooling</button>
+            <button class="category-button" data-category="thermalCompound">Thermal Compound</button>
+            <button class="category-button" data-category="ssd">SSD</button>
+            <button class="category-button" data-category="secondarySsd">Secondary SSD</button>
+            <button class="category-button" data-category="hdd">HDD</button>
+            <button class="category-button" data-category="secondHdd">Second HDD</button>
+            <button class="category-button" data-category="os">OS</button>
+            <button class="category-button" data-category="antiSagBracket">Anti-Sag Bracket</button>
+            <button class="category-button" data-category="wifiBluetooth">WiFi & Bluetooth</button>
+            <hr style="border-color: #555; margin: 15px 0;">
+            <h2>CUSTOMIZATION</h2>
+            <button class="category-button" data-category="fans">Fans</button>
+            <button class="category-button" data-category="caseLighting">Case Lighting</button>
+            <button class="category-button" data-category="customCableSleeves">Custom Cable Sleeves</button>
+            <button class="category-button" data-category="gpuCustom">GPU Custom</button>
+            <button class="category-button" data-category="charms">Charms</button>
+            <button class="category-button" data-category="frontPanelPrint">Front Panel Print</button>
+            <button class="category-button" data-category="sidePanelPrint">Side Panel Print</button>
+            <!-- Add more customization categories here -->
+        </div>
+
+        <div id="componentPanel">
+            <h2 id="panelTitle">Select Component</h2>
+            <div id="componentList">
+                <!-- Component options will be loaded here -->
+            </div>
+        </div>
+
+        <div id="buildSummary">
+            <h3>Your Build</h3>
+            <ul id="summaryList">
+                <!-- Selected components will be listed here -->
+            </ul>
+            <div class="total-price">
+                <span>Total:</span>
+                <span id="totalPrice">$0.00</span>
+            </div>
+        </div>
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        const loadingScreen = document.getElementById("loadingScreen");
+        const sidebar = document.getElementById("sidebar");
+        const componentPanel = document.getElementById("componentPanel");
+        const panelTitle = document.getElementById("panelTitle");
+        const componentListDiv = document.getElementById("componentList");
+        const summaryList = document.getElementById("summaryList");
+        const totalPriceSpan = document.getElementById("totalPrice");
+
+        // --- Custom Loading Screen ---
+        engine.loadingScreen = {
+            displayLoadingUI: function() { loadingScreen.classList.remove('hidden'); },
+            hideLoadingUI: function() { loadingScreen.classList.add('hidden'); },
+            loadingUIBackgroundColor: "black",
+            loadingUIText: "Loading Premium PC Configurator..."
+        };
+        engine.displayLoadingUI();
+
+        // --- Global Scene Variables ---
+        let scene;
+        let camera;
+        let chassisModel;
+        let shadowGenerator;
+
+        // --- Component Data (Simplified for brevity, expand as needed) ---
+        const componentData = {
+            cpu: [
+                { id: 'amd_ryzen_7', name: 'AMD Ryzen 7 7800X3D', price: 369.99, type: 'amd', model: 'cpu_generic.glb' },
+                { id: 'amd_ryzen_9', name: 'AMD Ryzen 9 7950X3D', price: 699.99, type: 'amd', model: 'cpu_generic.glb' },
+                { id: 'intel_i7', name: 'Intel Core i7-14700K', price: 389.99, type: 'intel', model: 'cpu_generic.glb' },
+                { id: 'intel_i9', name: 'Intel Core i9-14900K', price: 589.99, type: 'intel', model: 'cpu_generic.glb' },
+                // Add more CPUs (12 AMD, 5 Intel)
+            ],
+            motherboard: [
+                { id: 'mobo_amd_x670e', name: 'AMD X670E Motherboard', price: 349.99, type: 'amd', model: 'motherboard_amd.glb' },
+                { id: 'mobo_amd_b650', name: 'AMD B650 Motherboard', price: 189.99, type: 'amd', model: 'motherboard_amd.glb' },
+                { id: 'mobo_intel_z790', name: 'Intel Z790 Motherboard', price: 299.99, type: 'intel', model: 'motherboard_intel.glb' },
+                { id: 'mobo_intel_b760', name: 'Intel B760 Motherboard', price: 159.99, type: 'intel', model: 'motherboard_intel.glb' },
+                // Add more Motherboards (7 AMD, 7 Intel)
+            ],
+            ram: [
+                { id: 'ram_32gb_ddr5_6000', name: '32GB DDR5-6000 (2x16GB)', price: 119.99, capacity: 32, model: 'ram_generic.glb' },
+                { id: 'ram_64gb_ddr5_6000', name: '64GB DDR5-6000 (2x32GB)', price: 219.99, capacity: 64, model: 'ram_generic.glb' },
+                // Add more RAM (13 total: 8x32GB, 5x64GB)
+            ],
+            gpu: [
+                { id: 'gpu_rtx_4070', name: 'NVIDIA RTX 4070 Super', price: 599.99, model: 'gpu_generic.glb' },
+                { id: 'gpu_rx_7800xt', name: 'AMD RX 7800 XT', price: 499.99, model: 'gpu_generic.glb' },
+                // Add more GPUs (all 5060+)
+            ],
+            psu: [
+                { id: 'psu_750w', name: '750W 80+ Gold PSU', price: 99.99, model: 'psu_generic.glb' },
+                { id: 'psu_1000w', name: '1000W 80+ Platinum PSU', price: 189.99, model: 'psu_generic.glb' },
+                // Add more PSUs (7 from 750W to 1300W)
+            ],
+            cpuCooling: [
+                { id: 'cooler_basic_air', name: 'Basic Air Cooler', price: 29.99, model: 'cooler_air_basic.glb' },
+                { id: 'cooler_aio_360', name: 'AIO Liquid Cooler 360mm', price: 149.99, model: 'cooler_air_basic.glb' }, // Placeholder model
+                // Add more CPU Coolers (8 types)
+            ],
+            thermalCompound: [
+                { id: 'compound_base', name: 'Standard Thermal Compound', price: 5.99 },
+                { id: 'compound_premium', name: 'Premium Thermal Compound', price: 19.99 },
+            ],
+            ssd: [
+                { id: 'ssd_nvme_1tb', name: '1TB NVMe SSD', price: 79.99, model: 'ssd_m2.glb', type: 'm2' },
+                { id: 'ssd_sata_2tb', name: '2TB SATA SSD', price: 129.99, model: 'ssd_25inch.glb', type: 'sata' },
+                // Add more SSDs (20 types 1-8TB)
+            ],
+            secondarySsd: [
+                { id: 'ssd_nvme_500gb_sec', name: '500GB NVMe SSD (Secondary)', price: 49.99, model: 'ssd_m2.glb', type: 'm2' },
+                { id: 'ssd_sata_1tb_sec', name: '1TB SATA SSD (Secondary)', price: 89.99, model: 'ssd_25inch.glb', type: 'sata' },
+                { id: 'none', name: 'None', price: 0, default: true }
+            ],
+            hdd: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'hdd_2tb', name: '2TB HDD', price: 59.99, model: 'ssd_25inch.glb' }, // Placeholder model
+            ],
+            secondHdd: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'hdd_4tb_sec', name: '4TB HDD (Secondary)', price: 89.99, model: 'ssd_25inch.glb' }, // Placeholder model
+            ],
+            os: [
+                { id: 'os_none', name: 'Own OS', price: 0 },
+                { id: 'os_win11', name: 'Windows 11 Home', price: 109.99 },
+            ],
+            antiSagBracket: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'anti_sag_option', name: 'Premium Anti-Sag Bracket', price: 29.99, model: 'anti_sag_bracket.glb' },
+            ],
+            wifiBluetooth: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'wifi_bt_option', name: 'WiFi 6E & Bluetooth 5.3', price: 49.99, model: 'anti_sag_bracket.glb' }, // Placeholder model
+            ],
+            // --- Customization Categories ---
+            fans: [
+                { id: 'fan_standard', name: 'Standard Black Fans', price: 15.00, model: 'fan_generic.glb' },
+                { id: 'fan_rgb', name: 'RGB Fans (3-pack)', price: 45.00, model: 'fan_generic.glb' },
+                // Add more fans (7-9 options)
+            ],
+            caseLighting: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'lighting_rgb_strip', name: 'RGB LED Strips', price: 35.00 },
+                { id: 'lighting_neon', name: 'Neon Accent Lighting', price: 55.00 },
+                // Add more (3 options)
+            ],
+            customCableSleeves: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'sleeves_black', name: 'Black Sleeves', price: 25.00, texture: 'cable_black.jpg' },
+                { id: 'sleeves_red', name: 'Red Sleeves', price: 25.00, texture: 'cable_red.jpg' },
+                // Add more (15 options) - textures would need to be created
+            ],
+            gpuCustom: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'gpu_print_abstract', name: 'Abstract Print', price: 40.00, texture: 'gpu_abstract_print.jpg' },
+                { id: 'gpu_print_cyber', name: 'Cyberpunk Design', price: 50.00, texture: 'gpu_cyber_print.jpg' },
+                // Add more (ready prints)
+            ],
+            charms: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'charm_logo', name: 'Custom Logo Charm', price: 15.00, model: 'charm_1.glb' },
+                { id: 'charm_gaming', name: 'Gaming Icon Charm', price: 12.00, model: 'charm_1.glb' },
+                // Add more (10 options)
+            ],
+            frontPanelPrint: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'front_print_geometric', name: 'Geometric Pattern', price: 30.00, texture: 'panel_geometric.jpg' },
+                // Add more
+            ],
+            sidePanelPrint: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'side_print_dragon', name: 'Dragon Art', price: 60.00, texture: 'panel_dragon.jpg' },
+                { id: 'side_print_abstract', name: 'Abstract Swirls', price: 50.00, texture: 'panel_abstract.jpg' },
+                // Add more
+            ],
+            // Add backPanelPrint, fanPrint, LCDPanels, topPanel
+        };
+
+        // --- Build State ---
+        const buildState = {
+            chassis: { id: 'chassis_default', name: 'Premium Chassis', price: 250.00, model: 'chassis.glb' }, // Chassis is pre-selected
+            cpu: null,
+            motherboard: null,
+            ram: null,
+            gpu: null,
+            psu: null,
+            cpuCooling: null,
+            thermalCompound: componentData.thermalCompound[0], // Default base
+            ssd: null,
+            secondarySsd: componentData.secondarySsd.find(c => c.default), // Default none
+            hdd: componentData.hdd.find(c => c.default), // Default none
+            secondHdd: componentData.secondHdd.find(c => c.default), // Default none
+            os: componentData.os[0], // Default Own OS
+            antiSagBracket: componentData.antiSagBracket.find(c => c.default), // Default none
+            wifiBluetooth: componentData.wifiBluetooth.find(c => c.default), // Default none
+            fans: null,
+            caseLighting: componentData.caseLighting.find(c => c.default), // Default none
+            customCableSleeves: componentData.customCableSleeves.find(c => c.default), // Default none
+            gpuCustom: componentData.gpuCustom.find(c => c.default), // Default none
+            charms: componentData.charms.find(c => c.default), // Default none
+            frontPanelPrint: componentData.frontPanelPrint.find(c => c.default), // Default none
+            sidePanelPrint: componentData.sidePanelPrint.find(c => c.default), // Default none
+        };
+
+        // --- 3D Model References & Slots ---
+        const loadedModels = {}; // Cache for loaded GLB models
+        const componentMeshes = {}; // Store active meshes for each component type
+
+        // Define component attachment points/slots relative to the chassis model's origin
+        // These are BABYLON.TransformNode instances that will parent the loaded component models
+        const componentSlots = {
+            cpu: null, // Will be child of motherboard slot
+            motherboard: null,
+            ram: [], // Array for multiple RAM sticks
+            gpu: null,
+            psu: null,
+            cpuCooling: null,
+            ssd: [], // Array for multiple SSDs
+            secondarySsd: [],
+            hdd: [],
+            secondHdd: [],
+            antiSagBracket: null,
+            wifiBluetooth: null,
+            fans: [], // Array for multiple fans
+            charms: [], // Array for multiple charms
+            // Panel meshes for texture swaps
+            frontPanel: null,
+            sidePanel: null,
+            gpuBackplate: null, // Specific mesh on GPU for customization
+            cableMeshes: [], // Meshes for cables to swap textures
+        };
+
+        // --- Camera Targets for Zooming ---
+        const cameraTargets = {
+            chassis: { position: new BABYLON.Vector3(0, 1.5, -4), target: BABYLON.Vector3.Zero() },
+            cpu: { position: new BABYLON.Vector3(0, 0.8, -0.5), target: new BABYLON.Vector3(0, 0.2, 0) }, // Close to CPU socket
+            motherboard: { position: new BABYLON.Vector3(0, 0.8, -0.5), target: new BABYLON.Vector3(0, 0.2, 0) },
+            ram: { position: new BABYLON.Vector3(0.3, 0.8, -0.5), target: new BABYLON.Vector3(0.3, 0.2, 0) },
+            gpu: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: new BABYLON.Vector3(0, -0.2, 0) },
+            psu: { position: new BABYLON.Vector3(-0.8, -0.8, 0.5), target: new BABYLON.Vector3(-0.5, -0.5, 0) },
+            cpuCooling: { position: new BABYLON.Vector3(0, 0.8, -0.5), target: new BABYLON.Vector3(0, 0.2, 0) },
+            ssd: { position: new BABYLON.Vector3(0.5, -0.5, 0.5), target: new BABYLON.Vector3(0.2, -0.2, 0) },
+            antiSagBracket: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: new BABYLON.Vector3(0, -0.2, 0) },
+            fans: { position: new BABYLON.Vector3(0, 0.5, -1.5), target: new BABYLON.Vector3(0, 0.2, -0.5) }, // Front fans
+            sidePanelPrint: { position: new BABYLON.Vector3(2, 0.5, 0), target: BABYLON.Vector3.Zero() }, // Side view
+            gpuCustom: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: new BABYLON.Vector3(0, -0.2, 0) },
+            charms: { position: new BABYLON.Vector3(1.5, 0.5, 1.5), target: new BABYLON.Vector3(0.5, 0.5, 0.5) },
+            // Add more specific targets as needed
+        };
+
+        // --- Core Babylon.js Scene Creation ---
+        const createScene = async function () {
+            scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color4(0.05, 0.05, 0.05, 1); // Very dark grey background
+
+            // Camera
+            camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 2.5, 3, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+            camera.lowerRadiusLimit = 1;
+            camera.upperRadiusLimit = 10;
+            camera.wheelPrecision = 50;
+            camera.pinchPrecision = 200; // For touch zoom
+            camera.target = BABYLON.Vector3.Zero(); // Initial target at center of scene
+
+            // Lighting: Premium PBR setup
+            const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/studio.env", scene);
+            scene.environmentTexture = hdrTexture;
+            scene.environmentIntensity = 1.0;
+
+            const light = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(0, -1, -0.5), scene);
+            light.intensity = 1.5;
+            light.position = new BABYLON.Vector3(0, 5, 5);
+            light.shadowEnabled = true;
+
+            shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+            shadowGenerator.useBlurExponentialShadowMap = true;
+            shadowGenerator.blurKernel = 32;
+
+            // Ground plane for shadows
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
+            ground.material = new BABYLON.PBRMaterial("groundMat", scene);
+            ground.material.albedoColor = new BABYLON.Color3(0.08, 0.08, 0.08);
+            ground.material.metallic = 0.0;
+            ground.material.roughness = 0.9;
+            ground.receiveShadows = true;
+
+            // --- Load Chassis Model (Base of the PC) ---
+            await loadChassis();
+
+            // Initialize default selections
+            updateBuildSummary();
+            await applyDefaultSelections();
+
+            return scene;
+        };
+
+        // --- Model Loading and Management ---
+
+        async function loadModel(rootUrl, fileName) {
+            if (loadedModels[fileName]) {
+                return loadedModels[fileName].instantiateModelsToScene();
+            }
+            try {
+                const assetContainer = await BABYLON.SceneLoader.LoadAssetContainerAsync(rootUrl, fileName, scene);
+                loadedModels[fileName] = assetContainer; // Cache the container
+                return assetContainer.instantiateModelsToScene();
+            } catch (error) {
+                console.error(`Error loading model ${fileName}:`, error);
+                return null;
             }
         }
-    </script>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        async function loadChassis() {
+            const rootUrl = "./models/";
+            const fileName = buildState.chassis.model; // 'chassis.glb'
 
-        let scene, camera, renderer, controls;
-        let pcGroup;
-        const componentMeshes = {};
-        const originalMaterials = {};
-        const HIGHLIGHT_COLOR = new THREE.Color(0x00ffcc); // Cyan highlight
-        const RGB_EMISSIVE_INTENSITY = 1.5;
+            const result = await loadModel(rootUrl, fileName);
+            if (result) {
+                chassisModel = result.rootNodes[0]; // The root transform node of the chassis
+                chassisModel.name = "chassis_root";
+                chassisModel.scaling = new BABYLON.Vector3(1, 1, 1); // Adjust scale if your model is too big/small
 
-        // --- Texture Creation ---
-        function createMeshTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 64;
-            canvas.height = 64;
-            const context = canvas.getContext('2d');
-            context.fillStyle = '#1a1a1a'; // Dark background for black case
-            context.fillRect(0, 0, 64, 64);
-            context.fillStyle = '#2a2a2a'; // Slightly lighter dots
-            for (let i = 0; i < 64; i += 4) {
-                for (let j = 0; j < 64; j += 4) {
-                    context.beginPath();
-                    context.arc(i + 1, j + 1, 0.7, 0, Math.PI * 2);
-                    context.fill();
+                // Add all chassis meshes to shadow caster/receiver
+                result.meshes.forEach(mesh => {
+                    mesh.receiveShadows = true;
+                    shadowGenerator.addShadowCaster(mesh);
+                    // Store references to specific meshes for customization (e.g., panels, cables)
+                    if (mesh.name === "front_panel_mesh") componentSlots.frontPanel = mesh;
+                    if (mesh.name === "side_panel_mesh") componentSlots.sidePanel = mesh;
+                    if (mesh.name.includes("cable_")) componentSlots.cableMeshes.push(mesh); // Assuming cables are named like "cable_24pin", "cable_pcie"
+                });
+
+                // Create empty TransformNodes as attachment points for components
+                // These positions are relative to the chassis model's origin (0,0,0)
+                componentSlots.motherboard = new BABYLON.TransformNode("motherboard_slot", scene);
+                componentSlots.motherboard.parent = chassisModel;
+                componentSlots.motherboard.position = new BABYLON.Vector3(0, 0.2, 0); // Example position inside chassis
+
+                componentSlots.cpu = new BABYLON.TransformNode("cpu_slot", scene);
+                componentSlots.cpu.parent = componentSlots.motherboard; // CPU is on motherboard
+                componentSlots.cpu.position = new BABYLON.Vector3(0, 0.1, 0.1); // Relative to motherboard
+
+                for (let i = 0; i < 4; i++) { // 4 RAM slots
+                    const ramSlot = new BABYLON.TransformNode(`ram_slot_${i}`, scene);
+                    ramSlot.parent = componentSlots.motherboard;
+                    ramSlot.position = new BABYLON.Vector3(0.2 + (i * 0.05), 0.1, 0.1); // Example positions
+                    componentSlots.ram.push(ramSlot);
+                }
+
+                componentSlots.gpu = new BABYLON.TransformNode("gpu_slot", scene);
+                componentSlots.gpu.parent = chassisModel;
+                componentSlots.gpu.position = new BABYLON.Vector3(0, -0.2, 0.1); // Example position for GPU slot
+
+                componentSlots.psu = new BABYLON.TransformNode("psu_slot", scene);
+                componentSlots.psu.parent = chassisModel;
+                componentSlots.psu.position = new BABYLON.Vector3(-0.5, -0.6, 0); // Example PSU bay
+
+                componentSlots.cpuCooling = new BABYLON.TransformNode("cpu_cooler_slot", scene);
+                componentSlots.cpuCooling.parent = componentSlots.cpu; // Cooler sits on CPU
+                componentSlots.cpuCooling.position = new BABYLON.Vector3(0, 0.05, 0); // Slightly above CPU
+
+                // Placeholder for SSDs (e.g., 2.5" bays, M.2 slots)
+                componentSlots.ssdBay1 = new BABYLON.TransformNode("ssd_bay_1", scene);
+                componentSlots.ssdBay1.parent = chassisModel;
+                componentSlots.ssdBay1.position = new BABYLON.Vector3(0.5, -0.5, 0.2);
+                componentSlots.ssd.push(componentSlots.ssdBay1); // Primary SSD slot
+
+                componentSlots.ssdM2_1 = new BABYLON.TransformNode("ssd_m2_1", scene);
+                componentSlots.ssdM2_1.parent = componentSlots.motherboard;
+                componentSlots.ssdM2_1.position = new BABYLON.Vector3(-0.1, 0.05, 0.1);
+                componentSlots.ssd.push(componentSlots.ssdM2_1); // Primary M.2 slot
+
+                componentSlots.antiSagBracket = new BABYLON.TransformNode("anti_sag_slot", scene);
+                componentSlots.antiSagBracket.parent = componentSlots.gpu; // Relative to GPU
+                componentSlots.antiSagBracket.position = new BABYLON.Vector3(0, -0.1, 0);
+
+                // Fan slots (e.g., 3 front, 1 rear, 2 top)
+                componentSlots.fans.push(new BABYLON.TransformNode("fan_front_1", scene));
+                componentSlots.fans[0].parent = chassisModel;
+                componentSlots.fans[0].position = new BABYLON.Vector3(0.2, 0, -0.5); // Example front fan
+                componentSlots.fans.push(new BABYLON.TransformNode("fan_front_2", scene));
+                componentSlots.fans[1].parent = chassisModel;
+                componentSlots.fans[1].position = new BABYLON.Vector3(-0.2, 0, -0.5); // Example front fan
+
+                componentSlots.charmSlot1 = new BABYLON.TransformNode("charm_slot_1", scene);
+                componentSlots.charmSlot1.parent = chassisModel;
+                componentSlots.charmSlot1.position = new BABYLON.Vector3(0.4, 0.4, 0.4);
+                componentSlots.charms.push(componentSlots.charmSlot1);
+
+                // Create "blank" placeholder meshes for initial visualization
+                createPlaceholderMeshes();
+
+                console.log("Chassis and slots loaded.");
+            }
+        }
+
+        function createPlaceholderMeshes() {
+            // Motherboard placeholder
+            const moboPlaceholder = BABYLON.MeshBuilder.CreateBox("mobo_placeholder", { width: 0.5, height: 0.02, depth: 0.5 }, scene);
+            moboPlaceholder.material = new BABYLON.StandardMaterial("mobo_ph_mat", scene);
+            moboPlaceholder.material.alpha = 0.2;
+            moboPlaceholder.material.emissiveColor = new BABYLON.Color3(0, 0.5, 1); // Blue glow
+            moboPlaceholder.parent = componentSlots.motherboard;
+            moboPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.motherboard_placeholder = moboPlaceholder;
+
+            // CPU placeholder
+            const cpuPlaceholder = BABYLON.MeshBuilder.CreateBox("cpu_placeholder", { width: 0.1, height: 0.01, depth: 0.1 }, scene);
+            cpuPlaceholder.material = moboPlaceholder.material.clone("cpu_ph_mat");
+            cpuPlaceholder.parent = componentSlots.cpu;
+            cpuPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.cpu_placeholder = cpuPlaceholder;
+
+            // GPU placeholder
+            const gpuPlaceholder = BABYLON.MeshBuilder.CreateBox("gpu_placeholder", { width: 0.1, height: 0.05, depth: 0.3 }, scene);
+            gpuPlaceholder.material = moboPlaceholder.material.clone("gpu_ph_mat");
+            gpuPlaceholder.parent = componentSlots.gpu;
+            gpuPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.gpu_placeholder = gpuPlaceholder;
+
+            // RAM placeholders
+            componentSlots.ram.forEach((slot, index) => {
+                const ramPlaceholder = BABYLON.MeshBuilder.CreateBox(`ram_placeholder_${index}`, { width: 0.01, height: 0.05, depth: 0.08 }, scene);
+                ramPlaceholder.material = moboPlaceholder.material.clone(`ram_ph_mat_${index}`);
+                ramPlaceholder.parent = slot;
+                ramPlaceholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`ram_placeholder_${index}`] = ramPlaceholder;
+            });
+
+            // Add more placeholders for other components as needed
+        }
+
+        async function placeComponent(category, componentId) {
+            const componentInfo = componentData[category].find(c => c.id === componentId);
+            if (!componentInfo || !componentInfo.model) {
+                // Handle "None" or components without 3D models (e.g., thermal compound)
+                if (componentMeshes[category]) {
+                    if (Array.isArray(componentMeshes[category])) {
+                        componentMeshes[category].forEach(mesh => mesh.dispose());
+                        componentMeshes[category] = [];
+                    } else {
+                        componentMeshes[category].dispose();
+                        componentMeshes[category] = null;
+                    }
+                }
+                // Show placeholder if "None" was selected for a component that previously had a model
+                if (componentMeshes[`${category}_placeholder`]) {
+                    componentMeshes[`${category}_placeholder`].isVisible = true;
+                }
+                return;
+            }
+
+            const rootUrl = "./models/";
+            const fileName = componentInfo.model;
+
+            // Dispose of previous component mesh if exists
+            if (componentMeshes[category]) {
+                if (Array.isArray(componentMeshes[category])) {
+                    componentMeshes[category].forEach(mesh => mesh.dispose());
+                    componentMeshes[category] = [];
+                } else {
+                    componentMeshes[category].dispose();
                 }
             }
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(10, 10); // Adjust repeat for density
-            return texture;
-        }
 
-        function createRGBTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 2;
-            canvas.height = 128;
-            const context = canvas.getContext('2d');
-            const gradient = context.createLinearGradient(0, 0, 0, 128);
-            gradient.addColorStop(0, 'red');
-            gradient.addColorStop(0.17, 'orange');
-            gradient.addColorStop(0.33, 'yellow');
-            gradient.addColorStop(0.5, 'green');
-            gradient.addColorStop(0.67, 'blue');
-            gradient.addColorStop(0.83, 'indigo');
-            gradient.addColorStop(1, 'violet');
-            context.fillStyle = gradient;
-            context.fillRect(0, 0, 2, 128);
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            return texture;
-        }
+            // Hide placeholder
+            if (componentMeshes[`${category}_placeholder`]) {
+                componentMeshes[`${category}_placeholder`].isVisible = false;
+            }
 
-        const meshTexture = createMeshTexture();
-        const rgbTexture = createRGBTexture();
+            const result = await loadModel(rootUrl, fileName);
+            if (result) {
+                let componentRoot = result.rootNodes[0];
+                componentRoot.name = `${category}_${componentId}_root`;
 
-        // --- Material Definitions ---
-        const caseMaterial = new THREE.MeshStandardMaterial({ color: 0x080808, metalness: 0.6, roughness: 0.5 });
-        const caseMeshMaterial = new THREE.MeshStandardMaterial({
-            color: 0x181818, metalness: 0.5, roughness: 0.6,
-            map: meshTexture, alphaMap: meshTexture, transparent: true, // Use mesh texture for alpha too
-        });
-        const glassMaterial = new THREE.MeshStandardMaterial({
-            color: 0xaaaaaa, metalness: 0.1, roughness: 0.05,
-            transparent: true, opacity: 0.15
-        });
-        const motherboardMaterial = new THREE.MeshStandardMaterial({ color: 0x050505, metalness: 0.3, roughness: 0.7 });
-        const componentDarkMaterial = new THREE.MeshStandardMaterial({ color: 0x101010, metalness: 0.4, roughness: 0.6 });
-        const heatsinkMaterial = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, metalness: 0.8, roughness: 0.3 }); // Darker metal
-        const fanFrameMaterial = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.2, roughness: 0.8 });
-        const fanBladeRGBCenterMaterial = new THREE.MeshStandardMaterial({
-            color: 0xffffff, // Base color for texture
-            emissive: 0xffffff, // Let texture control emissive color
-            emissiveMap: rgbTexture,
-            emissiveIntensity: RGB_EMISSIVE_INTENSITY,
-            toneMapped: false // Important for emissive to pop
-        });
-         const ramRGBLightbarMaterial = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            emissive: 0xffffff,
-            emissiveMap: rgbTexture,
-            emissiveIntensity: RGB_EMISSIVE_INTENSITY,
-            toneMapped: false
-        });
+                // Parent to the correct slot
+                let targetSlot;
+                if (category === 'cpu') targetSlot = componentSlots.cpu;
+                else if (category === 'motherboard') targetSlot = componentSlots.motherboard;
+                else if (category === 'gpu') targetSlot = componentSlots.gpu;
+                else if (category === 'psu') targetSlot = componentSlots.psu;
+                else if (category === 'cpuCooling') targetSlot = componentSlots.cpuCooling;
+                else if (category === 'antiSagBracket') targetSlot = componentSlots.antiSagBracket;
+                else if (category === 'wifiBluetooth') targetSlot = componentSlots.motherboard; // Example: PCIe card
+                else if (category === 'charms') targetSlot = componentSlots.charmSlot1; // For single charm, extend for multiple
+                else if (category === 'ssd') {
+                    // Logic for SSDs: M.2 vs 2.5"
+                    if (componentInfo.type === 'm2') targetSlot = componentSlots.ssdM2_1;
+                    else targetSlot = componentSlots.ssdBay1;
+                }
+                // Add more category-to-slot mappings
 
+                if (targetSlot) {
+                    componentRoot.parent = targetSlot;
+                    componentRoot.position = BABYLON.Vector3.Zero();
+                    componentRoot.rotation = BABYLON.Vector3.Zero(); // Reset rotation if needed
+                    componentRoot.scaling = new BABYLON.Vector3(1, 1, 1); // Reset scaling if needed
 
-        function init() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x1a1a1f); // Darker background
+                    // Add all meshes of the component to shadow caster/receiver
+                    result.meshes.forEach(mesh => {
+                        mesh.receiveShadows = true;
+                        shadowGenerator.addShadowCaster(mesh);
+                        if (category === 'gpu' && mesh.name === "gpu_backplate_mesh") { // Assuming a specific mesh for GPU customization
+                            componentSlots.gpuBackplate = mesh;
+                        }
+                    });
 
-            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(25, 20, 35); // Adjusted view
-
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.shadowMap.enabled = true;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping; // For better HDR/emissive handling
-            renderer.toneMappingExposure = 1.0;
-            document.body.appendChild(renderer.domElement);
-
-            controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.minDistance = 10;
-            controls.maxDistance = 80;
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(10, 15, 10);
-            directionalLight.castShadow = true;
-            directionalLight.shadow.mapSize.width = 2048;
-            directionalLight.shadow.mapSize.height = 2048;
-            scene.add(directionalLight);
-
-            // Point light inside for some internal glow, mimicking RGB spill
-            const internalLight = new THREE.PointLight(0x88aaff, 0.5, 50, 1); // Soft blueish
-            internalLight.position.set(0, 5, 0); // Centered inside
-            scene.add(internalLight);
-
-            createPCModel();
-
-            window.addEventListener('resize', onWindowResize, false);
-            animate();
-        }
-
-        function storeComponent(object) {
-            if (object.name) {
-                componentMeshes[object.name] = object;
-                if (object.material) {
-                    originalMaterials[object.name] = object.material.clone();
-                } else if (object.isGroup) {
-                    // For groups, we might highlight all children or just need a reference
-                    // This example highlights named children primarily
+                    // Special handling for multiple instances (e.g., RAM, Fans)
+                    if (category === 'ram') {
+                        // Dispose previous RAM meshes
+                        if (componentMeshes.ram) componentMeshes.ram.forEach(mesh => mesh.dispose());
+                        componentMeshes.ram = [];
+                        // Place 2 or 4 sticks depending on capacity or user choice
+                        const numSticks = componentInfo.capacity === 64 ? 4 : 2; // Example logic
+                        for (let i = 0; i < numSticks; i++) {
+                            if (componentSlots.ram[i]) {
+                                const ramInstance = componentRoot.clone(`${componentId}_instance_${i}`, componentSlots.ram[i]);
+                                ramInstance.position = BABYLON.Vector3.Zero();
+                                componentMeshes.ram.push(ramInstance);
+                            }
+                        }
+                        componentRoot.dispose(); // Dispose the original loaded root if using clones
+                    } else if (category === 'fans') {
+                        if (componentMeshes.fans) componentMeshes.fans.forEach(mesh => mesh.dispose());
+                        componentMeshes.fans = [];
+                        componentSlots.fans.forEach((slot, index) => {
+                            const fanInstance = componentRoot.clone(`${componentId}_instance_${index}`, slot);
+                            fanInstance.position = BABYLON.Vector3.Zero();
+                            componentMeshes.fans.push(fanInstance);
+                        });
+                        componentRoot.dispose();
+                    } else if (category === 'ssd' && componentInfo.type === 'm2') {
+                         // M.2 SSDs are usually flat on the motherboard
+                         componentRoot.rotation.x = Math.PI / 2; // Rotate to lay flat
+                         componentMeshes[category] = componentRoot;
+                    } else {
+                        componentMeshes[category] = componentRoot;
+                    }
+                } else {
+                    console.warn(`No defined slot for category: ${category}`);
+                    componentRoot.dispose(); // Dispose if no slot found
                 }
             }
         }
-        
-        function createPCModel() {
-            pcGroup = new THREE.Group();
-            scene.add(pcGroup);
 
-            const caseWidth = 10;  // Approx 20-22cm
-            const caseHeight = 20; // Approx 40-45cm
-            const caseDepth = 22;  // Approx 45-50cm
-            const wall = 0.2;
-
-            // --- Case ---
-            const caseObj = new THREE.Group();
-            caseObj.name = "case";
-
-            // Main Box (solid parts)
-            const mainBoxGeo = new THREE.BoxGeometry(caseWidth, caseHeight, caseDepth);
-            const mainBox = new THREE.Mesh(mainBoxGeo, caseMaterial); // Will be hollowed out by other panels
-            // We'll add individual panels for better control of materials
-
-            // Bottom
-            const bottom = new THREE.Mesh(new THREE.BoxGeometry(caseWidth, wall, caseDepth), caseMaterial);
-            bottom.position.y = -caseHeight / 2 + wall / 2;
-            caseObj.add(bottom);
-
-            // Top (mesh)
-            const topGeo = new THREE.BoxGeometry(caseWidth - wall*2, wall, caseDepth - wall*2);
-            const topMesh = new THREE.Mesh(topGeo, caseMeshMaterial.clone()); // Clone for texture repeat
-            topMesh.material.map.repeat.set( (caseWidth-wall*2)/2, (caseDepth-wall*2)/2 );
-            topMesh.material.alphaMap.repeat.set( (caseWidth-wall*2)/2, (caseDepth-wall*2)/2 );
-            topMesh.position.y = caseHeight / 2 - wall / 2;
-            caseObj.add(topMesh);
-
-            // Back
-            const back = new THREE.Mesh(new THREE.BoxGeometry(caseWidth, caseHeight, wall), caseMaterial);
-            back.position.z = -caseDepth / 2 + wall / 2;
-            caseObj.add(back);
-            // TODO: Cutouts for I/O, PSU, Fans in back panel (complex, use textures or booleans if essential)
-
-            // Front (mesh)
-            const frontGeo = new THREE.BoxGeometry(caseWidth - wall*2, caseHeight - wall*2, wall);
-            const frontMeshPanel = new THREE.Mesh(frontGeo, caseMeshMaterial.clone());
-            frontMeshPanel.material.map.repeat.set( (caseWidth-wall*2)/2, (caseHeight-wall*2)/2 );
-            frontMeshPanel.material.alphaMap.repeat.set( (caseWidth-wall*2)/2, (caseHeight-wall*2)/2 );
-            frontMeshPanel.position.z = caseDepth / 2 - wall / 2;
-            caseObj.add(frontMeshPanel);
-
-            // Solid Right Side Panel (from viewer's perspective if glass is left)
-            const rightSide = new THREE.Mesh(new THREE.BoxGeometry(wall, caseHeight - wall*2, caseDepth - wall*2), caseMaterial);
-            rightSide.position.x = -caseWidth / 2 + wall / 2;
-            caseObj.add(rightSide);
-
-            // Glass Left Side Panel
-            const leftSide = new THREE.Mesh(new THREE.BoxGeometry(wall, caseHeight - wall * 1.5, caseDepth - wall * 1.5), glassMaterial); // Slightly smaller for frame
-            leftSide.position.x = caseWidth / 2 - wall / 2;
-            leftSide.position.y = wall*0.25; // Slight offset if frame is thicker at top/bottom
-            caseObj.add(leftSide);
-            storeComponent(leftSide);
-
-
-            // Feet
-            const footGeo = new THREE.BoxGeometry(caseWidth * 0.15, caseHeight * 0.05, caseDepth * 0.1);
-            for (let i = 0; i < 4; i++) {
-                const foot = new THREE.Mesh(footGeo, componentDarkMaterial);
-                foot.position.set(
-                    (i % 2 === 0 ? 1 : -1) * (caseWidth / 2 - caseWidth * 0.1),
-                    -caseHeight / 2 - (caseHeight * 0.05)/2,
-                    (i < 2 ? 1 : -1) * (caseDepth / 2 - caseDepth * 0.1)
-                );
-                caseObj.add(foot);
-            }
-
-            // PSU Shroud
-            const shroudHeight = caseHeight * 0.2;
-            const shroudGeo = new THREE.BoxGeometry(caseWidth - wall*2, shroudHeight, caseDepth - wall*2);
-            const psuShroud = new THREE.Mesh(shroudGeo, caseMaterial);
-            psuShroud.position.y = -caseHeight/2 + wall + shroudHeight/2 + 0.5; // Positioned above bottom
-            caseObj.add(psuShroud);
-            storeComponent(psuShroud);
-
-            pcGroup.add(caseObj);
-
-
-            // --- Motherboard ---
-            const mbWidth = caseWidth * 0.85;
-            const mbHeight = caseHeight * 0.75;
-            const mbDepth = 0.3; // Thickness
-            const mbGeo = new THREE.BoxGeometry(mbDepth, mbHeight, mbWidth);
-            const motherboard = new THREE.Mesh(mbGeo, motherboardMaterial);
-            motherboard.name = "motherboard";
-            motherboard.position.set(
-                -caseWidth / 2 + wall + mbDepth / 2 + 0.2, // Attached to right panel (from inside view)
-                0, // Centered vertically more or less
-                0  // Centered depth-wise
-            );
-            pcGroup.add(motherboard);
-            storeComponent(motherboard);
-
-            // Motherboard details (simple boxes for VRM, Chipset)
-            const vrmHeatsinkGeo = new THREE.BoxGeometry(mbDepth*1.5, mbHeight*0.2, mbWidth*0.1);
-            const vrm1 = new THREE.Mesh(vrmHeatsinkGeo, heatsinkMaterial);
-            vrm1.position.set(motherboard.position.x+0.05, motherboard.position.y + mbHeight*0.35, motherboard.position.z - mbWidth*0.4);
-            pcGroup.add(vrm1);
-            const vrm2 = vrm1.clone();
-            vrm2.geometry = new THREE.BoxGeometry(mbDepth*1.5, mbHeight*0.07, mbWidth*0.25);
-            vrm2.position.set(motherboard.position.x+0.05, motherboard.position.y + mbHeight*0.4, motherboard.position.z - mbWidth*0.1);
-            pcGroup.add(vrm2);
-
-            const chipsetHeatsinkGeo = new THREE.BoxGeometry(mbDepth*2, mbHeight*0.15, mbWidth*0.15);
-            const chipset = new THREE.Mesh(chipsetHeatsinkGeo, heatsinkMaterial);
-            chipset.position.set(motherboard.position.x+0.1, motherboard.position.y - mbHeight*0.25, motherboard.position.z + mbWidth*0.25);
-            pcGroup.add(chipset);
-
-
-            // --- CPU Cooler (Tower Style) ---
-            const cpuCoolerGroup = new THREE.Group();
-            cpuCoolerGroup.name = "cpu_cooler";
-
-            const cpuAreaY = motherboard.position.y + mbHeight * 0.25;
-            const cpuAreaZ = motherboard.position.z - mbWidth * 0.1;
-
-            // Heatsink Tower
-            const heatsinkTowerHeight = 7;
-            const heatsinkTowerWidth = 4;
-            const heatsinkTowerDepth = 2.5;
-            const heatsinkGeo = new THREE.BoxGeometry(heatsinkTowerDepth, heatsinkTowerHeight, heatsinkTowerWidth);
-            const heatsink = new THREE.Mesh(heatsinkGeo, heatsinkMaterial);
-            heatsink.name = "cpu_cooler_heatsink";
-            heatsink.position.set(
-                motherboard.position.x + mbDepth + heatsinkTowerDepth / 2,
-                cpuAreaY,
-                cpuAreaZ
-            );
-            cpuCoolerGroup.add(heatsink);
-            storeComponent(heatsink);
-
-            // CPU Fan
-            const fanRadius = heatsinkTowerWidth * 0.45;
-            const fanThickness = 1;
-            const cpuFanGeo = new THREE.CylinderGeometry(fanRadius, fanRadius, fanThickness, 32);
-            const cpuFan = new THREE.Mesh(cpuFanGeo, fanFrameMaterial.clone()); // Frame
-            cpuFan.name = "cpu_cooler_fan";
-            cpuFan.rotation.z = Math.PI / 2;
-            cpuFan.position.set(
-                heatsink.position.x + heatsinkTowerDepth / 2 + fanThickness / 2,
-                heatsink.position.y,
-                heatsink.position.z
-            );
-             // RGB part of fan
-            const cpuFanRGBCenterGeo = new THREE.CylinderGeometry(fanRadius * 0.9, fanRadius * 0.9, fanThickness * 0.8, 32);
-            const cpuFanRGBCenter = new THREE.Mesh(cpuFanRGBCenterGeo, fanBladeRGBCenterMaterial.clone());
-            cpuFanRGBCenter.rotation.z = Math.PI / 2; // Match parent fan rotation
-            cpuFanRGBCenter.position.set(0,0,0); // Relative to fan
-            cpuFan.add(cpuFanRGBCenter); // Add RGB as child of fan frame
-            
-            cpuCoolerGroup.add(cpuFan);
-            storeComponent(cpuFan);
-            pcGroup.add(cpuCoolerGroup);
-
-
-            // --- RAM Sticks ---
-            const ramHeight = 3.5;
-            const ramWidth = 0.4;
-            const ramDepthMB = 0.2; // Mounting depth on MB
-            const ramStickDepth = 1.5; // Full depth of stick
-
-            for (let i = 0; i < 2; i++) { // 2 sticks in slots 2 and 4
-                const ramStickGroup = new THREE.Group();
-                ramStickGroup.name = `ram${i + 1}`;
-
-                // Heatspreader part
-                const ramHeatspreaderGeo = new THREE.BoxGeometry(ramStickDepth, ramHeight, ramWidth);
-                const ramHeatspreader = new THREE.Mesh(ramHeatspreaderGeo, componentDarkMaterial);
-                
-                // RGB Lightbar on top
-                const lightbarHeight = ramHeight * 0.25;
-                const lightbarGeo = new THREE.BoxGeometry(ramStickDepth * 0.9, lightbarHeight, ramWidth * 0.8);
-                const lightbar = new THREE.Mesh(lightbarGeo, ramRGBLightbarMaterial.clone());
-                lightbar.position.y = ramHeight/2 - lightbarHeight/2; // Position on top of heatspreader
-                ramHeatspreader.add(lightbar); // Add lightbar as child
-
-                ramStickGroup.add(ramHeatspreader);
-                ramStickGroup.position.set(
-                    motherboard.position.x + mbDepth + ramStickDepth/2 - 0.3, // slightly into MB
-                    cpuAreaY + 0.5, // Near CPU
-                    cpuAreaZ + heatsinkTowerWidth/2 + ramWidth + (i * (ramWidth + 0.3)) // Slot 2 and 4
-                );
-                pcGroup.add(ramStickGroup);
-                storeComponent(ramStickGroup); // Store the group to highlight whole stick
-            }
-
-            // --- GPU ---
-            const gpuLength = mbWidth * 0.7; // Long card
-            const gpuHeight = 4;    // Approx 2-slot height
-            const gpuThickness = 1.5; // Thickness including cooler
-            const gpuGeo = new THREE.BoxGeometry(gpuThickness, gpuHeight, gpuLength);
-            const gpu = new THREE.Mesh(gpuGeo, componentDarkMaterial); // Main shroud
-            gpu.name = "gpu";
-            gpu.position.set(
-                motherboard.position.x + mbDepth + gpuThickness / 2,
-                motherboard.position.y - mbHeight * 0.20, // Main PCIe slot
-                motherboard.position.z + mbWidth*0.05 // Slightly offset from center
-            );
-             // GPU Fans (Simplified as textured cylinders on the bottom face of GPU)
-            const gpuFanRadius = gpuHeight * 0.4;
-            const gpuFanThickness = 0.2;
-            for(let i=0; i<2; i++) {
-                const gpuFanGeo = new THREE.CylinderGeometry(gpuFanRadius, gpuFanRadius, gpuFanThickness, 20);
-                const gpuFan = new THREE.Mesh(gpuFanGeo, fanFrameMaterial); // Non-RGB, or add RGB material
-                gpuFan.rotation.x = Math.PI / 2;
-                gpuFan.position.set(
-                    0, // Centered on GPU thickness
-                    -gpuHeight/2 + gpuFanThickness/2, // Bottom face
-                    (i === 0 ? -1: 1) * (gpuLength * 0.25) // Spaced along GPU length
-                );
-                gpu.add(gpuFan);
-            }
-            pcGroup.add(gpu);
-            storeComponent(gpu);
-
-
-            // --- PSU ---
-            const psuWidth = caseWidth * 0.4;
-            const psuHeight = caseHeight * 0.15;
-            const psuDepth = caseDepth * 0.3;
-            const psuGeo = new THREE.BoxGeometry(psuWidth, psuHeight, psuDepth);
-            const psu = new THREE.Mesh(psuGeo, componentDarkMaterial);
-            psu.name = "psu";
-            psu.position.set(
-                0, // Centered horizontally under shroud
-                -caseHeight / 2 + wall + psuHeight / 2 + 0.2, // On bottom, below shroud level
-                -caseDepth / 2 + wall + psuDepth / 2 + 1 // At the back
-            );
-            pcGroup.add(psu);
-            storeComponent(psu);
-
-
-            // --- SSD (2.5 inch placeholder) ---
-            const ssdW = 2.5, ssdH = 0.3, ssdD = 3.5;
-            const ssdGeo = new THREE.BoxGeometry(ssdW, ssdH, ssdD);
-            const ssd = new THREE.Mesh(ssdGeo, heatsinkMaterial); // Metallic look
-            ssd.name = "ssd";
-            // Mount it behind motherboard tray or in a generic spot
-            ssd.position.set(
-                motherboard.position.x - mbDepth - ssdW/2 - 0.1, // Behind motherboard plane
-                motherboard.position.y + mbHeight * 0.1,
-                motherboard.position.z - mbWidth * 0.2
-            );
-            pcGroup.add(ssd);
-            storeComponent(ssd);
-
-            // --- Case Fans ---
-            const caseFanRadius = 2.4; // ~120mm fan if 1 unit = 2cm
-            const caseFanThickness = 1;
-
-            // Top Fans (2)
-            for (let i = 0; i < 2; i++) {
-                const topFanGroup = new THREE.Group();
-                topFanGroup.name = `case_fan_top${i+1}`;
-
-                const caseFanGeo = new THREE.CylinderGeometry(caseFanRadius, caseFanRadius, caseFanThickness, 32);
-                const fanFrame = new THREE.Mesh(caseFanGeo, fanFrameMaterial.clone());
-                
-                const fanRgbPart = new THREE.Mesh(
-                    new THREE.CylinderGeometry(caseFanRadius*0.9, caseFanRadius*0.9, caseFanThickness*0.8, 32),
-                    fanBladeRGBCenterMaterial.clone()
-                );
-                fanFrame.add(fanRgbPart);
-                topFanGroup.add(fanFrame);
-
-                topFanGroup.rotation.x = Math.PI / 2; // Lay flat
-                topFanGroup.position.set(
-                    0, // Centered
-                    caseHeight / 2 - wall - caseFanThickness / 2, // Just under top panel
-                    (caseDepth / 4) * (i === 0 ? 1 : -0.8) // Spaced along Z
-                );
-                pcGroup.add(topFanGroup);
-                storeComponent(topFanGroup);
-            }
-
-            // Rear Fan (1)
-            const rearFanGroup = new THREE.Group();
-            rearFanGroup.name = "case_fan_rear";
-            const rearFanFrame = new THREE.Mesh(new THREE.CylinderGeometry(caseFanRadius, caseFanRadius, caseFanThickness, 32), fanFrameMaterial.clone());
-            const rearFanRgb = new THREE.Mesh(
-                new THREE.CylinderGeometry(caseFanRadius*0.9, caseFanRadius*0.9, caseFanThickness*0.8, 32),
-                fanBladeRGBCenterMaterial.clone()
-            );
-            rearFanFrame.add(rearFanRgb);
-            rearFanGroup.add(rearFanFrame);
-
-            rearFanGroup.rotation.y = Math.PI / 2; // Vertical, facing out
-            rearFanGroup.position.set(
-                -caseWidth / 2 + wall + caseFanThickness / 2, // Inner side of back panel
-                caseHeight * 0.2, // Upper part of case
-                0 // Centered on back panel
-            );
-            pcGroup.add(rearFanGroup);
-            storeComponent(rearFanGroup);
-
-            // Shadows for all relevant components
-            pcGroup.traverse(child => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
+        // --- Customization Application ---
+        function applyCustomization(category, componentInfo) {
+            if (!componentInfo || componentInfo.id === 'none') {
+                // Reset to default/no customization
+                if (category === 'gpuCustom' && componentSlots.gpuBackplate) {
+                    // Assuming default GPU material is stored or can be re-applied
+                    componentSlots.gpuBackplate.material.albedoTexture = null; // Or default texture
+                } else if (category === 'customCableSleeves') {
+                    componentSlots.cableMeshes.forEach(mesh => {
+                        mesh.material.albedoTexture = null; // Or default cable texture
+                    });
+                } else if (category === 'frontPanelPrint' && componentSlots.frontPanel) {
+                    componentSlots.frontPanel.material.albedoTexture = null;
+                } else if (category === 'sidePanelPrint' && componentSlots.sidePanel) {
+                    componentSlots.sidePanel.material.albedoTexture = null;
                 }
+                // Add more reset logic for other customizations
+                return;
+            }
+
+            if (componentInfo.texture) {
+                const texture = new BABYLON.Texture(`./textures/${componentInfo.texture}`, scene);
+                if (category === 'gpuCustom' && componentSlots.gpuBackplate) {
+                    if (componentSlots.gpuBackplate.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.gpuBackplate.material.albedoTexture = texture;
+                    }
+                } else if (category === 'customCableSleeves') {
+                    componentSlots.cableMeshes.forEach(mesh => {
+                        if (mesh.material instanceof BABYLON.PBRMaterial) {
+                            mesh.material.albedoTexture = texture;
+                        }
+                    });
+                } else if (category === 'frontPanelPrint' && componentSlots.frontPanel) {
+                    if (componentSlots.frontPanel.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.frontPanel.material.albedoTexture = texture;
+                    }
+                } else if (category === 'sidePanelPrint' && componentSlots.sidePanel) {
+                    if (componentSlots.sidePanel.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.sidePanel.material.albedoTexture = texture;
+                    }
+                    // For side panel print, zoom to view it
+                    animateCameraTo(cameraTargets.sidePanelPrint.position, cameraTargets.sidePanelPrint.target);
+                }
+                // Add more texture application logic
+            }
+            // For charms, load and place the model
+            if (componentInfo.model && category === 'charms') {
+                placeComponent(category, componentInfo.id); // Re-use placeComponent for charms
+            }
+        }
+
+
+        // --- UI Management ---
+
+        function setupUI() {
+            document.querySelectorAll('.category-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.dataset.category;
+                    selectComponentCategory(category);
+                });
             });
         }
 
+        function selectComponentCategory(category) {
+            // Highlight active category button
+            document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.category-button[data-category="${category}"]`).classList.add('active');
 
-        let currentlyHighlighted = null;
-        const highlightMaterial = new THREE.MeshStandardMaterial({
-            color: HIGHLIGHT_COLOR,
-            emissive: HIGHLIGHT_COLOR,
-            emissiveIntensity: 0.7,
-            toneMapped: false, // Important for emissive
-            depthTest: false // Render highlight on top
-        });
+            panelTitle.textContent = category.replace(/([A-Z])/g, ' $1').toUpperCase(); // Format title
+            componentListDiv.innerHTML = ''; // Clear previous options
 
-        window.highlightComponentByName = function(name) {
-            resetHighlights();
+            const options = componentData[category];
+            options.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('component-item');
+                if (buildState[category] && buildState[category].id === item.id) {
+                    itemDiv.classList.add('selected');
+                }
 
-            const component = componentMeshes[name];
-            if (component) {
-                currentlyHighlighted = { component: component, originalMaterials: [] };
+                // Check compatibility (basic CPU-Mobo example)
+                let incompatible = false;
+                if (category === 'motherboard' && buildState.cpu) {
+                    if (item.type !== buildState.cpu.type) {
+                        incompatible = true;
+                        itemDiv.classList.add('incompatible');
+                        itemDiv.title = `Incompatible with selected CPU (${buildState.cpu.name})`;
+                    }
+                } else if (category === 'cpu' && buildState.motherboard) {
+                    if (item.type !== buildState.motherboard.type) {
+                        incompatible = true;
+                        itemDiv.classList.add('incompatible');
+                        itemDiv.title = `Incompatible with selected Motherboard (${buildState.motherboard.name})`;
+                    }
+                }
 
-                if (component.isMesh) {
-                    currentlyHighlighted.originalMaterials.push({ mesh: component, material: component.material });
-                    component.material = highlightMaterial;
-                } else if (component.isGroup) {
-                    component.traverse((child) => {
-                        if (child.isMesh) {
-                            currentlyHighlighted.originalMaterials.push({ mesh: child, material: child.material });
-                            child.material = highlightMaterial;
+                itemDiv.innerHTML = `<span>${item.name}</span><span class="price">$${item.price.toFixed(2)}</span>`;
+                if (!incompatible) {
+                    itemDiv.addEventListener('click', () => {
+                        selectComponent(category, item.id);
+                        // Close panel after selection for core components, keep open for customization
+                        if (!['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint', 'charms'].includes(category)) {
+                             componentPanel.classList.remove('visible');
                         }
                     });
                 }
-            } else {
-                console.warn("Component not found:", name);
-            }
-        }
+                componentListDiv.appendChild(itemDiv);
+            });
 
-        window.resetHighlights = function() {
-            if (currentlyHighlighted && currentlyHighlighted.originalMaterials) {
-                currentlyHighlighted.originalMaterials.forEach(item => {
-                    item.mesh.material = item.material;
+            // Show customization options if applicable
+            if (category === 'gpuCustom') {
+                const currentGPU = buildState.gpuCustom;
+                const selectHtml = `
+                    <div class="custom-option">
+                        <label for="gpuPrintSelect">Select GPU Print:</label>
+                        <select id="gpuPrintSelect">
+                            ${componentData.gpuCustom.map(opt => `<option value="${opt.id}" ${currentGPU && currentGPU.id === opt.id ? 'selected' : ''}>${opt.name} ($${opt.price.toFixed(2)})</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+                componentListDiv.innerHTML += selectHtml;
+                document.getElementById('gpuPrintSelect').addEventListener('change', (e) => {
+                    selectComponent(category, e.target.value);
                 });
             }
-            currentlyHighlighted = null;
-             // Fallback explicit reset for all known components if something was missed
-            // for (const name in componentMeshes) {
-            //     const component = componentMeshes[name];
-            //     if (originalMaterials[name]) { // Check if original was stored
-            //          if (component.isMesh) {
-            //             component.material = originalMaterials[name];
-            //         } else if (component.isGroup) {
-            //             // This part is tricky if group children had varied materials initially
-            //             // For now, the currentlyHighlighted system is better for groups
-            //         }
-            //     }
-            // }
+            // Add similar logic for other customization categories (cable sleeves, panel prints etc.)
+
+            componentPanel.classList.add('visible');
+
+            // Animate camera to the relevant component area
+            const target = cameraTargets[category] || cameraTargets.chassis; // Fallback to chassis view
+            animateCameraTo(target.position, target.target);
         }
 
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        async function selectComponent(category, componentId) {
+            const selectedItem = componentData[category].find(item => item.id === componentId);
+
+            // Compatibility check before setting (more robust than just UI disabling)
+            if (category === 'motherboard' && buildState.cpu && selectedItem.type !== buildState.cpu.type) {
+                alert(`Cannot select ${selectedItem.name}. It's incompatible with your selected CPU (${buildState.cpu.name}).`);
+                return;
+            }
+            if (category === 'cpu' && buildState.motherboard && selectedItem.type !== buildState.motherboard.type) {
+                alert(`Cannot select ${selectedItem.name}. It's incompatible with your selected Motherboard (${buildState.motherboard.name}).`);
+                return;
+            }
+
+            buildState[category] = selectedItem;
+
+            // Update UI selection highlight
+            document.querySelectorAll(`#componentList .component-item`).forEach(itemDiv => {
+                const itemId = itemDiv.querySelector('span').textContent.split(' ')[0].toLowerCase(); // Crude way to get ID
+                if (itemDiv.textContent.includes(selectedItem.name)) { // More robust check
+                    itemDiv.classList.add('selected');
+                } else {
+                    itemDiv.classList.remove('selected');
+                }
+            });
+
+            // Apply 3D model changes
+            if (['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'cpuCooling', 'ssd', 'secondarySsd', 'hdd', 'secondHdd', 'antiSagBracket', 'wifiBluetooth', 'fans', 'charms'].includes(category)) {
+                await placeComponent(category, componentId);
+            } else if (['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint'].includes(category)) {
+                applyCustomization(category, selectedItem);
+            }
+
+            updateBuildSummary();
         }
 
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
+        function updateBuildSummary() {
+            let total = 0;
+            summaryList.innerHTML = '';
+
+            for (const category in buildState) {
+                const item = buildState[category];
+                if (item && item.id !== 'none') { // Don't list "None" options
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span class="item-name">${item.name}</span><span class="item-price">$${item.price.toFixed(2)}</span>`;
+                    summaryList.appendChild(listItem);
+                    total += item.price;
+                }
+            }
+            totalPriceSpan.textContent = `$${total.toFixed(2)}`;
         }
 
-        init();
+        async function applyDefaultSelections() {
+            // Apply chassis default (already handled by loadChassis)
+            // Apply other defaults that have models or textures
+            if (buildState.thermalCompound) { /* No 3D model */ }
+            if (buildState.secondarySsd && buildState.secondarySsd.id !== 'none') await placeComponent('secondarySsd', buildState.secondarySsd.id);
+            if (buildState.hdd && buildState.hdd.id !== 'none') await placeComponent('hdd', buildState.hdd.id);
+            if (buildState.secondHdd && buildState.secondHdd.id !== 'none') await placeComponent('secondHdd', buildState.secondHdd.id);
+            if (buildState.antiSagBracket && buildState.antiSagBracket.id !== 'none') await placeComponent('antiSagBracket', buildState.antiSagBracket.id);
+            if (buildState.wifiBluetooth && buildState.wifiBluetooth.id !== 'none') await placeComponent('wifiBluetooth', buildState.wifiBluetooth.id);
+            if (buildState.caseLighting && buildState.caseLighting.id !== 'none') applyCustomization('caseLighting', buildState.caseLighting);
+            if (buildState.customCableSleeves && buildState.customCableSleeves.id !== 'none') applyCustomization('customCableSleeves', buildState.customCableSleeves);
+            if (buildState.gpuCustom && buildState.gpuCustom.id !== 'none') applyCustomization('gpuCustom', buildState.gpuCustom);
+            if (buildState.charms && buildState.charms.id !== 'none') await placeComponent('charms', buildState.charms.id);
+            if (buildState.frontPanelPrint && buildState.frontPanelPrint.id !== 'none') applyCustomization('frontPanelPrint', buildState.frontPanelPrint);
+            if (buildState.sidePanelPrint && buildState.sidePanelPrint.id !== 'none') applyCustomization('sidePanelPrint', buildState.sidePanelPrint);
+
+            updateBuildSummary();
+        }
+
+        // --- Camera Animation ---
+        function animateCameraTo(targetPosition, targetLookAt) {
+            BABYLON.Animation.CreateAndStartAnimation(
+                "cameraPositionAnim",
+                camera,
+                "position",
+                60, // frames per second
+                30, // total frames (0.5 seconds)
+                camera.position,
+                targetPosition,
+                BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+                new BABYLON.CubicEase() // Smooth easing
+            );
+            BABYLON.Animation.CreateAndStartAnimation(
+                "cameraTargetAnim",
+                camera,
+                "target",
+                60,
+                30,
+                camera.target,
+                targetLookAt,
+                BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+                new BABYLON.CubicEase()
+            );
+        }
+
+        // --- Initialize Scene and UI ---
+        createScene().then(s => {
+            scene = s;
+            engine.runRenderLoop(function () {
+                scene.render();
+            });
+            setupUI();
+            // Initial camera view
+            animateCameraTo(cameraTargets.chassis.position, cameraTargets.chassis.target);
+        });
+
+        // Handle window resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+
+        // Hide component panel when clicking outside (on canvas)
+        canvas.addEventListener('pointerdown', (evt) => {
+            if (componentPanel.classList.contains('visible') && !evt.target.closest('#componentPanel') && !evt.target.closest('#sidebar')) {
+                componentPanel.classList.remove('visible');
+                // Zoom back to chassis view
+                animateCameraTo(cameraTargets.chassis.position, cameraTargets.chassis.target);
+            }
+        });
+
     </script>
 </body>
 </html>
