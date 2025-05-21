@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Premium PC Configurator</title>
+    <title>Premium PC Configurator - Procedural Model</title>
     <style>
         html, body {
             overflow: hidden;
@@ -79,6 +79,7 @@
             pointer-events: all; /* Enable clicks on sidebar */
             transform: translateX(0);
             transition: transform 0.3s ease-out;
+            overflow-y: auto;
         }
         #sidebar.hidden {
             transform: translateX(-100%);
@@ -264,7 +265,10 @@
             <button class="category-button" data-category="charms">Charms</button>
             <button class="category-button" data-category="frontPanelPrint">Front Panel Print</button>
             <button class="category-button" data-category="sidePanelPrint">Side Panel Print</button>
-            <!-- Add more customization categories here -->
+            <button class="category-button" data-category="backPanelPrint">Back Panel Print</button>
+            <button class="category-button" data-category="fanPrint">Fan Print</button>
+            <button class="category-button" data-category="lcdPanels">LCD Panels</button>
+            <button class="category-button" data-category="topPanelPrint">Top Panel Print</button>
         </div>
 
         <div id="componentPanel">
@@ -315,37 +319,38 @@
         // --- Component Data (Simplified for brevity, expand as needed) ---
         const componentData = {
             cpu: [
-                { id: 'amd_ryzen_7', name: 'AMD Ryzen 7 7800X3D', price: 369.99, type: 'amd', model: 'cpu_generic.glb' },
-                { id: 'amd_ryzen_9', name: 'AMD Ryzen 9 7950X3D', price: 699.99, type: 'amd', model: 'cpu_generic.glb' },
-                { id: 'intel_i7', name: 'Intel Core i7-14700K', price: 389.99, type: 'intel', model: 'cpu_generic.glb' },
-                { id: 'intel_i9', name: 'Intel Core i9-14900K', price: 589.99, type: 'intel', model: 'cpu_generic.glb' },
+                { id: 'amd_ryzen_7', name: 'AMD Ryzen 7 7800X3D', price: 369.99, type: 'amd' },
+                { id: 'amd_ryzen_9', name: 'AMD Ryzen 9 7950X3D', price: 699.99, type: 'amd' },
+                { id: 'intel_i7', name: 'Intel Core i7-14700K', price: 389.99, type: 'intel' },
+                { id: 'intel_i9', name: 'Intel Core i9-14900K', price: 589.99, type: 'intel' },
                 // Add more CPUs (12 AMD, 5 Intel)
             ],
             motherboard: [
-                { id: 'mobo_amd_x670e', name: 'AMD X670E Motherboard', price: 349.99, type: 'amd', model: 'motherboard_amd.glb' },
-                { id: 'mobo_amd_b650', name: 'AMD B650 Motherboard', price: 189.99, type: 'amd', model: 'motherboard_amd.glb' },
-                { id: 'mobo_intel_z790', name: 'Intel Z790 Motherboard', price: 299.99, type: 'intel', model: 'motherboard_intel.glb' },
-                { id: 'mobo_intel_b760', name: 'Intel B760 Motherboard', price: 159.99, type: 'intel', model: 'motherboard_intel.glb' },
+                { id: 'mobo_amd_x670e', name: 'AMD X670E Motherboard', price: 349.99, type: 'amd' },
+                { id: 'mobo_amd_b650', name: 'AMD B650 Motherboard', price: 189.99, type: 'amd' },
+                { id: 'mobo_intel_z790', name: 'Intel Z790 Motherboard', price: 299.99, type: 'intel' },
+                { id: 'mobo_intel_b760', name: 'Intel B760 Motherboard', price: 159.99, type: 'intel' },
                 // Add more Motherboards (7 AMD, 7 Intel)
             ],
             ram: [
-                { id: 'ram_32gb_ddr5_6000', name: '32GB DDR5-6000 (2x16GB)', price: 119.99, capacity: 32, model: 'ram_generic.glb' },
-                { id: 'ram_64gb_ddr5_6000', name: '64GB DDR5-6000 (2x32GB)', price: 219.99, capacity: 64, model: 'ram_generic.glb' },
+                { id: 'ram_32gb_ddr5_6000', name: '32GB DDR5-6000 (2x16GB)', price: 119.99, capacity: 32 },
+                { id: 'ram_64gb_ddr5_6000', name: '64GB DDR5-6000 (2x32GB)', price: 219.99, capacity: 64 },
                 // Add more RAM (13 total: 8x32GB, 5x64GB)
             ],
             gpu: [
-                { id: 'gpu_rtx_4070', name: 'NVIDIA RTX 4070 Super', price: 599.99, model: 'gpu_generic.glb' },
-                { id: 'gpu_rx_7800xt', name: 'AMD RX 7800 XT', price: 499.99, model: 'gpu_generic.glb' },
+                { id: 'gpu_rtx_4070', name: 'NVIDIA RTX 4070 Super', price: 599.99 },
+                { id: 'gpu_rx_7800xt', name: 'AMD RX 7800 XT', price: 499.99 },
                 // Add more GPUs (all 5060+)
             ],
             psu: [
-                { id: 'psu_750w', name: '750W 80+ Gold PSU', price: 99.99, model: 'psu_generic.glb' },
-                { id: 'psu_1000w', name: '1000W 80+ Platinum PSU', price: 189.99, model: 'psu_generic.glb' },
+                { id: 'psu_750w', name: '750W 80+ Gold PSU', price: 99.99 },
+                { id: 'psu_1000w', name: '1000W 80+ Platinum PSU', price: 189.99 },
                 // Add more PSUs (7 from 750W to 1300W)
             ],
             cpuCooling: [
-                { id: 'cooler_basic_air', name: 'Basic Air Cooler', price: 29.99, model: 'cooler_air_basic.glb' },
-                { id: 'cooler_aio_360', name: 'AIO Liquid Cooler 360mm', price: 149.99, model: 'cooler_air_basic.glb' }, // Placeholder model
+                { id: 'cooler_basic_air', name: 'Basic Air Cooler', price: 29.99, type: 'air' },
+                { id: 'cooler_aio_360', name: 'AIO Liquid Cooler 360mm', price: 149.99, type: 'aio' },
+                { id: 'cooler_custom_led', name: 'Custom LED Screen Cooler', price: 249.99, type: 'custom_led' },
                 // Add more CPU Coolers (8 types)
             ],
             thermalCompound: [
@@ -353,22 +358,22 @@
                 { id: 'compound_premium', name: 'Premium Thermal Compound', price: 19.99 },
             ],
             ssd: [
-                { id: 'ssd_nvme_1tb', name: '1TB NVMe SSD', price: 79.99, model: 'ssd_m2.glb', type: 'm2' },
-                { id: 'ssd_sata_2tb', name: '2TB SATA SSD', price: 129.99, model: 'ssd_25inch.glb', type: 'sata' },
+                { id: 'ssd_nvme_1tb', name: '1TB NVMe SSD', price: 79.99, formFactor: 'm2' },
+                { id: 'ssd_sata_2tb', name: '2TB SATA SSD', price: 129.99, formFactor: 'sata' },
                 // Add more SSDs (20 types 1-8TB)
             ],
             secondarySsd: [
-                { id: 'ssd_nvme_500gb_sec', name: '500GB NVMe SSD (Secondary)', price: 49.99, model: 'ssd_m2.glb', type: 'm2' },
-                { id: 'ssd_sata_1tb_sec', name: '1TB SATA SSD (Secondary)', price: 89.99, model: 'ssd_25inch.glb', type: 'sata' },
-                { id: 'none', name: 'None', price: 0, default: true }
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'ssd_nvme_500gb_sec', name: '500GB NVMe SSD (Secondary)', price: 49.99, formFactor: 'm2' },
+                { id: 'ssd_sata_1tb_sec', name: '1TB SATA SSD (Secondary)', price: 89.99, formFactor: 'sata' },
             ],
             hdd: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'hdd_2tb', name: '2TB HDD', price: 59.99, model: 'ssd_25inch.glb' }, // Placeholder model
+                { id: 'hdd_2tb', name: '2TB HDD', price: 59.99 },
             ],
             secondHdd: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'hdd_4tb_sec', name: '4TB HDD (Secondary)', price: 89.99, model: 'ssd_25inch.glb' }, // Placeholder model
+                { id: 'hdd_4tb_sec', name: '4TB HDD (Secondary)', price: 89.99 },
             ],
             os: [
                 { id: 'os_none', name: 'Own OS', price: 0 },
@@ -376,28 +381,29 @@
             ],
             antiSagBracket: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'anti_sag_option', name: 'Premium Anti-Sag Bracket', price: 29.99, model: 'anti_sag_bracket.glb' },
+                { id: 'anti_sag_option', name: 'Premium Anti-Sag Bracket', price: 29.99 },
             ],
             wifiBluetooth: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'wifi_bt_option', name: 'WiFi 6E & Bluetooth 5.3', price: 49.99, model: 'anti_sag_bracket.glb' }, // Placeholder model
+                { id: 'wifi_bt_option', name: 'WiFi 6E & Bluetooth 5.3', price: 49.99 },
             ],
             // --- Customization Categories ---
             fans: [
-                { id: 'fan_standard', name: 'Standard Black Fans', price: 15.00, model: 'fan_generic.glb' },
-                { id: 'fan_rgb', name: 'RGB Fans (3-pack)', price: 45.00, model: 'fan_generic.glb' },
+                { id: 'fan_standard', name: 'Standard Black Fans', price: 15.00 },
+                { id: 'fan_rgb', name: 'RGB Fans (3-pack)', price: 45.00, hasRGB: true },
                 // Add more fans (7-9 options)
             ],
             caseLighting: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'lighting_rgb_strip', name: 'RGB LED Strips', price: 35.00 },
-                { id: 'lighting_neon', name: 'Neon Accent Lighting', price: 55.00 },
+                { id: 'lighting_rgb_strip', name: 'RGB LED Strips', price: 35.00, color: new BABYLON.Color3(0, 0.5, 1) },
+                { id: 'lighting_neon', name: 'Neon Accent Lighting', price: 55.00, color: new BABYLON.Color3(1, 0, 0.5) },
                 // Add more (3 options)
             ],
             customCableSleeves: [
                 { id: 'none', name: 'None', price: 0, default: true },
                 { id: 'sleeves_black', name: 'Black Sleeves', price: 25.00, texture: 'cable_black.jpg' },
                 { id: 'sleeves_red', name: 'Red Sleeves', price: 25.00, texture: 'cable_red.jpg' },
+                { id: 'sleeves_blue', name: 'Blue Sleeves', price: 25.00, texture: 'cable_blue.jpg' },
                 // Add more (15 options) - textures would need to be created
             ],
             gpuCustom: [
@@ -408,8 +414,8 @@
             ],
             charms: [
                 { id: 'none', name: 'None', price: 0, default: true },
-                { id: 'charm_logo', name: 'Custom Logo Charm', price: 15.00, model: 'charm_1.glb' },
-                { id: 'charm_gaming', name: 'Gaming Icon Charm', price: 12.00, model: 'charm_1.glb' },
+                { id: 'charm_logo', name: 'Custom Logo Charm', price: 15.00, shape: 'sphere' },
+                { id: 'charm_gaming', name: 'Gaming Icon Charm', price: 12.00, shape: 'pyramid' },
                 // Add more (10 options)
             ],
             frontPanelPrint: [
@@ -423,12 +429,28 @@
                 { id: 'side_print_abstract', name: 'Abstract Swirls', price: 50.00, texture: 'panel_abstract.jpg' },
                 // Add more
             ],
-            // Add backPanelPrint, fanPrint, LCDPanels, topPanel
+            backPanelPrint: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'back_print_circuit', name: 'Circuit Board', price: 25.00, texture: 'panel_circuit.jpg' },
+            ],
+            fanPrint: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'fan_print_logo', name: 'Custom Logo Fan', price: 10.00, texture: 'fan_logo.jpg' },
+            ],
+            lcdPanels: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'lcd_info', name: 'System Info Display', price: 45.00, texture: 'lcd_info.jpg' },
+                { id: 'lcd_animation', name: 'Abstract Animation', price: 55.00, texture: 'lcd_animation.jpg' },
+            ],
+            topPanelPrint: [
+                { id: 'none', name: 'None', price: 0, default: true },
+                { id: 'top_print_grid', name: 'Grid Pattern', price: 30.00, texture: 'panel_grid.jpg' },
+            ],
         };
 
         // --- Build State ---
         const buildState = {
-            chassis: { id: 'chassis_default', name: 'Premium Chassis', price: 250.00, model: 'chassis.glb' }, // Chassis is pre-selected
+            chassis: { id: 'chassis_default', name: 'Premium Chassis', price: 250.00 }, // Chassis is pre-selected
             cpu: null,
             motherboard: null,
             ram: null,
@@ -437,47 +459,55 @@
             cpuCooling: null,
             thermalCompound: componentData.thermalCompound[0], // Default base
             ssd: null,
-            secondarySsd: componentData.secondarySsd.find(c => c.default), // Default none
-            hdd: componentData.hdd.find(c => c.default), // Default none
-            secondHdd: componentData.secondHdd.find(c => c.default), // Default none
+            secondarySsd: componentData.secondarySsd.find(c => c.default),
+            hdd: componentData.hdd.find(c => c.default),
+            secondHdd: componentData.secondHdd.find(c => c.default),
             os: componentData.os[0], // Default Own OS
-            antiSagBracket: componentData.antiSagBracket.find(c => c.default), // Default none
-            wifiBluetooth: componentData.wifiBluetooth.find(c => c.default), // Default none
+            antiSagBracket: componentData.antiSagBracket.find(c => c.default),
+            wifiBluetooth: componentData.wifiBluetooth.find(c => c.default),
             fans: null,
-            caseLighting: componentData.caseLighting.find(c => c.default), // Default none
-            customCableSleeves: componentData.customCableSleeves.find(c => c.default), // Default none
-            gpuCustom: componentData.gpuCustom.find(c => c.default), // Default none
-            charms: componentData.charms.find(c => c.default), // Default none
-            frontPanelPrint: componentData.frontPanelPrint.find(c => c.default), // Default none
-            sidePanelPrint: componentData.sidePanelPrint.find(c => c.default), // Default none
+            caseLighting: componentData.caseLighting.find(c => c.default),
+            customCableSleeves: componentData.customCableSleeves.find(c => c.default),
+            gpuCustom: componentData.gpuCustom.find(c => c.default),
+            charms: componentData.charms.find(c => c.default),
+            frontPanelPrint: componentData.frontPanelPrint.find(c => c.default),
+            sidePanelPrint: componentData.sidePanelPrint.find(c => c.default),
+            backPanelPrint: componentData.backPanelPrint.find(c => c.default),
+            fanPrint: componentData.fanPrint.find(c => c.default),
+            lcdPanels: componentData.lcdPanels.find(c => c.default),
+            topPanelPrint: componentData.topPanelPrint.find(c => c.default),
         };
 
         // --- 3D Model References & Slots ---
-        const loadedModels = {}; // Cache for loaded GLB models
         const componentMeshes = {}; // Store active meshes for each component type
+        const componentMaterials = {}; // Store common materials for procedural models
 
         // Define component attachment points/slots relative to the chassis model's origin
-        // These are BABYLON.TransformNode instances that will parent the loaded component models
         const componentSlots = {
-            cpu: null, // Will be child of motherboard slot
+            chassis: null, // The root of the chassis model
             motherboard: null,
-            ram: [], // Array for multiple RAM sticks
+            cpu: null,
+            ram: [],
             gpu: null,
             psu: null,
             cpuCooling: null,
-            ssd: [], // Array for multiple SSDs
-            secondarySsd: [],
+            ssd: [], // For 2.5" SSDs
+            ssdM2: [], // For M.2 SSDs
             hdd: [],
-            secondHdd: [],
             antiSagBracket: null,
             wifiBluetooth: null,
-            fans: [], // Array for multiple fans
-            charms: [], // Array for multiple charms
-            // Panel meshes for texture swaps
-            frontPanel: null,
-            sidePanel: null,
-            gpuBackplate: null, // Specific mesh on GPU for customization
+            fans: [], // For case fans
+            caseLighting: [], // For LED strips
+            charms: [], // For charms
+            // Specific meshes on the chassis for customization
+            frontPanelMesh: null,
+            sidePanelMesh: null,
+            backPanelMesh: null,
+            topPanelMesh: null,
+            gpuBackplateMesh: null, // Mesh on GPU for customization
             cableMeshes: [], // Meshes for cables to swap textures
+            fanBladeMeshes: [], // Meshes for fan blades for print
+            lcdScreenMeshes: [], // Meshes for LCD panels
         };
 
         // --- Camera Targets for Zooming ---
@@ -493,9 +523,14 @@
             antiSagBracket: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: new BABYLON.Vector3(0, -0.2, 0) },
             fans: { position: new BABYLON.Vector3(0, 0.5, -1.5), target: new BABYLON.Vector3(0, 0.2, -0.5) }, // Front fans
             sidePanelPrint: { position: new BABYLON.Vector3(2, 0.5, 0), target: BABYLON.Vector3.Zero() }, // Side view
-            gpuCustom: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: new BABYLON.Vector3(0, -0.2, 0) },
+            frontPanelPrint: { position: new BABYLON.Vector3(0, 0.5, -2), target: BABYLON.Vector3.Zero() }, // Front view
+            backPanelPrint: { position: new BABYLON.Vector3(0, 0.5, 2), target: BABYLON.Vector3.Zero() }, // Back view
+            topPanelPrint: { position: new BABYLON.Vector3(0, 2, 0), target: BABYLON.Vector3.Zero() }, // Top view
+            gpuCustom: { position: new BABYLON.Vector3(0, -0.5, -1.5), target: BABYLON.Vector3.Zero() },
             charms: { position: new BABYLON.Vector3(1.5, 0.5, 1.5), target: new BABYLON.Vector3(0.5, 0.5, 0.5) },
-            // Add more specific targets as needed
+            customCableSleeves: { position: new BABYLON.Vector3(0.5, 0.5, 0.5), target: BABYLON.Vector3.Zero() },
+            fanPrint: { position: new BABYLON.Vector3(0, 0.5, -1.5), target: new BABYLON.Vector3(0, 0.2, -0.5) },
+            lcdPanels: { position: new BABYLON.Vector3(0, 0.8, -0.5), target: new BABYLON.Vector3(0, 0.2, 0) }, // For CPU cooler LCD
         };
 
         // --- Core Babylon.js Scene Creation ---
@@ -509,8 +544,8 @@
             camera.lowerRadiusLimit = 1;
             camera.upperRadiusLimit = 10;
             camera.wheelPrecision = 50;
-            camera.pinchPrecision = 200; // For touch zoom
-            camera.target = BABYLON.Vector3.Zero(); // Initial target at center of scene
+            camera.pinchPrecision = 200;
+            camera.target = BABYLON.Vector3.Zero();
 
             // Lighting: Premium PBR setup
             const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/studio.env", scene);
@@ -534,8 +569,31 @@
             ground.material.roughness = 0.9;
             ground.receiveShadows = true;
 
+            // Initialize common materials
+            componentMaterials.defaultPBR = new BABYLON.PBRMaterial("defaultPBR", scene);
+            componentMaterials.defaultPBR.metallic = 0.8;
+            componentMaterials.defaultPBR.roughness = 0.4;
+            componentMaterials.defaultPBR.albedoColor = new BABYLON.Color3(0.15, 0.15, 0.15); // Dark grey
+
+            componentMaterials.accentPBR = new BABYLON.PBRMaterial("accentPBR", scene);
+            componentMaterials.accentPBR.metallic = 0.9;
+            componentMaterials.accentPBR.roughness = 0.2;
+            componentMaterials.accentPBR.albedoColor = new BABYLON.Color3(0.05, 0.5, 0.8); // Blue accent
+
+            componentMaterials.glassPBR = new BABYLON.PBRMaterial("glassPBR", scene);
+            componentMaterials.glassPBR.metallic = 0.0;
+            componentMaterials.glassPBR.roughness = 0.1;
+            componentMaterials.glassPBR.alpha = 0.3;
+            componentMaterials.glassPBR.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+
+            componentMaterials.emissiveBlue = new BABYLON.PBRMaterial("emissiveBlue", scene);
+            componentMaterials.emissiveBlue.metallic = 0;
+            componentMaterials.emissiveBlue.roughness = 1;
+            componentMaterials.emissiveBlue.emissiveColor = new BABYLON.Color3(0, 0.5, 1);
+            componentMaterials.emissiveBlue.alpha = 0.2; // For placeholders
+
             // --- Load Chassis Model (Base of the PC) ---
-            await loadChassis();
+            createChassis();
 
             // Initialize default selections
             updateBuildSummary();
@@ -544,173 +602,492 @@
             return scene;
         };
 
-        // --- Model Loading and Management ---
+        // --- Procedural Model Generation Functions ---
 
-        async function loadModel(rootUrl, fileName) {
-            if (loadedModels[fileName]) {
-                return loadedModels[fileName].instantiateModelsToScene();
+        function createChassis() {
+            const chassisWidth = 0.5; // X
+            const chassisHeight = 0.8; // Y
+            const chassisDepth = 0.7; // Z
+
+            chassisModel = new BABYLON.TransformNode("chassis_root", scene);
+            chassisModel.scaling = new BABYLON.Vector3(1, 1, 1); // Base scale
+
+            // Main body
+            const body = BABYLON.MeshBuilder.CreateBox("chassis_body", { width: chassisWidth, height: chassisHeight, depth: chassisDepth }, scene);
+            body.material = componentMaterials.defaultPBR;
+            body.parent = chassisModel;
+            body.position.y = chassisHeight / 2; // Center on ground
+
+            // Side panel (glass)
+            const sidePanel = BABYLON.MeshBuilder.CreateBox("side_panel_mesh", { width: 0.01, height: chassisHeight * 0.9, depth: chassisDepth * 0.9 }, scene);
+            sidePanel.material = componentMaterials.glassPBR;
+            sidePanel.parent = chassisModel;
+            sidePanel.position = new BABYLON.Vector3(chassisWidth / 2 - 0.005, chassisHeight / 2, 0);
+            componentSlots.sidePanelMesh = sidePanel;
+
+            // Front panel (for print)
+            const frontPanel = BABYLON.MeshBuilder.CreateBox("front_panel_mesh", { width: chassisWidth * 0.9, height: chassisHeight * 0.9, depth: 0.01 }, scene);
+            frontPanel.material = componentMaterials.defaultPBR.clone("frontPanelMat");
+            frontPanel.parent = chassisModel;
+            frontPanel.position = new BABYLON.Vector3(0, chassisHeight / 2, -chassisDepth / 2 + 0.005);
+            componentSlots.frontPanelMesh = frontPanel;
+
+            // Back panel
+            const backPanel = BABYLON.MeshBuilder.CreateBox("back_panel_mesh", { width: chassisWidth * 0.9, height: chassisHeight * 0.9, depth: 0.01 }, scene);
+            backPanel.material = componentMaterials.defaultPBR.clone("backPanelMat");
+            backPanel.parent = chassisModel;
+            backPanel.position = new BABYLON.Vector3(0, chassisHeight / 2, chassisDepth / 2 - 0.005);
+            componentSlots.backPanelMesh = backPanel;
+
+            // Top panel
+            const topPanel = BABYLON.MeshBuilder.CreateBox("top_panel_mesh", { width: chassisWidth * 0.9, height: 0.01, depth: chassisDepth * 0.9 }, scene);
+            topPanel.material = componentMaterials.defaultPBR.clone("topPanelMat");
+            topPanel.parent = chassisModel;
+            topPanel.position = new BABYLON.Vector3(0, chassisHeight - 0.005, 0);
+            componentSlots.topPanelMesh = topPanel;
+
+
+            // Internal motherboard tray
+            componentSlots.motherboard = new BABYLON.TransformNode("motherboard_slot", scene);
+            componentSlots.motherboard.parent = chassisModel;
+            componentSlots.motherboard.position = new BABYLON.Vector3(-chassisWidth * 0.15, chassisHeight * 0.5, 0); // Position inside chassis
+
+            // CPU slot (child of motherboard)
+            componentSlots.cpu = new BABYLON.TransformNode("cpu_slot", scene);
+            componentSlots.cpu.parent = componentSlots.motherboard;
+            componentSlots.cpu.position = new BABYLON.Vector3(0, 0.01, 0.05); // Relative to motherboard
+
+            // RAM slots (children of motherboard)
+            for (let i = 0; i < 4; i++) {
+                const ramSlot = new BABYLON.TransformNode(`ram_slot_${i}`, scene);
+                ramSlot.parent = componentSlots.motherboard;
+                ramSlot.position = new BABYLON.Vector3(0.08 + (i * 0.03), 0.01, 0.05);
+                componentSlots.ram.push(ramSlot);
             }
-            try {
-                const assetContainer = await BABYLON.SceneLoader.LoadAssetContainerAsync(rootUrl, fileName, scene);
-                loadedModels[fileName] = assetContainer; // Cache the container
-                return assetContainer.instantiateModelsToScene();
-            } catch (error) {
-                console.error(`Error loading model ${fileName}:`, error);
-                return null;
+
+            // GPU slot
+            componentSlots.gpu = new BABYLON.TransformNode("gpu_slot", scene);
+            componentSlots.gpu.parent = chassisModel;
+            componentSlots.gpu.position = new BABYLON.Vector3(-chassisWidth * 0.15, chassisHeight * 0.3, 0.05);
+
+            // PSU slot
+            componentSlots.psu = new BABYLON.TransformNode("psu_slot", scene);
+            componentSlots.psu.parent = chassisModel;
+            componentSlots.psu.position = new BABYLON.Vector3(-chassisWidth * 0.15, chassisHeight * 0.1, 0.1);
+
+            // CPU Cooler slot (child of CPU slot)
+            componentSlots.cpuCooling = new BABYLON.TransformNode("cpu_cooler_slot", scene);
+            componentSlots.cpuCooling.parent = componentSlots.cpu;
+            componentSlots.cpuCooling.position = new BABYLON.Vector3(0, 0.02, 0);
+
+            // SSD 2.5" bays
+            for (let i = 0; i < 2; i++) {
+                const ssdSlot = new BABYLON.TransformNode(`ssd_bay_${i}`, scene);
+                ssdSlot.parent = chassisModel;
+                ssdSlot.position = new BABYLON.Vector3(chassisWidth * 0.15, chassisHeight * 0.2 + (i * 0.05), 0.2);
+                componentSlots.ssd.push(ssdSlot);
             }
-        }
-
-        async function loadChassis() {
-            const rootUrl = "./models/";
-            const fileName = buildState.chassis.model; // 'chassis.glb'
-
-            const result = await loadModel(rootUrl, fileName);
-            if (result) {
-                chassisModel = result.rootNodes[0]; // The root transform node of the chassis
-                chassisModel.name = "chassis_root";
-                chassisModel.scaling = new BABYLON.Vector3(1, 1, 1); // Adjust scale if your model is too big/small
-
-                // Add all chassis meshes to shadow caster/receiver
-                result.meshes.forEach(mesh => {
-                    mesh.receiveShadows = true;
-                    shadowGenerator.addShadowCaster(mesh);
-                    // Store references to specific meshes for customization (e.g., panels, cables)
-                    if (mesh.name === "front_panel_mesh") componentSlots.frontPanel = mesh;
-                    if (mesh.name === "side_panel_mesh") componentSlots.sidePanel = mesh;
-                    if (mesh.name.includes("cable_")) componentSlots.cableMeshes.push(mesh); // Assuming cables are named like "cable_24pin", "cable_pcie"
-                });
-
-                // Create empty TransformNodes as attachment points for components
-                // These positions are relative to the chassis model's origin (0,0,0)
-                componentSlots.motherboard = new BABYLON.TransformNode("motherboard_slot", scene);
-                componentSlots.motherboard.parent = chassisModel;
-                componentSlots.motherboard.position = new BABYLON.Vector3(0, 0.2, 0); // Example position inside chassis
-
-                componentSlots.cpu = new BABYLON.TransformNode("cpu_slot", scene);
-                componentSlots.cpu.parent = componentSlots.motherboard; // CPU is on motherboard
-                componentSlots.cpu.position = new BABYLON.Vector3(0, 0.1, 0.1); // Relative to motherboard
-
-                for (let i = 0; i < 4; i++) { // 4 RAM slots
-                    const ramSlot = new BABYLON.TransformNode(`ram_slot_${i}`, scene);
-                    ramSlot.parent = componentSlots.motherboard;
-                    ramSlot.position = new BABYLON.Vector3(0.2 + (i * 0.05), 0.1, 0.1); // Example positions
-                    componentSlots.ram.push(ramSlot);
-                }
-
-                componentSlots.gpu = new BABYLON.TransformNode("gpu_slot", scene);
-                componentSlots.gpu.parent = chassisModel;
-                componentSlots.gpu.position = new BABYLON.Vector3(0, -0.2, 0.1); // Example position for GPU slot
-
-                componentSlots.psu = new BABYLON.TransformNode("psu_slot", scene);
-                componentSlots.psu.parent = chassisModel;
-                componentSlots.psu.position = new BABYLON.Vector3(-0.5, -0.6, 0); // Example PSU bay
-
-                componentSlots.cpuCooling = new BABYLON.TransformNode("cpu_cooler_slot", scene);
-                componentSlots.cpuCooling.parent = componentSlots.cpu; // Cooler sits on CPU
-                componentSlots.cpuCooling.position = new BABYLON.Vector3(0, 0.05, 0); // Slightly above CPU
-
-                // Placeholder for SSDs (e.g., 2.5" bays, M.2 slots)
-                componentSlots.ssdBay1 = new BABYLON.TransformNode("ssd_bay_1", scene);
-                componentSlots.ssdBay1.parent = chassisModel;
-                componentSlots.ssdBay1.position = new BABYLON.Vector3(0.5, -0.5, 0.2);
-                componentSlots.ssd.push(componentSlots.ssdBay1); // Primary SSD slot
-
-                componentSlots.ssdM2_1 = new BABYLON.TransformNode("ssd_m2_1", scene);
-                componentSlots.ssdM2_1.parent = componentSlots.motherboard;
-                componentSlots.ssdM2_1.position = new BABYLON.Vector3(-0.1, 0.05, 0.1);
-                componentSlots.ssd.push(componentSlots.ssdM2_1); // Primary M.2 slot
-
-                componentSlots.antiSagBracket = new BABYLON.TransformNode("anti_sag_slot", scene);
-                componentSlots.antiSagBracket.parent = componentSlots.gpu; // Relative to GPU
-                componentSlots.antiSagBracket.position = new BABYLON.Vector3(0, -0.1, 0);
-
-                // Fan slots (e.g., 3 front, 1 rear, 2 top)
-                componentSlots.fans.push(new BABYLON.TransformNode("fan_front_1", scene));
-                componentSlots.fans[0].parent = chassisModel;
-                componentSlots.fans[0].position = new BABYLON.Vector3(0.2, 0, -0.5); // Example front fan
-                componentSlots.fans.push(new BABYLON.TransformNode("fan_front_2", scene));
-                componentSlots.fans[1].parent = chassisModel;
-                componentSlots.fans[1].position = new BABYLON.Vector3(-0.2, 0, -0.5); // Example front fan
-
-                componentSlots.charmSlot1 = new BABYLON.TransformNode("charm_slot_1", scene);
-                componentSlots.charmSlot1.parent = chassisModel;
-                componentSlots.charmSlot1.position = new BABYLON.Vector3(0.4, 0.4, 0.4);
-                componentSlots.charms.push(componentSlots.charmSlot1);
-
-                // Create "blank" placeholder meshes for initial visualization
-                createPlaceholderMeshes();
-
-                console.log("Chassis and slots loaded.");
+            // SSD M.2 slots (on motherboard)
+            for (let i = 0; i < 2; i++) {
+                const m2Slot = new BABYLON.TransformNode(`ssd_m2_slot_${i}`, scene);
+                m2Slot.parent = componentSlots.motherboard;
+                m2Slot.position = new BABYLON.Vector3(-0.05 - (i * 0.02), 0.005, 0.05);
+                m2Slot.rotation.x = Math.PI / 2; // M.2 usually lies flat
+                componentSlots.ssdM2.push(m2Slot);
             }
+
+            // HDD bays
+            for (let i = 0; i < 2; i++) {
+                const hddSlot = new BABYLON.TransformNode(`hdd_bay_${i}`, scene);
+                hddSlot.parent = chassisModel;
+                hddSlot.position = new BABYLON.Vector3(chassisWidth * 0.15, chassisHeight * 0.05 + (i * 0.08), 0.2);
+                componentSlots.hdd.push(hddSlot);
+            }
+
+            // Anti-Sag Bracket slot (child of GPU slot)
+            componentSlots.antiSagBracket = new BABYLON.TransformNode("anti_sag_slot", scene);
+            componentSlots.antiSagBracket.parent = componentSlots.gpu;
+            componentSlots.antiSagBracket.position = new BABYLON.Vector3(0, -0.05, 0);
+
+            // WiFi/Bluetooth slot (on motherboard)
+            componentSlots.wifiBluetooth = new BABYLON.TransformNode("wifi_bt_slot", scene);
+            componentSlots.wifiBluetooth.parent = componentSlots.motherboard;
+            componentSlots.wifiBluetooth.position = new BABYLON.Vector3(-0.1, 0.01, 0.08);
+
+            // Fan slots (e.g., 3 front, 1 rear, 2 top)
+            componentSlots.fans.push(new BABYLON.TransformNode("fan_front_1", scene));
+            componentSlots.fans[0].parent = chassisModel;
+            componentSlots.fans[0].position = new BABYLON.Vector3(-0.1, chassisHeight * 0.5, -chassisDepth / 2 + 0.02);
+            componentSlots.fans.push(new BABYLON.TransformNode("fan_front_2", scene));
+            componentSlots.fans[1].parent = chassisModel;
+            componentSlots.fans[1].position = new BABYLON.Vector3(0.1, chassisHeight * 0.5, -chassisDepth / 2 + 0.02);
+            componentSlots.fans.push(new BABYLON.TransformNode("fan_rear_1", scene));
+            componentSlots.fans[2].parent = chassisModel;
+            componentSlots.fans[2].position = new BABYLON.Vector3(-chassisWidth * 0.4, chassisHeight * 0.6, chassisDepth / 2 - 0.02);
+            componentSlots.fans[2].rotation.y = Math.PI; // Face inwards
+
+            // Case lighting slots (simple lines along edges)
+            componentSlots.caseLighting.push(new BABYLON.TransformNode("light_top_front", scene));
+            componentSlots.caseLighting[0].parent = chassisModel;
+            componentSlots.caseLighting[0].position = new BABYLON.Vector3(0, chassisHeight - 0.01, -chassisDepth * 0.3);
+            componentSlots.caseLighting.push(new BABYLON.TransformNode("light_side_bottom", scene));
+            componentSlots.caseLighting[1].parent = chassisModel;
+            componentSlots.caseLighting[1].position = new BABYLON.Vector3(chassisWidth / 2 - 0.01, chassisHeight * 0.1, 0);
+
+            // Charm slots
+            componentSlots.charms.push(new BABYLON.TransformNode("charm_slot_1", scene));
+            componentSlots.charms[0].parent = chassisModel;
+            componentSlots.charms[0].position = new BABYLON.Vector3(chassisWidth * 0.4, chassisHeight * 0.8, -chassisDepth * 0.4);
+
+            // Cables (simplified, just a few main ones)
+            const cableMat = componentMaterials.defaultPBR.clone("cableMat");
+            cableMat.albedoColor = new BABYLON.Color3(0.05, 0.05, 0.05); // Default dark cable
+            const cable24pin = BABYLON.MeshBuilder.CreateTube("cable_24pin", { path: [new BABYLON.Vector3(-0.1, chassisHeight * 0.4, -0.1), new BABYLON.Vector3(-0.1, chassisHeight * 0.5, 0.05)], radius: 0.01, tessellation: 8 }, scene);
+            cable24pin.material = cableMat;
+            cable24pin.parent = chassisModel;
+            componentSlots.cableMeshes.push(cable24pin);
+
+            const cablePcie = BABYLON.MeshBuilder.CreateTube("cable_pcie", { path: [new BABYLON.Vector3(-0.1, chassisHeight * 0.2, -0.1), new BABYLON.Vector3(-0.1, chassisHeight * 0.3, 0.05)], radius: 0.008, tessellation: 8 }, scene);
+            cablePcie.material = cableMat;
+            cablePcie.parent = chassisModel;
+            componentSlots.cableMeshes.push(cablePcie);
+
+            // Add all meshes to shadow caster/receiver
+            chassisModel.getChildMeshes().forEach(mesh => {
+                mesh.receiveShadows = true;
+                shadowGenerator.addShadowCaster(mesh);
+            });
+
+            // Create "blank" placeholder meshes for initial visualization
+            createPlaceholderMeshes();
+
+            console.log("Chassis and slots created.");
         }
 
         function createPlaceholderMeshes() {
-            // Motherboard placeholder
-            const moboPlaceholder = BABYLON.MeshBuilder.CreateBox("mobo_placeholder", { width: 0.5, height: 0.02, depth: 0.5 }, scene);
-            moboPlaceholder.material = new BABYLON.StandardMaterial("mobo_ph_mat", scene);
-            moboPlaceholder.material.alpha = 0.2;
-            moboPlaceholder.material.emissiveColor = new BABYLON.Color3(0, 0.5, 1); // Blue glow
+            const phMat = componentMaterials.emissiveBlue;
+
+            const moboPlaceholder = BABYLON.MeshBuilder.CreateBox("mobo_placeholder", { width: 0.3, height: 0.01, depth: 0.3 }, scene);
+            moboPlaceholder.material = phMat;
             moboPlaceholder.parent = componentSlots.motherboard;
             moboPlaceholder.position = BABYLON.Vector3.Zero();
             componentMeshes.motherboard_placeholder = moboPlaceholder;
 
-            // CPU placeholder
-            const cpuPlaceholder = BABYLON.MeshBuilder.CreateBox("cpu_placeholder", { width: 0.1, height: 0.01, depth: 0.1 }, scene);
-            cpuPlaceholder.material = moboPlaceholder.material.clone("cpu_ph_mat");
+            const cpuPlaceholder = BABYLON.MeshBuilder.CreateBox("cpu_placeholder", { width: 0.05, height: 0.005, depth: 0.05 }, scene);
+            cpuPlaceholder.material = phMat;
             cpuPlaceholder.parent = componentSlots.cpu;
             cpuPlaceholder.position = BABYLON.Vector3.Zero();
             componentMeshes.cpu_placeholder = cpuPlaceholder;
 
-            // GPU placeholder
-            const gpuPlaceholder = BABYLON.MeshBuilder.CreateBox("gpu_placeholder", { width: 0.1, height: 0.05, depth: 0.3 }, scene);
-            gpuPlaceholder.material = moboPlaceholder.material.clone("gpu_ph_mat");
+            const gpuPlaceholder = BABYLON.MeshBuilder.CreateBox("gpu_placeholder", { width: 0.08, height: 0.04, depth: 0.25 }, scene);
+            gpuPlaceholder.material = phMat;
             gpuPlaceholder.parent = componentSlots.gpu;
             gpuPlaceholder.position = BABYLON.Vector3.Zero();
             componentMeshes.gpu_placeholder = gpuPlaceholder;
 
-            // RAM placeholders
             componentSlots.ram.forEach((slot, index) => {
-                const ramPlaceholder = BABYLON.MeshBuilder.CreateBox(`ram_placeholder_${index}`, { width: 0.01, height: 0.05, depth: 0.08 }, scene);
-                ramPlaceholder.material = moboPlaceholder.material.clone(`ram_ph_mat_${index}`);
+                const ramPlaceholder = BABYLON.MeshBuilder.CreateBox(`ram_placeholder_${index}`, { width: 0.01, height: 0.04, depth: 0.08 }, scene);
+                ramPlaceholder.material = phMat;
                 ramPlaceholder.parent = slot;
                 ramPlaceholder.position = BABYLON.Vector3.Zero();
                 componentMeshes[`ram_placeholder_${index}`] = ramPlaceholder;
             });
 
-            // Add more placeholders for other components as needed
+            const psuPlaceholder = BABYLON.MeshBuilder.CreateBox("psu_placeholder", { width: 0.15, height: 0.08, depth: 0.14 }, scene);
+            psuPlaceholder.material = phMat;
+            psuPlaceholder.parent = componentSlots.psu;
+            psuPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.psu_placeholder = psuPlaceholder;
+
+            const coolerPlaceholder = BABYLON.MeshBuilder.CreateBox("cooler_placeholder", { width: 0.08, height: 0.1, depth: 0.08 }, scene);
+            coolerPlaceholder.material = phMat;
+            coolerPlaceholder.parent = componentSlots.cpuCooling;
+            coolerPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.cpuCooling_placeholder = coolerPlaceholder;
+
+            componentSlots.ssd.forEach((slot, index) => {
+                const ssdPlaceholder = BABYLON.MeshBuilder.CreateBox(`ssd_placeholder_${index}`, { width: 0.07, height: 0.01, depth: 0.05 }, scene);
+                ssdPlaceholder.material = phMat;
+                ssdPlaceholder.parent = slot;
+                ssdPlaceholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`ssd_placeholder_${index}`] = ssdPlaceholder;
+            });
+            componentSlots.ssdM2.forEach((slot, index) => {
+                const ssdM2Placeholder = BABYLON.MeshBuilder.CreateBox(`ssd_m2_placeholder_${index}`, { width: 0.02, height: 0.002, depth: 0.08 }, scene);
+                ssdM2Placeholder.material = phMat;
+                ssdM2Placeholder.parent = slot;
+                ssdM2Placeholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`ssd_m2_placeholder_${index}`] = ssdM2Placeholder;
+            });
+
+            componentSlots.hdd.forEach((slot, index) => {
+                const hddPlaceholder = BABYLON.MeshBuilder.CreateBox(`hdd_placeholder_${index}`, { width: 0.1, height: 0.025, depth: 0.14 }, scene);
+                hddPlaceholder.material = phMat;
+                hddPlaceholder.parent = slot;
+                hddPlaceholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`hdd_placeholder_${index}`] = hddPlaceholder;
+            });
+
+            const antiSagPlaceholder = BABYLON.MeshBuilder.CreateBox("anti_sag_placeholder", { width: 0.01, height: 0.05, depth: 0.1 }, scene);
+            antiSagPlaceholder.material = phMat;
+            antiSagPlaceholder.parent = componentSlots.antiSagBracket;
+            antiSagPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.antiSagBracket_placeholder = antiSagPlaceholder;
+
+            const wifiBtPlaceholder = BABYLON.MeshBuilder.CreateBox("wifi_bt_placeholder", { width: 0.01, height: 0.03, depth: 0.05 }, scene);
+            wifiBtPlaceholder.material = phMat;
+            wifiBtPlaceholder.parent = componentSlots.wifiBluetooth;
+            wifiBtPlaceholder.position = BABYLON.Vector3.Zero();
+            componentMeshes.wifiBluetooth_placeholder = wifiBtPlaceholder;
+
+            componentSlots.fans.forEach((slot, index) => {
+                const fanPlaceholder = BABYLON.MeshBuilder.CreateCylinder(`fan_placeholder_${index}`, { diameter: 0.12, height: 0.02 }, scene);
+                fanPlaceholder.material = phMat;
+                fanPlaceholder.parent = slot;
+                fanPlaceholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`fan_placeholder_${index}`] = fanPlaceholder;
+            });
+
+            componentSlots.charms.forEach((slot, index) => {
+                const charmPlaceholder = BABYLON.MeshBuilder.CreateSphere(`charm_placeholder_${index}`, { diameter: 0.03 }, scene);
+                charmPlaceholder.material = phMat;
+                charmPlaceholder.parent = slot;
+                charmPlaceholder.position = BABYLON.Vector3.Zero();
+                componentMeshes[`charm_placeholder_${index}`] = charmPlaceholder;
+            });
         }
 
-        async function placeComponent(category, componentId) {
-            const componentInfo = componentData[category].find(c => c.id === componentId);
-            if (!componentInfo || !componentInfo.model) {
-                // Handle "None" or components without 3D models (e.g., thermal compound)
-                if (componentMeshes[category]) {
-                    if (Array.isArray(componentMeshes[category])) {
-                        componentMeshes[category].forEach(mesh => mesh.dispose());
-                        componentMeshes[category] = [];
-                    } else {
-                        componentMeshes[category].dispose();
-                        componentMeshes[category] = null;
+        function createComponentMesh(category, componentInfo) {
+            let mesh;
+            let material = componentMaterials.defaultPBR.clone(`${category}_${componentInfo.id}_mat`);
+            material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1); // Darker base for components
+
+            switch (category) {
+                case 'cpu':
+                    mesh = BABYLON.MeshBuilder.CreateBox("cpu_model", { width: 0.04, height: 0.008, depth: 0.04 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+                    material.metallic = 0.9;
+                    material.roughness = 0.3;
+                    break;
+                case 'motherboard':
+                    mesh = BABYLON.MeshBuilder.CreateBox("mobo_model", { width: 0.28, height: 0.005, depth: 0.28 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.05, 0.05, 0.05); // PCB green/black
+                    material.roughness = 0.8;
+                    // Add some small details
+                    const chipset = BABYLON.MeshBuilder.CreateBox("chipset", { width: 0.05, height: 0.008, depth: 0.05 }, scene);
+                    chipset.material = componentMaterials.accentPBR;
+                    chipset.parent = mesh;
+                    chipset.position = new BABYLON.Vector3(0.08, 0.005, -0.08);
+                    break;
+                case 'ram':
+                    mesh = BABYLON.MeshBuilder.CreateBox("ram_model", { width: 0.01, height: 0.035, depth: 0.08 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    material.metallic = 0.7;
+                    material.roughness = 0.3;
+                    const heatsink = BABYLON.MeshBuilder.CreateBox("ram_heatsink", { width: 0.012, height: 0.04, depth: 0.082 }, scene);
+                    heatsink.material = componentMaterials.accentPBR;
+                    heatsink.parent = mesh;
+                    heatsink.position.y = 0.002;
+                    break;
+                case 'gpu':
+                    mesh = BABYLON.MeshBuilder.CreateBox("gpu_model", { width: 0.07, height: 0.035, depth: 0.28 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    material.metallic = 0.6;
+                    material.roughness = 0.4;
+                    // Fans
+                    for (let i = 0; i < 2; i++) {
+                        const fan = BABYLON.MeshBuilder.CreateCylinder(`gpu_fan_${i}`, { diameter: 0.05, height: 0.01 }, scene);
+                        fan.material = componentMaterials.defaultPBR;
+                        fan.parent = mesh;
+                        fan.position = new BABYLON.Vector3(0, -0.015, -0.07 + (i * 0.14));
                     }
-                }
-                // Show placeholder if "None" was selected for a component that previously had a model
-                if (componentMeshes[`${category}_placeholder`]) {
-                    componentMeshes[`${category}_placeholder`].isVisible = true;
-                }
-                return;
+                    // Backplate (for customization)
+                    const backplate = BABYLON.MeshBuilder.CreatePlane("gpu_backplate_mesh", { width: 0.068, height: 0.278 }, scene);
+                    backplate.material = material.clone("gpuBackplateMat"); // Clone material for texture swap
+                    backplate.parent = mesh;
+                    backplate.position = new BABYLON.Vector3(0, 0.018, 0);
+                    backplate.rotation.x = Math.PI / 2; // Lay flat
+                    componentSlots.gpuBackplateMesh = backplate;
+                    break;
+                case 'psu':
+                    mesh = BABYLON.MeshBuilder.CreateBox("psu_model", { width: 0.15, height: 0.08, depth: 0.14 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    material.roughness = 0.7;
+                    const psuFan = BABYLON.MeshBuilder.CreateCylinder("psu_fan", { diameter: 0.07, height: 0.005 }, scene);
+                    psuFan.material = componentMaterials.defaultPBR;
+                    psuFan.parent = mesh;
+                    psuFan.position = new BABYLON.Vector3(0, -0.04, 0);
+                    psuFan.rotation.x = Math.PI / 2;
+                    break;
+                case 'cpuCooling':
+                    if (componentInfo.type === 'air') {
+                        mesh = BABYLON.MeshBuilder.CreateBox("cooler_base", { width: 0.06, height: 0.01, depth: 0.06 }, scene);
+                        const fins = BABYLON.MeshBuilder.CreateBox("cooler_fins", { width: 0.05, height: 0.08, depth: 0.05 }, scene);
+                        fins.material = componentMaterials.accentPBR;
+                        fins.parent = mesh;
+                        fins.position.y = 0.045;
+                        const fan = BABYLON.MeshBuilder.CreateCylinder("cooler_fan", { diameter: 0.07, height: 0.015 }, scene);
+                        fan.material = componentMaterials.defaultPBR;
+                        fan.parent = mesh;
+                        fan.position.y = 0.04;
+                        fan.rotation.x = Math.PI / 2;
+                    } else if (componentInfo.type === 'aio') {
+                        mesh = BABYLON.MeshBuilder.CreateBox("aio_pump", { width: 0.05, height: 0.03, depth: 0.05 }, scene);
+                        mesh.material = componentMaterials.defaultPBR;
+                        const tube1 = BABYLON.MeshBuilder.CreateTube("aio_tube1", { path: [new BABYLON.Vector3(-0.02, 0.015, 0), new BABYLON.Vector3(-0.05, 0.05, 0.1), new BABYLON.Vector3(-0.05, 0.15, 0.1)], radius: 0.005, tessellation: 8 }, scene);
+                        tube1.material = componentMaterials.defaultPBR;
+                        tube1.parent = mesh;
+                        const tube2 = BABYLON.MeshBuilder.CreateTube("aio_tube2", { path: [new BABYLON.Vector3(0.02, 0.015, 0), new BABYLON.Vector3(0.05, 0.05, 0.1), new BABYLON.Vector3(0.05, 0.15, 0.1)], radius: 0.005, tessellation: 8 }, scene);
+                        tube2.material = componentMaterials.defaultPBR;
+                        tube2.parent = mesh;
+                        const radiator = BABYLON.MeshBuilder.CreateBox("aio_radiator", { width: 0.12, height: 0.03, depth: 0.36 }, scene);
+                        radiator.material = componentMaterials.defaultPBR;
+                        radiator.parent = mesh;
+                        radiator.position = new BABYLON.Vector3(0, 0.15, 0.1);
+                        radiator.rotation.x = Math.PI / 2;
+                        // LCD panel on AIO pump
+                        const lcdScreen = BABYLON.MeshBuilder.CreatePlane("lcd_panel_mesh_aio", { width: 0.04, height: 0.04 }, scene);
+                        lcdScreen.material = componentMaterials.defaultPBR.clone("lcdAIO");
+                        lcdScreen.material.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1); // Default off-state
+                        lcdScreen.parent = mesh;
+                        lcdScreen.position = new BABYLON.Vector3(0, 0.016, 0);
+                        lcdScreen.rotation.x = Math.PI / 2;
+                        componentSlots.lcdScreenMeshes.push(lcdScreen);
+                    } else if (componentInfo.type === 'custom_led') {
+                         mesh = BABYLON.MeshBuilder.CreateBox("cooler_custom_base", { width: 0.06, height: 0.04, depth: 0.06 }, scene);
+                         mesh.material = componentMaterials.defaultPBR;
+                         const lcdScreen = BABYLON.MeshBuilder.CreatePlane("lcd_panel_mesh_cooler", { width: 0.05, height: 0.05 }, scene);
+                         lcdScreen.material = componentMaterials.defaultPBR.clone("lcdCooler");
+                         lcdScreen.material.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                         lcdScreen.parent = mesh;
+                         lcdScreen.position = new BABYLON.Vector3(0, 0.021, 0);
+                         lcdScreen.rotation.x = Math.PI / 2;
+                         componentSlots.lcdScreenMeshes.push(lcdScreen);
+                    }
+                    break;
+                case 'ssd':
+                    if (componentInfo.formFactor === 'sata') {
+                        mesh = BABYLON.MeshBuilder.CreateBox("ssd_sata_model", { width: 0.07, height: 0.01, depth: 0.05 }, scene);
+                        material.albedoColor = new BABYLON.Color3(0.15, 0.15, 0.15);
+                        material.roughness = 0.7;
+                    } else { // m2
+                        mesh = BABYLON.MeshBuilder.CreateBox("ssd_m2_model", { width: 0.02, height: 0.002, depth: 0.08 }, scene);
+                        material.albedoColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+                        material.roughness = 0.8;
+                        const chip = BABYLON.MeshBuilder.CreateBox("m2_chip", { width: 0.01, height: 0.003, depth: 0.01 }, scene);
+                        chip.material = componentMaterials.accentPBR;
+                        chip.parent = mesh;
+                        chip.position = new BABYLON.Vector3(0, 0.001, 0.02);
+                    }
+                    break;
+                case 'hdd':
+                    mesh = BABYLON.MeshBuilder.CreateBox("hdd_model", { width: 0.1, height: 0.025, depth: 0.14 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    material.metallic = 0.5;
+                    material.roughness = 0.5;
+                    const platter = BABYLON.MeshBuilder.CreateCylinder("hdd_platter", { diameter: 0.08, height: 0.002 }, scene);
+                    platter.material = componentMaterials.accentPBR;
+                    platter.parent = mesh;
+                    platter.position.y = 0.013;
+                    break;
+                case 'antiSagBracket':
+                    mesh = BABYLON.MeshBuilder.CreateBox("anti_sag_model", { width: 0.01, height: 0.05, depth: 0.1 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+                    material.metallic = 0.8;
+                    material.roughness = 0.3;
+                    break;
+                case 'wifiBluetooth':
+                    mesh = BABYLON.MeshBuilder.CreateBox("wifi_bt_model", { width: 0.01, height: 0.03, depth: 0.05 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.08, 0.08, 0.08);
+                    material.roughness = 0.7;
+                    const antenna = BABYLON.MeshBuilder.CreateCylinder("wifi_antenna", { diameter: 0.005, height: 0.04 }, scene);
+                    antenna.material = material;
+                    antenna.parent = mesh;
+                    antenna.position = new BABYLON.Vector3(0, 0.03, 0.02);
+                    break;
+                case 'fans':
+                    mesh = BABYLON.MeshBuilder.CreateCylinder("fan_model", { diameter: 0.12, height: 0.02 }, scene);
+                    material.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    material.roughness = 0.6;
+                    // Blades
+                    const blades = BABYLON.MeshBuilder.CreateBox("fan_blades_mesh", { width: 0.01, height: 0.005, depth: 0.05 }, scene);
+                    blades.material = material.clone("fanBladeMat"); // For fan print
+                    blades.parent = mesh;
+                    blades.position.y = 0.011;
+                    blades.rotation.y = Math.PI / 4;
+                    const blades2 = blades.clone("fan_blades_mesh_2");
+                    blades2.parent = mesh;
+                    blades2.position.y = 0.011;
+                    blades2.rotation.y = -Math.PI / 4;
+                    componentSlots.fanBladeMeshes.push(blades, blades2); // Store for print
+                    if (componentInfo.hasRGB) {
+                        const rgbRing = BABYLON.MeshBuilder.CreateTorus("fan_rgb_ring", { diameter: 0.11, thickness: 0.005, tessellation: 32 }, scene);
+                        rgbRing.material = new BABYLON.PBRMaterial("fanRGBMat", scene);
+                        rgbRing.material.emissiveColor = new BABYLON.Color3(0.5, 0, 1); // Default RGB color
+                        rgbRing.parent = mesh;
+                        rgbRing.position.y = 0.01;
+                    }
+                    break;
+                case 'charms':
+                    if (componentInfo.shape === 'sphere') {
+                        mesh = BABYLON.MeshBuilder.CreateSphere("charm_sphere", { diameter: 0.03 }, scene);
+                    } else if (componentInfo.shape === 'pyramid') {
+                        mesh = BABYLON.MeshBuilder.CreatePolyhedron("charm_pyramid", { type: 0, size: 0.025 }, scene); // Tetrahedron
+                    } else {
+                        mesh = BABYLON.MeshBuilder.CreateBox("charm_box", { size: 0.03 }, scene);
+                    }
+                    material.albedoColor = new BABYLON.Color3(0.8, 0.5, 0.1); // Gold-like
+                    material.metallic = 0.9;
+                    material.roughness = 0.2;
+                    break;
+                case 'caseLighting':
+                    // These are just visual effects, not standalone models
+                    mesh = BABYLON.MeshBuilder.CreateBox("light_strip", { width: 0.3, height: 0.005, depth: 0.005 }, scene);
+                    material = new BABYLON.PBRMaterial("lightStripMat", scene);
+                    material.emissiveColor = componentInfo.color || new BABYLON.Color3(0, 0.5, 1);
+                    material.metallic = 0;
+                    material.roughness = 1;
+                    break;
+                default:
+                    mesh = BABYLON.MeshBuilder.CreateBox(`${category}_model`, { size: 0.1 }, scene);
+                    break;
             }
 
-            const rootUrl = "./models/";
-            const fileName = componentInfo.model;
+            if (mesh) {
+                mesh.material = material;
+                mesh.receiveShadows = true;
+                shadowGenerator.addShadowCaster(mesh);
+            }
+            return mesh;
+        }
 
-            // Dispose of previous component mesh if exists
+        function disposeComponentMeshes(category) {
             if (componentMeshes[category]) {
                 if (Array.isArray(componentMeshes[category])) {
                     componentMeshes[category].forEach(mesh => mesh.dispose());
                     componentMeshes[category] = [];
-                } else {
+                } else if (componentMeshes[category] instanceof BABYLON.AbstractMesh) {
                     componentMeshes[category].dispose();
+                    componentMeshes[category] = null;
+                } else if (componentMeshes[category] instanceof BABYLON.TransformNode) {
+                    // If it's a TransformNode, dispose its children
+                    componentMeshes[category].dispose(false, true); // Dispose children too
+                    componentMeshes[category] = null;
                 }
+            }
+            // Show placeholder if "None" was selected for a component that previously had a model
+            if (componentMeshes[`${category}_placeholder`]) {
+                componentMeshes[`${category}_placeholder`].isVisible = true;
+            }
+        }
+
+        async function placeComponent(category, componentId) {
+            const componentInfo = componentData[category].find(c => c.id === componentId);
+
+            disposeComponentMeshes(category); // Dispose previous mesh(es)
+
+            if (!componentInfo || componentInfo.id === 'none') {
+                return; // Nothing to place or dispose
             }
 
             // Hide placeholder
@@ -718,106 +1095,139 @@
                 componentMeshes[`${category}_placeholder`].isVisible = false;
             }
 
-            const result = await loadModel(rootUrl, fileName);
-            if (result) {
-                let componentRoot = result.rootNodes[0];
-                componentRoot.name = `${category}_${componentId}_root`;
+            let newMesh;
+            let targetSlot;
 
-                // Parent to the correct slot
-                let targetSlot;
-                if (category === 'cpu') targetSlot = componentSlots.cpu;
-                else if (category === 'motherboard') targetSlot = componentSlots.motherboard;
-                else if (category === 'gpu') targetSlot = componentSlots.gpu;
-                else if (category === 'psu') targetSlot = componentSlots.psu;
-                else if (category === 'cpuCooling') targetSlot = componentSlots.cpuCooling;
-                else if (category === 'antiSagBracket') targetSlot = componentSlots.antiSagBracket;
-                else if (category === 'wifiBluetooth') targetSlot = componentSlots.motherboard; // Example: PCIe card
-                else if (category === 'charms') targetSlot = componentSlots.charmSlot1; // For single charm, extend for multiple
-                else if (category === 'ssd') {
-                    // Logic for SSDs: M.2 vs 2.5"
-                    if (componentInfo.type === 'm2') targetSlot = componentSlots.ssdM2_1;
-                    else targetSlot = componentSlots.ssdBay1;
-                }
-                // Add more category-to-slot mappings
-
-                if (targetSlot) {
-                    componentRoot.parent = targetSlot;
-                    componentRoot.position = BABYLON.Vector3.Zero();
-                    componentRoot.rotation = BABYLON.Vector3.Zero(); // Reset rotation if needed
-                    componentRoot.scaling = new BABYLON.Vector3(1, 1, 1); // Reset scaling if needed
-
-                    // Add all meshes of the component to shadow caster/receiver
-                    result.meshes.forEach(mesh => {
-                        mesh.receiveShadows = true;
-                        shadowGenerator.addShadowCaster(mesh);
-                        if (category === 'gpu' && mesh.name === "gpu_backplate_mesh") { // Assuming a specific mesh for GPU customization
-                            componentSlots.gpuBackplate = mesh;
-                        }
-                    });
-
-                    // Special handling for multiple instances (e.g., RAM, Fans)
-                    if (category === 'ram') {
-                        // Dispose previous RAM meshes
-                        if (componentMeshes.ram) componentMeshes.ram.forEach(mesh => mesh.dispose());
-                        componentMeshes.ram = [];
-                        // Place 2 or 4 sticks depending on capacity or user choice
-                        const numSticks = componentInfo.capacity === 64 ? 4 : 2; // Example logic
-                        for (let i = 0; i < numSticks; i++) {
-                            if (componentSlots.ram[i]) {
-                                const ramInstance = componentRoot.clone(`${componentId}_instance_${i}`, componentSlots.ram[i]);
-                                ramInstance.position = BABYLON.Vector3.Zero();
-                                componentMeshes.ram.push(ramInstance);
-                            }
-                        }
-                        componentRoot.dispose(); // Dispose the original loaded root if using clones
-                    } else if (category === 'fans') {
-                        if (componentMeshes.fans) componentMeshes.fans.forEach(mesh => mesh.dispose());
-                        componentMeshes.fans = [];
-                        componentSlots.fans.forEach((slot, index) => {
-                            const fanInstance = componentRoot.clone(`${componentId}_instance_${index}`, slot);
-                            fanInstance.position = BABYLON.Vector3.Zero();
-                            componentMeshes.fans.push(fanInstance);
-                        });
-                        componentRoot.dispose();
-                    } else if (category === 'ssd' && componentInfo.type === 'm2') {
-                         // M.2 SSDs are usually flat on the motherboard
-                         componentRoot.rotation.x = Math.PI / 2; // Rotate to lay flat
-                         componentMeshes[category] = componentRoot;
-                    } else {
-                        componentMeshes[category] = componentRoot;
+            // Determine target slot and create mesh
+            if (category === 'cpu') {
+                targetSlot = componentSlots.cpu;
+                newMesh = createComponentMesh('cpu', componentInfo);
+            } else if (category === 'motherboard') {
+                targetSlot = componentSlots.motherboard;
+                newMesh = createComponentMesh('motherboard', componentInfo);
+            } else if (category === 'gpu') {
+                targetSlot = componentSlots.gpu;
+                newMesh = createComponentMesh('gpu', componentInfo);
+            } else if (category === 'psu') {
+                targetSlot = componentSlots.psu;
+                newMesh = createComponentMesh('psu', componentInfo);
+            } else if (category === 'cpuCooling') {
+                targetSlot = componentSlots.cpuCooling;
+                newMesh = createComponentMesh('cpuCooling', componentInfo);
+            } else if (category === 'antiSagBracket') {
+                targetSlot = componentSlots.antiSagBracket;
+                newMesh = createComponentMesh('antiSagBracket', componentInfo);
+            } else if (category === 'wifiBluetooth') {
+                targetSlot = componentSlots.wifiBluetooth;
+                newMesh = createComponentMesh('wifiBluetooth', componentInfo);
+            } else if (category === 'ssd') {
+                if (componentInfo.formFactor === 'm2') targetSlot = componentSlots.ssdM2[0]; // Assuming first M.2 slot
+                else targetSlot = componentSlots.ssd[0]; // Assuming first 2.5" slot
+                newMesh = createComponentMesh('ssd', componentInfo);
+            } else if (category === 'secondarySsd') {
+                if (componentInfo.formFactor === 'm2') targetSlot = componentSlots.ssdM2[1]; // Assuming second M.2 slot
+                else targetSlot = componentSlots.ssd[1]; // Assuming second 2.5" slot
+                newMesh = createComponentMesh('ssd', componentInfo);
+            } else if (category === 'hdd') {
+                targetSlot = componentSlots.hdd[0]; // Assuming first HDD slot
+                newMesh = createComponentMesh('hdd', componentInfo);
+            } else if (category === 'secondHdd') {
+                targetSlot = componentSlots.hdd[1]; // Assuming second HDD slot
+                newMesh = createComponentMesh('hdd', componentInfo);
+            } else if (category === 'ram') {
+                // RAM needs multiple instances
+                const numSticks = componentInfo.capacity === 64 ? 4 : 2; // Example logic
+                componentMeshes.ram = [];
+                for (let i = 0; i < numSticks; i++) {
+                    if (componentSlots.ram[i]) {
+                        const ramMesh = createComponentMesh('ram', componentInfo);
+                        ramMesh.parent = componentSlots.ram[i];
+                        ramMesh.position = BABYLON.Vector3.Zero();
+                        componentMeshes.ram.push(ramMesh);
                     }
-                } else {
-                    console.warn(`No defined slot for category: ${category}`);
-                    componentRoot.dispose(); // Dispose if no slot found
                 }
+                return; // Exit, as meshes are already parented
+            } else if (category === 'fans') {
+                componentMeshes.fans = [];
+                componentSlots.fans.forEach((slot, index) => {
+                    const fanMesh = createComponentMesh('fans', componentInfo);
+                    fanMesh.parent = slot;
+                    fanMesh.position = BABYLON.Vector3.Zero();
+                    componentMeshes.fans.push(fanMesh);
+                });
+                return;
+            } else if (category === 'caseLighting') {
+                componentMeshes.caseLighting = [];
+                componentSlots.caseLighting.forEach((slot, index) => {
+                    const lightStrip = createComponentMesh('caseLighting', componentInfo);
+                    lightStrip.parent = slot;
+                    lightStrip.position = BABYLON.Vector3.Zero();
+                    componentMeshes.caseLighting.push(lightStrip);
+                });
+                return;
+            } else if (category === 'charms') {
+                componentMeshes.charms = [];
+                componentSlots.charms.forEach((slot, index) => {
+                    const charmMesh = createComponentMesh('charms', componentInfo);
+                    charmMesh.parent = slot;
+                    charmMesh.position = BABYLON.Vector3.Zero();
+                    componentMeshes.charms.push(charmMesh);
+                });
+                return;
+            }
+
+            if (newMesh && targetSlot) {
+                newMesh.parent = targetSlot;
+                newMesh.position = BABYLON.Vector3.Zero();
+                newMesh.rotation = BABYLON.Vector3.Zero();
+                componentMeshes[category] = newMesh;
+            } else {
+                console.warn(`Could not place component ${componentId} in category ${category}. Mesh or slot missing.`);
+                if (newMesh) newMesh.dispose(); // Clean up if not placed
             }
         }
 
         // --- Customization Application ---
         function applyCustomization(category, componentInfo) {
+            const textureRoot = "./textures/";
+
+            // Reset logic for "None" or previous selections
             if (!componentInfo || componentInfo.id === 'none') {
-                // Reset to default/no customization
-                if (category === 'gpuCustom' && componentSlots.gpuBackplate) {
-                    // Assuming default GPU material is stored or can be re-applied
-                    componentSlots.gpuBackplate.material.albedoTexture = null; // Or default texture
+                if (category === 'gpuCustom' && componentSlots.gpuBackplateMesh) {
+                    componentSlots.gpuBackplateMesh.material.albedoTexture = null;
                 } else if (category === 'customCableSleeves') {
                     componentSlots.cableMeshes.forEach(mesh => {
-                        mesh.material.albedoTexture = null; // Or default cable texture
+                        if (mesh.material instanceof BABYLON.PBRMaterial) mesh.material.albedoTexture = null;
                     });
-                } else if (category === 'frontPanelPrint' && componentSlots.frontPanel) {
-                    componentSlots.frontPanel.material.albedoTexture = null;
-                } else if (category === 'sidePanelPrint' && componentSlots.sidePanel) {
-                    componentSlots.sidePanel.material.albedoTexture = null;
+                } else if (category === 'frontPanelPrint' && componentSlots.frontPanelMesh) {
+                    componentSlots.frontPanelMesh.material.albedoTexture = null;
+                } else if (category === 'sidePanelPrint' && componentSlots.sidePanelMesh) {
+                    componentSlots.sidePanelMesh.material.albedoTexture = null;
+                } else if (category === 'backPanelPrint' && componentSlots.backPanelMesh) {
+                    componentSlots.backPanelMesh.material.albedoTexture = null;
+                } else if (category === 'topPanelPrint' && componentSlots.topPanelMesh) {
+                    componentSlots.topPanelMesh.material.albedoTexture = null;
+                } else if (category === 'fanPrint') {
+                    componentSlots.fanBladeMeshes.forEach(mesh => {
+                        if (mesh.material instanceof BABYLON.PBRMaterial) mesh.material.albedoTexture = null;
+                    });
+                } else if (category === 'lcdPanels') {
+                    componentSlots.lcdScreenMeshes.forEach(mesh => {
+                        if (mesh.material instanceof BABYLON.PBRMaterial) {
+                            mesh.material.albedoTexture = null;
+                            mesh.material.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1); // Default off-state
+                        }
+                    });
                 }
-                // Add more reset logic for other customizations
                 return;
             }
 
+            // Apply new customization
             if (componentInfo.texture) {
-                const texture = new BABYLON.Texture(`./textures/${componentInfo.texture}`, scene);
-                if (category === 'gpuCustom' && componentSlots.gpuBackplate) {
-                    if (componentSlots.gpuBackplate.material instanceof BABYLON.PBRMaterial) {
-                        componentSlots.gpuBackplate.material.albedoTexture = texture;
+                const texture = new BABYLON.Texture(`${textureRoot}${componentInfo.texture}`, scene);
+                if (category === 'gpuCustom' && componentSlots.gpuBackplateMesh) {
+                    if (componentSlots.gpuBackplateMesh.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.gpuBackplateMesh.material.albedoTexture = texture;
                     }
                 } else if (category === 'customCableSleeves') {
                     componentSlots.cableMeshes.forEach(mesh => {
@@ -825,25 +1235,56 @@
                             mesh.material.albedoTexture = texture;
                         }
                     });
-                } else if (category === 'frontPanelPrint' && componentSlots.frontPanel) {
-                    if (componentSlots.frontPanel.material instanceof BABYLON.PBRMaterial) {
-                        componentSlots.frontPanel.material.albedoTexture = texture;
+                } else if (category === 'frontPanelPrint' && componentSlots.frontPanelMesh) {
+                    if (componentSlots.frontPanelMesh.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.frontPanelMesh.material.albedoTexture = texture;
                     }
-                } else if (category === 'sidePanelPrint' && componentSlots.sidePanel) {
-                    if (componentSlots.sidePanel.material instanceof BABYLON.PBRMaterial) {
-                        componentSlots.sidePanel.material.albedoTexture = texture;
+                } else if (category === 'sidePanelPrint' && componentSlots.sidePanelMesh) {
+                    if (componentSlots.sidePanelMesh.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.sidePanelMesh.material.albedoTexture = texture;
                     }
-                    // For side panel print, zoom to view it
                     animateCameraTo(cameraTargets.sidePanelPrint.position, cameraTargets.sidePanelPrint.target);
+                } else if (category === 'backPanelPrint' && componentSlots.backPanelMesh) {
+                    if (componentSlots.backPanelMesh.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.backPanelMesh.material.albedoTexture = texture;
+                    }
+                    animateCameraTo(cameraTargets.backPanelPrint.position, cameraTargets.backPanelPrint.target);
+                } else if (category === 'topPanelPrint' && componentSlots.topPanelMesh) {
+                    if (componentSlots.topPanelMesh.material instanceof BABYLON.PBRMaterial) {
+                        componentSlots.topPanelMesh.material.albedoTexture = texture;
+                    }
+                    animateCameraTo(cameraTargets.topPanelPrint.position, cameraTargets.topPanelPrint.target);
+                } else if (category === 'fanPrint') {
+                    componentSlots.fanBladeMeshes.forEach(mesh => {
+                        if (mesh.material instanceof BABYLON.PBRMaterial) {
+                            mesh.material.albedoTexture = texture;
+                        }
+                    });
+                    animateCameraTo(cameraTargets.fanPrint.position, cameraTargets.fanPrint.target);
+                } else if (category === 'lcdPanels') {
+                    componentSlots.lcdScreenMeshes.forEach(mesh => {
+                        if (mesh.material instanceof BABYLON.PBRMaterial) {
+                            mesh.material.albedoTexture = texture;
+                            mesh.material.emissiveColor = new BABYLON.Color3(1, 1, 1); // Make it bright when active
+                        }
+                    });
+                    animateCameraTo(cameraTargets.lcdPanels.position, cameraTargets.lcdPanels.target);
                 }
-                // Add more texture application logic
             }
-            // For charms, load and place the model
-            if (componentInfo.model && category === 'charms') {
-                placeComponent(category, componentInfo.id); // Re-use placeComponent for charms
+            // For charms, load and place the model (re-using placeComponent)
+            if (category === 'charms') {
+                placeComponent(category, componentInfo.id);
+            }
+            // For case lighting, update emissive color
+            if (category === 'caseLighting' && componentInfo.color) {
+                componentSlots.caseLighting.forEach(slot => {
+                    const lightStrip = createComponentMesh('caseLighting', componentInfo);
+                    lightStrip.parent = slot;
+                    lightStrip.position = BABYLON.Vector3.Zero();
+                    componentMeshes.caseLighting.push(lightStrip);
+                });
             }
         }
-
 
         // --- UI Management ---
 
@@ -893,7 +1334,8 @@
                     itemDiv.addEventListener('click', () => {
                         selectComponent(category, item.id);
                         // Close panel after selection for core components, keep open for customization
-                        if (!['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint', 'charms'].includes(category)) {
+                        const customizationCategories = ['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint', 'backPanelPrint', 'fanPrint', 'lcdPanels', 'topPanelPrint', 'charms', 'caseLighting'];
+                        if (!customizationCategories.includes(category)) {
                              componentPanel.classList.remove('visible');
                         }
                     });
@@ -901,23 +1343,23 @@
                 componentListDiv.appendChild(itemDiv);
             });
 
-            // Show customization options if applicable
-            if (category === 'gpuCustom') {
-                const currentGPU = buildState.gpuCustom;
+            // Show customization options as dropdowns if applicable
+            const dropdownCategories = ['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint', 'backPanelPrint', 'fanPrint', 'lcdPanels', 'topPanelPrint', 'charms', 'caseLighting'];
+            if (dropdownCategories.includes(category)) {
+                const currentSelection = buildState[category];
                 const selectHtml = `
                     <div class="custom-option">
-                        <label for="gpuPrintSelect">Select GPU Print:</label>
-                        <select id="gpuPrintSelect">
-                            ${componentData.gpuCustom.map(opt => `<option value="${opt.id}" ${currentGPU && currentGPU.id === opt.id ? 'selected' : ''}>${opt.name} ($${opt.price.toFixed(2)})</option>`).join('')}
+                        <label for="${category}Select">Select ${panelTitle.textContent.replace('SELECT ', '')}:</label>
+                        <select id="${category}Select">
+                            ${componentData[category].map(opt => `<option value="${opt.id}" ${currentSelection && currentSelection.id === opt.id ? 'selected' : ''}>${opt.name} ($${opt.price.toFixed(2)})</option>`).join('')}
                         </select>
                     </div>
                 `;
-                componentListDiv.innerHTML += selectHtml;
-                document.getElementById('gpuPrintSelect').addEventListener('change', (e) => {
+                componentListDiv.innerHTML = selectHtml; // Overwrite list with dropdown
+                document.getElementById(`${category}Select`).addEventListener('change', (e) => {
                     selectComponent(category, e.target.value);
                 });
             }
-            // Add similar logic for other customization categories (cable sleeves, panel prints etc.)
 
             componentPanel.classList.add('visible');
 
@@ -941,10 +1383,9 @@
 
             buildState[category] = selectedItem;
 
-            // Update UI selection highlight
+            // Update UI selection highlight (for list items, not dropdowns)
             document.querySelectorAll(`#componentList .component-item`).forEach(itemDiv => {
-                const itemId = itemDiv.querySelector('span').textContent.split(' ')[0].toLowerCase(); // Crude way to get ID
-                if (itemDiv.textContent.includes(selectedItem.name)) { // More robust check
+                if (itemDiv.textContent.includes(selectedItem.name)) {
                     itemDiv.classList.add('selected');
                 } else {
                     itemDiv.classList.remove('selected');
@@ -952,9 +1393,12 @@
             });
 
             // Apply 3D model changes
-            if (['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'cpuCooling', 'ssd', 'secondarySsd', 'hdd', 'secondHdd', 'antiSagBracket', 'wifiBluetooth', 'fans', 'charms'].includes(category)) {
+            const modelCategories = ['cpu', 'motherboard', 'ram', 'gpu', 'psu', 'cpuCooling', 'ssd', 'secondarySsd', 'hdd', 'secondHdd', 'antiSagBracket', 'wifiBluetooth', 'fans', 'charms'];
+            const customizationCategories = ['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint', 'backPanelPrint', 'fanPrint', 'lcdPanels', 'topPanelPrint', 'caseLighting'];
+
+            if (modelCategories.includes(category)) {
                 await placeComponent(category, componentId);
-            } else if (['gpuCustom', 'customCableSleeves', 'frontPanelPrint', 'sidePanelPrint'].includes(category)) {
+            } else if (customizationCategories.includes(category)) {
                 applyCustomization(category, selectedItem);
             }
 
@@ -978,7 +1422,7 @@
         }
 
         async function applyDefaultSelections() {
-            // Apply chassis default (already handled by loadChassis)
+            // Apply chassis default (already handled by createChassis)
             // Apply other defaults that have models or textures
             if (buildState.thermalCompound) { /* No 3D model */ }
             if (buildState.secondarySsd && buildState.secondarySsd.id !== 'none') await placeComponent('secondarySsd', buildState.secondarySsd.id);
@@ -992,6 +1436,10 @@
             if (buildState.charms && buildState.charms.id !== 'none') await placeComponent('charms', buildState.charms.id);
             if (buildState.frontPanelPrint && buildState.frontPanelPrint.id !== 'none') applyCustomization('frontPanelPrint', buildState.frontPanelPrint);
             if (buildState.sidePanelPrint && buildState.sidePanelPrint.id !== 'none') applyCustomization('sidePanelPrint', buildState.sidePanelPrint);
+            if (buildState.backPanelPrint && buildState.backPanelPrint.id !== 'none') applyCustomization('backPanelPrint', buildState.backPanelPrint);
+            if (buildState.fanPrint && buildState.fanPrint.id !== 'none') applyCustomization('fanPrint', buildState.fanPrint);
+            if (buildState.lcdPanels && buildState.lcdPanels.id !== 'none') applyCustomization('lcdPanels', buildState.lcdPanels);
+            if (buildState.topPanelPrint && buildState.topPanelPrint.id !== 'none') applyCustomization('topPanelPrint', buildState.topPanelPrint);
 
             updateBuildSummary();
         }
