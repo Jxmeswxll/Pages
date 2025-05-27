@@ -1,0 +1,156 @@
+VBA Script Rules Summary (Cline/code.vba)
+===========================================
+
+This document outlines the rules, keywords, and logic used by the VBA script to analyze chat transcripts and populate the "Conversation Summary" sheet.
+
+---
+Rule Heading: Sheet Name
+Keywords/Patterns: N/A
+Logic: Extracts the name of the source worksheet (transcript sheet).
+Result: Worksheet Name
+
+---
+Rule Heading: Advisor Name
+Keywords/Patterns: Agent entry/exit lines (e.g., "[USERNAME]: Agent enters chat (as NAME)", "[USERNAME] exits chat").
+Logic: Identifies the agent's NT_USER from chat lines, then looks up the corresponding friendly name in the "Usernames" sheet (column B, where column A is NT_USER).
+Result: Agent's friendly name or "" if not found.
+
+---
+Rule Heading: Engagement ID
+Keywords/Patterns: "Engagement ID" prefix.
+Logic: 
+1. Primarily checks cell A8 of the transcript sheet.
+2. Fallback 1: Checks cell A1 of the transcript sheet.
+3. Fallback 2: Scans the "Time" and "Text" fields of the first 5 parsed transcript lines for "Engagement ID XXXXX".
+Result: Extracted Engagement ID string or "Not Found".
+
+---
+Rule Heading: Date
+Keywords/Patterns: N/A (Uses first timestamp in transcript).
+Logic: Parses the date from the first timestamp found in the transcript (e.g., "MM/DD" from "MM/DD HH:MM:SS") and formats it as "DD-MMM".
+Result: Formatted date string or "N/A".
+
+---
+Rule Heading: Sale_OrderNumber
+Keywords/Patterns: "CDH-", "SBL-", "order number and tracking ID is ", "Order no: ".
+Logic: Checks agent and system lines for order number prefixes.
+Result: "CDH" if a CDH- order prefix is found in any chat line. "SBL" if an SBL- order prefix is found. Otherwise "Not Found".
+
+---
+Rule Heading: Sale_NoSaleInferred
+Keywords/Patterns: Based on `Sale_OrderNumber` result.
+Logic:
+- "Yes" (no sale inferred) if `Sale_OrderNumber` is "Not Found", "N/A", or empty.
+- "No" (sale made) otherwise.
+Result: "Yes" or "No".
+
+---
+Rule Heading: Sale_HighRiskAlerted
+Keywords/Patterns: "Supervisor User connected", "Supervisor '...' enters chat"
+Logic: Checks the full transcript text for these keywords.
+Result: "Yes" if any keyword found, "No" otherwise.
+
+---
+Rule Heading: Greet_OpeningMessageTime
+Keywords/Patterns: Agent entry line (e.g., "[AGENT_USER]: Agent enters chat"), first subsequent agent message.
+Logic: Calculates time in seconds between the agent's official entry into the chat and their first actual freehand message.
+Result: "X seconds" or "N/A (Agent Entry Not Found)" or "N/A (No Greeting Found)".
+
+---
+Rule Heading: Greet_AvgResponseTime
+Keywords/Patterns: N/A
+Logic: Currently a placeholder.
+Result: "Manual Check".
+
+---
+Rule Heading: Greet_DurationOfChat
+Keywords/Patterns: N/A (Uses first and last timestamps of the transcript).
+Logic: Calculates the total duration of the chat from the first recorded timestamp to the last.
+Result: Duration formatted as "HH:MM:SS" or "N/A" (if too short or time error).
+
+---
+Rule Heading: Greet_AskedHowAreYou
+Keywords/Patterns: "how are you" (case-insensitive).
+Logic: Checks if the identified agent's lines contain the keyword.
+Result: "Yes" if keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: Greet_AdvisedRetentionsTeam
+Keywords/Patterns: "Retention Team", "Retentions Team", "part of Retentions", "I'm in Retentions", "Vodafone’s Retention team" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: Loyalty_AcknowledgedTenure
+Keywords/Patterns: "valued customer", "valuable customer", "long time customer", "thanks for being with us for" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: FactFind_RoamingAsked
+Keywords/Patterns: "roaming", "holiday", "travel", "international calls", "use your phone abroad" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: FactFind_EntertainmentAsked
+Keywords/Patterns: "Entertainment", "Amazon Prime", "Youtube Premium", "Disney Plus", "streaming services" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: FactFind_HbbOrAdditionalAsked
+Keywords/Patterns: "broadband", "home broadband", "wifi", "another line", "additional SIM", "another device" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: DealOffer_MgrDiscountUsed
+Keywords/Patterns: "manager's discount", "manager discount", "special offer from my manager", "supervisor discount" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: DealOffer_VodafoneTogetherOffered
+Keywords/Patterns: "Vodafone Together", "family discount", "household discount" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: DealOffer_InsuranceOffered
+Keywords/Patterns: "insurance", "cover for your device", "damage cover", "theft cover", "device protection" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: DealOffer_AccessoryOffered
+Keywords/Patterns: "plug", "charger", "case", "screen protector", "accessories for your phone", "accessory bundle" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: DealOffer_TradeInOffered
+Keywords/Patterns: "trade in", "trade-in", "trade your old device", "recycle your phone" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: Objections_BenefitsExplained
+Keywords/Patterns: "Lifetime service", "battery refresh", "VeryMe", "Xchange", "trade-in guarantee", "warranty", "lifetime warranty" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: FCR_SummarisePurchase
+Keywords/Patterns: "to summarise", "summary of your order", "just to confirm your new plan", "let me recap" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Rule Heading: FCR_WhatElseCanIHelp
+Keywords/Patterns: "what else can I help", "anything else I can do", "any other questions", "is there anything else" (case-insensitive).
+Logic: Checks if the identified agent's lines contain any of the keywords.
+Result: "Yes" if any keyword found in agent's lines, "No" otherwise.
+
+---
+Note: The `GenericKeywordCheck` function is used for most keyword-based checks. It verifies if the identified agent (speaker) used any of the specified keywords in their lines. The check is case-insensitive.

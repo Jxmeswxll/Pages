@@ -1,0 +1,171 @@
+VBA Script Logic Summary (code_v2.vba)
+=======================================
+
+This document outlines the checks performed by the VBA script and the logic behind them.
+
+**Sheet Setup:**
+- A new sheet named "Conversation Summary V2" is created if it doesn't exist, or cleared if it does.
+- Headers are set up with specific group colors for better visual organization and a thick top border.
+  - Generic Info (Sheet Name, Advisor, ID, Date, Sale Order, High Risk): Very Light Blue
+  - Greet Columns: Pale Green
+  - Loyalty Columns: Pale Yellow/Amber
+  - FactFind Columns: Sage Green
+  - DealOffer Columns: Lavender
+  - Objections Columns: Light Teal/Blue
+  - FCR Columns: Muted Green
+  - Session Columns: Light Gray
+- Column widths are adjusted, and specific columns are formatted as text.
+- Columns beyond X (the last used data column) are cleared of content and formats.
+
+**Data Extraction and Checks (per transcript sheet):**
+
+1.  **Sheet Name:**
+    *   Logic: The name of the source worksheet.
+    *   Output Column: A
+
+2.  **Advisor Name:**
+    *   Logic: Extracts the agent's username from lines like "[username]: Agent enters chat" or "exits chat". Then looks up the full name from the "Usernames" sheet in the macro workbook.
+    *   Output Column: B
+    *   Default: "UnknownAgent" if not found.
+
+3.  **Engagement ID:**
+    *   Logic: Attempts to extract from cell A8 of the transcript sheet. Also checks the first few lines of the transcript (time and text fields) for patterns like "Engagement ID: [ID]".
+    *   Output Column: C
+    *   Default: "Not Found".
+
+4.  **Date:**
+    *   Logic: Attempts to parse a date from the "Time" column of the first 10 transcript lines. Looks for "MM/DD" or "DD/MM" patterns and formats it as "DD-MMM".
+    *   Output Column: D
+    *   Default: "N/A".
+
+5.  **Sale_OrderNumber:**
+    *   Logic: Searches transcript lines for "CDH-", "SBL-", "order number and tracking ID is ", or "Order no: ". Extracts "CDH" or "SBL" if found.
+    *   Output Column: E
+    *   Default: "Not Found".
+    *   Conditional Formatting:
+        *   Light Pastel Green (`RGB(198, 239, 206)`) if "SBL" or "CDH".
+        *   Light Pastel Red (`RGB(255, 199, 206)`) if "Not Found".
+        *   No fill otherwise.
+
+6.  **HighRiskAlerted:**
+    *   Logic: Checks the full transcript text for "Supervisor User connected" or "Supervisor '[username]' enters chat".
+    *   Output Column: F
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+7.  **Greet_OpeningMessageTime:**
+    *   Logic: Calculates the time difference in seconds between the agent's "enters chat" message and their first actual typed message.
+    *   Output Column: G
+    *   Default: "N/A", "N/A (Agent Entry Not Found)", or "N/A (No Greeting Found)".
+    *   Conditional Formatting:
+        *   Light Pastel Green (`RGB(198, 239, 206)`) if <= 30 seconds.
+        *   Light Pastel Red (`RGB(255, 199, 206)`) if > 30 seconds.
+        *   No fill if N/A.
+
+8.  **Greet_AvgResponseTime:**
+    *   Logic: Calculates the average time in seconds the agent took to respond after a customer message. Considers only actual typed messages.
+    *   Output Column: H
+    *   Default: "N/A", "N/A (Agent did not speak)", "N/A (No agent responses found after customer)", or "N/A (Error in calculation)".
+    *   Conditional Formatting: None (white background).
+
+9.  **Greet_AgentChatDuration:**
+    *   Logic: Calculates the total duration from the agent's first message to the last message in the transcript. Displays in hours and minutes, or just minutes.
+    *   Output Column: I
+    *   Default: "N/A", "N/A (Agent did not speak)", or "N/A (Time Error)".
+    *   Conditional Formatting: None (white background).
+
+10. **Greet_AskedHowAreYou:**
+    *   Logic: Checks agent's messages for keywords: "how are you", "how are you doing", "hope you're having a great day", "hope you're well".
+    *   Output Column: J
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+11. **Greet_AdvisedRetentionsTeam:**
+    *   Logic: Checks agent's messages for keywords: "Retention Team", "Retentions Team", "part of Retentions", "I'm in Retentions", "Vodafone’s Retention team".
+    *   Output Column: K
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+12. **Loyalty_AcknowledgedTenure:**
+    *   Logic: Checks agent's messages for keywords: "valued customer", "valuable customer", "long time customer", "thanks for being with us for".
+    *   Output Column: L
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+13. **FactFind_RoamingAsked:**
+    *   Logic: Checks agent's messages for keywords: "roaming", "holiday", "travel", "international calls", "use your phone abroad".
+    *   Output Column: M
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+14. **FactFind_EntertainmentAsked:**
+    *   Logic: Checks agent's messages for keywords: "Entertainment", "Amazon Prime", "Youtube Premium", "Disney Plus", "streaming services".
+    *   Output Column: N
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+15. **FactFind_HbbOrAdditionalAsked:**
+    *   Logic: Checks agent's messages for keywords: "broadband", "home broadband", "wifi", "another line", "additional SIM", "another phone".
+    *   Output Column: O
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+16. **DealOffer_MgrDiscountUsed:**
+    *   Logic: Checks agent's messages for keywords: "manager's discount", "managers discount", "manager discount", "discretionary discount".
+    *   Output Column: P
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+17. **DealOffer_VodafoneTogetherOffered:**
+    *   Logic: Checks agent's messages for keywords: "Vodafone Together", "Vodafone bundle", "bundle your services".
+    *   Output Column: Q
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+18. **DealOffer_InsuranceOffered:**
+    *   Logic: Checks agent's messages for keywords: "insurance", "device care", "cover for your phone".
+    *   Output Column: R
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+19. **DealOffer_AccessoryOffered:**
+    *   Logic: Checks agent's messages for keywords: "accessory", "case", "charger", "headphones", "screen protector".
+    *   Output Column: S
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+20. **DealOffer_TradeInOffered:**
+    *   Logic: Checks agent's messages for keywords: "trade-in", "trade in your old phone", "recycle your device".
+    *   Output Column: T
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+21. **Objections_BenefitsExplained:**
+    *   Logic: Checks agent's messages for keywords: "benefits", "advantages", "what you get", "features include".
+    *   Output Column: U
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+22. **FCR_SummarisePurchase:**
+    *   Logic: Checks agent's messages for keywords: "to summarise", "just to confirm", "recap your order", "summary of your purchase".
+    *   Output Column: V
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+23. **FCR_WhatElseCanIHelp:**
+    *   Logic: Checks agent's messages for keywords: "anything else I can help with", "what else can I do for you", "is there anything else".
+    *   Output Column: W
+    *   Values: "Yes" or "No".
+    *   Conditional Formatting: "Yes" = Light Pastel Green, "No" = Light Pastel Red.
+
+24. **Session_EndReason:**
+    *   Logic: Checks the last 5 lines of the transcript for phrases like "Chat Session Ended due to agent leaving", "...customer leaving", "...inactivity", or a generic "Chat Session Ended".
+    *   Output Column: X
+    *   Values: "Agent Left", "Customer Left", "Inactivity", "Ended (Reason Unknown)", or "N/A".
+    *   Conditional Formatting: None (white background).
+
+**General Notes:**
+- All keyword checks are case-insensitive.
+- The `GenericKeywordCheck` function is used for most "Yes/No" checks based on keywords in the agent's messages.
+- Timestamps are parsed to handle various formats.
+- Error handling (`On Error Resume Next` or `On Error GoTo 0`) is used in several places to prevent the script from halting on unexpected data.
