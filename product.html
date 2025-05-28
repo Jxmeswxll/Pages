@@ -6,388 +6,669 @@
     <!-- SEO Optimisation: Meta Description -->
     <meta name="description" content="Design your own custom-printed PC with high-performance components. Upload your artwork or choose from our gallery for a truly personalised gaming computer.">
     <meta name="keywords" content="custom printed PC, personalised gaming computer, upload your own design PC case, custom PC artwork, high-performance PC">
-    <title>Aftershock Custom Design High-Performance PC</title>
+    <title>Design Your Own Custom Panel PC | Aftershock</title>
     <style>
+        :root {
+            --primary-red: #E60000; /* Bright red accent */
+            --dark-bg: #121212; /* Very dark background */
+            --medium-bg: #1e1e1e; /* Slightly lighter for cards/sections */
+            --light-bg: #2a2a2a; /* For interactive elements or highlights */
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Roboto is often used in modern designs */
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* Dark theme for 'Aftershock PC' style */
-            color: #e0e0e0;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
             line-height: 1.6;
+            font-size: 16px;
         }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+
+        .site-header {
+            background-color: #000000; /* Solid black header like screenshot */
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
         }
-        header, footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #000;
+
+        .site-header .logo img {
+            height: 40px; /* Adjust as needed */
+            /* Assuming you'll add a logo image later */
         }
-        header h1 {
+        .site-header .logo-placeholder {
+             font-size: 1.8em;
+             font-weight: bold;
+             color: var(--primary-red);
+        }
+
+        .site-header nav ul {
+            list-style: none;
             margin: 0;
-            color: #00aaff; /* Accent color */
+            padding: 0;
+            display: flex;
         }
-        h2 {
-            color: #00aaff;
-            border-bottom: 2px solid #00aaff;
-            padding-bottom: 10px;
-            margin-top: 30px;
+
+        .site-header nav ul li {
+            margin-left: 25px;
         }
-        .section {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #333;
-            border-radius: 5px;
+
+        .site-header nav ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
-        .product-title h1 {
-            font-size: 2.5em;
-            color: #ffffff;
+
+        .site-header nav ul li a:hover,
+        .site-header nav ul li a.active {
+            color: var(--primary-red);
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1400px; /* Wider for a more modern feel */
+            margin: 30px auto;
+            padding: 0; /* Padding will be on columns */
+        }
+        
+        .product-main-title {
             text-align: center;
+            font-size: 2.2em;
+            color: var(--primary-red);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Left column wider for visuals */
+            gap: 30px;
+        }
+
+        .left-column, .right-column {
+            padding: 20px;
+            background-color: var(--medium-bg);
+            border-radius: 8px;
+        }
+        
+        .left-column {
+             background-color: transparent; /* Make left column blend more for image focus */
+             padding: 0;
+        }
+
+        h2.section-title {
+            color: var(--primary-red);
+            font-size: 1.6em;
+            margin-top: 0;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-red);
         }
-        .product-images img, .product-images .mockup-placeholder {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #444;
+        
+        .section { /* General section styling, can be removed if not needed broadly */
+            margin-bottom: 30px;
+            background-color: var(--medium-bg);
+            padding: 20px;
+            border-radius: 8px;
         }
-        .mockup-placeholder {
+
+
+        /* Product Images & Customization Area */
+        .product-visuals .mockup-placeholder {
             width: 100%;
-            height: 300px;
-            background-color: #444;
+            min-height: 350px;
+            background-color: var(--light-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
+            color: var(--text-secondary);
             font-size: 1.2em;
-        }
-        .cta-button {
-            display: inline-block;
-            background-color: #00aaff;
-            color: #ffffff;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-size: 1.2em;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-button:hover {
-            background-color: #0077cc;
-        }
-        .config-options ul, .tech-specs ul, .faq-section ul {
-            list-style: none;
-            padding: 0;
-        }
-        .config-options li, .tech-specs li, .faq-section li {
-            background-color: #3f3f3f;
-            margin-bottom: 8px;
-            padding: 10px;
-            border-radius: 3px;
-        }
-        .upload-guidelines, .trust-elements {
-            font-size: 0.9em;
-            background-color: #3a3a3a;
-            padding: 10px;
-            border-radius: 3px;
-        }
-        .trust-elements span {
-            margin-right: 15px;
-            font-weight: bold;
-        }
-        .customer-review {
-            border-left: 3px solid #00aaff;
-            padding-left: 15px;
+            border-radius: 8px;
             margin-bottom: 15px;
-            background-color: #383838;
-            padding: 10px;
+            border: 2px dashed var(--border-color);
         }
-        .customer-review p {
-            margin: 5px 0;
+        .product-visuals .thumbnails {
+            display: flex;
+            gap: 10px;
+            justify-content: center; /* Center thumbnails */
         }
-        .customer-review .author {
-            font-style: italic;
-            color: #aaa;
-            text-align: right;
-        }
-        .social-sharing button {
-            background-color: #555;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            margin-right: 5px;
-            border-radius: 3px;
+        .product-visuals .thumb {
+            width: 80px;
+            height: 80px;
+            background-color: var(--light-bg);
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
         }
-        .social-sharing button:hover {
-            background-color: #00aaff;
+        .product-visuals .thumb:hover {
+            border-color: var(--primary-red);
         }
 
-        /* Image upload and preview */
+        /* Design Customization specific styles */
+        .design-customisation-area {
+            background-color: var(--medium-bg);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px; /* Space from mockups */
+        }
+
         #imageUpload {
-            display: none; /* Hide default input */
+            display: none;
         }
         .upload-label {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
+            display: block; /* Make it full width */
+            text-align: center;
+            padding: 12px 20px;
+            background-color: var(--primary-red);
+            color: var(--text-primary);
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
         }
         .upload-label:hover {
-            background-color: #0056b3;
+            background-color: #c40000; /* Darker red on hover */
         }
         #imagePreviewContainer {
             width: 100%;
-            max-width: 400px; /* Adjust as needed */
-            height: 300px; /* Adjust as needed */
-            border: 2px dashed #555;
+            height: 250px;
+            border: 2px dashed var(--border-color);
             border-radius: 5px;
-            margin-top: 10px;
+            margin-top: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #383838;
-            overflow: hidden; /* To contain the image */
+            background-color: var(--dark-bg); /* Darker for contrast */
+            overflow: hidden;
         }
         #imagePreview {
             max-width: 100%;
             max-height: 100%;
-            display: none; /* Hidden until an image is selected */
+            display: none;
         }
         #imagePreviewText {
-            color: #888;
+            color: var(--text-secondary);
+        }
+        .design-options ul {
+            list-style: none;
+            padding: 0;
+        }
+        .design-options li {
+            margin-bottom: 10px;
         }
 
+
+        /* Right Column Sections */
+        .right-column .section-block {
+            background-color: var(--light-bg); /* Distinct blocks like screenshot */
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .right-column .section-block h3 {
+            font-size: 1.3em;
+            color: var(--primary-red);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tech-specs ul, .config-options ul, .faq-section ul, .upload-guidelines ul {
+            list-style: none;
+            padding: 0;
+        }
+        .tech-specs li, .config-options li, .faq-section li, .upload-guidelines li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tech-specs li:last-child, .config-options li:last-child, 
+        .faq-section li:last-child, .upload-guidelines li:last-child {
+            border-bottom: none;
+        }
+        .tech-specs strong { color: var(--text-primary); }
+
+
+        .price-display {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+        .price-display .base-price {
+            font-size: 0.7em;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        .cta-button-main {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-red);
+            color: var(--text-primary);
+            padding: 15px 0; /* Full width, so no horizontal padding needed */
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .cta-button-main:hover {
+            background-color: #c40000; /* Darker red */
+        }
+        .cta-secondary {
+            display: block;
+            width: 100%;
+            background-color: transparent;
+            color: var(--primary-red);
+            padding: 13px 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: 2px solid var(--primary-red);
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .cta-secondary:hover {
+            background-color: var(--primary-red);
+            color: var(--text-primary);
+        }
+
+        /* Lower sections: Reviews, FAQ etc. */
+        .lower-content-section {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: var(--medium-bg);
+            border-radius: 8px;
+        }
+        .customer-review {
+            border-left: 4px solid var(--primary-red);
+            padding-left: 20px;
+            margin-bottom: 20px;
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        .customer-review p { margin: 5px 0; }
+        .customer-review .author {
+            font-style: italic;
+            color: var(--text-secondary);
+            text-align: right;
+            font-size: 0.9em;
+        }
+        .trust-elements span {
+            margin-right: 15px;
+            font-weight: 500;
+            display: inline-block; /* For better spacing */
+            margin-bottom: 5px; /* Spacing for wrapped items */
+        }
+        .trust-elements span::before { /* Optional: Add icons via CSS content or font icons */
+            /* content: "🛡️ "; */
+        }
+        .social-sharing button {
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            margin-right: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .social-sharing button:hover {
+            background-color: var(--primary-red);
+            border-color: var(--primary-red);
+        }
+
+        footer.site-footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            background-color: #000000;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+        }
+        footer.site-footer p { margin: 5px 0; color: var(--text-secondary); }
+        footer.site-footer a { color: var(--text-secondary); text-decoration: none; }
+        footer.site-footer a:hover { color: var(--primary-red); }
+
         /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
+        @media (max-width: 992px) { /* Tablet */
+            .content-grid {
+                grid-template-columns: 1fr; /* Stack columns */
             }
-            .product-title h1 {
-                font-size: 2em;
+            .left-column, .right-column {
+                padding: 15px; /* Adjust padding for smaller screens */
             }
-            .cta-button {
-                padding: 12px 25px;
-                font-size: 1.1em;
+            .site-header {
+                flex-direction: column;
+                padding: 15px 3%;
             }
+            .site-header .logo-placeholder { margin-bottom: 10px; }
+            .site-header nav ul { justify-content: center; }
+        }
+        @media (max-width: 768px) { /* Mobile */
+            body { font-size: 15px; }
+            .product-main-title { font-size: 1.8em; }
+            h2.section-title { font-size: 1.4em; }
+            .cta-button-main { font-size: 1.1em; padding: 12px 0; }
+            .site-header nav ul li { margin-left: 15px; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Aftershock PC</h1>
+    <header class="site-header">
+        <div class="logo">
+            <!-- Placeholder for logo image, you can use text or an <img> tag -->
+            <span class="logo-placeholder">AFTERSHOCK</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#special-offers">Special Offers</a></li>
+                <li><a href="#gaming-pc" class="active">Gaming PC</a></li>
+                <li><a href="#workstation">Workstation</a></li>
+                <li><a href="#laptop">Laptop</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <div class="container">
-        <!-- 1. Product Title -->
-        <section class="section product-title">
-            <h1>Your Vision, Our Rig: The Ultimate Custom Design High-Performance PC</h1>
-        </section>
+    <div class="main-container">
+        <h1 class="product-main-title">Design Your Ultimate Custom Panel PC</h1>
 
-        <!-- Product Images (Mockups) -->
-        <section class="section product-images">
-            <h2>Gallery & Mockups</h2>
-            <div class="mockup-placeholder">Mockup: Front View (Your Design Here)</div>
-            <div class="mockup-placeholder">Mockup: Side Panel View (Your Design Here)</div>
-            <div class="mockup-placeholder">Mockup: Angled View</div>
-            <!-- Placeholder for 3D viewer or video if implemented -->
-            <p style="text-align:center;"><em>More images showcasing different designs and angles.</em></p>
-        </section>
+        <div class="content-grid">
+            <div class="left-column">
+                <section class="product-visuals">
+                    <!-- Main Mockup Display -->
+                    <div class="mockup-placeholder" id="mainMockupDisplay">
+                        Your Custom Design Preview
+                    </div>
+                    <!-- Thumbnails for different views or example designs -->
+                    <div class="thumbnails">
+                        <div class="thumb" onclick="alert('Show Front View Mockup - Placeholder')">Front</div>
+                        <div class="thumb" onclick="alert('Show Side View Mockup - Placeholder')">Side</div>
+                        <div class="thumb" onclick="alert('Show Angled View Mockup - Placeholder')">Angled</div>
+                        <div class="thumb" onclick="alert('Show Example Design 1 - Placeholder')">Ex 1</div>
+                    </div>
+                </section>
 
-        <!-- 2. Product Description -->
-        <section class="section product-description">
-            <h2>What is a Custom-Printed PC?</h2>
-            <p>Elevate your setup beyond the ordinary with a custom-printed PC from Aftershock. This isn't just a high-performance machine; it's a canvas for your creativity. We transform a top-tier PC case into a unique masterpiece featuring your chosen artwork, logo, or design. Whether you're a gamer looking to showcase your identity, a professional wanting a branded workstation, or a creative needing an inspiring setup, our custom-printed PCs deliver both stunning aesthetics and powerful performance.</p>
-            <p><strong>Express Yourself:</strong> Upload your own artwork (JPG/PNG) or select from our curated gallery of exclusive designs. Our state-of-the-art, high-resolution, durable UV printing process ensures your vision comes to life with vibrant colors and sharp details that last.</p>
-            <p><strong>Perfect For:</strong></p>
-            <ul>
-                <li><strong>Gaming Rigs:</strong> Match your PC to your favorite game, stream persona, or team colors.</li>
-                <li><strong>Creative Workstations:</strong> Inspire your work with a design that reflects your artistic style.</li>
-                <li><strong>Home Offices:</strong> Add a personal touch to your professional workspace.</li>
-                <li><strong>Unique Gifts:</strong> Surprise someone with a truly one-of-a-kind, high-tech present.</li>
-            </ul>
-        </section>
+                <section class="design-customisation-area">
+                    <h2 class="section-title">1. Create Your Design</h2>
+                    <p>Upload your artwork (JPG/PNG) or choose from our gallery. See it come to life on your PC!</p>
+                    
+                    <label for="imageUpload" class="upload-label">Upload Your Artwork (JPG/PNG, Max 10MB)</label>
+                    <input type="file" id="imageUpload" accept="image/jpeg, image/png">
+                    
+                    <div id="imagePreviewContainer">
+                        <img id="imagePreview" src="#" alt="Image Preview">
+                        <span id="imagePreviewText">Preview will appear here</span>
+                    </div>
 
-        <!-- 3. Design Customisation Section -->
-        <section class="section design-customisation">
-            <h2>Design Your Custom PC</h2>
-            <p>Unleash your creativity! Here's how to personalize your PC case:</p>
-            <ol>
-                <li><strong>Upload Your Design:</strong> We accept JPG and PNG files. For best results, use high-resolution images (see guidelines below). Click the button below to select your file.</li>
-                <li><strong>Choose Placement:</strong> Specify where you want your design:
+                    <div class="design-options" style="margin-top: 20px;">
+                        <p><strong>Choose Panel for Printing:</strong></p>
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li><input type="radio" id="panelSide" name="panelChoice" value="side" checked> <label for="panelSide">Main Side Panel</label></li>
+                            <li><input type="radio" id="panelFront" name="panelChoice" value="front"> <label for="panelFront">Front Panel</label></li>
+                            <li><input type="radio" id="panelTop" name="panelChoice" value="top"> <label for="panelTop">Top Panel</label></li>
+                        </ul>
+                         <p><em>More options like RGB sync and etching available in step 3.</em></p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section class="section-block product-description">
+                    <h3>Your Vision, Our Rig</h3>
+                    <p>Elevate your setup with a PC that's uniquely yours. We transform high-performance machines into personalized masterpieces using durable, high-resolution UV printing.</p>
+                    <p><strong>Perfect For:</strong> Gaming, Streaming, Creative Work, Professional Branding.</p>
+                </section>
+
+                <section class="section-block tech-specs">
+                    <h3>2. Base PC Specifications</h3>
+                    <p>Built with quality components, fully customizable:</p>
                     <ul>
-                        <li>Full Side Panel (Glass or Solid)</li>
-                        <li>Front Panel</li>
-                        <li>Top Panel (selected cases)</li>
-                        <li>Multiple Panels for a wrap-around effect</li>
+                        <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5</li>
+                        <li><strong>GPU:</strong> NVIDIA GeForce RTX 4060 / AMD Radeon RX 7600</li>
+                        <li><strong>RAM:</strong> 16GB DDR5 High-Speed RAM</li>
+                        <li><strong>Storage:</strong> 1TB NVMe SSD</li>
+                        <li><strong>Motherboard:</strong> Reputable Brand (B/X Series)</li>
+                        <li><strong>Cooling:</strong> Premium Air/Liquid Options</li>
+                        <li><strong>PSU:</strong> 650W+ 80 PLUS Bronze</li>
                     </ul>
-                </li>
-                <li><strong>Preview Your Masterpiece:</strong> Once uploaded, you'll see a mockup of your design on the selected PC case. (<em>Note: Interactive 3D preview coming soon!</em>)</li>
-            </ol>
+                    <a href="#configurator-link" class="cta-secondary" style="margin-top:15px;">Customize Full Specs (Step 3)</a>
+                </section>
+
+                <section class="section-block config-options-detailed">
+                    <h3>3. Choose Your Configuration Style</h3>
+                    <p>Select a pre-configured tier or a use-case package as a starting point. Full customization follows.</p>
+                    <h4>Pre-built Tiers:</h4>
+                    <ul class="config-list" style="padding-left: 20px; list-style: disc;">
+                        <li><strong>Starter Custom:</strong> Balanced performance for everyday gaming and productivity, ready for your unique design.</li>
+                        <li><strong>Pro Gamer Custom:</strong> High-end components for serious 1440p/4K gaming and streaming, showcasing your artwork.</li>
+                        <li><strong>Ultra Creative Custom:</strong> Top-tier power for demanding creative workloads (video editing, 3D rendering) and an unparalleled custom look.</li>
+                    </ul>
+                    <h4>Suggested Packages:</h4>
+                    <ul class="config-list" style="padding-left: 20px; list-style: disc;">
+                        <li><strong>The Streamer's Dream:</strong> Optimized for smooth, high-quality streaming and simultaneous gaming.</li>
+                        <li><strong>AAA Gaming Beast:</strong> Built to crush the latest titles at maximum settings.</li>
+                        <li><strong>CAD/3D Powerhouse:</strong> Robust performance and stability for professional design software.</li>
+                    </ul>
+                     <p><em>Full component customization and add-ons like RGB sync are available in the detailed configurator.</em></p>
+                </section>
+
+                <section class="section-block price-config">
+                    <h3>4. Pricing & Key Add-ons</h3>
+                    <div class="price-display">
+                        From $1,499 AUD
+                        <span class="base-price">(Includes custom print on one panel & base specs)</span>
+                    </div>
+                    <ul>
+                        <li>Additional Printed Panels: +$79 AUD each</li>
+                        <li>Component Upgrades: Priced in configurator</li>
+                        <li>RGB Lighting Sync Add-on: +$49 AUD</li>
+                    </ul>
+                </section>
+                
+                <section class="section-block upload-guidelines">
+                    <h3>5. Artwork Guidelines</h3>
+                    <ul>
+                        <li><strong>Formats:</strong> JPG, PNG (Max 10MB)</li>
+                        <li><strong>Resolution:</strong> Min 300 DPI (e.g., 4700x4700px for side panel)</li>
+                        <li><strong>Content:</strong> No copyrighted/illegal material.</li>
+                    </ul>
+                </section>
+
+                <button class="cta-button-main" onclick="alert('Proceed to Full Configurator & Checkout - Placeholder')">Design & Build Your PC</button>
+            </div>
+        </div>
+
+        <!-- Lower sections moved outside the grid -->
+        <section class="lower-content-section">
+            <div class="product-description-full">
+                <h2 class="section-title">More About Your Custom Printed PC</h2>
+                <p>Elevate your setup beyond the ordinary with a custom-printed PC from Aftershock. This isn't just a high-performance machine; it's a canvas for your creativity. We transform a top-tier PC case into a unique masterpiece featuring your chosen artwork, logo, or design. Whether you're a gamer looking to showcase your identity, a professional wanting a branded workstation, or a creative needing an inspiring setup, our custom-printed PCs deliver both stunning aesthetics and powerful performance.</p>
+                <p><strong>Express Yourself:</strong> Upload your own artwork (JPG/PNG) or select from our curated gallery of exclusive designs. Our state-of-the-art, high-resolution, durable UV printing process ensures your vision comes to life with vibrant colors and sharp details that last.</p>
+                <p><strong>Perfect For:</strong></p>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>Gaming Rigs:</strong> Match your PC to your favorite game, stream persona, or team colors.</li>
+                    <li><strong>Creative Workstations:</strong> Inspire your work with a design that reflects your artistic style.</li>
+                    <li><strong>Home Offices:</strong> Add a personal touch to your professional workspace.</li>
+                    <li><strong>Unique Gifts:</strong> Surprise someone with a truly one-of-a-kind, high-tech present.</li>
+                </ul>
+            </div>
+
+            <!-- Detailed Design Customisation (Original Section 3) -->
+            <div class="design-customisation-detailed section-block">
+                <h2 class="section-title">Detailed Design & Customization Process</h2>
+                <p>Unleash your creativity! Here's how to personalize your PC case in detail:</p>
+                <ol style="padding-left: 20px;">
+                    <li><strong>Upload Your Design:</strong> We accept JPG and PNG files. For best results, use high-resolution images (see guidelines below). The uploader is in the left panel.</li>
+                    <li><strong>Choose Placement:</strong> Specify where you want your design:
+                        <ul style="padding-left: 20px; list-style: circle;">
+                            <li>Full Side Panel (Glass or Solid)</li>
+                            <li>Front Panel</li>
+                            <li>Top Panel (selected cases)</li>
+                            <li>Multiple Panels for a wrap-around effect (Contact us for this option)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Preview Your Masterpiece:</strong> Once uploaded (left panel), you'll see a mockup of your design on the selected PC case. (<em>Note: Interactive 3D preview coming soon!</em>)</li>
+                </ol>
+                <p><strong>Optional Add-ons (Select in Full Configurator):</strong></p>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>RGB Lighting Sync:</strong> Synchronize internal and external RGB lighting with your design's color palette.</li>
+                    <li><strong>Custom Etching:</strong> Add subtle text or logos etched into glass panels.</li>
+                </ul>
+            </div>
+
+            <!-- Detailed Upload Instructions (Original Section) -->
+            <div class="upload-guidelines-detailed section-block">
+                <h3 class="section-title">Full Upload Instructions & Guidelines</h3>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>Supported Formats:</strong> JPG, PNG.</li>
+                    <li><strong>Maximum File Size:</strong> 10MB.</li>
+                    <li><strong>Recommended Resolution:</strong> Minimum 300 DPI for the intended print size. For a full side panel (e.g., 40cm x 40cm), aim for at least 4700x4700 pixels.</li>
+                    <li><strong>Aspect Ratio:</strong> Ensure your image fits the panel dimensions or be prepared for potential cropping. We'll provide panel templates soon.</li>
+                    <li><strong>Content Restrictions:</strong> No copyrighted material (unless you own the rights), hate speech, explicit, or illegal content. We reserve the right to refuse any design.</li>
+                </ul>
+            </div>
+
+            <!-- Detailed Technical Specifications (Original Section 4) -->
+            <div class="tech-specs-detailed section-block">
+                <h2 class="section-title">Complete Technical Specifications (Baseline & Upgrades)</h2>
+                <p>Our custom-printed PCs are built with high-quality components. The baseline configuration offers excellent performance, and all parts are customizable to your needs in the full configurator:</p>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5 Series (Upgradeable to i7/i9, Ryzen 7/9)</li>
+                    <li><strong>GPU:</strong> NVIDIA GeForce RTX 4060 / AMD Radeon RX 7600 Series (Upgradeable to RTX 4070/4080/4090, RX 7700XT/7800XT/7900XTX)</li>
+                    <li><strong>RAM:</strong> 16GB DDR5 High-Speed RAM (Upgradeable to 32GB, 64GB+)</li>
+                    <li><strong>Storage:</strong> 1TB NVMe SSD (Upgradeable with more/larger NVMe SSDs, SATA SSDs, HDDs)</li>
+                    <li><strong>Motherboard:</strong> Reputable brand (e.g., ASUS, Gigabyte, MSI) B-series or X-series chipset (Specific models selectable)</li>
+                    <li><strong>Cooling System:</strong> Premium Air Cooler / Optional AIO Liquid Cooling (Various sizes and brands)</li>
+                    <li><strong>Power Supply:</strong> 650W+ 80 PLUS Bronze Certified PSU (Upgradeable to higher wattage/efficiency, e.g., Gold, Platinum)</li>
+                </ul>
+                <p><em>All components are subject to availability and can be upgraded during the configuration process.</em></p>
+            </div>
             
-            <div>
-                <label for="imageUpload" class="upload-label">Upload Your Artwork (JPG/PNG)</label>
-                <input type="file" id="imageUpload" accept="image/jpeg, image/png">
+            <!-- Detailed Configuration Options (Original Section 5) -->
+            <div class="config-options-full-detailed section-block">
+                <h2 class="section-title">Full Configuration Options & Tiers</h2>
+                <p>Tailor your PC to your exact needs. Choose from pre-configured tiers or customize every component in our advanced configurator.</p>
+                <h4>Pre-built Tiers (Examples, fully customizable):</h4>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>Starter Custom:</strong> Balanced performance for everyday gaming and productivity, featuring your custom print.</li>
+                    <li><strong>Pro Gamer Custom:</strong> High-end components for serious gaming and streaming, with your unique design.</li>
+                    <li><strong>Ultra Creative Custom:</strong> Top-tier power for demanding creative workloads (video editing, 3D rendering) and ultimate bragging rights with your artwork.</li>
+                </ul>
+                <h4>Suggested Packages for Specific Use Cases (Examples, fully customizable):</h4>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>The Streamer's Dream:</strong> Optimized for smooth streaming and gaming simultaneously.</li>
+                    <li><strong>AAA Gaming Beast:</strong> Maxed-out settings on the latest titles.</li>
+                    <li><strong>CAD/3D Powerhouse:</strong> For professionals needing robust performance for design software.</li>
+                </ul>
             </div>
-            <div id="imagePreviewContainer">
-                <img id="imagePreview" src="#" alt="Image Preview">
-                <span id="imagePreviewText">Your design preview will appear here</span>
+
+            <!-- Detailed Price Range (Original Section 6) -->
+            <div class="price-range-detailed section-block">
+                <h2 class="section-title">Detailed Pricing Information</h2>
+                <p>Your custom-printed PC's price depends on the selected components and design complexity. The full configurator provides real-time price updates.</p>
+                <ul style="padding-left: 20px; list-style: disc;">
+                    <li><strong>Base Price (including custom print on one panel):</strong> Starting from $1,499 AUD</li>
+                    <li><strong>Component Upgrades:</strong> Clearly shown during configuration.</li>
+                    <li><strong>Additional Printed Panels:</strong> +$79 AUD per extra panel.</li>
+                    <li><strong>Complex Design Setup Fee:</strong> May apply for intricate designs requiring significant graphic work on our end (we'll quote this upfront).</li>
+                </ul>
+                <p><em>Final price will be calculated as you build your PC.</em></p>
             </div>
 
-            <p><strong>Optional Add-ons:</strong></p>
-            <ul>
-                <li><strong>RGB Lighting Sync:</strong> Synchronize internal and external RGB lighting with your design's color palette.</li>
-                <li><strong>Custom Etching:</strong> Add subtle text or logos etched into glass panels.</li>
-            </ul>
-        </section>
-
-        <!-- Upload Instructions and Guidelines -->
-        <section class="section upload-guidelines">
-            <h3>Upload Instructions & Guidelines</h3>
-            <ul>
-                <li><strong>Supported Formats:</strong> JPG, PNG.</li>
-                <li><strong>Maximum File Size:</strong> 10MB.</li>
-                <li><strong>Recommended Resolution:</strong> Minimum 300 DPI for the intended print size. For a full side panel (e.g., 40cm x 40cm), aim for at least 4700x4700 pixels.</li>
-                <li><strong>Aspect Ratio:</strong> Ensure your image fits the panel dimensions or be prepared for potential cropping. We'll provide panel templates soon.</li>
-                <li><strong>Content Restrictions:</strong> No copyrighted material (unless you own the rights), hate speech, explicit, or illegal content. We reserve the right to refuse any design.</li>
-            </ul>
-        </section>
-
-        <!-- 4. Technical Specifications -->
-        <section class="section tech-specs">
-            <h2>Core Technical Specifications (Baseline)</h2>
-            <p>Our custom-printed PCs are built with high-quality components. The baseline configuration offers excellent performance, and all parts are customizable to your needs:</p>
-            <ul>
-                <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5 Series</li>
-                <li><strong>GPU:</strong> NVIDIA GeForce RTX 4060 / AMD Radeon RX 7600 Series</li>
-                <li><strong>RAM:</strong> 16GB DDR5 High-Speed RAM (Upgradeable)</li>
-                <li><strong>Storage:</strong> 1TB NVMe SSD (Upgradeable with more SSDs/HDDs)</li>
-                <li><strong>Motherboard:</strong> Reputable brand (e.g., ASUS, Gigabyte, MSI) B-series or X-series chipset</li>
-                <li><strong>Cooling System:</strong> Premium Air Cooler / Optional AIO Liquid Cooling</li>
-                <li><strong>Power Supply:</strong> 650W+ 80 PLUS Bronze Certified PSU (Brand may vary, e.g., Corsair, Seasonic)</li>
-            </ul>
-            <p><em>All components are subject to availability and can be upgraded during the configuration process.</em></p>
-        </section>
-
-        <!-- 5. Configuration Options -->
-        <section class="section config-options">
-            <h2>Configure Your Build</h2>
-            <p>Tailor your PC to your exact needs. Choose from pre-configured tiers or customize every component.</p>
-            <h4>Pre-built Tiers:</h4>
-            <ul>
-                <li><strong>Starter Custom:</strong> Balanced performance for everyday gaming and productivity, featuring your custom print.</li>
-                <li><strong>Pro Gamer Custom:</strong> High-end components for serious gaming and streaming, with your unique design.</li>
-                <li><strong>Ultra Creative Custom:</strong> Top-tier power for demanding creative workloads (video editing, 3D rendering) and ultimate bragging rights with your artwork.</li>
-            </ul>
-            <h4>Suggested Packages for Specific Use Cases:</h4>
-            <ul>
-                <li><strong>The Streamer's Dream:</strong> Optimized for smooth streaming and gaming simultaneously.</li>
-                <li><strong>AAA Gaming Beast:</strong> Maxed-out settings on the latest titles.</li>
-                <li><strong>CAD/3D Powerhouse:</strong> For professionals needing robust performance for design software.</li>
-            </ul>
-            <p><a href="#cta" class="cta-button">Start Configuring</a></p>
-        </section>
-
-        <!-- 6. Price Range -->
-        <section class="section price-range">
-            <h2>Pricing</h2>
-            <p>Your custom-printed PC's price depends on the selected components and design complexity.</p>
-            <ul>
-                <li><strong>Base Price (including custom print on one panel):</strong> Starting from $1,499 AUD</li>
-                <li><strong>Component Upgrades:</strong> Clearly shown during configuration.</li>
-                <li><strong>Additional Printed Panels:</strong> +$79 AUD per extra panel.</li>
-                <li><strong>Complex Design Setup Fee:</strong> May apply for intricate designs requiring significant graphic work on our end (we'll quote this upfront).</li>
-            </ul>
-            <p><em>Final price will be calculated as you build your PC.</em></p>
-        </section>
-
-        <!-- Call to Action (CTA) -->
-        <section id="cta" class="section cta-section" style="text-align: center;">
-            <h2>Ready to Create Your Masterpiece?</h2>
-            <button class="cta-button" onclick="document.getElementById('imageUpload').click()">Upload Your Art & Start Designing</button>
-            <br><br>
-            <button class="cta-button" onclick="alert('Redirecting to full configurator and checkout... (Placeholder)')">Build & Buy Your Custom PC</button>
-        </section>
-
-        <!-- Customer Reviews -->
-        <section class="section customer-reviews">
-            <h2>What Our Customers Say</h2>
-            <div class="customer-review">
-                <p>"The print quality is insane! My custom artwork looks incredible on the side panel. Plus, the PC runs like a dream. 10/10 would recommend Aftershock!"</p>
-                <p class="author">- GamerXPro_22</p>
+            <!-- Main Call to Action (Original Section CTA) -->
+            <div id="cta-main-detailed" class="cta-section-detailed section-block" style="text-align: center;">
+                <h2 class="section-title">Ready to Create Your Masterpiece?</h2>
+                <button class="cta-button-main" onclick="document.getElementById('imageUpload').click()">Upload Your Art & Start Designing</button>
+                <button class="cta-button-main" style="margin-top:10px;" onclick="alert('Redirecting to full configurator and checkout... (Placeholder)')">Build & Buy Your Custom PC</button>
             </div>
-            <div class="customer-review">
-                <p>"I wanted a unique PC for my design studio, and Aftershock delivered. The UV print is so durable and vibrant. It's a conversation starter for sure."</p>
-                <p class="author">- CreativeDesignsAU</p>
+
+            <!-- Customer Reviews -->
+            <div class="customer-reviews-detailed section-block">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="customer-review">
+                    <p>"The print quality is insane! My custom artwork looks incredible on the side panel. Plus, the PC runs like a dream. 10/10 would recommend Aftershock!"</p>
+                    <p class="author">- GamerXPro_22</p>
+                </div>
+                <div class="customer-review">
+                    <p>"I wanted a unique PC for my design studio, and Aftershock delivered. The UV print is so durable and vibrant. It's a conversation starter for sure."</p>
+                    <p class="author">- CreativeDesignsAU</p>
+                </div>
+                <div class="customer-review">
+                    <p>"Uploaded my company logo for our office PCs. They look super professional, and the team was great to work with on the design placement. Fast turnaround too!"</p>
+                    <p class="author">- TechSolutions Inc.</p>
+                </div>
             </div>
-            <div class="customer-review">
-                <p>"Uploaded my company logo for our office PCs. They look super professional, and the team was great to work with on the design placement. Fast turnaround too!"</p>
-                <p class="author">- TechSolutions Inc.</p>
+
+            <!-- FAQ Section -->
+            <div class="faq-section-detailed section-block">
+                <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
+                <ul style="padding-left: 0; list-style: none;">
+                    <li>
+                        <strong>What types of images work best?</strong>
+                        <p>High-resolution images (300 DPI or more) in JPG or PNG format provide the best results. Vector files (.AI, .EPS) can also be submitted via email for even sharper prints. Avoid low-resolution images as they may appear pixelated when enlarged.</p>
+                    </li>
+                    <li>
+                        <strong>Can I order bulk designs for a team or company?</strong>
+                        <p>Absolutely! We offer discounts for bulk orders. Please contact our sales team for a custom quote.</p>
+                    </li>
+                    <li>
+                        <strong>What’s the turnaround time?</strong>
+                        <p>Standard turnaround time is 7-10 business days after design approval and payment, plus shipping. This can vary based on component availability and order complexity.</p>
+                    </li>
+                    <li>
+                        <strong>Are the designs permanent? Do they fade?</strong>
+                        <p>Our UV printing process creates a highly durable and scratch-resistant finish. The prints are designed to last for years without fading under normal indoor conditions.</p>
+                    </li>
+                </ul>
             </div>
-        </section>
 
-        <!-- FAQ Section -->
-        <section class="section faq-section">
-            <h2>Frequently Asked Questions (FAQ)</h2>
-            <ul>
-                <li>
-                    <strong>What types of images work best?</strong>
-                    <p>High-resolution images (300 DPI or more) in JPG or PNG format provide the best results. Vector files (.AI, .EPS) can also be submitted via email for even sharper prints. Avoid low-resolution images as they may appear pixelated when enlarged.</p>
-                </li>
-                <li>
-                    <strong>Can I order bulk designs for a team or company?</strong>
-                    <p>Absolutely! We offer discounts for bulk orders. Please contact our sales team for a custom quote.</p>
-                </li>
-                <li>
-                    <strong>What’s the turnaround time?</strong>
-                    <p>Standard turnaround time is 7-10 business days after design approval and payment, plus shipping. This can vary based on component availability and order complexity.</p>
-                </li>
-                <li>
-                    <strong>Are the designs permanent? Do they fade?</strong>
-                    <p>Our UV printing process creates a highly durable and scratch-resistant finish. The prints are designed to last for years without fading under normal indoor conditions.</p>
-                </li>
-            </ul>
-        </section>
+            <!-- Trust Elements -->
+            <div class="trust-elements-detailed section-block">
+                <h3 class="section-title">Peace of Mind Guaranteed</h3>
+                <p>
+                    <span>🛡️ 2-Year Warranty on Parts & Labor</span> |
+                    <span>🔄 Easy Return Policy (for non-customized components)</span> |
+                    <span>🔒 Secure Checkout</span> |
+                    <span>🚚 Fast & Insured Shipping</span> |
+                    <span>💬 Dedicated Customer Support</span>
+                </p>
+            </div>
 
-        <!-- Trust Elements -->
-        <section class="section trust-elements">
-            <h3>Peace of Mind Guaranteed</h3>
-            <p>
-                <span>🛡️ 2-Year Warranty on Parts & Labor</span> |
-                <span>🔄 Easy Return Policy (for non-customized components)</span> |
-                <span>🔒 Secure Checkout</span> |
-                <span>🚚 Fast & Insured Shipping</span> |
-                <span>💬 Dedicated Customer Support</span>
-            </p>
-        </section>
-
-        <!-- Social Proof and Sharing -->
-        <section class="section social-sharing" style="text-align: center;">
-            <h2>Show Off Your Build!</h2>
-            <p>Follow us on Instagram & TikTok @AftershockCustomPCs! Tag us in your build photos!</p>
-            <!-- Placeholder for gallery -->
-            <div style="margin: 15px 0; font-style:italic;">[Embedded Instagram/TikTok gallery could go here]</div>
-            <p>Share your dream configuration:</p>
-            <button onclick="alert('Sharing to Facebook... (Placeholder)')">Share on Facebook</button>
-            <button onclick="alert('Sharing to Twitter... (Placeholder)')">Share on Twitter</button>
-            <button onclick="alert('Sharing to Pinterest... (Placeholder)')">Share on Pinterest</button>
+            <!-- Social Proof and Sharing -->
+            <div class="social-sharing-detailed section-block" style="text-align: center;">
+                <h2 class="section-title">Show Off Your Build!</h2>
+                <p>Follow us on Instagram & TikTok @AftershockCustomPCs! Tag us in your build photos!</p>
+                <!-- Placeholder for gallery -->
+                <div style="margin: 15px 0; font-style:italic;">[Embedded Instagram/TikTok gallery could go here]</div>
+                <p>Share your dream configuration:</p>
+                <button onclick="alert('Sharing to Facebook... (Placeholder)')">Share on Facebook</button>
+                <button onclick="alert('Sharing to Twitter... (Placeholder)')">Share on Twitter</button>
+                <button onclick="alert('Sharing to Pinterest... (Placeholder)')">Share on Pinterest</button>
+            </div>
         </section>
 
     </div>
 
-    <footer>
+    <footer class="site-footer">
         <p>&copy; <span id="currentYear"></span> Aftershock PC Custom Builds. All rights reserved.</p>
         <p><a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
     </footer>
