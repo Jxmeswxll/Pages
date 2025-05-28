@@ -16,6 +16,8 @@
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
             --border-color: #333333;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for interactive elements */
+            --shadow-md: 0 4px 10px rgba(0,0,0,0.3); /* Deeper shadow for cards */
         }
 
         body {
@@ -44,7 +46,7 @@
         .site-header .logo-placeholder {
              font-size: 1.8em;
              font-weight: bold;
-             color: var(--primary-red);
+             color: var(--text-primary); /* Changed from red to primary text */
         }
 
         .site-header nav ul {
@@ -80,10 +82,21 @@
         .product-main-title {
             text-align: center;
             font-size: 2.2em;
-            color: var(--primary-red);
+            color: var(--text-primary); /* Changed from red */
             margin-bottom: 30px;
             font-weight: 700;
+            display: inline-block; /* For border to fit content */
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-red); /* Red accent underline */
         }
+        /* Ensure title is centered after display: inline-block */
+        body .main-container > .product-main-title { /* More specific selector to ensure centering */
+            display: block; /* Overrides inline-block for centering purposes */
+            width: fit-content; /* Allows block to size to content */
+            margin-left: auto;
+            margin-right: auto; /* Center the block */
+        }
+
 
         .content-grid {
             display: grid;
@@ -103,7 +116,7 @@
         }
 
         h2.section-title {
-            color: var(--primary-red);
+            color: var(--text-primary); /* Changed from red */
             font-size: 1.6em;
             margin-top: 0;
             margin-bottom: 20px;
@@ -131,7 +144,7 @@
             font-size: 1.2em;
             border-radius: 8px;
             margin-bottom: 15px;
-            border: 2px dashed var(--border-color);
+            border: 1px solid var(--border-color); /* Changed from dashed */
         }
         .product-visuals .thumbnails {
             display: flex;
@@ -160,6 +173,7 @@
             padding: 25px;
             border-radius: 8px;
             margin-top: 20px; /* Space from mockups */
+            box-shadow: var(--shadow-md);
         }
 
         #imageUpload {
@@ -183,7 +197,7 @@
         #imagePreviewContainer {
             width: 100%;
             height: 250px;
-            border: 2px dashed var(--border-color);
+            border: 1px solid var(--border-color); /* Changed from dashed */
             border-radius: 5px;
             margin-top: 15px;
             display: flex;
@@ -216,27 +230,131 @@
             border-radius: 6px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
         }
-        .right-column .section-block h3 {
+        .right-column .section-block h3,
+        .design-customisation-area .section-block h3, /* For "Artwork Guidelines" */
+        .trust-elements-detailed h3.section-title /* For "Peace of Mind Guaranteed" if it uses h3.section-title */
+         {
             font-size: 1.3em;
-            color: var(--primary-red);
+            color: var(--text-primary);
             margin-top: 0;
             margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-red);
+            display: inline-block;
         }
+        /* Ensure h3 is block if it needs to span width or be centered */
+        .right-column .section-block h3:not([style*="display: inline-block"]),
+        .design-customisation-area .section-block h3:not([style*="display: inline-block"]),
+        .trust-elements-detailed h3.section-title:not([style*="display: inline-block"]) {
+            display: block;
+            width: auto; /* Let it take content width or be styled by parent */
+        }
+
+        /* New Step Title Styling */
+        .step-title {
+            font-size: 1.8em; /* Larger than h2.section-title */
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-red);
+            display: block; /* Ensure it takes full width for the border */
+        }
+        .step-title .step-number {
+            color: var(--primary-red);
+            margin-right: 10px;
+            font-style: italic;
+        }
+
+        /* Styling for "Artwork Guidelines" h3 to be less prominent than step-titles or h2.section-title */
+        .design-customisation-area .upload-guidelines h3 {
+            font-size: 1.1em; /* Smaller */
+            color: var(--text-secondary); /* Less emphasis */
+            border-bottom: 1px solid var(--border-color); /* More subtle underline */
+            margin-bottom: 10px;
+            display: block; /* Ensure it takes width for border */
+            width: 100%;
+        }
+
+        /* Styling for H4 elements */
+        .section-block h4 {
+            font-size: 1.15em;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 20px; /* Space above h4 */
+            margin-bottom: 10px;
+        }
+
+        /* Enhanced "Perfect For" styling */
+        .product-description .perfect-for-list {
+            margin-top: 15px;
+            padding-left: 0;
+            list-style: none;
+        }
+        .product-description .perfect-for-list li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .product-description .perfect-for-list li::before {
+            content: '✓'; /* Unicode checkmark */
+            color: var(--primary-red);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        /* Enhanced styling for config option lists */
+        .config-options-detailed .config-list {
+            list-style: none; /* Remove default disc */
+            padding-left: 0; /* Remove default padding */
+        }
+        .config-options-detailed .config-list li {
+            padding: 12px 0 12px 25px; /* Add padding for custom bullet */
+            position: relative; /* For custom bullet positioning */
+            border-bottom: 1px solid var(--border-color);
+        }
+        .config-options-detailed .config-list li:last-child {
+            border-bottom: none;
+        }
+        .config-options-detailed .config-list li::before {
+            content: '▸'; /* Custom bullet, e.g., right-pointing triangle */
+            color: var(--primary-red);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+        }
+
 
         .tech-specs ul, .config-options ul, .faq-section ul, .upload-guidelines ul {
             list-style: none;
             padding: 0;
         }
-        .tech-specs li, .config-options li, .faq-section li, .upload-guidelines li {
-            padding: 8px 0;
+        .tech-specs li, /* .config-options li is handled by .config-list li now */
+        .faq-section li, .upload-guidelines li,
+        .price-config ul li /* Targeting price add-on list items */ {
+            padding: 10px 0; /* Increased padding */
             border-bottom: 1px solid var(--border-color);
+            line-height: 1.7; /* Improved line height for readability */
         }
         .tech-specs li:last-child, .config-options li:last-child, 
-        .faq-section li:last-child, .upload-guidelines li:last-child {
+        .faq-section li:last-child, .upload-guidelines li:last-child,
+        .price-config ul li:last-child {
             border-bottom: none;
         }
-        .tech-specs strong { color: var(--text-primary); }
+        .tech-specs strong, .config-options strong, .faq-section strong, .upload-guidelines strong { 
+            color: var(--text-primary); 
+            font-weight: 600; /* Slightly bolder */
+        }
+        .faq-section li p {
+            margin-top: 5px;
+            color: var(--text-secondary);
+        }
 
 
         .price-display {
@@ -262,13 +380,15 @@
             font-size: 1.3em;
             font-weight: bold;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
             border: none;
             cursor: pointer;
             margin-top: 20px;
+            box-shadow: var(--shadow-sm);
         }
-        .cta-button-main:hover {
+        .cta-button-main:hover, .cta-button-main:focus {
             background-color: #c40000; /* Darker red */
+            box-shadow: var(--shadow-md);
         }
         .cta-secondary {
             display: block;
@@ -283,19 +403,25 @@
             border: 2px solid var(--primary-red);
             cursor: pointer;
             margin-top: 10px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
-        .cta-secondary:hover {
+        .cta-secondary:hover, .cta-secondary:focus {
             background-color: var(--primary-red);
             color: var(--text-primary);
+            box-shadow: var(--shadow-md);
         }
 
         /* Lower sections: Reviews, FAQ etc. */
         .lower-content-section {
             margin-top: 40px;
-            padding: 25px;
+            padding: 25px; /* Container padding */
             background-color: var(--medium-bg);
             border-radius: 8px;
+        }
+        .lower-content-section > .section-block { /* Apply shadow to direct children with section-block */
+            box-shadow: var(--shadow-md);
+            /* Ensure they have their own background if not already set, or inherit */
         }
         .customer-review {
             border-left: 4px solid var(--primary-red);
@@ -312,15 +438,30 @@
             text-align: right;
             font-size: 0.9em;
         }
-        .trust-elements span {
-            margin-right: 15px;
+
+        /* Refined Trust Elements */
+        .trust-elements-detailed ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+        .trust-elements-detailed li {
+            display: flex; /* Align icon and text */
+            align-items: center;
+            color: var(--text-secondary);
+            margin-bottom: 12px; /* More spacing */
+            font-size: 1em;
+        }
+        .trust-elements-detailed li .trust-icon { /* For emoji or font icon */
+            margin-right: 10px;
+            font-size: 1.3em; /* Make icon slightly larger */
+            color: var(--primary-red); /* Optional: color the icon */
+        }
+        .trust-elements-detailed li .trust-text {
             font-weight: 500;
-            display: inline-block; /* For better spacing */
-            margin-bottom: 5px; /* Spacing for wrapped items */
         }
-        .trust-elements span::before { /* Optional: Add icons via CSS content or font icons */
-            /* content: "🛡️ "; */
-        }
+
+
         .social-sharing button {
             background-color: var(--light-bg);
             color: var(--text-primary);
@@ -329,11 +470,14 @@
             margin-right: 8px;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
-        .social-sharing button:hover {
+        .social-sharing button:hover, .social-sharing button:focus {
             background-color: var(--primary-red);
             border-color: var(--primary-red);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
         }
 
         footer.site-footer {
@@ -408,7 +552,7 @@
                 </section>
 
                 <section class="design-customisation-area">
-                    <h2 class="section-title">1. Create Your Design</h2>
+                    <h2 class="step-title"><span class="step-number">1.</span> Create Your Design</h2>
                     <p>Upload your artwork (JPG/PNG) or choose from our gallery. See it come to life on your PC!</p>
                     
                     <label for="imageUpload" class="upload-label">Upload Your Artwork (JPG/PNG, Max 10MB)</label>
@@ -444,11 +588,16 @@
                 <section class="section-block product-description">
                     <h3>Your Vision, Our Rig</h3>
                     <p>Elevate your setup with a PC that's uniquely yours. We transform high-performance machines into personalized masterpieces using durable, high-resolution UV printing.</p>
-                    <p><strong>Perfect For:</strong> Gaming, Streaming, Creative Work, Professional Branding.</p>
+                    <ul class="perfect-for-list">
+                        <li>Gaming</li>
+                        <li>Streaming</li>
+                        <li>Creative Work</li>
+                        <li>Professional Branding</li>
+                    </ul>
                 </section>
 
                 <section class="section-block tech-specs">
-                    <h3>Step 2: Select Base Specifications</h3>
+                    <h2 class="step-title"><span class="step-number">2.</span> Select Base Specifications</h2>
                     <p>Built with quality components, fully customizable in the next step:</p>
                     <ul>
                         <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5</li>
@@ -462,16 +611,16 @@
                 </section>
 
                 <section class="section-block config-options-detailed">
-                    <h3>Step 3: Choose Configuration Style</h3>
+                    <h2 class="step-title"><span class="step-number">3.</span> Choose Configuration Style</h2>
                     <p>Select a pre-configured tier or a use-case package as a starting point. Full customization follows.</p>
                     <h4>Pre-built Tiers:</h4>
-                    <ul class="config-list" style="padding-left: 20px; list-style: disc;">
+                    <ul class="config-list">
                         <li><strong>Starter Custom:</strong> Balanced performance for everyday gaming and productivity, ready for your unique design.</li>
                         <li><strong>Pro Gamer Custom:</strong> High-end components for serious 1440p/4K gaming and streaming, showcasing your artwork.</li>
                         <li><strong>Ultra Creative Custom:</strong> Top-tier power for demanding creative workloads (video editing, 3D rendering) and an unparalleled custom look.</li>
                     </ul>
                     <h4>Suggested Packages:</h4>
-                    <ul class="config-list" style="padding-left: 20px; list-style: disc;">
+                    <ul class="config-list">
                         <li><strong>The Streamer's Dream:</strong> Optimized for smooth, high-quality streaming and simultaneous gaming.</li>
                         <li><strong>AAA Gaming Beast:</strong> Built to crush the latest titles at maximum settings.</li>
                         <li><strong>CAD/3D Powerhouse:</strong> Robust performance and stability for professional design software.</li>
@@ -480,7 +629,7 @@
                 </section>
 
                 <section class="section-block price-config">
-                    <h3>Step 4: Review Price & Add-ons</h3>
+                    <h2 class="step-title"><span class="step-number">4.</span> Review Price & Add-ons</h2>
                     <div class="price-display">
                         From $1,499 AUD
                         <span class="base-price">(Includes custom print on one panel & base specs)</span>
@@ -541,13 +690,13 @@
             <!-- Trust Elements -->
             <div class="trust-elements-detailed section-block">
                 <h3 class="section-title">Peace of Mind Guaranteed</h3>
-                <p>
-                    <span>🛡️ 2-Year Warranty on Parts & Labor</span> |
-                    <span>🔄 Easy Return Policy (for non-customized components)</span> |
-                    <span>🔒 Secure Checkout</span> |
-                    <span>🚚 Fast & Insured Shipping</span> |
-                    <span>💬 Dedicated Customer Support</span>
-                </p>
+                <ul>
+                    <li><span class="trust-icon">🛡️</span><span class="trust-text">2-Year Warranty on Parts & Labor</span></li>
+                    <li><span class="trust-icon">🔄</span><span class="trust-text">Easy Return Policy (for non-customized components)</span></li>
+                    <li><span class="trust-icon">🔒</span><span class="trust-text">Secure Checkout</span></li>
+                    <li><span class="trust-icon">🚚</span><span class="trust-text">Fast & Insured Shipping</span></li>
+                    <li><span class="trust-icon">💬</span><span class="trust-text">Dedicated Customer Support</span></li>
+                </ul>
             </div>
 
             <!-- Social Proof and Sharing -->
