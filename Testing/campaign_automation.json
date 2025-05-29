@@ -1,0 +1,846 @@
+{
+"name": "Full EDM Campaign Automation (ClickUp, AI, Google Drive, Klaviyo, Discord)",
+"nodes": [
+{
+"parameters": {
+"event": "taskStatusUpdated",
+"filters": {
+"list_ids": [
+"YOUR_CLICKUP_IDEATION_LIST_ID"
+],
+"statuses": [
+"Ideation In Progress"
+]
+},
+"options": {}
+},
+"name": "1. ClickUp Trigger: Ideation Task",
+"type": "n8n-nodes-base.clickupTrigger",
+"typeVersion": 1,
+"position": [
+250,
+300
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "d7f5e3c3-1b9a-4f8e-8c7a-9a2b0f1c3d4e"
+},
+{
+"parameters": {
+"model": "gpt-4-turbo",
+"prompt": "System: You are an AI assistant specialized in EDM marketing campaigns. Previous successful campaigns often involved [mention key themes/elements from your successful campaigns, e.g., 'interactive content', 'exclusive early access for subscribers', 'collaborations with influencers']. Unsuccessful campaigns often [mention pitfalls, e.g., 'were too generic', 'lacked a clear call to action'].\n\nUser: Based on the following ClickUp task: {{ ($json.body || {}).name || \"\" }} - {{ ($json.body || {}).description || ($json.body || {}).text_content || \"\" }},\ngenerate a comprehensive list of 10-15 diverse EDM campaign ideas. Output each idea on a new line.",
+"options": {}
+},
+"name": "2. AI Agent 1: Generate Ideas",
+"type": "n8n-nodes-base.openAiChat",
+"typeVersion": 1,
+"position": [
+500,
+300
+],
+"credentials": {
+"openAiApi": {
+"id": "YOUR_OPENAI_CREDENTIALS_ID",
+"name": "OpenAI credentials"
+}
+},
+"id": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+},
+{
+"parameters": {
+"fieldToSplit": "={{ $json.message?.content || \"\" }}",
+"options": {
+"splitCharacter": "\n"
+}
+},
+"name": "3. Split Ideas",
+"type": "n8n-nodes-base.splitInBatches",
+"typeVersion": 2,
+"position": [
+750,
+300
+],
+"id": "b2c3d4e5-f6a7-8901-2345-678901bcdef0"
+},
+{
+"parameters": {
+"model": "gpt-4-turbo",
+"prompt": "System: You are an AI marketing strategist.\n\nUser: Review the following list of EDM campaign ideas for the task: '{{ ($('1. ClickUp Trigger: Ideation Task').item?.json.body || {}).name || \"\" }} - {{ ($('1. ClickUp Trigger: Ideation Task').item?.json.body || {}).description || ($('1. ClickUp Trigger: Ideation Task').item?.json.body || {}).text_content || \"\" }}'.\n\nGenerated Ideas:\n{{ ($items() || []).map(item => item.json?.data || \"\").join('\\n') }}\n\nRank these ideas based on potential for high engagement, alignment with EDM best practices, feasibility, and originality. Output only the top 3 ranked ideas, each on a new line, in order of preference (best first). Example output:\nIdea X\nIdea Y\nIdea Z",
+"options": {}
+},
+"name": "4. AI Agent 2: Rank Ideas",
+"type": "n8n-nodes-base.openAiChat",
+"typeVersion": 1,
+"position": [
+1000,
+300
+],
+"credentials": {
+"openAiApi": {
+"id": "YOUR_OPENAI_CREDENTIALS_ID",
+"name": "OpenAI credentials"
+}
+},
+"id": "c3d4e5f6-a7b8-9012-3456-789012cdef01"
+},
+{
+"parameters": {
+"values": [
+{
+"name": "top3IdeasText",
+"value": "={{ $json.message?.content || \"\" }}"
+},
+{
+"name": "originalTaskName",
+"value": "={{ ($('1. ClickUp Trigger: Ideation Task').item?.json.body || {}).name || \"\" }}"
+},
+{
+"name": "originalTaskId",
+"value": "={{ ($('1. ClickUp Trigger: Ideation Task').item?.json.body || {}).id || \"\" }}"
+}
+],
+"options": {}
+},
+"name": "5. Set Top 3 Ideas",
+"type": "n8n-nodes-base.set",
+"typeVersion": 1,
+"position": [
+1250,
+300
+],
+"id": "d4e5f6a7-b8c9-0123-4567-890123def012"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "create",
+"listId": "YOUR_CLICKUP_DRAFT_LIST_ID",
+"name": "Draft EDM Campaign: {{ $json.originalTaskName || \"\" }}",
+"description": "Top 3 EDM Campaign Ideas (from AI):\n{{ $json.top3IdeasText || \"\" }}\n\nOriginal Ideation Task ID: {{ $json.originalTaskId || \"\" }}",
+"customFieldsUi": {
+"customFieldsValues": [
+{
+"id": "YOUR_CLICKUP_ORIGINAL_TASK_ID_CUSTOM_FIELD_ID",
+"value": "={{ $json.originalTaskId || \"\" }}"
+}
+]
+},
+"options": {}
+},
+"name": "6. ClickUp: Create Draft Task",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+1500,
+300
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "e5f6a7b8-c9d0-1234-5678-901234ef0123"
+},
+{
+"parameters": {
+"event": "taskStatusUpdated",
+"filters": {
+"list_ids": [
+"YOUR_CLICKUP_DRAFT_LIST_ID"
+],
+"statuses": [
+"Draft Complete"
+]
+},
+"options": {}
+},
+"name": "7. ClickUp Trigger: Draft Task Complete",
+"type": "n8n-nodes-base.clickupTrigger",
+"typeVersion": 1,
+"position": [
+250,
+600
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "f6a7b8c9-d0e1-2345-6789-012345f01234"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "get",
+"taskId": "={{ ($json.body || {}).id || \"\" }}",
+"options": {}
+},
+"name": "8. ClickUp: Get Draft Task Details",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+500,
+600
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "07b8c9d0-e1f2-3456-7890-123456012345"
+},
+{
+"parameters": {
+"model": "gpt-4-turbo",
+"prompt": "System: You are an AI assistant skilled in creating clear graphic design briefs.\n\nUser: Based on the following approved EDM campaign idea:\nCampaign Task Name: {{ $json.name || \"\" }}\nCampaign Details/Chosen Idea: {{ $json.description || $json.text_content || \"\" }}\nTarget Audience (from custom field if available, otherwise state 'To be defined by marketing'): {{ ($json.custom_fields || []).find(cf => cf.name === 'Target Audience')?.value || 'To be defined by marketing' }}\nKey Message (from custom field if available): {{ ($json.custom_fields || []).find(cf => cf.name === 'Key Message')?.value || 'To be defined by marketing' }}\n\nCreate a comprehensive graphic design brief including: Project Title, Background, Objective, Target Audience, Key Message, Design Elements Required (suggest email banner 600x300px, social post 1080x1080px, GIF if applicable), Specifications (JPG, PNG, GIF), Must-haves (e.g., Logo, Brand Colors - provide link to guidelines if possible: YOUR_BRAND_GUIDELINES_LINK), Things to Avoid. Output well-formatted text.",
+"options": {}
+},
+"name": "9. AI Agent 3: Create Design Brief",
+"type": "n8n-nodes-base.openAiChat",
+"typeVersion": 1,
+"position": [
+750,
+600
+],
+"credentials": {
+"openAiApi": {
+"id": "YOUR_OPENAI_CREDENTIALS_ID",
+"name": "OpenAI credentials"
+}
+},
+"id": "18c9d0e1-f2a3-4567-8901-234567123456"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "create",
+"listId": "YOUR_GRAPHICS_TEAM_LIST_ID",
+"name": "Graphic Design for EDM: {{ ($('8. ClickUp: Get Draft Task Details').item?.json || {}).name || \"\" }}",
+"description": "={{ ($('9. AI Agent 3: Create Design Brief').item?.json.message || {}).content || \"\" }}\n\nLinked Draft Campaign Task ID: {{ ($('8. ClickUp: Get Draft Task Details').item?.json || {}).id || \"\" }}",
+"customFieldsUi": {
+"customFieldsValues": [
+{
+"id": "YOUR_CLICKUP_LINKED_DRAFT_TASK_ID_CUSTOM_FIELD",
+"value": "={{ ($('8. ClickUp: Get Draft Task Details').item?.json || {}).id || \"\" }}"
+}
+]
+},
+"options": {}
+},
+"name": "10. ClickUp: Create Graphics Task",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+1000,
+600
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "29d0e1f2-a3b4-5678-9012-345678234567"
+},
+{
+"parameters": {
+"operation": "create",
+"type": "folder",
+"name": "EDM Graphics - {{ ($('8. ClickUp: Get Draft Task Details').item?.json || {}).name || \"\" }}",
+"parentFolderId": "YOUR_GOOGLE_DRIVE_PARENT_FOLDER_ID",
+"options": {}
+},
+"name": "11. Google Drive: Create Folder",
+"type": "n8n-nodes-base.googleDrive",
+"typeVersion": 1,
+"position": [
+1250,
+525
+],
+"credentials": {
+"googleDriveOAuth2Api": {
+"id": "YOUR_GOOGLE_DRIVE_CREDENTIALS_ID",
+"name": "Google Drive credentials"
+}
+},
+"id": "3a0e1f2a-3b4c-6789-0123-456789345678"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "update",
+"taskId": "={{ ($('10. ClickUp: Create Graphics Task').item?.json || {}).id || \"\" }}",
+"customFieldsUi": {
+"customFieldsValues": [
+{
+"id": "YOUR_CLICKUP_GDRIVE_FOLDER_LINK_CUSTOM_FIELD_ID",
+"value": "={{ ($('11. Google Drive: Create Folder').item?.json || {}).webViewLink || \"\" }}"
+}
+]
+},
+"options": {}
+},
+"name": "12. ClickUp: Update Task w/ Drive Link",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+1250,
+675
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "4b1f2a3b-4c5d-7890-1234-567890456789"
+},
+{
+"parameters": {
+"event": "taskStatusUpdated",
+"filters": {
+"list_ids": [
+"YOUR_GRAPHICS_TEAM_LIST_ID"
+],
+"statuses": [
+"Graphics Approved"
+]
+},
+"options": {}
+},
+"name": "13. ClickUp Trigger: Graphics Task Complete",
+"type": "n8n-nodes-base.clickupTrigger",
+"typeVersion": 1,
+"position": [
+250,
+900
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "5c2a3b4c-5d6e-8901-2345-678901567890"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "get",
+"taskId": "={{ ($json.body || {}).id || \"\" }}",
+"options": {}
+},
+"name": "14. ClickUp: Get Graphics Task Details",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+500,
+900
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "6d3b4c5d-6e7f-9012-3456-789012678901"
+},
+{
+"parameters": {
+"operation": "list",
+"type": "file",
+"folderId": "={{ (($json.custom_fields || []).find(cf => cf.name === 'Google Drive Folder Link' || cf.id === 'YOUR_CLICKUP_GDRIVE_FOLDER_LINK_CUSTOM_FIELD_ID')?.value || \"\").split('/').pop() || \"\" }}",
+"options": {
+"fields": "files(id,name,webViewLink,webContentLink)"
+}
+},
+"name": "15. Google Drive: List Files",
+"type": "n8n-nodes-base.googleDrive",
+"typeVersion": 1,
+"position": [
+750,
+900
+],
+"credentials": {
+"googleDriveOAuth2Api": {
+"id": "YOUR_GOOGLE_DRIVE_CREDENTIALS_ID",
+"name": "Google Drive credentials"
+}
+},
+"id": "7e4c5d6e-7f8a-0123-4567-890123789012"
+},
+{
+"parameters": {
+"resource": "task",
+"operation": "get",
+"taskId": "={{ (($('14. ClickUp: Get Graphics Task Details').item?.json.custom_fields || [])).find(cf => cf.name === 'Linked Draft Campaign Task ID' || cf.id === 'YOUR_CLICKUP_LINKED_DRAFT_TASK_ID_CUSTOM_FIELD')?.value || \"\" }}",
+"options": {}
+},
+"name": "16a. ClickUp: Get Original Draft Task for Copy",
+"type": "n8n-nodes-base.clickup",
+"typeVersion": 1,
+"position": [
+1000,
+825
+],
+"credentials": {
+"clickupApi": {
+"id": "YOUR_CLICKUP_CREDENTIALS_ID",
+"name": "ClickUp credentials"
+}
+},
+"id": "8f5d6e7f-8a9b-1234-5678-901234890123"
+},
+{
+"parameters": {
+"values": [
+{
+"name": "campaignName",
+"value": "={{ ($('16a. ClickUp: Get Original Draft Task for Copy').item?.json || {}).name || \"\" }}"
+},
+{
+"name": "emailSubject",
+"value": "Subject: {{ ($('16a. ClickUp: Get Original Draft Task for Copy').item?.json || {}).name || \"\" }}"
+},
+{
+"name": "emailCopy",
+"value": "={{ ($('16a. ClickUp: Get Original Draft Task for Copy').item?.json || {}).description || ($('16a. ClickUp: Get Original Draft Task for Copy').item?.json || {}).text_content || \"\" }}"
+},
+{
+"name": "graphicsLinks",
+"value": "={{ ($('15. Google Drive: List Files').items || []).map(item => item.json?.webViewLink || \"\") }}"
+},
+{
+"name": "graphicsWebContentLinks",
+"value": "={{ ($('15. Google Drive: List Files').items || []).map(item => item.json?.webContentLink || item.json?.webViewLink || \"\") }}"
+}
+],
+"options": {}
+},
+"name": "16b. Set: Prep for Klaviyo",
+"type": "n8n-nodes-base.set",
+"typeVersion": 1,
+"position": [
+1000,
+975
+],
+"id": "906e7f8a-9b0c-2345-6789-012345901234"
+},
+{
+"parameters": {
+"resource": "campaign",
+"operation": "create",
+"name": "EDM - {{ $json.campaignName || \"\" }}",
+"listOrSegmentId": "YOUR_KLAVIYO_LIST_OR_SEGMENT_ID",
+"fromEmail": "your_sender_email@example.com",
+"fromName": "Your Brand Name",
+"subject": "{{ $json.emailSubject || \"\" }}",
+"contentUi": {
+"contentType": "html",
+"htmlBody": "<h1>{{ $json.campaignName || \"\" }}</h1><p>{{ ($json.emailCopy || '').replace(/\\n/g, '<br>') }}</p>{{ ($json.graphicsWebContentLinks || []).map(link => `<p><img src=\"${link || \"\"}\" alt=\"Campaign Graphic\" style=\"max-width:600px;\" /></p>`).join('') }}"
+},
+"trackingOptions": {
+"addUtm": true
+},
+"sendStrategyUi": {
+"method": "sendNow",
+"sendTime": "",
+"isDraft": true
+},
+"options": {}
+},
+"name": "17. Klaviyo: Create Campaign (Draft)",
+"type": "n8n-nodes-base.klaviyo",
+"typeVersion": 1,
+"position": [
+1250,
+900
+],
+"credentials": {
+"klaviyoApi": {
+"id": "YOUR_KLAVIYO_CREDENTIALS_ID",
+"name": "Klaviyo credentials"
+}
+},
+"id": "a17f8a9b-0c1d-3456-7890-123456a12345"
+},
+{
+"parameters": {
+"model": "gpt-4-turbo",
+"prompt": "System: You are an AI email marketing optimization expert.\n\nUser: Review the following draft Klaviyo email campaign.\nSubject: {{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes || {}).name || \"\" }}\nBody (HTML might be long, focus on text content and structure if possible):\n{{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes.email_config || {}).subject || \"\" }}\n{{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes.email_config || {}).html_content || \"\" }}\n\nOptimize it based on previous successful email campaigns (e.g., high open rates from curiosity-driven subjects, clear CTAs above the fold). Consider: clarity, conciseness, CTA effectiveness, subject line appeal, mobile responsiveness (conceptual), tone. Provide specific suggestions for improvement OR an optimized version. If providing an optimized version, clearly label with 'Optimized Subject:' and 'Optimized Body:' (provide full HTML if optimizing body). If no significant changes, output 'No significant changes recommended.'",
+"options": {}
+},
+"name": "18. AI Agent 4: Review & Optimize Email",
+"type": "n8n-nodes-base.openAiChat",
+"typeVersion": 1,
+"position": [
+1500,
+900
+],
+"credentials": {
+"openAiApi": {
+"id": "YOUR_OPENAI_CREDENTIALS_ID",
+"name": "OpenAI credentials"
+}
+},
+"id": "b28a9b0c-1d2e-4567-8901-234567b23456"
+},
+{
+"parameters": {
+"values": [
+{
+"name": "aiReviewOutput",
+"value": "={{ $json.message?.content || \"\" }}"
+},
+{
+"name": "optimizedSubject",
+"value": "={{ ($json.message?.content || \"\").includes('Optimized Subject:') ? (((($json.message?.content || \"\").split('Optimized Subject:')[1] || \"\").split('Optimized Body:')[0] || \"\").split('\\n')[0] || \"\").trim() : \"\" }}"
+},
+{
+"name": "optimizedBody",
+"value": "={{ ($json.message?.content || \"\").includes('Optimized Body:') ? ((($json.message?.content || \"\").split('Optimized Body:')[1]) || \"\").trim() : \"\" }}"
+}
+],
+"options": {}
+},
+"name": "19. Set: Optimized Content",
+"type": "n8n-nodes-base.set",
+"typeVersion": 1,
+"position": [
+1750,
+900
+],
+"id": "c39b0c1d-2e3f-5678-9012-345678c34567"
+},
+{
+"parameters": {
+"conditions": [
+{
+"condition": "string",
+"value1": "={{ $json.optimizedSubject || $json.optimizedBody || \"\" }}",
+"operation": "isNotEmpty"
+}
+]
+},
+"name": "20. IF: Changes Made by AI?",
+"type": "n8n-nodes-base.if",
+"typeVersion": 1,
+"position": [
+2000,
+900
+],
+"id": "d40c1d2e-3f4a-6789-0123-456789d45678"
+},
+{
+"parameters": {
+"resource": "campaign",
+"operation": "update",
+"campaignId": "={{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json || {}).id || \"\" }}",
+"name": "EDM - {{ ($('16b. Set: Prep for Klaviyo').item?.json || {}).campaignName || \"\" }} (AI Optimized)",
+"subject": "={{ $json.optimizedSubject || ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes.email_config || {}).subject || \"\" }}",
+"contentUi": {
+"contentType": "html",
+"htmlBody": "={{ $json.optimizedBody || ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes.email_config || {}).html_content || \"\" }}"
+},
+"options": {}
+},
+"name": "21. Klaviyo: Update Campaign",
+"type": "n8n-nodes-base.klaviyo",
+"typeVersion": 1,
+"position": [
+2250,
+800
+],
+"credentials": {
+"klaviyoApi": {
+"id": "YOUR_KLAVIYO_CREDENTIALS_ID",
+"name": "Klaviyo credentials"
+}
+},
+"id": "e51d2e3f-4a5b-7890-1234-567890e56789"
+},
+{
+"parameters": {
+"webhookUrl": "YOUR_DISCORD_WEBHOOK_URL",
+"text": "🚀 New EDM Campaign Draft Ready for Final Check!\nCampaign Name: {{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json.attributes || {}).name || \"\" }} {{ $json.optimizedSubject ? '(AI Optimized)' : '' }}\nKlaviyo Link: https://www.klaviyo.com/campaign/{{ ($('17. Klaviyo: Create Campaign (Draft)').item?.json || {}).id || \"\" }}/content\nPlease review. It is currently in DRAFT status.",
+"options": {}
+},
+"name": "22. Discord: Send Notification",
+"type": "n8n-nodes-base.discord",
+"typeVersion": 1,
+"position": [
+2250,
+1000
+],
+"id": "f62e3f4a-5b6c-8901-2345-678901f67890"
+}
+],
+"connections": {
+"1. ClickUp Trigger: Ideation Task": {
+"main": [
+[
+{
+"node": "2. AI Agent 1: Generate Ideas",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"2. AI Agent 1: Generate Ideas": {
+"main": [
+[
+{
+"node": "3. Split Ideas",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"3. Split Ideas": {
+"main": [
+[
+{
+"node": "4. AI Agent 2: Rank Ideas",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"4. AI Agent 2: Rank Ideas": {
+"main": [
+[
+{
+"node": "5. Set Top 3 Ideas",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"5. Set Top 3 Ideas": {
+"main": [
+[
+{
+"node": "6. ClickUp: Create Draft Task",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"7. ClickUp Trigger: Draft Task Complete": {
+"main": [
+[
+{
+"node": "8. ClickUp: Get Draft Task Details",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"8. ClickUp: Get Draft Task Details": {
+"main": [
+[
+{
+"node": "9. AI Agent 3: Create Design Brief",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"9. AI Agent 3: Create Design Brief": {
+"main": [
+[
+{
+"node": "10. ClickUp: Create Graphics Task",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"10. ClickUp: Create Graphics Task": {
+"main": [
+[
+{
+"node": "11. Google Drive: Create Folder",
+"type": "main",
+"index": 0
+},
+{
+"node": "12. ClickUp: Update Task w/ Drive Link",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"11. Google Drive: Create Folder": {
+"main": [
+[
+{
+"node": "12. ClickUp: Update Task w/ Drive Link",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"13. ClickUp Trigger: Graphics Task Complete": {
+"main": [
+[
+{
+"node": "14. ClickUp: Get Graphics Task Details",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"14. ClickUp: Get Graphics Task Details": {
+"main": [
+[
+{
+"node": "15. Google Drive: List Files",
+"type": "main",
+"index": 0
+},
+{
+"node": "16a. ClickUp: Get Original Draft Task for Copy",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"15. Google Drive: List Files": {
+"main": [
+[
+{
+"node": "16b. Set: Prep for Klaviyo",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"16a. ClickUp: Get Original Draft Task for Copy": {
+"main": [
+[
+{
+"node": "16b. Set: Prep for Klaviyo",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"16b. Set: Prep for Klaviyo": {
+"main": [
+[
+{
+"node": "17. Klaviyo: Create Campaign (Draft)",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"17. Klaviyo: Create Campaign (Draft)": {
+"main": [
+[
+{
+"node": "18. AI Agent 4: Review & Optimize Email",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"18. AI Agent 4: Review & Optimize Email": {
+"main": [
+[
+{
+"node": "19. Set: Optimized Content",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"19. Set: Optimized Content": {
+"main": [
+[
+{
+"node": "20. IF: Changes Made by AI?",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"20. IF: Changes Made by AI?": {
+"main": [
+[
+{
+"node": "21. Klaviyo: Update Campaign",
+"type": "main",
+"index": 0
+}
+],
+[
+{
+"node": "22. Discord: Send Notification",
+"type": "main",
+"index": 1
+}
+]
+]
+},
+"21. Klaviyo: Update Campaign": {
+"main": [
+[
+{
+"node": "22. Discord: Send Notification",
+"type": "main",
+"index": 0
+}
+]
+]
+}
+},
+"active": false,
+"settings": {
+"executionOrder": "V1"
+},
+"tags": [
+{
+"id": "1",
+"name": "EDM"
+},
+{
+"id": "2",
+"name": "AI"
+},
+{
+"id": "3",
+"name": "Marketing Automation"
+}
+],
+"versionId": "d1f8e9c2-a3b4-5c6d-7e8f-9a0b1c2d3e4f",
+"meta": {
+"templateCredsSetupCompleted": false
+}
+}
