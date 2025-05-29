@@ -42,23 +42,22 @@ body {
     font-size: 16px;
     display: flex;
     justify-content: center;
-    align-items: center; /* Center the container vertically */
+    align-items: stretch; /* Allow checkout-container to define its height */
     min-height: 100vh;
-    padding: 20px; /* Padding around the main container */
-    overflow-x: hidden; /* Prevent horizontal scroll from side panels */
+    padding: 0; /* Body padding removed, checkout-container handles its own */
+    overflow: hidden; /* Prevent any body scrollbars */
 }
 
 .checkout-container {
-    width: 100%; /* Take full width to allow side panels to peek */
-    max-width: 1200px; /* Max width for the overall component */
-    background-color: transparent; /* Main container is now more of a viewport controller */
-    border-radius: var(--border-radius-lg);
-    /* box-shadow: var(--shadow-lg); */ /* Shadow might be on active panel instead */
-    overflow: visible; /* Allow peeking panels if they are styled to do so */
+    width: 100%; 
+    max-width: none; /* No max-width, it's full screen */
+    background-color: var(--surface-dark); /* Background for the whole page area */
+    border-radius: 0; /* No border radius for full screen */
+    box-shadow: none; /* No shadow for full screen */
+    overflow: hidden; /* Crucial for full-screen panel transitions */
     display: flex;
     flex-direction: column;
-    height: 80vh; /* Example height, adjust as needed */
-    min-height: 600px;
+    height: 100vh; /* Full viewport height */
 }
 
 .checkout-header {
@@ -132,62 +131,55 @@ body {
 .checkout-main {
     flex-grow: 1;
     position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden; /* This will clip the non-active parts of panel-container */
+    display: flex; /* Keep flex for panel-container alignment */
+    /* align-items: center; */ /* Not needed if panels are full height */
+    overflow: hidden; /* This is critical to clip non-active panels */
 }
 
 .panel-container {
     display: flex;
-    /* Width is 100% * number of panels. JS will set this if dynamic, or hardcode if fixed. */
-    /* For 3 panels, if active is 70%, sides 15% each, total viewport is 100%.
-       The container itself needs to be wide enough to hold all original-sized panels.
-       Let's assume each panel *slot* is 100% of checkout-main width.
-    */
-    width: 300%; /* For 3 panels, each occupying a 100% slot */
-    height: 100%;
-    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    width: 300%; /* For 3 panels, each panel is 100% of checkout-main width */
+    height: 100%; /* panel-container takes full height of checkout-main */
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Existing smooth slide */
     will-change: transform;
 }
 
 .panel {
-    width: calc(100% / 3); /* Each panel occupies one-third of the panel-container's total width */
-    height: 100%;
-    padding: 20px; /* Reduced padding for more content space */
+    width: calc(100% / 3); /* Each panel is 1/3 of the panel-container's width */
+    height: 100%; /* Each panel takes full height of its container */
+    padding: 30px 40px; /* Restore original padding or adjust as needed for full screen */
     box-sizing: border-box;
-    background-color: var(--surface-dark);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    background-color: var(--surface-dark); /* Panel background */
+    /* border-radius: var(--border-radius-lg); */ /* No radius if it's full screen edge-to-edge */
+    /* box-shadow: var(--shadow-md); */ /* Shadow might not be needed if full screen */
     
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Allow content scrolling within the full-screen panel */
 
-    /* Styles for inactive panels */
-    opacity: 0.5;
-    transform: scale(0.85);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    margin: 0 10px; /* Spacing between panels when scaled down */
-    overflow-y: auto; /* Allow content scrolling within panel */
+    /* Non-active panels are simply translated out of view.
+       Opacity/scale transitions can be simplified or removed if they are fully hidden.
+       For a clean slide, ensure they are fully opaque and scaled to 1.
+    */
+    opacity: 1; /* Full opacity */
+    transform: scale(1); /* Full scale */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Keep for smooth appearance if ever visible during transition */
+    /* margin: 0 10px; */ /* Remove margin, panels are edge-to-edge in the container */
 }
 
 .panel.active {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 10; /* Ensure active panel is on top */
-    box-shadow: var(--shadow-lg); /* More prominent shadow for active */
-    margin: 0 2.5%; /* Adjust margin for active panel to control peeking of others */
-                     /* This effectively makes the active panel take ~95% of its slot,
-                        allowing a bit of the next/prev to show if their scale/margin allows.
-                        The actual "peeking" is controlled by the panel-container's translateX
-                        and the checkout-main's overflow:hidden.
-                     */
+    /* 'active' class primarily for JS logic and potentially z-index if complex overlaps occurred,
+       but visually it's just the one in view. No specific transform/opacity overrides needed here
+       if base .panel style is already set for full visibility. */
+    z-index: 10; 
+    /* margin: 0 2.5%; */ /* Remove margin used for peeking */
 }
 
-/* Specific styling for panels to the immediate left/right of active (optional, for finer control) */
+/* prev-adjacent and next-adjacent classes are not strictly needed for styling if panels are fully off-screen */
 .panel.prev-adjacent, .panel.next-adjacent {
-    opacity: 0.7;
-    transform: scale(0.9);
-    z-index: 5;
+    /* opacity: 0.7; */ /* Not needed if off-screen */
+    /* transform: scale(0.9); */ /* Not needed if off-screen */
+    /* z-index: 5; */
 }
 
 .panel-header {
@@ -547,17 +539,9 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    body {
-        padding-top: 0;
-        padding-bottom: 0;
-        align-items: stretch; /* Full height on mobile */
-    }
-    .checkout-container {
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
-        max-width: none;
-    }
+    /* body already set to stretch and no padding */
+    /* .checkout-container already full width/height and no radius/max-width */
+    
     .checkout-header {
         flex-direction: column;
         gap: 15px;
