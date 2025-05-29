@@ -42,22 +42,23 @@ body {
     font-size: 16px;
     display: flex;
     justify-content: center;
-    align-items: stretch; /* Allow checkout-container to define its height */
+    align-items: center; /* Center the checkout-container */
     min-height: 100vh;
-    padding: 0; /* Body padding removed, checkout-container handles its own */
-    overflow: hidden; /* Prevent any body scrollbars */
+    padding: 20px; /* Add some padding around the main container */
+    overflow-x: hidden; /* Prevent horizontal scroll if content is too wide */
 }
 
 .checkout-container {
-    width: 100%; 
-    max-width: none; /* No max-width, it's full screen */
-    background-color: var(--surface-dark); /* Background for the whole page area */
-    border-radius: 0; /* No border radius for full screen */
-    box-shadow: none; /* No shadow for full screen */
-    overflow: hidden; /* Crucial for full-screen panel transitions */
+    width: 100%;
+    max-width: 1400px; /* Allow more width for horizontal accordion */
+    background-color: var(--background-dark); /* Use body background, panels will have surface color */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 85vh; /* Adjust height as needed */
+    min-height: 650px; /* Minimum height */
 }
 
 .checkout-header {
@@ -131,59 +132,100 @@ body {
 .checkout-main {
     flex-grow: 1;
     position: relative;
-    display: flex; /* Keep flex for panel-container alignment */
-    /* align-items: center; */ /* Not needed if panels are full height */
-    overflow: hidden; /* This is critical to clip non-active panels */
+    display: flex;
+    padding: 20px; /* Add padding inside main area */
+    background-color: var(--surface-dark); /* Background for the main content area */
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* Match container rounding if header is separate */
+    overflow: hidden; 
 }
 
 .panel-container {
     display: flex;
-    width: 300%; /* For 3 panels, each panel is 100% of checkout-main width */
-    height: 100%; /* panel-container takes full height of checkout-main */
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Existing smooth slide */
-    will-change: transform;
+    width: 100%; 
+    height: 100%; 
+    /* transition: none; */ /* Will be handled by individual panel transitions */
 }
 
 .panel {
-    width: calc(100% / 3); /* Each panel is 1/3 of the panel-container's width */
-    height: 100%; /* Each panel takes full height of its container */
-    padding: 30px 40px; /* Restore original padding or adjust as needed for full screen */
+    flex-shrink: 0; 
+    flex-grow: 0;   
+    flex-basis: 100px; /* Default minimized width for inactive panels */
+    height: 100%; 
+    padding: 20px; 
     box-sizing: border-box;
-    background-color: var(--surface-dark); /* Panel background */
-    /* border-radius: var(--border-radius-lg); */ /* No radius if it's full screen edge-to-edge */
-    /* box-shadow: var(--shadow-md); */ /* Shadow might not be needed if full screen */
+    background-color: var(--surface-medium); 
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin: 0 5px; 
     
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Allow content scrolling within the full-screen panel */
-
-    /* Non-active panels are simply translated out of view.
-       Opacity/scale transitions can be simplified or removed if they are fully hidden.
-       For a clean slide, ensure they are fully opaque and scaled to 1.
-    */
-    opacity: 1; /* Full opacity */
-    transform: scale(1); /* Full scale */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Keep for smooth appearance if ever visible during transition */
-    /* margin: 0 10px; */ /* Remove margin, panels are edge-to-edge in the container */
+    overflow: hidden; 
+    cursor: pointer; 
+    transition: flex-basis 0.4s ease-in-out, background-color 0.4s ease;
+    position: relative; /* For absolute positioning of content if needed later */
 }
 
 .panel.active {
-    /* 'active' class primarily for JS logic and potentially z-index if complex overlaps occurred,
-       but visually it's just the one in view. No specific transform/opacity overrides needed here
-       if base .panel style is already set for full visibility. */
-    z-index: 10; 
-    /* margin: 0 2.5%; */ /* Remove margin used for peeking */
+    flex-grow: 1; 
+    flex-basis: 75%; /* Active panel takes up most space */
+    background-color: var(--surface-dark); 
+    box-shadow: var(--shadow-lg);
+    cursor: default; 
 }
 
-/* prev-adjacent and next-adjacent classes are not strictly needed for styling if panels are fully off-screen */
-.panel.prev-adjacent, .panel.next-adjacent {
-    /* opacity: 0.7; */ /* Not needed if off-screen */
-    /* transform: scale(0.9); */ /* Not needed if off-screen */
-    /* z-index: 5; */
+.panel .panel-header { /* Ensure panel-header is a direct child for this rule */
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0; 
+    transition: margin-bottom 0.4s ease;
+    /* Make header clickable to expand */
+    width: 100%; /* Ensure header takes full width of panel */
 }
+
+.panel.active .panel-header {
+    margin-bottom: 20px; 
+}
+
+.panel .panel-content-wrapper { /* New wrapper for content and navigation */
+    flex-grow: 1;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out 0.1s;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel.active .panel-content-wrapper {
+    max-height: 100vh; /* Allow it to take full available height */
+    opacity: 1;
+}
+
+.panel .panel-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll content within the wrapper */
+    /* display: flex; and flex-direction: column; moved to .panel-content-wrapper if it applies to both content and nav */
+}
+
+/* Ensure #panel-2 .panel-content specific flex styles are maintained if needed */
+#panel-2.active .panel-content {
+    display: flex; 
+    gap: 20px;
+    height: auto; /* Let content dictate height within wrapper */
+    /* flex-grow: 1; */ /* Already on wrapper */
+}
+
+
+.panel .panel-navigation {
+    /* max-height and opacity handled by .panel-content-wrapper */
+    padding-top: 20px; /* Add padding if not already there */
+    border-top: 1px solid var(--border-color); /* Add border if not already there */
+}
+
 
 .panel-header {
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */ /* Now controlled by .panel.active .panel-header */
     padding-bottom: 15px;
     border-bottom: 1px solid var(--border-color);
 }
@@ -610,127 +652,130 @@ body {
         <main class="checkout-main">
             <div class="panel-container">
                 <!-- Panel 1: Choose PC -->
-                <section id="panel-1" class="panel active">
+                <section id="panel-1" class="panel active" data-panel-index="0">
                     <div class="panel-header">
                         <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
                         <p>Select the base model or configuration that suits your needs.</p>
                     </div>
-                    <div class="panel-content">
-                        <!-- PC Options will go here -->
-                        <div class="option-card">
-                            <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Base+Gaming+PC" alt="Base Gaming PC">
-                            <h3>Starter Custom Rig</h3>
-                            <p>Balanced performance for everyday gaming and productivity.</p>
-                            <p class="price">$1,499 AUD</p>
-                            <button class="select-button" data-pc-name="Starter Custom Rig" data-pc-price="1499">Select This PC</button>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <!-- PC Options will go here -->
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Base+Gaming+PC" alt="Base Gaming PC">
+                                <h3>Starter Custom Rig</h3>
+                                <p>Balanced performance for everyday gaming and productivity.</p>
+                                <p class="price">$1,499 AUD</p>
+                                <button class="select-button" data-pc-name="Starter Custom Rig" data-pc-price="1499">Select This PC</button>
+                            </div>
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Pro+Gamer+PC" alt="Pro Gamer PC">
+                                <h3>Pro Gamer Custom</h3>
+                                <p>High-end components for serious 1440p/4K gaming.</p>
+                                <p class="price">$2,499 AUD</p>
+                                <button class="select-button" data-pc-name="Pro Gamer Custom" data-pc-price="2499">Select This PC</button>
+                            </div>
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Ultra+Creative+PC" alt="Ultra Creative PC">
+                                <h3>Ultra Creative Custom</h3>
+                                <p>Top-tier power for demanding creative workloads.</p>
+                                <p class="price">$3,999 AUD</p>
+                                <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
+                            </div>
                         </div>
-                        <div class="option-card">
-                            <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Pro+Gamer+PC" alt="Pro Gamer PC">
-                            <h3>Pro Gamer Custom</h3>
-                            <p>High-end components for serious 1440p/4K gaming.</p>
-                            <p class="price">$2,499 AUD</p>
-                            <button class="select-button" data-pc-name="Pro Gamer Custom" data-pc-price="2499">Select This PC</button>
+                        <div class="panel-navigation">
+                            <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
                         </div>
-                        <div class="option-card">
-                            <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Ultra+Creative+PC" alt="Ultra Creative PC">
-                            <h3>Ultra Creative Custom</h3>
-                            <p>Top-tier power for demanding creative workloads.</p>
-                            <p class="price">$3,999 AUD</p>
-                            <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
-                        </div>
-                    </div>
-                    <div class="panel-navigation">
-                        <button class="next-step-btn" data-next-panel="panel-2" disabled>Next: Choose Design</button>
                     </div>
                 </section>
 
                 <!-- Panel 2: Choose Design -->
-                <section id="panel-2" class="panel">
+                <section id="panel-2" class="panel" data-panel-index="1">
                     <div class="panel-header">
                         <h2><span class="step-number">Step 2:</span> Choose Your Design</h2>
                         <p>Personalize your PC with custom artwork or select from our gallery.</p>
                     </div>
-                    <div class="panel-content">
-                        <div class="design-preview-area">
-                            <!-- PC Model Image (placeholder or actual) -->
-                            <img id="pcModelPreview" src="https://via.placeholder.com/400x300/1a1a1c/3a3a3c?text=PC+Model+Preview" alt="PC Model Preview Area">
-                            <!-- Uploaded/Selected Artwork will be overlaid here by JS -->
-                            <img id="artworkOnPcPreview" src="#" alt="Artwork on PC" style="display:none;">
-                            <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Your Design on PC Here</span>
-                        </div>
-                        <div class="design-controls-area">
-                            <div class="design-option">
-                                <h4>Upload Your Own Artwork</h4>
-                                <p>Max 10MB. JPG/PNG. 300 DPI recommended.</p>
-                                <input type="file" id="artworkUpload" accept="image/jpeg, image/png">
-                                <div id="artworkPreviewContainer" style="margin-top:10px; min-height:100px; background-color: var(--background-dark); border-radius: var(--border-radius-sm); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-color);">
-                                    <img id="artworkPreview" src="#" alt="Uploaded Artwork Thumbnail" style="display:none; max-width:100%; max-height:100px;">
-                                    <span id="artworkPreviewText">Upload Preview</span>
-                                </div>
-                                <div class="artwork-tools">
-                                     <button id="cropBtn" style="display:none;">Crop</button>
-                                     <button id="rotateBtn" style="display:none;">Rotate</button>
-                                     <!-- Add more tool buttons as needed -->
-                                </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="design-preview-area">
+                                <img id="pcModelPreview" src="https://via.placeholder.com/400x300/1a1a1c/3a3a3c?text=PC+Model+Preview" alt="PC Model Preview Area">
+                                <img id="artworkOnPcPreview" src="#" alt="Artwork on PC" style="display:none;">
+                                <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Your Design on PC Here</span>
                             </div>
-                            <div class="design-option">
-                                <h4>Or Choose from Gallery</h4>
-                                <div class="gallery-grid">
-                                    <div class="gallery-item" data-design-name="Red Cyberpunk" data-design-image="https://images.prismic.io/aftershockpc/ZtVccEaF0TcGJp7v_HERO_RedCyberpunk.png?auto=format,compress">
-                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/crimson.png?v=1725261837&width=150" alt="Red Cyberpunk">
-                                        <p>Red Cyberpunk</p>
+                            <div class="design-controls-area">
+                                <div class="design-option">
+                                    <h4>Upload Your Own Artwork</h4>
+                                    <p>Max 10MB. JPG/PNG. 300 DPI recommended.</p>
+                                    <input type="file" id="artworkUpload" accept="image/jpeg, image/png">
+                                    <div id="artworkPreviewContainer" style="margin-top:10px; min-height:100px; background-color: var(--background-dark); border-radius: var(--border-radius-sm); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-color);">
+                                        <img id="artworkPreview" src="#" alt="Uploaded Artwork Thumbnail" style="display:none; max-width:100%; max-height:100px;">
+                                        <span id="artworkPreviewText">Upload Preview</span>
                                     </div>
-                                    <div class="gallery-item" data-design-name="Blue Leaves" data-design-image="https://images.prismic.io/aftershockpc/ZuDsMhoQrfVKl8T4_HERO_BlueLeaves.png?auto=format,compress">
-                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/blue_20leaves.png?v=1726035983&width=150" alt="Blue Leaves">
-                                        <p>Blue Leaves</p>
-                                    </div>
-                                    <div class="gallery-item" data-design-name="Blue Gundam" data-design-image="https://images.prismic.io/aftershockpc/ZuEinxoQrfVKl8dA_HERO_BlueGundam-1-.png?auto=format,compress">
-                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/gundam_201.png?v=1726035974&width=150" alt="Blue Gundam">
-                                        <p>Blue Gundam</p>
-                                    </div>
-                                     <div class="gallery-item" data-design-name="No Custom Design" data-design-image="">
-                                        <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
-                                        <p>No Custom Design</p>
+                                    <div class="artwork-tools">
+                                         <button id="cropBtn" style="display:none;">Crop</button>
+                                         <button id="rotateBtn" style="display:none;">Rotate</button>
                                     </div>
                                 </div>
+                                <div class="design-option">
+                                    <h4>Or Choose from Gallery</h4>
+                                    <div class="gallery-grid">
+                                        <div class="gallery-item" data-design-name="Red Cyberpunk" data-design-image="https://images.prismic.io/aftershockpc/ZtVccEaF0TcGJp7v_HERO_RedCyberpunk.png?auto=format,compress">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/crimson.png?v=1725261837&width=150" alt="Red Cyberpunk">
+                                            <p>Red Cyberpunk</p>
+                                        </div>
+                                        <div class="gallery-item" data-design-name="Blue Leaves" data-design-image="https://images.prismic.io/aftershockpc/ZuDsMhoQrfVKl8T4_HERO_BlueLeaves.png?auto=format,compress">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/blue_20leaves.png?v=1726035983&width=150" alt="Blue Leaves">
+                                            <p>Blue Leaves</p>
+                                        </div>
+                                        <div class="gallery-item" data-design-name="Blue Gundam" data-design-image="https://images.prismic.io/aftershockpc/ZuEinxoQrfVKl8dA_HERO_BlueGundam-1-.png?auto=format,compress">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/gundam_201.png?v=1726035974&width=150" alt="Blue Gundam">
+                                            <p>Blue Gundam</p>
+                                        </div>
+                                         <div class="gallery-item" data-design-name="No Custom Design" data-design-image="">
+                                            <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
+                                            <p>No Custom Design</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Selected Design: <strong id="selectedDesignName">None</strong></p>
                             </div>
-                            <p>Selected Design: <strong id="selectedDesignName">None</strong></p>
                         </div>
-                    </div>
-                    <div class="panel-navigation">
-                        <button class="prev-step-btn" data-prev-panel="panel-1">Back: Choose PC</button>
-                        <button class="next-step-btn" data-next-panel="panel-3">Next: Summary</button>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="0">Back: Choose PC</button>
+                            <button class="next-step-btn" data-target-panel-index="2">Next: Summary</button>
+                        </div>
                     </div>
                 </section>
 
                 <!-- Panel 3: Summary + Checkout -->
-                <section id="panel-3" class="panel">
+                <section id="panel-3" class="panel" data-panel-index="2">
                     <div class="panel-header">
                         <h2><span class="step-number">Step 3:</span> Summary & Checkout</h2>
                         <p>Review your selections and proceed to payment.</p>
                     </div>
-                    <div class="panel-content">
-                        <div class="summary-details">
-                            <h3>Order Summary</h3>
-                            <div id="summaryPcSelection">
-                                <h4>Selected PC:</h4>
-                                <p>Name: <span id="summaryPcName">N/A</span></p>
-                                <p>Price: $<span id="summaryPcPrice">0.00</span> AUD</p>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="summary-details">
+                                <h3>Order Summary</h3>
+                                <div id="summaryPcSelection">
+                                    <h4>Selected PC:</h4>
+                                    <p>Name: <span id="summaryPcName">N/A</span></p>
+                                    <p>Price: $<span id="summaryPcPrice">0.00</span> AUD</p>
+                                </div>
+                                <div id="summaryDesignSelection">
+                                    <h4>Selected Design:</h4>
+                                    <p>Name: <span id="summaryDesignName">N/A</span></p>
+                                    <img id="summaryDesignImage" src="#" alt="Selected Design Preview" style="max-width: 200px; max-height: 150px; margin-top: 10px; display: none;">
+                                </div>
+                                <hr>
+                                <div class="total-price">
+                                    <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
+                                </div>
                             </div>
-                            <div id="summaryDesignSelection">
-                                <h4>Selected Design:</h4>
-                                <p>Name: <span id="summaryDesignName">N/A</span></p>
-                                <img id="summaryDesignImage" src="#" alt="Selected Design Preview" style="max-width: 200px; max-height: 150px; margin-top: 10px; display: none;">
-                            </div>
-                            <hr>
-                            <div class="total-price">
-                                <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
-                            </div>
+                            <button class="checkout-button">Proceed to Checkout</button>
                         </div>
-                        <button class="checkout-button">Proceed to Checkout</button>
-                    </div>
-                    <div class="panel-navigation">
-                        <button class="prev-step-btn" data-prev-panel="panel-2">Back: Choose Design</button>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="1">Back: Choose Design</button>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -739,7 +784,7 @@ body {
     <script>
     (function () {
         const panelContainer = document.querySelector('.panel-container');
-        const panels = document.querySelectorAll('.panel');
+        const panels = Array.from(document.querySelectorAll('.panel'));
         const nextButtons = document.querySelectorAll('.next-step-btn');
         const prevButtons = document.querySelectorAll('.prev-step-btn');
         const progressSteps = document.querySelectorAll('.progress-indicator .step');
@@ -760,43 +805,49 @@ body {
 
         const checkoutButton = document.querySelector('.checkout-button');
 
-        let currentPanel = 0;
+        let currentPanelIndex = 0; // Use index for clarity
         let orderDetails = {
-            pc: null, // { name: 'Starter Custom Rig', price: 1499 }
-            design: null // { name: 'Red Cyberpunk', image: 'url' } or { name: 'Custom Upload', image: 'dataURL' }
+            pc: null, 
+            design: null 
         };
 
-        function updatePanelVisibility() {
-            if (!panelContainer || !panels.length) return;
+        function setActivePanel(targetIndex) {
+            if (targetIndex < 0 || targetIndex >= panels.length) return;
 
-            const panelWidthPercentage = 100 / panels.length; // Each panel's slot in the container
-            // Calculate the offset to center the active panel.
-            // This needs to account for the fact that the panel-container itself moves.
-            // The active panel should appear in the "center" of the checkout-main viewport.
-            // If each panel slot is 100% of checkout-main's width:
-            let offsetPercentage = -currentPanel * panelWidthPercentage;
-
-            panelContainer.style.transform = `translateX(${offsetPercentage}%)`;
+            // Validation for stepping forward
+            if (targetIndex > currentPanelIndex) {
+                if (currentPanelIndex === 0 && !orderDetails.pc) {
+                    alert("Please select a PC configuration to continue.");
+                    return;
+                }
+                if (currentPanelIndex === 1 && !orderDetails.design) {
+                    alert("Please choose a design or select 'No Custom Design' to continue.");
+                    return;
+                }
+            }
+            
+            currentPanelIndex = targetIndex;
 
             panels.forEach((panel, index) => {
-                panel.classList.remove('active', 'prev-adjacent', 'next-adjacent');
-                if (index === currentPanel) {
+                if (index === currentPanelIndex) {
                     panel.classList.add('active');
-                } else if (index === currentPanel - 1) {
-                    panel.classList.add('prev-adjacent');
-                } else if (index === currentPanel + 1) {
-                    panel.classList.add('next-adjacent');
+                } else {
+                    panel.classList.remove('active');
                 }
             });
 
             progressSteps.forEach((step, index) => {
                 step.classList.remove('active', 'completed');
-                if (index < currentPanel) {
+                if (index < currentPanelIndex) {
                     step.classList.add('completed');
-                } else if (index === currentPanel) {
+                } else if (index === currentPanelIndex) {
                     step.classList.add('active');
                 }
             });
+
+            if (currentPanelIndex === panels.length - 1) { // If on the summary panel
+                updateSummary();
+            }
         }
 
         function updateSummary() {
@@ -925,48 +976,74 @@ body {
             });
         });
 
-        // Navigation
+        // Navigation Buttons
         nextButtons.forEach(button => {
             button.addEventListener('click', () => {
-                if (currentPanel < panels.length - 1) {
-                    if (currentPanel === 0 && !orderDetails.pc) {
-                        alert("Please select a PC configuration to continue.");
-                        return;
-                    }
-                    if (currentPanel === 1 && !orderDetails.design) {
-                        alert("Please choose a design or select 'No Custom Design' to continue.");
-                        return;
-                    }
-                    currentPanel++;
-                    updatePanelVisibility();
-                    if (currentPanel === panels.length - 1) {
-                        updateSummary();
-                    }
-                }
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
             });
         });
 
         prevButtons.forEach(button => {
             button.addEventListener('click', () => {
-                if (currentPanel > 0) {
-                    currentPanel--;
-                    updatePanelVisibility();
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
+            });
+        });
+
+        // Click on minimized panel headers to activate them
+        panels.forEach((panel, index) => {
+            const header = panel.querySelector('.panel-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    if (!panel.classList.contains('active')) {
+                        setActivePanel(index);
+                    }
+                });
+            }
+        });
+        
+        // Click on progress steps to navigate
+        progressSteps.forEach((stepIndicator, index) => {
+            stepIndicator.addEventListener('click', () => {
+                 // Allow navigation to any step via progress bar if it's already completed or current
+                if (index <= currentPanelIndex || panels[index].classList.contains('completed-step-via-progress')) {
+                     setActivePanel(index);
+                } else {
+                    // Check if requirements for previous steps are met before jumping
+                    let canProceed = true;
+                    for (let i = 0; i < index; i++) {
+                        if (i === 0 && !orderDetails.pc) {
+                            alert("Please select a PC configuration first (Step 1).");
+                            canProceed = false;
+                            setActivePanel(0); // Go to step 1
+                            break;
+                        }
+                        if (i === 1 && !orderDetails.design) {
+                            alert("Please choose a design first (Step 2).");
+                            canProceed = false;
+                            setActivePanel(1); // Go to step 2
+                            break;
+                        }
+                    }
+                    if (canProceed) {
+                        setActivePanel(index);
+                    }
                 }
             });
         });
+
 
         if (checkoutButton) {
             checkoutButton.addEventListener('click', () => {
                 if (!orderDetails.pc) {
                     alert("Please complete PC selection (Step 1).");
-                    currentPanel = 0;
-                    updatePanelVisibility();
+                    setActivePanel(0);
                     return;
                 }
                 if (!orderDetails.design) {
                     alert("Please complete design selection (Step 2).");
-                    currentPanel = 1;
-                    updatePanelVisibility();
+                    setActivePanel(1);
                     return;
                 }
                 alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
@@ -975,7 +1052,7 @@ body {
         }
 
         // Initial setup calls
-        updatePanelVisibility();
+        setActivePanel(0); // Start with the first panel active
         const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
         if (panel1NextBtn) {
             panel1NextBtn.disabled = true;
