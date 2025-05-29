@@ -1,17 +1,19 @@
 <section class="hero">
-    <div class="container hero-container">
-      <div class="hero-content-left">
-        <h1>Secure <span>NAS</span> Solutions For Every Business</h1>
-      </div>
-      <div class="hero-content-right">
-        <p>From collaborative workflows to secure backups, our NAS solutions provide reliable, high-performance storage tailored to your specific business needs.</p>
-        <div class="hero-buttons">
-          <a href="#contact-anchor" class="btn btn-hero">Book Consultation</a>
-          <a href="#nas-solutions" class="btn btn-hero btn-secondary">Book Consultation</a>
+    <div class="hero-container">
+        <div class="hero-content-left">
+          <h1>Secure <span>NAS</span> Solutions For Every Business</h1>
+          <p class="hero-subhead">Business NAS Systems starting from <strong>$1259</strong></p>
         </div>
-      </div>
-    </div>
+        <div class="hero-content-right">
+            <p>From collaborative workflows to secure backups, our NAS solutions provide reliable, high-performance storage tailored to your specific business needs.</p>
+            <div class="hero-buttons">
+              <a href="#contact-anchor" class="btn btn-hero">Book Consultation</a>
+              <a href="#nas-solutions" class="btn btn-hero btn-secondary">Explore Solutions</a>
+            </div>
+        </div>
+    </div> <!-- This now correctly closes hero-container -->
 </section>
+
 
 <!-- New "Is Your Business Data at Risk?" Section -->
 <section class="data-risk-section" id="data-risk">
@@ -189,7 +191,8 @@
             <h3>Entry-Level NAS</h3>
             <p class="nas-description">Perfect for small teams or home offices needing reliable file sharing</p>
           </div>
-          <div class="nas-specs"> 
+          <div class="nas-specs"> <!-- tech-specs-content class is added by JS -->
+            <h4>Tech Specs:</h4>
             <ul>
               <li><strong>Model:</strong> QNAP TS-464</li>
               <li><strong>Bay Count:</strong> 4-bay desktop NAS</li>
@@ -197,9 +200,8 @@
               <li><strong>Capacity:</strong> Up to 80TB raw storage</li>
               <li><strong>Connectivity:</strong> Dual 1GbE with link aggregation</li>
             </ul>
-            <div class="nas-card-cta-centered">
-                <a href="#contact-anchor" class="btn">Book Consultation</a>
-            </div>
+            <div class="nas-price">Starting from $1259</div>
+            <a href="#contact-anchor" class="btn">Book Consultation</a>
           </div>
         </div>
       </div>
@@ -217,7 +219,8 @@
             <h3>Mid-Range NAS</h3>
             <p class="nas-description">Great for professional workgroups and production environments</p>
           </div>
-          <div class="nas-specs">
+          <div class="nas-specs"> <!-- tech-specs-content class is added by JS -->
+            <h4>Tech Specs:</h4>
             <ul>
               <li><strong>Model:</strong> QNAP TVS-h674</li>
               <li><strong>Bay Count:</strong> 6-bay tower NAS</li>
@@ -225,9 +228,8 @@
               <li><strong>Capacity:</strong> Up to 120TB raw storage</li>
               <li><strong>Connectivity:</strong> 10GbE networking capability</li>
             </ul>
-            <div class="nas-card-cta-centered">
-                <a href="#contact-anchor" class="btn btn-featured">Book Consultation</a>
-            </div>
+            <div class="nas-price">Starting from $4499</div>
+            <a href="#contact-anchor" class="btn btn-featured">Book Consultation</a>
           </div>
         </div>
       </div>
@@ -244,7 +246,8 @@
             <h3>Enterprise All-Flash</h3> 
             <p class="nas-description">Reliable, high-capacity storage for business-critical applications</p>
           </div>
-          <div class="nas-specs">
+          <div class="nas-specs"> <!-- tech-specs-content class is added by JS -->
+            <h4>Tech Specs:</h4>
             <ul>
               <li><strong>Model:</strong> QNAP TS-h1290FX</li>
               <li><strong>Form Factor:</strong> 12-bay All-Flash Desktop</li> 
@@ -252,9 +255,8 @@
               <li><strong>Capacity:</strong> Up to 240TB raw capacity (with U.2 NVMe SSDs)</li>
               <li><strong>Connectivity:</strong> Quad 10GbE with expansion</li>
             </ul>
-            <div class="nas-card-cta-centered">
-                 <a href="#contact-anchor" class="btn">Book Consultation</a>
-            </div>
+            <div class="nas-price">Starting from $10599</div>
+            <a href="#contact-anchor" class="btn">Book Consultation</a>
           </div>
         </div>
       </div>
@@ -268,7 +270,8 @@
             <h3>Data Centre Rackmount</h3> 
             <p class="nas-description">Ultimate performance for organisations with mission-critical workloads</p>
           </div>
-          <div class="nas-specs">
+          <div class="nas-specs"> <!-- tech-specs-content class is added by JS -->
+            <h4>Tech Specs:</h4>
             <ul>
               <li><strong>Model:</strong> QNAP TS-H1677AXU-RP-R7-32G</li> 
               <li><strong>Form Factor:</strong> 3U rackmount with 16 bays</li>
@@ -276,9 +279,8 @@
               <li><strong>Capacity:</strong> Up to 320TB with expansion</li>
               <li><strong>Connectivity:</strong> 25GbE + 10GbE redundant</li>
             </ul>
-             <div class="nas-card-cta-centered">
-                <a href="#contact-anchor" class="btn">Book Consultation</a>
-            </div>
+            <div class="nas-price">Starting from $9785</div>
+            <a href="#contact-anchor" class="btn">Book Consultation</a>
           </div>
         </div>
       </div>
@@ -445,6 +447,7 @@
 <!-- Anchor for Contact Links -->
 <div id="contact-anchor"></div>
 
+<style>
 :root {
   --primary-color: #8DF3D6;
   --secondary-color: #0f0f0f;
@@ -491,47 +494,123 @@ nav ul li a { color: white; text-decoration: none; font-weight: 500; text-transf
 nav ul li a:hover, nav ul li a.active { color: var(--primary-color); }
 
 /* Hero Section */
-.hero {
-  background-color: var(--dark-bg);
-  background-image: url('https://cdn.shopify.com/s/files/1/0522/3320/7988/files/Backgrouund.png?v=1743372444');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-  overflow: hidden;
-  min-height: 450px; /* Adjusted height */
-  display: flex;
-  align-items: center;
-  padding: 2rem 0; 
-}
-.hero:before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 15, 15, 0.7); z-index: 1; }
-.hero-container { /* UPDATED for desktop centering/width constraint */
-  max-width: 1200px; /* Constrain width on larger screens */
-  margin: 0 auto; /* Center it */
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  position: relative;
-  z-index: 2;
-  width: 100%; /* Take full width within its max-width and padding */
-  padding: 0 var(--container-padding); /* Apply side padding if needed within the max-width */
+  .hero {
+    background-color: var(--dark-bg);
+    background-image: url('https://cdn.shopify.com/s/files/1/0522/3320/7988/files/Backgrouund.png?v=1743372444');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+  }
+
+  .hero:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.5); /* Lighter overlay for clarity */
+    z-index: 1;
+  }
+
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 var(--container-padding);
+  }
+
+  .hero-content-left {
+    flex: 1 0 50%;
+  }
+
+  .hero-content-right {
+    flex: 1 0 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    line-height: 1.15;
+    font-weight: 800;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .hero h1 span {
+    color: var(--primary-color);
+  }
+
+  .hero-subhead {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    color: #f5f5f5;
+  }
+
+  .hero-content-right p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    color: #dddddd;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+ .btn-hero {
+  padding: 0.9rem 1.8rem;
+  font-size: 1rem;
+  background-color: var(--primary-color); /* or hardcode: #5fffd0 */
+  color: #000000; 
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
-.hero-content-left {
-  flex: 1 0 50%;
-}
-.hero-content-right {
-  flex: 1 0 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.btn-hero:hover {
+  background-color: #ffffff;
+  color: #000000;
 }
 
-.hero h1 { font-size: 3.5rem; line-height: 1.15; font-weight: 800; margin-bottom: 0; text-transform: uppercase; }
-.hero h1 span { color: var(--primary-color); }
-.hero-content-right p { font-size: 1.1rem; margin-bottom: 1.5rem; max-width: 500px; }
-.hero-buttons { display: flex; gap: 1rem; }
-.btn-hero { padding: 0.9rem 1.8rem; font-size: 1rem; }
+.btn-hero.btn-secondary:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+  /* Optional Feature Strip */
+  .hero-features {
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    color: #b0bec5;
+  }
+
+  .hero-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
 /* --- Data Risk Section --- */
 .data-risk-section { padding: var(--section-padding); background-color: var(--darker-bg); }
@@ -612,13 +691,50 @@ nav ul li a:hover, nav ul li a.active { color: var(--primary-color); }
 .nas-card:hover .nas-image img { transform: scale(1.05); }
 .nas-header h3 { font-size: 1.4rem; margin-bottom: 0.7rem; color: white; text-align: center; }
 .nas-description { font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); text-align: center; margin-bottom: 0.5rem; }
-.nas-specs { background-color: var(--secondary-color); padding: 1.2rem; border-radius: 6px; }
-.nas-specs ul { margin-bottom: 1.5rem; padding: 0; }
+.nas-specs { /* This will also be .tech-specs-content */
+  background-color: var(--dark-bg); /* Changed from --secondary-color */
+  padding: 1.2rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.nas-specs ul {
+  margin-bottom: 1.5rem;
+  padding: 0;
+  flex-grow: 1; /* Make list take available space */
+  min-height: 120px; /* Ensure consistent height */
+}
 .nas-specs li { font-size: 0.9rem; margin-bottom: 0.7rem; list-style-type: none; position: relative; padding-left: 1.2rem; line-height: 1.4; color: rgba(255, 255, 255, 0.8); }
 .nas-specs li:before { content: '•'; color: var(--primary-color); position: absolute; left: 0; top: 0; font-weight: bold; }
 .nas-specs li strong { color: #fff; font-weight: 600; }
 .nas-specs li:last-child { margin-bottom: 0; }
-.nas-card-cta-centered { text-align: center; margin-top: 1rem; }
+
+/* Styles for elements to be added/matched with use-cases-content */
+.tech-specs-content h4 { /* .tech-specs-content is added to .nas-specs by JS */
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+.tech-specs-content .nas-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-top: auto; /* Pushes to bottom */
+  padding-top: 1rem; /* Spacing above price */
+  margin-bottom: 0.5rem; /* Spacing below price, before CTA */
+}
+.tech-specs-content .btn {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content; 
+  padding: 0.8rem 1.5rem; /* Explicitly set padding */
+  font-size: 0.9rem; /* Explicitly set font-size */
+}
+
+.nas-card-cta-centered { text-align: center; margin-top: 1rem; } /* This class will be removed from HTML structure for tech-specs later */
 .nas-price { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: white; text-align: center; }
 .btn-featured { background-color: var(--primary-color); color: var(--secondary-color); box-shadow: 0 4px 12px rgba(141, 243, 214, 0.3); }
 .btn-featured:hover { box-shadow: 0 6px 15px rgba(141, 243, 214, 0.4); background-color: #6CD4B8; color: var(--secondary-color); }
@@ -890,12 +1006,24 @@ body.menu-open { overflow: hidden; }
 .use-cases-content { background-color: var(--dark-bg); padding: 1.2rem; border-radius: 6px; display: flex; flex-direction: column; flex-grow: 1; }
 .use-cases-content h4 { font-size: 0.95rem; color: var(--primary-color); margin-bottom: 0.5rem; }
 .use-cases-content p { font-size: 0.9rem; margin-bottom: 1rem; color: rgba(255, 255, 255, 0.8); }
-.use-cases-content > p:last-of-type { flex-grow: 1; }
-.use-cases-content ul { margin-bottom: 1.5rem; padding: 0; }
+/* .use-cases-content > p:last-of-type { flex-grow: 1; } */ /* Commenting out as it might not always be a p, ul will handle grow */
+.use-cases-content ul {
+  margin-bottom: 1.5rem;
+  padding: 0;
+  flex-grow: 1; /* Make list take available space if it's the main content block */
+  min-height: 120px; /* Ensure consistent height */
+}
 .use-cases-content li { font-size: 0.9rem; margin-bottom: 0.7rem; list-style-type: none; position: relative; padding-left: 1.2rem; line-height: 1.4; color: rgba(255, 255, 255, 0.8); }
 .use-cases-content li:before { content: '•'; color: var(--primary-color); position: absolute; left: 0; top: 0; font-weight: bold; }
 .use-cases-content .nas-price { margin-top: auto; padding-top: 1rem; margin-bottom: 0.5rem; }
-.use-cases-content .btn { text-align: center; }
+.use-cases-content .btn {
+  display: block; /* Ensure it's a block to allow margin auto centering */
+  width: fit-content; /* Adjust width to content */
+  margin-left: auto; /* Center the block */
+  margin-right: auto; /* Center the block */
+  padding: 0.8rem 1.5rem; /* Explicitly set padding */
+  font-size: 0.9rem; /* Explicitly set font-size */
+}
 
 @media (hover: none) {
   .btn:active { background-color: #6CD4B8; color: var(--secondary-color) !important; }
@@ -912,7 +1040,8 @@ svg { display: inline-block; vertical-align: middle; }
   height: 0;
   overflow: hidden;
 }
-
+</style>
+<script>
 function initializeMobileMenu() {
   const menuToggle = document.getElementById('menuToggle');
   const mainNav = document.getElementById('mainNav');
@@ -1368,3 +1497,4 @@ function initializeNasToggle() {
   initializeVideoModal();
   watchForFormElement();
 })();
+</script>

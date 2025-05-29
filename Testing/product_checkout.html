@@ -200,13 +200,13 @@ body {
     text-align: center;
 }
 .option-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
     border-color: var(--primary-color);
+    background-color: var(--surface-light); /* Subtle background change on hover */
+    box-shadow: var(--shadow-sm); /* Softer shadow */
 }
 .option-card.selected {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color), var(--shadow-md);
+    box-shadow: 0 0 0 2px var(--primary-color); /* Simpler outline shadow */
     background-color: var(--surface-light);
 }
 
@@ -342,15 +342,15 @@ body {
 }
 .gallery-item:hover {
     border-color: var(--primary-color);
-    transform: scale(1.05);
+    background-color: var(--background-dark); /* Subtle background change */
 }
 .gallery-item.selected {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--primary-color);
-    background-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color); /* Clear selection outline */
+    background-color: var(--surface-light); /* Less intense background than primary fill */
 }
 .gallery-item.selected p {
-    color: var(--text-primary);
+    color: var(--primary-color); /* Text color that contrasts with surface-light */
     font-weight: 600;
 }
 .gallery-item img {
@@ -434,6 +434,58 @@ body {
     background-color: #28a745; /* Darker green */
 }
 
+/* Promo Code Card */
+.promo-code-card {
+    background-color: var(--surface-medium);
+    padding: 25px;
+    border-radius: var(--border-radius-md);
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+.promo-code-card h4 {
+    font-size: 1.3em;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.promo-code-card input[type="text"] {
+    width: calc(100% - 24px); /* Full width minus padding and border */
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: var(--surface-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-main);
+    box-sizing: border-box;
+}
+.promo-code-card input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+.promo-code-card button {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    display: inline-block;
+}
+.promo-code-card button:hover {
+    background-color: var(--primary-hover);
+}
+#promoStatus {
+    font-size: 0.9em;
+    margin-top: 10px;
+    color: var(--text-secondary);
+    min-height: 1.2em; /* Reserve space to prevent layout shift */
+}
 
 /* Panel Navigation */
 .panel-navigation {
@@ -653,6 +705,12 @@ body {
                                 <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
                             </div>
                         </div>
+                        <div class="promo-code-card">
+                            <h4>Have a Promo Code?</h4>
+                            <input type="text" id="promoCodeInput" placeholder="Enter promo code">
+                            <button id="applyPromoBtn">Apply Promo</button>
+                            <p id="promoStatus"></p>
+                        </div>
                         <button class="checkout-button">Proceed to Checkout</button>
                     </div>
                     <div class="panel-navigation">
@@ -683,6 +741,10 @@ body {
         const summaryTotalPrice = document.getElementById('summaryTotalPrice');
 
         const checkoutButton = document.querySelector('.checkout-button');
+
+        const promoCodeInput = document.getElementById('promoCodeInput');
+        const applyPromoBtn = document.getElementById('applyPromoBtn');
+        const promoStatus = document.getElementById('promoStatus');
 
         let currentPanel = 0;
         let orderDetails = {
@@ -853,6 +915,36 @@ body {
                 }
                 alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
                 console.log("Order Details:", orderDetails);
+            });
+        }
+
+        if (applyPromoBtn) {
+            applyPromoBtn.addEventListener('click', () => {
+                const code = promoCodeInput.value.trim();
+                if (promoStatus) { // Ensure promoStatus element exists
+                    if (code) {
+                        // Dummy promo code logic
+                        if (code.toUpperCase() === "SAVE10") {
+                            promoStatus.textContent = "Promo code SAVE10 applied! (10% off - simulated)";
+                            promoStatus.style.color = "var(--success-color)";
+                            // In a real scenario, you'd update orderDetails.total or apply discount
+                            // and then call updateSummary().
+                            // e.g. orderDetails.discount = orderDetails.pc.price * 0.1; updateSummary();
+                            alert("Promo code SAVE10 applied! (This is a visual demo; total not updated yet)");
+                        } else if (code.toUpperCase() === "FREESHIP") {
+                            promoStatus.textContent = "Promo code FREESHIP applied! (Free Shipping - simulated)";
+                            promoStatus.style.color = "var(--success-color)";
+                            alert("Promo code FREESHIP applied! (This is a visual demo)");
+                        }
+                        else {
+                            promoStatus.textContent = "Invalid or expired promo code.";
+                            promoStatus.style.color = "var(--error-color)";
+                        }
+                    } else {
+                        promoStatus.textContent = "Please enter a promo code.";
+                        promoStatus.style.color = "var(--error-color)";
+                    }
+                }
             });
         }
 
