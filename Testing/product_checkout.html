@@ -42,21 +42,23 @@ body {
     font-size: 16px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to top for long content */
+    align-items: center; /* Center the container vertically */
     min-height: 100vh;
-    padding-top: 20px; /* Give some space from top */
-    padding-bottom: 20px;
+    padding: 20px; /* Padding around the main container */
+    overflow-x: hidden; /* Prevent horizontal scroll from side panels */
 }
 
 .checkout-container {
-    width: 90%;
-    max-width: 1000px; /* Max width for the checkout flow */
-    background-color: var(--surface-dark);
+    width: 100%; /* Take full width to allow side panels to peek */
+    max-width: 1200px; /* Max width for the overall component */
+    background-color: transparent; /* Main container is now more of a viewport controller */
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden; /* Important for panel transitions */
+    /* box-shadow: var(--shadow-lg); */ /* Shadow might be on active panel instead */
+    overflow: visible; /* Allow peeking panels if they are styled to do so */
     display: flex;
     flex-direction: column;
+    height: 80vh; /* Example height, adjust as needed */
+    min-height: 600px;
 }
 
 .checkout-header {
@@ -128,30 +130,64 @@ body {
 
 
 .checkout-main {
-    padding: 0; /* Panels will have their own padding */
-    position: relative; /* For absolute positioning of panels if needed */
-    overflow-x: hidden; /* Prevent horizontal scroll during transitions */
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* This will clip the non-active parts of panel-container */
 }
 
 .panel-container {
     display: flex;
-    width: 300%; /* 3 panels, each 100% width of container */
-    transition: transform var(--transition-speed) cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smooth slide */
+    /* Width is 100% * number of panels. JS will set this if dynamic, or hardcode if fixed. */
+    /* For 3 panels, if active is 70%, sides 15% each, total viewport is 100%.
+       The container itself needs to be wide enough to hold all original-sized panels.
+       Let's assume each panel *slot* is 100% of checkout-main width.
+    */
+    width: 300%; /* For 3 panels, each occupying a 100% slot */
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform;
 }
 
 .panel {
-    width: calc(100% / 3); /* Each panel takes 1/3 of the .panel-container width */
-    padding: 30px 40px;
+    width: calc(100% / 3); /* Each panel occupies one-third of the panel-container's total width */
+    height: 100%;
+    padding: 20px; /* Reduced padding for more content space */
     box-sizing: border-box;
-    opacity: 0.6;
-    transform: scale(0.98);
-    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
-    min-height: 500px; /* Ensure panels have some height */
+    background-color: var(--surface-dark);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    
+    display: flex;
+    flex-direction: column;
+
+    /* Styles for inactive panels */
+    opacity: 0.5;
+    transform: scale(0.85);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin: 0 10px; /* Spacing between panels when scaled down */
+    overflow-y: auto; /* Allow content scrolling within panel */
 }
 
 .panel.active {
     opacity: 1;
     transform: scale(1);
+    z-index: 10; /* Ensure active panel is on top */
+    box-shadow: var(--shadow-lg); /* More prominent shadow for active */
+    margin: 0 2.5%; /* Adjust margin for active panel to control peeking of others */
+                     /* This effectively makes the active panel take ~95% of its slot,
+                        allowing a bit of the next/prev to show if their scale/margin allows.
+                        The actual "peeking" is controlled by the panel-container's translateX
+                        and the checkout-main's overflow:hidden.
+                     */
+}
+
+/* Specific styling for panels to the immediate left/right of active (optional, for finer control) */
+.panel.prev-adjacent, .panel.next-adjacent {
+    opacity: 0.7;
+    transform: scale(0.9);
+    z-index: 5;
 }
 
 .panel-header {
@@ -264,36 +300,76 @@ body {
 }
 
 
-/* Panel 2: Choose Design */
+/* Panel 2: Choose Design - Redesigned Layout */
 #panel-2 .panel-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
+    display: flex; /* Changed from grid to flex */
+    gap: 20px;
+    height: 100%; /* Ensure it fills the panel */
+    flex-grow: 1;
 }
 
-.design-option {
+.design-preview-area {
+    flex: 2; /* Takes 2/3 of the space */
+    background-color: var(--background-dark); /* Placeholder background */
+    border-radius: var(--border-radius-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    min-height: 300px; /* Minimum height for the preview */
+}
+.design-preview-area #pcModelPreview { /* Placeholder for PC model image */
+    max-width: 100%;
+    max-height: 70%; /* Adjust as needed */
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+.design-preview-area #artworkOnPcPreview { /* For the uploaded artwork */
+    position: absolute; /* Will be positioned over the PC model */
+    max-width: 50%; /* Example, JS will control this */
+    max-height: 50%;
+    /* Further styling for positioning and appearance */
+}
+.design-preview-area .preview-placeholder-text {
+    color: var(--text-placeholder);
+    font-size: 1.2em;
+}
+
+
+.design-controls-area {
+    flex: 1; /* Takes 1/3 of the space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto; /* Scroll if controls exceed height */
+    padding-right: 10px; /* For scrollbar */
+}
+
+.design-option { /* Re-style for the new layout */
     background-color: var(--surface-medium);
-    padding: 25px;
+    padding: 20px;
     border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
 }
 .design-option h4 {
-    font-size: 1.3em;
+    font-size: 1.2em;
     color: var(--text-primary);
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 .design-option p {
     color: var(--text-secondary);
     font-size: 0.9em;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
-#artworkUpload {
+#artworkUpload { /* Style remains similar */
     display: block;
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: var(--surface-light);
     border: 1px dashed var(--border-color);
     color: var(--text-primary);
@@ -306,35 +382,34 @@ body {
     box-shadow: 0 0 0 2px var(--primary-color);
 }
 
-#artworkPreviewContainer {
-    width: 100%;
-    min-height: 150px;
-    background-color: var(--background-dark);
-    border-radius: var(--border-radius-sm);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+/* Artwork tools (placeholder) */
+.artwork-tools {
+    margin-top: 10px;
+}
+.artwork-tools button {
+    background-color: var(--surface-light);
+    color: var(--text-primary);
     border: 1px solid var(--border-color);
-}
-#artworkPreview {
-    max-width: 100%;
-    max-height: 200px;
+    padding: 8px 12px;
     border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 0.9em;
 }
-#artworkPreviewText {
-    color: var(--text-placeholder);
+.artwork-tools button:hover {
+    border-color: var(--primary-color);
 }
 
-.gallery-grid {
+
+.gallery-grid { /* Style remains similar, but within design-controls-area */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Smaller items */
+    gap: 10px;
 }
 .gallery-item {
     background-color: var(--surface-light);
     border-radius: var(--border-radius-sm);
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     cursor: pointer;
     border: 2px solid transparent;
@@ -342,32 +417,35 @@ body {
 }
 .gallery-item:hover {
     border-color: var(--primary-color);
-    background-color: var(--background-dark); /* Subtle background change */
+    background-color: var(--background-dark);
 }
 .gallery-item.selected {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--primary-color); /* Clear selection outline */
-    background-color: var(--surface-light); /* Less intense background than primary fill */
+    box-shadow: 0 0 0 2px var(--primary-color);
+    background-color: var(--surface-light);
 }
 .gallery-item.selected p {
-    color: var(--primary-color); /* Text color that contrasts with surface-light */
+    color: var(--primary-color);
     font-weight: 600;
 }
 .gallery-item img {
     width: 100%;
-    height: 80px;
+    height: 60px; /* Smaller images */
     object-fit: cover;
     border-radius: var(--border-radius-sm);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 .gallery-item p {
-    font-size: 0.85em;
+    font-size: 0.8em;
     color: var(--text-secondary);
     margin: 0;
     transition: color var(--transition-speed) ease;
 }
 #selectedDesignName {
     color: var(--primary-color);
+    font-weight: 600;
+    margin-top:10px;
+    display: block;
 }
 
 /* Panel 3: Summary */
@@ -432,59 +510,6 @@ body {
 }
 .checkout-button:hover {
     background-color: #28a745; /* Darker green */
-}
-
-/* Promo Code Card */
-.promo-code-card {
-    background-color: var(--surface-medium);
-    padding: 25px;
-    border-radius: var(--border-radius-md);
-    margin-top: 20px;
-    margin-bottom: 30px;
-    border: 1px solid var(--border-color);
-}
-.promo-code-card h4 {
-    font-size: 1.3em;
-    color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.promo-code-card input[type="text"] {
-    width: calc(100% - 24px); /* Full width minus padding and border */
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: var(--surface-light);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    border-radius: var(--border-radius-sm);
-    font-family: var(--font-main);
-    box-sizing: border-box;
-}
-.promo-code-card input[type="text"]:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--primary-color);
-}
-.promo-code-card button {
-    padding: 10px 20px;
-    font-size: 1em;
-    font-weight: 600;
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    border: none;
-    background-color: var(--primary-color);
-    color: var(--text-primary);
-    display: inline-block;
-}
-.promo-code-card button:hover {
-    background-color: var(--primary-hover);
-}
-#promoStatus {
-    font-size: 0.9em;
-    margin-top: 10px;
-    color: var(--text-secondary);
-    min-height: 1.2em; /* Reserve space to prevent layout shift */
 }
 
 /* Panel Navigation */
@@ -642,38 +667,51 @@ body {
                         <p>Personalize your PC with custom artwork or select from our gallery.</p>
                     </div>
                     <div class="panel-content">
-                        <!-- Design Options will go here -->
-                        <div class="design-option">
-                            <h4>Upload Your Own Artwork</h4>
-                            <p>Max file size 10MB. Recommended 300 DPI.</p>
-                            <input type="file" id="artworkUpload" accept="image/jpeg, image/png">
-                            <div id="artworkPreviewContainer">
-                                <img id="artworkPreview" src="#" alt="Artwork Preview" style="display:none;">
-                                <span id="artworkPreviewText">Preview</span>
-                            </div>
+                        <div class="design-preview-area">
+                            <!-- PC Model Image (placeholder or actual) -->
+                            <img id="pcModelPreview" src="https://via.placeholder.com/400x300/1a1a1c/3a3a3c?text=PC+Model+Preview" alt="PC Model Preview Area">
+                            <!-- Uploaded/Selected Artwork will be overlaid here by JS -->
+                            <img id="artworkOnPcPreview" src="#" alt="Artwork on PC" style="display:none;">
+                            <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Your Design on PC Here</span>
                         </div>
-                        <div class="design-option">
-                            <h4>Or Choose from Gallery</h4>
-                            <div class="gallery-grid">
-                                <div class="gallery-item" data-design-name="Red Cyberpunk" data-design-image="https://images.prismic.io/aftershockpc/ZtVccEaF0TcGJp7v_HERO_RedCyberpunk.png?auto=format,compress">
-                                    <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/crimson.png?v=1725261837&width=150" alt="Red Cyberpunk">
-                                    <p>Red Cyberpunk</p>
+                        <div class="design-controls-area">
+                            <div class="design-option">
+                                <h4>Upload Your Own Artwork</h4>
+                                <p>Max 10MB. JPG/PNG. 300 DPI recommended.</p>
+                                <input type="file" id="artworkUpload" accept="image/jpeg, image/png">
+                                <div id="artworkPreviewContainer" style="margin-top:10px; min-height:100px; background-color: var(--background-dark); border-radius: var(--border-radius-sm); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-color);">
+                                    <img id="artworkPreview" src="#" alt="Uploaded Artwork Thumbnail" style="display:none; max-width:100%; max-height:100px;">
+                                    <span id="artworkPreviewText">Upload Preview</span>
                                 </div>
-                                <div class="gallery-item" data-design-name="Blue Leaves" data-design-image="https://images.prismic.io/aftershockpc/ZuDsMhoQrfVKl8T4_HERO_BlueLeaves.png?auto=format,compress">
-                                    <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/blue_20leaves.png?v=1726035983&width=150" alt="Blue Leaves">
-                                    <p>Blue Leaves</p>
-                                </div>
-                                <div class="gallery-item" data-design-name="Blue Gundam" data-design-image="https://images.prismic.io/aftershockpc/ZuEinxoQrfVKl8dA_HERO_BlueGundam-1-.png?auto=format,compress">
-                                    <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/gundam_201.png?v=1726035974&width=150" alt="Blue Gundam">
-                                    <p>Blue Gundam</p>
-                                </div>
-                                 <div class="gallery-item" data-design-name="No Custom Design" data-design-image="">
-                                    <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
-                                    <p>No Custom Design</p>
+                                <div class="artwork-tools">
+                                     <button id="cropBtn" style="display:none;">Crop</button>
+                                     <button id="rotateBtn" style="display:none;">Rotate</button>
+                                     <!-- Add more tool buttons as needed -->
                                 </div>
                             </div>
+                            <div class="design-option">
+                                <h4>Or Choose from Gallery</h4>
+                                <div class="gallery-grid">
+                                    <div class="gallery-item" data-design-name="Red Cyberpunk" data-design-image="https://images.prismic.io/aftershockpc/ZtVccEaF0TcGJp7v_HERO_RedCyberpunk.png?auto=format,compress">
+                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/crimson.png?v=1725261837&width=150" alt="Red Cyberpunk">
+                                        <p>Red Cyberpunk</p>
+                                    </div>
+                                    <div class="gallery-item" data-design-name="Blue Leaves" data-design-image="https://images.prismic.io/aftershockpc/ZuDsMhoQrfVKl8T4_HERO_BlueLeaves.png?auto=format,compress">
+                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/blue_20leaves.png?v=1726035983&width=150" alt="Blue Leaves">
+                                        <p>Blue Leaves</p>
+                                    </div>
+                                    <div class="gallery-item" data-design-name="Blue Gundam" data-design-image="https://images.prismic.io/aftershockpc/ZuEinxoQrfVKl8dA_HERO_BlueGundam-1-.png?auto=format,compress">
+                                        <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/gundam_201.png?v=1726035974&width=150" alt="Blue Gundam">
+                                        <p>Blue Gundam</p>
+                                    </div>
+                                     <div class="gallery-item" data-design-name="No Custom Design" data-design-image="">
+                                        <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
+                                        <p>No Custom Design</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>Selected Design: <strong id="selectedDesignName">None</strong></p>
                         </div>
-                         <p>Selected Design: <strong id="selectedDesignName">None</strong></p>
                     </div>
                     <div class="panel-navigation">
                         <button class="prev-step-btn" data-prev-panel="panel-1">Back: Choose PC</button>
@@ -705,12 +743,6 @@ body {
                                 <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
                             </div>
                         </div>
-                        <div class="promo-code-card">
-                            <h4>Have a Promo Code?</h4>
-                            <input type="text" id="promoCodeInput" placeholder="Enter promo code">
-                            <button id="applyPromoBtn">Apply Promo</button>
-                            <p id="promoStatus"></p>
-                        </div>
                         <button class="checkout-button">Proceed to Checkout</button>
                     </div>
                     <div class="panel-navigation">
@@ -730,8 +762,10 @@ body {
 
         const pcSelectionButtons = document.querySelectorAll('#panel-1 .select-button');
         const artworkUploadInput = document.getElementById('artworkUpload');
-        const artworkPreview = document.getElementById('artworkPreview');
-        const artworkPreviewText = document.getElementById('artworkPreviewText');
+        const artworkPreview = document.getElementById('artworkPreview'); // Thumbnail preview
+        const artworkPreviewText = document.getElementById('artworkPreviewText'); // Text for thumbnail
+        const artworkOnPcPreview = document.getElementById('artworkOnPcPreview'); // Main preview on PC model
+        const pcPreviewPlaceholderText = document.getElementById('pcPreviewPlaceholderText'); // Text for main PC preview
         const galleryItems = document.querySelectorAll('#panel-2 .gallery-item');
 
         const summaryPcName = document.getElementById('summaryPcName');
@@ -742,10 +776,6 @@ body {
 
         const checkoutButton = document.querySelector('.checkout-button');
 
-        const promoCodeInput = document.getElementById('promoCodeInput');
-        const applyPromoBtn = document.getElementById('applyPromoBtn');
-        const promoStatus = document.getElementById('promoStatus');
-
         let currentPanel = 0;
         let orderDetails = {
             pc: null, // { name: 'Starter Custom Rig', price: 1499 }
@@ -753,13 +783,25 @@ body {
         };
 
         function updatePanelVisibility() {
-            if (!panelContainer) return; // Ensure container exists
-            panelContainer.style.transform = `translateX(-${currentPanel * (100 / panels.length)}%)`;
+            if (!panelContainer || !panels.length) return;
+
+            const panelWidthPercentage = 100 / panels.length; // Each panel's slot in the container
+            // Calculate the offset to center the active panel.
+            // This needs to account for the fact that the panel-container itself moves.
+            // The active panel should appear in the "center" of the checkout-main viewport.
+            // If each panel slot is 100% of checkout-main's width:
+            let offsetPercentage = -currentPanel * panelWidthPercentage;
+
+            panelContainer.style.transform = `translateX(${offsetPercentage}%)`;
+
             panels.forEach((panel, index) => {
+                panel.classList.remove('active', 'prev-adjacent', 'next-adjacent');
                 if (index === currentPanel) {
                     panel.classList.add('active');
-                } else {
-                    panel.classList.remove('active');
+                } else if (index === currentPanel - 1) {
+                    panel.classList.add('prev-adjacent');
+                } else if (index === currentPanel + 1) {
+                    panel.classList.add('next-adjacent');
                 }
             });
 
@@ -825,27 +867,39 @@ body {
                         if (file.size <= 10 * 1024 * 1024) { // 10MB
                             const reader = new FileReader();
                             reader.onload = function(e) {
+                                // Update thumbnail preview
                                 artworkPreview.src = e.target.result;
                                 artworkPreview.style.display = 'block';
                                 artworkPreviewText.style.display = 'none';
+                                
+                                // Update main PC preview
+                                if (artworkOnPcPreview) {
+                                    artworkOnPcPreview.src = e.target.result;
+                                    artworkOnPcPreview.style.display = 'block';
+                                }
+                                if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'none';
+
                                 orderDetails.design = { name: `Custom: ${file.name}`, image: e.target.result };
                                 galleryItems.forEach(item => item.classList.remove('selected'));
                                 document.getElementById('selectedDesignName').textContent = `Custom: ${file.name}`;
                                 updateSummary();
+                                // Show crop/rotate buttons for custom uploads
+                                document.getElementById('cropBtn').style.display = 'inline-block';
+                                document.getElementById('rotateBtn').style.display = 'inline-block';
                             }
                             reader.readAsDataURL(file);
                         } else {
                             alert("File is too large. Maximum size is 10MB.");
-                            artworkPreview.src = "#";
-                            artworkPreview.style.display = 'none';
-                            artworkPreviewText.style.display = 'block';
+                            artworkPreview.src = "#"; artworkPreview.style.display = 'none'; artworkPreviewText.style.display = 'block';
+                            if (artworkOnPcPreview) { artworkOnPcPreview.src = "#"; artworkOnPcPreview.style.display = 'none'; }
+                            if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
                             artworkUploadInput.value = "";
                         }
                     } else {
                         alert("Invalid file type. Please upload JPG or PNG.");
-                        artworkPreview.src = "#";
-                        artworkPreview.style.display = 'none';
-                        artworkPreviewText.style.display = 'block';
+                        artworkPreview.src = "#"; artworkPreview.style.display = 'none'; artworkPreviewText.style.display = 'block';
+                        if (artworkOnPcPreview) { artworkOnPcPreview.src = "#"; artworkOnPcPreview.style.display = 'none'; }
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
                         artworkUploadInput.value = "";
                     }
                 }
@@ -860,12 +914,30 @@ body {
                     name: item.dataset.designName,
                     image: item.dataset.designImage
                 };
+
+                // Update thumbnail preview (if needed, or clear it)
+                if (artworkPreview) { artworkPreview.src = "#"; artworkPreview.style.display = 'none'; }
+                if (artworkPreviewText) artworkPreviewText.style.display = 'block'; // Show placeholder for upload thumbnail
                 if (artworkUploadInput) artworkUploadInput.value = ""; // Clear file input
-                if (artworkPreview) artworkPreview.src = "#";
-                if (artworkPreview) artworkPreview.style.display = 'none';
-                if (artworkPreviewText) artworkPreviewText.style.display = 'block';
+
+                // Update main PC preview
+                if (artworkOnPcPreview) {
+                    if (item.dataset.designImage && item.dataset.designImage !== "") {
+                        artworkOnPcPreview.src = item.dataset.designImage;
+                        artworkOnPcPreview.style.display = 'block';
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'none';
+                    } else { // "No Custom Design" or empty image
+                        artworkOnPcPreview.src = "#";
+                        artworkOnPcPreview.style.display = 'none';
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
+                    }
+                }
+                
                 document.getElementById('selectedDesignName').textContent = item.dataset.designName;
                 updateSummary();
+                // Hide crop/rotate buttons for gallery items
+                document.getElementById('cropBtn').style.display = 'none';
+                document.getElementById('rotateBtn').style.display = 'none';
             });
         });
 
@@ -915,36 +987,6 @@ body {
                 }
                 alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
                 console.log("Order Details:", orderDetails);
-            });
-        }
-
-        if (applyPromoBtn) {
-            applyPromoBtn.addEventListener('click', () => {
-                const code = promoCodeInput.value.trim();
-                if (promoStatus) { // Ensure promoStatus element exists
-                    if (code) {
-                        // Dummy promo code logic
-                        if (code.toUpperCase() === "SAVE10") {
-                            promoStatus.textContent = "Promo code SAVE10 applied! (10% off - simulated)";
-                            promoStatus.style.color = "var(--success-color)";
-                            // In a real scenario, you'd update orderDetails.total or apply discount
-                            // and then call updateSummary().
-                            // e.g. orderDetails.discount = orderDetails.pc.price * 0.1; updateSummary();
-                            alert("Promo code SAVE10 applied! (This is a visual demo; total not updated yet)");
-                        } else if (code.toUpperCase() === "FREESHIP") {
-                            promoStatus.textContent = "Promo code FREESHIP applied! (Free Shipping - simulated)";
-                            promoStatus.style.color = "var(--success-color)";
-                            alert("Promo code FREESHIP applied! (This is a visual demo)");
-                        }
-                        else {
-                            promoStatus.textContent = "Invalid or expired promo code.";
-                            promoStatus.style.color = "var(--error-color)";
-                        }
-                    } else {
-                        promoStatus.textContent = "Please enter a promo code.";
-                        promoStatus.style.color = "var(--error-color)";
-                    }
-                }
             });
         }
 
