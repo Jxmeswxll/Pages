@@ -674,118 +674,85 @@ body {
 }
 /* End of Fabric.js Customizer Styles */
 
-/* Advanced Image Cropper Styles */
-.image-cropper-container {
-    padding: 20px;
-    background-color: var(--surface-medium);
-    border-radius: var(--border-radius);
+/* Cropping Modal Styles */
+.crop-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+.crop-modal-content {
+    background-color: var(--secondary-black);
+    padding: 25px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box; /* Ensure padding is included in height */
+    border: 1px solid var(--border-color);
 }
-.image-cropper-container h1.cropper-title {
+.crop-modal-content h3 {
+    font-family: var(--font-header);
+    color: var(--primary-red);
     text-align: center;
-    color: var(--text-primary);
-    font-family: var(--font-header);
-    margin-bottom: 20px;
-    font-size: 1.5em;
-}
-.image-section { /* Styles for the cropper's sections */
-    margin-bottom: 20px; 
-    padding: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
-    background-color: var(--secondary-black);
-}
-.image-section:last-child {
-    margin-bottom: 0; /* Remove margin from last section if it's inside a scrolling container */
-}
-.image-section h2 {
     margin-top: 0;
-    color: var(--text-light);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
     margin-bottom: 15px;
-    font-family: var(--font-header);
-    font-size: 1.2em; 
+    font-size: 1.6em;
 }
-.image-section label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--text-secondary);
-}
-.image-section input[type="file"] {
-    margin-bottom: 10px;
-    padding: 8px;
-    background-color: var(--surface-light);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    width: calc(100% - 18px); /* Account for padding */
-    box-sizing: border-box;
-}
-.preview-container { /* Styles for cropper's preview areas */
+.crop-modal-preview-container {
+    width: 100%;
+    min-height: 200px;
+    max-height: calc(90vh - 200px); /* Adjust based on other elements */
     border: 2px dashed var(--primary-red);
-    padding: 10px;
-    margin-top: 10px;
-    min-height: 180px; 
+    background-color: var(--primary-black);
     display: flex;
-    align-items: center;
     justify-content: center;
-    background-color: var(--primary-black); /* Darker background for contrast */
-    position: relative; 
+    align-items: center;
+    position: relative; /* For crop mask/outline */
+    overflow: hidden; /* Important for containing the image and masks */
+    margin-bottom: 20px;
     border-radius: var(--border-radius-sm);
-    overflow: hidden; 
 }
-.preview-container img {
+.crop-modal-preview-container img {
     max-width: 100%;
-    max-height: 220px; /* Max height for preview image */
+    max-height: 100%; /* Ensure image fits within container */
     display: block;
     object-fit: contain;
 }
-.crop-mask { /* Mask for outside crop area */
+.crop-modal-mask { /* For the modal cropper */
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.75); /* Darker semi-transparent overlay */
+    background-color: rgba(0, 0, 0, 0.65);
     pointer-events: none;
 }
-.crop-window-border { /* Border for the clear crop window */
+.crop-modal-window-border { /* For the modal cropper */
     position: absolute;
     box-sizing: border-box;
-    border: 2px solid var(--primary-red); /* Prominent border for the crop window */
+    border: 2px solid var(--primary-hover);
     pointer-events: none;
 }
-.export-button { /* Button for exporting cropped image */
-    padding: 10px 20px;
-    font-family: var(--font-main);
-    font-weight: 500;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: var(--transition);
-    border: none;
+.crop-modal-dimensions-note {
     text-align: center;
-    display: block; /* Make it block to center with margin auto */
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--success-color); 
-    color: var(--text-light);
-    margin: 15px auto 0; /* Center button */
-    width: fit-content; /* Adjust width to content */
-}
-.export-button:hover {
-    background: #28a745; /* Darker green for hover */
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
-}
-.dimensions-note { /* Note for required dimensions */
-    font-size: 0.85em; 
     color: var(--text-gray);
-    margin-top: 5px;
-    margin-bottom: 10px;
+    font-size: 0.9em;
+    margin-bottom: 20px;
 }
-/* End of Advanced Image Cropper Styles */
+.crop-modal-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+.crop-modal-actions .fabric-button { /* Re-use existing button style */
+    min-width: 120px;
+}
+/* End Cropping Modal Styles */
 
 /* Panel 3: Summary */
 .summary-details {
@@ -1048,55 +1015,77 @@ body {
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
-                            <!-- Advanced Image Cropper HTML Start -->
-                            <div class="image-cropper-container">
-                                <h1 class="cropper-title">Advanced Image Cropping Tool</h1>
-
-                                <div class="image-section" id="side-glass-section-cropper"> <!-- Added -cropper to avoid ID collision if old JS is still present -->
-                                    <h2>Side Glass</h2>
-                                    <label for="side-glass-file-cropper">Upload Side Glass Image:</label>
-                                    <input type="file" id="side-glass-file-cropper" accept="image/*">
-                                    <div class="dimensions-note">Required: 1167.87 x 983.62 px</div>
-                                    <div class="preview-container" id="side-glass-preview-container-cropper">
-                                        <img id="side-glass-preview-cropper" src="#" alt="Side Glass Preview" style="display:none;">
-                                    </div>
-                                    <button class="export-button" id="export-side-glass-cropper">Export Side Glass</button>
+                            <!-- This entire .panel-content will be replaced by the Fabric.js customizer HTML -->
+                            <!-- User provided HTML for Fabric.js customizer -->
+                            <div class="fabric-container"> <!-- Renamed from .container -->
+                                <!-- Header for customizer (optional, if different from panel header) -->
+                                <!-- <h1>Custom PC Case Designer</h1> --> <!-- This title is now part of panel-header -->
+                                
+                                <div id="canvas-container">
+                                  <canvas id="c"></canvas>
+                                  <div class="loading" id="loadingIndicator">
+                                    <div class="spinner"></div>
+                                  </div>
                                 </div>
-
-                                <div class="image-section" id="front-glass-section-cropper">
-                                    <h2>Front Glass</h2>
-                                    <label for="front-glass-file-cropper">Upload Front Glass Image:</label>
-                                    <input type="file" id="front-glass-file-cropper" accept="image/*">
-                                    <div class="dimensions-note">Required: 785.20 x 992.13 px</div>
-                                    <div class="preview-container" id="front-glass-preview-container-cropper">
-                                        <img id="front-glass-preview-cropper" src="#" alt="Front Glass Preview" style="display:none;">
+                                
+                                <div id="view-tabs"> <!-- MOVED HERE -->
+                                    <div class="tab active" data-viewkey="front">
+                                      <i class="fas fa-desktop"></i> Front
                                     </div>
-                                    <button class="export-button" id="export-front-glass-cropper">Export Front Glass</button>
-                                </div>
-
-                                <div class="image-section" id="rear-panel-section-cropper">
-                                    <h2>Rear Panel</h2>
-                                    <label for="rear-panel-file-cropper">Upload Rear Panel Image:</label>
-                                    <input type="file" id="rear-panel-file-cropper" accept="image/*">
-                                    <div class="dimensions-note">Required: 1173.54 x 986.46 px</div>
-                                    <div class="preview-container" id="rear-panel-preview-container-cropper">
-                                        <img id="rear-panel-preview-cropper" src="#" alt="Rear Panel Preview" style="display:none;">
+                                    <div class="tab" data-viewkey="top">
+                                      <i class="fas fa-arrow-up"></i> Top
                                     </div>
-                                    <button class="export-button" id="export-rear-panel-cropper">Export Rear Panel</button>
-                                </div>
-
-                                <div class="image-section" id="top-grill-section-cropper">
-                                    <h2>Top Grill</h2>
-                                    <label for="top-grill-file-cropper">Upload Top Grill Image:</label>
-                                    <input type="file" id="top-grill-file-cropper" accept="image/*">
-                                    <div class="dimensions-note">Required: 490.39 x 1057.32 px</div>
-                                    <div class="preview-container" id="top-grill-preview-container-cropper">
-                                        <img id="top-grill-preview-cropper" src="#" alt="Top Grill Preview" style="display:none;">
+                                    <div class="tab" data-viewkey="side1">
+                                      <i class="fas fa-columns"></i> Side 1
                                     </div>
-                                    <button class="export-button" id="export-top-grill-cropper">Export Top Grill</button>
+                                    <div class="tab" data-viewkey="side2">
+                                      <i class="fas fa-columns fa-flip-horizontal"></i> Side 2
+                                    </div>
+                                  </div>
+
+                                <div class="controls-section">
+                                  <div class="color-section">
+                                    <div class="section-title">
+                                      <i class="fas fa-paint-roller"></i> Chassis Color
+                                    </div>
+                                    <div class="color-grid" id="chassisColors">
+                                      <div class="swatch chassis-color-swatch active" style="background:#3B82F6;" data-chassis-color="blue" title="Blue Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#10B981;" data-chassis-color="green" title="Green Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#EC4899;" data-chassis-color="pink" title="Pink Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#8B5CF6;" data-chassis-color="purple" title="Purple Chassis"></div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="upload-section">
+                                    <div class="section-title">
+                                      <i class="fas fa-upload"></i> Custom Design
+                                    </div>
+                                    <div class="file-upload">
+                                      <div class="upload-area" id="uploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <div class="upload-text">
+                                          <strong>Click to upload</strong> or drag and drop<br>
+                                          your custom design image
+                                        </div>
+                                      </div>
+                                      <input type="file" id="fileInput" style="display: none;" accept="image/*">
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="actions">
+                                    <button class="fabric-button" id="resetBtn"> <!-- Renamed class -->
+                                      <i class="fas fa-undo"></i> Reset View
+                                    </button>
+                                    <button class="fabric-button" id="deleteBtn">
+                                      <i class="fas fa-trash"></i> Remove Design
+                                    </button>
+                                    <button class="fabric-button" id="downloadBtn"> <!-- Moved Save Design button -->
+                                      <i class="fas fa-download"></i> Save Design
+                                    </button>
+                                  </div>
                                 </div>
-                            </div>
-                            <!-- Advanced Image Cropper HTML End -->
+                              </div>
+                              <!-- End of user provided HTML -->
                         </div>
                         <div class="panel-navigation">
                             <button class="prev-step-btn" data-target-panel-index="0">Back: Choose PC</button>
@@ -1426,232 +1415,697 @@ body {
         // Initial setup calls
         setActivePanel(0); // Start with the first panel active
         
-        // --- FABRIC.JS CUSTOMIZER SCRIPT (REMOVED) ---
-        
-        // Modify setActivePanel (Fabric.js initialization removed)
-        const originalSetActivePanel = setActivePanel;
-        setActivePanel = function(targetIndex) {
-            originalSetActivePanel(targetIndex); // Call original function
-            // Fabric.js initialization logic removed.
-            // The new cropper tool does not need special initialization on panel activation in the same way.
-        }
-        // --- END OF REMOVED FABRIC.JS LOGIC ---
+        // --- FABRIC.JS CUSTOMIZER SCRIPT START ---
+        // Adapted from user-provided HTML for Panel 2
 
-        // const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn'); 
-        // if (panel1NextBtn) { // This check should still be fine as Panel 1 logic is unchanged.
-        //     panel1NextBtn.disabled = true; 
-        // }
-        
-        // Default design for summary, as Panel 2 is now for image cropping
-        if (!orderDetails.design) {
-            orderDetails.design = {
-                name: "Image Cropping Step (No specific design selected for summary)",
-                image: "" // No single image to show in summary from cropper
-            };
-        }
-        // Ensure Panel 2's "Next" button is enabled by default as it's not dependent on a "design selection" anymore.
-        const panel2NextBtn = document.querySelector('#panel-2 .panel-navigation .next-step-btn');
-        if (panel2NextBtn) {
-            panel2NextBtn.disabled = false;
-        }
+        const fabricCanvasContainer = document.querySelector('#panel-2 #canvas-container');
+        let fabricCanvas; 
+        let currentFabricView = 'front'; 
+        let fabricPanelRect; 
+        const fabricLoadingIndicator = document.querySelector('#panel-2 #loadingIndicator');
+        let currentChassisColor = 'blue'; // Default chassis color
+        let originalUploadedFile = null; // To store the originally uploaded file for cropping
 
-        updateSummary(); // Initial summary update
-    })();
+        // Cropping Modal Elements
+        const cropModalOverlay = document.getElementById('cropModalOverlay');
+        const cropModalImageToCrop = document.getElementById('cropModalImageToCrop');
+        const cropModalPreviewContainer = document.getElementById('cropModalPreviewContainer');
+        const cropModalDimensionsNote = document.getElementById('cropModalDimensionsNote');
+        const confirmCropBtn = document.getElementById('confirmCropBtn');
+        const cancelCropBtn = document.getElementById('cancelCropBtn');
+        let currentCropDataForModal = {}; // To store crop selection from modal
 
-    // --- ADVANCED IMAGE CROPPER SCRIPT START ---
-    (function() {
-        const imageCropperSections = [
-            {
-                idPrefix: 'side-glass',
-                targetWidth: 1167.87,
-                targetHeight: 983.62,
-                fileInputId: 'side-glass-file-cropper',
-                previewImgId: 'side-glass-preview-cropper',
-                previewContainerId: 'side-glass-preview-container-cropper',
-                exportBtnId: 'export-side-glass-cropper'
+        // Define base path and image names for dynamic loading
+        const chassisBasePath = 'Zeal Pastel/';
+        const chassisImageFiles = {
+            blue: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' }, // Assuming rear_2000px.png can be side2
+            green: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' },
+            pink: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' }, // Using rear_2000px (1).png or (2).png might be specific
+            purple: { front: 'Purple Zeal M-Front.png', top: 'Purple Zeal M-Top.png', side1: 'Purple Zeal M-Side.png', side2: 'Purple Zeal M-Rear.png' }
+        };
+
+        const fabricViews = { 
+            front: {
+              panel: { left: 250, top: 200, width: 300, height: 200 }, 
+              targetWidth: 785.20, targetHeight: 992.13, // Front Glass
+              designs: {} 
             },
-            {
-                idPrefix: 'front-glass',
-                targetWidth: 785.20,
-                targetHeight: 992.13,
-                fileInputId: 'front-glass-file-cropper',
-                previewImgId: 'front-glass-preview-cropper',
-                previewContainerId: 'front-glass-preview-container-cropper',
-                exportBtnId: 'export-front-glass-cropper'
+            top: {
+              panel: { left: 300, top: 100, width: 200, height: 150 },
+              targetWidth: 490.39, targetHeight: 1057.32, // Top Grill
+              designs: {} 
             },
-            {
-                idPrefix: 'rear-panel',
-                targetWidth: 1173.54,
-                targetHeight: 986.46,
-                fileInputId: 'rear-panel-file-cropper',
-                previewImgId: 'rear-panel-preview-cropper',
-                previewContainerId: 'rear-panel-preview-container-cropper',
-                exportBtnId: 'export-rear-panel-cropper'
+            side1: { // Was 'side'
+              panel: { left: 200, top: 150, width: 350, height: 250 },
+              targetWidth: 1167.87, targetHeight: 983.62, // Side Glass
+              designs: {}
             },
-            {
-                idPrefix: 'top-grill',
-                targetWidth: 490.39,
-                targetHeight: 1057.32,
-                fileInputId: 'top-grill-file-cropper',
-                previewImgId: 'top-grill-preview-cropper',
-                previewContainerId: 'top-grill-preview-container-cropper',
-                exportBtnId: 'export-top-grill-cropper'
+            side2: { // New view
+              panel: { left: 200, top: 150, width: 350, height: 250 }, 
+              targetWidth: 1173.54, targetHeight: 986.46, // Rear Panel
+              designs: {}
             }
-        ];
+        };
 
-        imageCropperSections.forEach(section => {
-            const fileInput = document.getElementById(section.fileInputId);
-            const previewImg = document.getElementById(section.previewImgId);
-            const previewContainer = document.getElementById(section.previewContainerId);
-            const exportBtn = document.getElementById(section.exportBtnId);
+        function showFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.add('active');
+        }
+        function hideFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.remove('active');
+        }
 
-            if (!fileInput || !previewImg || !previewContainer || !exportBtn) {
-                console.warn(`Cropper elements not found for section ${section.idPrefix} in customRTSv2.html. Skipping initialization.`);
+        function showFabricNotification(message, type = 'info') { // Added type for potential styling
+            // Removed alert(message);
+            console.log(`Notification (${type}): ${message}`); // Log to console instead
+            // const notification = document.getElementById('notification'); 
+            // const notificationText = document.getElementById('notificationText');
+            // if(notification && notificationText) {
+            //     notificationText.textContent = message;
+            //     notification.classList.add('show');
+            //     setTimeout(() => { notification.classList.remove('show'); }, 3000);
+            // }
+        }
+
+        function resizeFabricCanvas() {
+            if (!fabricCanvas || !fabricCanvasContainer) return;
+            const containerWidth = fabricCanvasContainer.clientWidth;
+            // Maintain aspect ratio from CSS (16:12 or 4:3.5)
+            const aspectRatio = 16 / 12; // Or parse from css aspect-ratio if more dynamic
+            const containerHeight = containerWidth / aspectRatio; 
+            
+            fabricCanvas.setWidth(containerWidth);
+            fabricCanvas.setHeight(containerHeight);
+            fabricCanvas.calcOffset(); // Recalculate canvas offset after resizing
+            fabricCanvas.renderAll();
+            
+            if (currentFabricView) {
+                loadFabricView(currentFabricView, false); // Reload to adjust objects
+            }
+        }
+
+        function loadFabricView(viewKey, animate = true) {
+            if (!fabricCanvas) return;
+            showFabricLoading();
+            const viewConfig = fabricViews[viewKey]; // Contains panel overlay info
+            currentFabricView = viewKey; // front, side, top
+
+            const chassisImageSet = chassisImageFiles[currentChassisColor];
+            if (!chassisImageSet) {
+                console.error("Chassis color not found:", currentChassisColor);
+                hideFabricLoading();
+                return;
+            }
+            const bgImageUrl = chassisBasePath + currentChassisColor + '/' + chassisImageSet[viewKey];
+            
+            fabricCanvas.clear(); // Clear previous objects
+            
+            fabric.Image.fromURL(bgImageUrl, function(img) {
+                // --- Force re-read of container dimensions and update Fabric canvas ---
+                let canvasWidth = fabricCanvasContainer.clientWidth;
+                const aspectRatio = 16 / 12; // Must match CSS aspect-ratio for #canvas-container
+                let canvasHeight = canvasWidth / aspectRatio;
+
+                // If containerWidth is 0, it might mean it's not visible/rendered yet.
+                // Fallback to a minimum or last known good, though this indicates a deeper layout issue.
+                if (canvasWidth === 0) {
+                    console.warn("Canvas container width is 0, attempting fallback or default.");
+                    // Attempt to get width from canvas element style if set, or default
+                    canvasWidth = fabricCanvas.getElement().style.width ? parseInt(fabricCanvas.getElement().style.width, 10) : 600;
+                    canvasHeight = canvasWidth / aspectRatio;
+                }
+                
+                fabricCanvas.setWidth(canvasWidth);
+                fabricCanvas.setHeight(canvasHeight);
+                fabricCanvas.calcOffset();
+                // --- End of forced re-read ---
+                
+                // Determine the scale factor to make the image fit while maintaining aspect ratio
+                // This time, we want to ensure the entire image is visible (object-fit: contain behavior)
+                // and then we will center it.
+                const imgAspectRatio = img.width / img.height;
+                const canvasAspectRatio = canvasWidth / canvasHeight;
+                let scaleFactor;
+
+                if (imgAspectRatio > canvasAspectRatio) {
+                    // Image is wider than canvas, scale to fit width
+                    scaleFactor = canvasWidth / img.width;
+                } else {
+                    // Image is taller than canvas, scale to fit height
+                    scaleFactor = canvasHeight / img.height;
+                }
+                
+                const scaledWidth = img.width * scaleFactor;
+                const scaledHeight = img.height * scaleFactor;
+
+                img.set({
+                    scaleX: scaleFactor,
+                    scaleY: scaleFactor,
+                    left: (canvasWidth - scaledWidth) / 2, // Center horizontally
+                    top: (canvasHeight - scaledHeight) / 2, // Center vertically
+                    originX: 'left', // Origin is top-left for easier calculations
+                    originY: 'top',
+                    selectable: false,
+                    evented: false
+                });
+                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
+                
+                // The designable panel coordinates are relative to the original image dimensions.
+                // We need to scale and offset them based on the background image's scaled size and position.
+                const panelLeftOnImage = viewConfig.panel.left;
+                const panelTopOnImage = viewConfig.panel.top;
+                const panelWidthOnImage = viewConfig.panel.width;
+                const panelHeightOnImage = viewConfig.panel.height;
+
+                fabricPanelRect = new fabric.Rect({
+                    left: img.left + (panelLeftOnImage * scaleFactor),
+                    top: img.top + (panelTopOnImage * scaleFactor),
+                    width: panelWidthOnImage * scaleFactor,
+                    height: panelHeightOnImage * scaleFactor,
+                    fill: 'rgba(0,0,0,0.0)', // Transparent, but helps in debugging if set to a color
+                    selectable: false, 
+                    evented: false,
+                    opacity: 1, // Keep it visible for design placement
+                    absolutePositioned: true // This might not be strictly necessary if coords are canvas-relative
+                });
+                fabricCanvas.add(fabricPanelRect);
+                // fabricPanelRect.set('fill', 'rgba(255,0,0,0.3)'); // For debugging panel position
+
+                // Load stored user designs for this view and chassis color combination
+                const designStorageKey = currentChassisColor + "_" + viewKey;
+                const designsToLoad = viewConfig.designs[designStorageKey] || [];
+                if (designsToLoad.length > 0) {
+                    designsToLoad.forEach((designData, index) => {
+                        // Important: When loading designs, their saved left/top/scale might need
+                        // to be re-interpreted based on the *current* scaled background and panelRect.
+                        // For now, assuming they were saved relative to an 800x600 canvas.
+                        // This part might need further refinement if designs don't place correctly after scaling.
+                        fabric.Image.fromURL(designData.src, function(designImg) {
+                            // Re-calculate position and scale based on current fabricPanelRect
+                            const designRectCenterX = fabricPanelRect.left + fabricPanelRect.width / 2;
+                            const designRectCenterY = fabricPanelRect.top + fabricPanelRect.height / 2;
+                            const maxDesignWidth = fabricPanelRect.width * 0.95;
+                            const maxDesignHeight = fabricPanelRect.height * 0.95;
+                            let designScaleFactor = Math.min(maxDesignWidth / designImg.width, maxDesignHeight / designImg.height);
+                            designScaleFactor = Math.max(designScaleFactor, 0.01);
+
+                            designImg.set({
+                                left: designRectCenterX, // Position relative to current panelRect
+                                top: designRectCenterY,
+                                originX: 'center',
+                                originY: 'center',
+                                scaleX: designScaleFactor, // Scale relative to current panelRect
+                                scaleY: designScaleFactor,
+                                angle: designData.angle || 0, // Use saved angle or default
+                                cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
+                                borderColor: 'var(--primary-red)', cornerSize: 10,
+                                opacity: animate ? 0 : 1,
+                            });
+                            fabricCanvas.add(designImg);
+                            if (animate) {
+                                setTimeout(() => {
+                                    designImg.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                                }, 300 + (index * 100));
+                            }
+                        }, { crossOrigin: 'anonymous' });
+                    });
+                }
+                hideFabricLoading();
+                fabricCanvas.requestRenderAll(); // Use requestRenderAll for potentially better timing
+            }, { crossOrigin: 'anonymous' });
+            // updateFabricColorSelection removed as panel color is no longer user-selectable
+            
+            // Update view tab confirmation status
+            const activeTabElement = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
+            if (activeTabElement) {
+                // For now, let's assume loading a view means it's "pending" confirmation until a design is added.
+                // The actual "confirmation" (green highlight) will happen when a design is added/modified for this view.
+                // We might need a separate mechanism to track if a view *has* a design.
+            }
+        }
+        
+        function changeChassisColor(newColor) {
+            if (currentChassisColor === newColor) return;
+            currentChassisColor = newColor;
+            loadFabricView(currentFabricView, true); 
+            document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
+                 swatch.classList.toggle('active', swatch.dataset.chassisColor === newColor);
+            });
+        }
+
+
+        function switchFabricView(viewKey) {
+            if (currentFabricView === viewKey || !fabricCanvas) return;
+            
+            const currentViewConfig = fabricViews[currentFabricView];
+            if (currentViewConfig) { 
+                const currentDesignStorageKey = currentChassisColor + "_" + currentFabricView;
+                currentViewConfig.designs[currentDesignStorageKey] = []; 
+                
+                fabricCanvas.getObjects().forEach(obj => {
+                    if (obj !== fabricPanelRect && obj.type === 'image' && obj.getSrc() && obj.isCustomDesign) { 
+                        currentViewConfig.designs[currentDesignStorageKey].push({
+                            src: obj.getSrc(),
+                            left: obj.left, // Save actual canvas coordinates
+                            top: obj.top,
+                            scaleX: obj.scaleX, 
+                            scaleY: obj.scaleY,
+                            angle: obj.angle,
+                            isCustomDesign: true // Persist this flag
+                        });
+                    }
+                });
+            }
+
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
+                tab.classList.remove('active');
+                // Do not remove 'view-confirmed' here, it should persist until reset
+            });
+            const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
+            if(activeTab) activeTab.classList.add('active'); // Red for active, green for confirmed will layer or be specific
+            
+            // Animate out existing objects before loading new view
+            let objectsToAnimate = fabricCanvas.getObjects().filter(obj => obj !== fabricCanvas.backgroundImage);
+            if (objectsToAnimate.length > 0) {
+                objectsToAnimate.forEach(obj => {
+                    obj.animate('opacity', 0, { 
+                        duration: 200, 
+                        onChange: fabricCanvas.renderAll.bind(fabricCanvas),
+                        onComplete: () => {
+                            // Check if this is the last object to fade out
+                            objectsToAnimate = objectsToAnimate.filter(o => o !== obj);
+                            if(objectsToAnimate.length === 0) {
+                                loadFabricView(viewKey, true); // Load new view after all faded
+                            }
+                        }
+                    });
+                });
+            } else {
+                loadFabricView(viewKey, true);
+            }
+        }
+
+        // Removed changeFabricPanelColor and updateFabricColorSelection functions
+
+        function handleFabricFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            originalUploadedFile = file; // Store the original file
+            const currentViewConfig = fabricViews[currentFabricView];
+            if (!currentViewConfig || !currentViewConfig.targetWidth || !currentViewConfig.targetHeight) {
+                showFabricNotification("Error: Target dimensions for the current view are not defined.", "error");
                 return;
             }
 
-            fileInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewImg.src = e.target.result;
-                        previewImg.style.display = 'block';
-                        previewImg.onload = () => {
-                            initializeImageCropper(previewImg, previewContainer, section.targetWidth, section.targetHeight, section.idPrefix);
-                        };
-                        if (previewImg.complete) {
-                           initializeImageCropper(previewImg, previewContainer, section.targetWidth, section.targetHeight, section.idPrefix);
-                        }
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    previewImg.src = '#';
-                    previewImg.style.display = 'none';
-                    clearImageCropper(previewContainer, section.idPrefix);
-                }
-            });
-
-            exportBtn.addEventListener('click', async function() {
-                const cropData = window[`${section.idPrefix}_cropData_cropper`];
-                if (!previewImg.src || previewImg.src.endsWith('#') || previewImg.style.display === 'none') {
-                    alert('Please upload an image first for ' + section.idPrefix + '.');
-                    return;
-                }
-                if (!cropData) {
-                    alert('Cropping data not available for ' + section.idPrefix + '. Please ensure image is loaded.');
-                    return;
-                }
-
-                const croppedCanvas = await getCroppedImageCanvas(previewImg, section.targetWidth, section.targetHeight, cropData);
-                if (croppedCanvas) {
-                    const link = document.createElement('a');
-                    link.download = `${section.idPrefix}_${Math.round(section.targetWidth)}x${Math.round(section.targetHeight)}.png`;
-                    link.href = croppedCanvas.toDataURL('image/png');
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    alert(`${section.idPrefix} exported successfully!`);
-                } else {
-                    alert(`Failed to export ${section.idPrefix}.`);
-                }
-            });
-        });
-
-        function initializeImageCropper(imageElement, containerElement, targetWidth, targetHeight, idPrefix) {
-            clearImageCropper(containerElement, idPrefix); 
-
-            const originalImage = new Image();
-            originalImage.src = imageElement.src;
-            originalImage.onload = () => {
-                const imgDisplayWidth = imageElement.offsetWidth;
-                const imgDisplayHeight = imageElement.offsetHeight;
-
-                const scaleX = originalImage.naturalWidth / imgDisplayWidth;
-                const scaleY = originalImage.naturalHeight / imgDisplayHeight;
-
-                const targetAspectRatio = targetWidth / targetHeight;
-                let cropWindowDisplayWidth, cropWindowDisplayHeight;
-
-                if (imgDisplayWidth / imgDisplayHeight > targetAspectRatio) {
-                    cropWindowDisplayHeight = imgDisplayHeight;
-                    cropWindowDisplayWidth = cropWindowDisplayHeight * targetAspectRatio;
-                } else {
-                    cropWindowDisplayWidth = imgDisplayWidth;
-                    cropWindowDisplayHeight = cropWindowDisplayWidth / targetAspectRatio;
-                }
-
-                const cropWindowDisplayLeft = (imgDisplayWidth - cropWindowDisplayWidth) / 2;
-                const cropWindowDisplayTop = (imgDisplayHeight - cropWindowDisplayHeight) / 2;
-                
-                const imgOffsetX = imageElement.offsetLeft;
-                const imgOffsetY = imageElement.offsetTop;
-
-                const masks = {
-                    top: document.createElement('div'), bottom: document.createElement('div'),
-                    left: document.createElement('div'), right: document.createElement('div')
-                };
-                for (const key in masks) {
-                    masks[key].className = 'crop-mask';
-                    masks[key].classList.add(`${idPrefix}-mask-cropper`);
-                    containerElement.appendChild(masks[key]);
-                }
-                masks.top.style.cssText = `top:${imgOffsetY}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${cropWindowDisplayTop}px;`;
-                masks.bottom.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop + cropWindowDisplayHeight}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${imgDisplayHeight - (cropWindowDisplayTop + cropWindowDisplayHeight)}px;`;
-                masks.left.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX}px; width:${cropWindowDisplayLeft}px; height:${cropWindowDisplayHeight}px;`;
-                masks.right.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft + cropWindowDisplayWidth}px; width:${imgDisplayWidth - (cropWindowDisplayLeft + cropWindowDisplayWidth)}px; height:${cropWindowDisplayHeight}px;`;
-
-                const cropWindowBorder = document.createElement('div');
-                cropWindowBorder.className = 'crop-window-border';
-                cropWindowBorder.classList.add(`${idPrefix}-mask-cropper`);
-                cropWindowBorder.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft}px; width:${cropWindowDisplayWidth}px; height:${cropWindowDisplayHeight}px;`;
-                containerElement.appendChild(cropWindowBorder);
-
-                window[`${idPrefix}_cropData_cropper`] = {
-                    sourceX: cropWindowDisplayLeft * scaleX,
-                    sourceY: cropWindowDisplayTop * scaleY,
-                    sourceWidth: cropWindowDisplayWidth * scaleX,
-                    sourceHeight: cropWindowDisplayHeight * scaleY
-                };
-            };
-            originalImage.onerror = () => console.error("Original image for cropper failed to load: " + idPrefix);
+            // Show cropping modal
+            showCropModal(file, currentViewConfig.targetWidth, currentViewConfig.targetHeight);
         }
 
-        function clearImageCropper(containerElement, idPrefix) {
-            const elementsToRemove = containerElement.querySelectorAll(`.${idPrefix}-mask-cropper`);
-            elementsToRemove.forEach(el => el.remove());
-            if (window[`${idPrefix}_cropData_cropper`]) {
-                delete window[`${idPrefix}_cropData_cropper`];
+        // This function will be called AFTER cropping is confirmed
+        function applyCroppedImageToFabric(croppedImageDataURL) {
+            if (!fabricCanvas || !fabricPanelRect || !croppedImageDataURL) {
+                hideFabricLoading(); // Ensure loading is hidden if something goes wrong
+                return;
+            }
+            showFabricLoading(); // Show loading while Fabric processes the image
+            
+            fabric.Image.fromURL(croppedImageDataURL, function(img) {
+                // Scale and position the uploaded (and now pre-cropped) design relative to the fabricPanelRect
+                    // The image is already cropped to the target aspect ratio.
+                    // Now, scale it to fit within the fabricPanelRect for display on the PC model.
+                    const panelRectAspectRatio = fabricPanelRect.width / fabricPanelRect.height;
+                    const croppedImageAspectRatio = img.width / img.height; // Should match target aspect ratio
+
+                    let displayScaleFactor;
+                    if (croppedImageAspectRatio > panelRectAspectRatio) {
+                        // Cropped image is wider than panel rect, scale to fit width
+                        displayScaleFactor = (fabricPanelRect.width * 0.95) / img.width;
+                    } else {
+                        // Cropped image is taller or same aspect ratio, scale to fit height
+                        displayScaleFactor = (fabricPanelRect.height * 0.95) / img.height;
+                    }
+                    displayScaleFactor = Math.max(displayScaleFactor, 0.01);
+
+                    img.set({
+                        left: fabricPanelRect.left + fabricPanelRect.width / 2,
+                        top: fabricPanelRect.top + fabricPanelRect.height / 2,
+                        originX: 'center',
+                        originY: 'center',
+                        scaleX: displayScaleFactor,
+                        scaleY: displayScaleFactor,
+                        cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
+                        borderColor: 'var(--primary-red)', cornerSize: 10,
+                        opacity: 1,
+                        isCustomDesign: true,
+                        absolutePositioned: true
+                    });
+                    fabricCanvas.add(img);
+                    fabricCanvas.setActiveObject(img);
+
+                    const activeViewTab = document.querySelector(`#panel-2 .tab[data-viewkey="${currentFabricView}"]`);
+                    if (activeViewTab) activeViewTab.classList.add('view-confirmed');
+                    
+                    // Update orderDetails with the name of the original file and the cropped image data URL
+                    // This part might need adjustment based on how design info is stored/used.
+                    if (originalUploadedFile) {
+                         orderDetails.design = { 
+                            name: `Custom (${currentFabricView}): ${originalUploadedFile.name}`, 
+                            image: croppedImageDataURL // Store the cropped image for summary if needed
+                        };
+                        // If you have a specific element to display the selected design name for the current view:
+                        // document.getElementById('selectedDesignNameForView').textContent = orderDetails.design.name;
+                    }
+                    updateSummary(); // Update overall summary if this action affects it
+
+                    fabricCanvas.requestRenderAll();
+                    hideFabricLoading();
+                }, { crossOrigin: 'anonymous' });
+        }
+
+        function resetFabricView() {
+            if(!fabricCanvas) return;
+            fabricViews[currentFabricView].designs = [];
+            loadFabricView(currentFabricView); // This will clear and reload
+            showFabricNotification('View reset successfully!');
+        }
+
+        function deleteSelectedFabricDesign() {
+            if(!fabricCanvas) return;
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject !== fabricPanelRect) {
+                activeObject.animate('opacity', 0, {
+                    duration: 200, onChange: fabricCanvas.renderAll.bind(fabricCanvas),
+                    onComplete: function() { fabricCanvas.remove(activeObject); showFabricNotification('Design removed successfully!'); }
+                });
+            } else {
+                showFabricNotification('Please select a design to remove');
             }
         }
 
-        function getCroppedImageCanvas(originalImageElement, finalTargetWidth, finalTargetHeight, cropData) {
-            if (!cropData) { console.error("Crop data is missing."); return null; }
+        function saveFabricDesign() {
+            if(!fabricCanvas) return;
+            fabricCanvas.discardActiveObject().renderAll();
+            const dataURL = fabricCanvas.toDataURL({ format: 'png', quality: 1 });
+            const link = document.createElement('a');
+            link.download = `pc-design-${currentFabricView}-view.png`;
+            link.href = dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showFabricNotification('Design saved successfully!');
+        }
+        
+        function initializeFabricCanvas() {
+            if (fabricCanvas || !document.getElementById('panel-2').classList.contains('active')) return; // Already initialized or panel not active
+
+            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true }); // Allow selection
+            resizeFabricCanvas(); // Initial resize
+            loadFabricView(currentFabricView, false); // Load default view without animation first time
+
+            let currentlyEditedObject = null;
+
+            fabricCanvas.on('selection:created', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) {
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    currentlyEditedObject = null; 
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:updated', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign && (!opt.selected || opt.selected.length === 0 || currentlyEditedObject !== opt.selected[0])) {
+                     currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    if(currentlyEditedObject && currentlyEditedObject.isCustomDesign) currentlyEditedObject.set('opacity', 1);
+                    currentlyEditedObject = null;
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:cleared', function(opt) {
+                if (opt.deselected) {
+                    opt.deselected.forEach(obj => {
+                        if (obj.isCustomDesign) {
+                            obj.set('opacity', 1);
+                        }
+                    });
+                } else if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) { 
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                currentlyEditedObject = null;
+                fabricCanvas.requestRenderAll();
+            });
+
+
+            // Event listeners for Fabric customizer (scoped to Panel 2)
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
+                tab.addEventListener('click', function() { 
+                    const viewKey = this.dataset.viewkey;
+                    if (fabricViews.hasOwnProperty(viewKey)) {
+                       switchFabricView(viewKey);
+                    }
+                });
+            });
+            // Design Area Color Swatches removed
+            // Chassis Color Swatches
+            document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
+                swatch.addEventListener('click', function() { 
+                    changeChassisColor(this.dataset.chassisColor); 
+                    // Visually update active chassis swatch
+                    document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const fabricFileInput = document.querySelector('#panel-2 #fileInput');
+            if(fabricFileInput) fabricFileInput.addEventListener('change', handleFabricFileUpload);
+            
+            const fabricUploadArea = document.querySelector('#panel-2 #uploadArea');
+            if(fabricUploadArea) {
+                fabricUploadArea.addEventListener('click', function() { if(fabricFileInput) fabricFileInput.click(); });
+                fabricUploadArea.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor = 'var(--primary-red)'; this.style.background = 'rgba(230, 25, 25, 0.05)'; });
+                fabricUploadArea.addEventListener('dragleave', function(e) { e.preventDefault(); this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)'; });
+                fabricUploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)';
+                    if (e.dataTransfer.files.length && fabricFileInput) {
+                        fabricFileInput.files = e.dataTransfer.files;
+                        handleFabricFileUpload({ target: { files: e.dataTransfer.files } });
+                    }
+                });
+            }
+            const fabricResetBtn = document.querySelector('#panel-2 #resetBtn');
+            if(fabricResetBtn) fabricResetBtn.addEventListener('click', resetFabricView);
+            const fabricDeleteBtn = document.querySelector('#panel-2 #deleteBtn');
+            if(fabricDeleteBtn) fabricDeleteBtn.addEventListener('click', deleteSelectedFabricDesign);
+            const fabricDownloadBtn = document.querySelector('#panel-2 #downloadBtn');
+            if(fabricDownloadBtn) fabricDownloadBtn.addEventListener('click', saveFabricDesign);
+            
+            window.addEventListener('resize', resizeFabricCanvas); // Fabric canvas resize
+        }
+        
+        // Modify setActivePanel to initialize Fabric when Panel 2 becomes active
+        const originalSetActivePanel = setActivePanel;
+        setActivePanel = function(targetIndex) {
+            originalSetActivePanel(targetIndex); // Call original function
+            if (targetIndex === 1 && panels[1].classList.contains('active')) { // Panel 2 is index 1
+                setTimeout(initializeFabricCanvas, 50); // Delay slightly for panel to be visible
+            } else if (fabricCanvas && targetIndex !== 1) {
+            // Optional: clean up fabric instance or listeners if navigating away from panel 2
+            // fabricCanvas.dispose(); fabricCanvas = null;
+            // window.removeEventListener('resize', resizeFabricCanvas);
+            // Hide crop modal if it's open when panel changes
+            if (cropModalOverlay && cropModalOverlay.style.display === 'flex') {
+                hideCropModal();
+            }
+        }
+    }
+
+    // --- Cropping Modal Logic ---
+    function showCropModal(file, targetWidth, targetHeight) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            cropModalImageToCrop.src = e.target.result;
+            cropModalImageToCrop.style.display = 'block'; // Make sure it's visible
+            cropModalDimensionsNote.textContent = `Target: ${Math.round(targetWidth)} x ${Math.round(targetHeight)} px (for ${currentFabricView} view)`;
+            
+            cropModalImageToCrop.onload = () => { // Ensure image is loaded in modal before initializing cropper UI
+                initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+            };
+            if (cropModalImageToCrop.complete) { // If already loaded (e.g. from cache)
+                initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+            }
+            cropModalOverlay.style.display = 'flex';
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function hideCropModal() {
+        cropModalOverlay.style.display = 'none';
+        cropModalImageToCrop.src = '#'; // Clear image
+        clearModalCropperUI(cropModalPreviewContainer);
+        currentCropDataForModal = {}; // Reset crop data
+        if(document.querySelector('#panel-2 #fileInput')) { // Reset file input in main panel
+            document.querySelector('#panel-2 #fileInput').value = '';
+        }
+    }
+
+    function initializeModalCropperUI(imageElement, containerElement, targetWidth, targetHeight) {
+        clearModalCropperUI(containerElement);
+        
+        const imgDisplayWidth = imageElement.offsetWidth;
+        const imgDisplayHeight = imageElement.offsetHeight;
+
+        const targetAspectRatio = targetWidth / targetHeight;
+        let cropWindowDisplayWidth, cropWindowDisplayHeight;
+
+        if (imgDisplayWidth / imgDisplayHeight > targetAspectRatio) {
+            cropWindowDisplayHeight = imgDisplayHeight;
+            cropWindowDisplayWidth = cropWindowDisplayHeight * targetAspectRatio;
+        } else {
+            cropWindowDisplayWidth = imgDisplayWidth;
+            cropWindowDisplayHeight = cropWindowDisplayWidth / targetAspectRatio;
+        }
+
+        const cropWindowDisplayLeft = (imgDisplayWidth - cropWindowDisplayWidth) / 2;
+        const cropWindowDisplayTop = (imgDisplayHeight - cropWindowDisplayHeight) / 2;
+        
+        const imgOffsetX = imageElement.offsetLeft;
+        const imgOffsetY = imageElement.offsetTop;
+
+        const masks = {
+            top: document.createElement('div'), bottom: document.createElement('div'),
+            left: document.createElement('div'), right: document.createElement('div')
+        };
+        for (const key in masks) {
+            masks[key].className = 'crop-modal-mask'; // Use modal specific class
+            masks[key].classList.add(`modal-cropper-mask-element`); // For easy removal
+            containerElement.appendChild(masks[key]);
+        }
+        masks.top.style.cssText = `top:${imgOffsetY}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${cropWindowDisplayTop}px;`;
+        masks.bottom.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop + cropWindowDisplayHeight}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${imgDisplayHeight - (cropWindowDisplayTop + cropWindowDisplayHeight)}px;`;
+        masks.left.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX}px; width:${cropWindowDisplayLeft}px; height:${cropWindowDisplayHeight}px;`;
+        masks.right.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft + cropWindowDisplayWidth}px; width:${imgDisplayWidth - (cropWindowDisplayLeft + cropWindowDisplayWidth)}px; height:${cropWindowDisplayHeight}px;`;
+
+        const cropWindowBorder = document.createElement('div');
+        cropWindowBorder.className = 'crop-modal-window-border'; // Use modal specific class
+        cropWindowBorder.classList.add(`modal-cropper-mask-element`);
+        cropWindowBorder.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft}px; width:${cropWindowDisplayWidth}px; height:${cropWindowDisplayHeight}px;`;
+        containerElement.appendChild(cropWindowBorder);
+
+        // Store the crop selection relative to the *displayed* image in the modal
+        // This will be converted to original image coordinates when confirming crop
+        currentCropDataForModal = {
+            displayX: cropWindowDisplayLeft,
+            displayY: cropWindowDisplayTop,
+            displayWidth: cropWindowDisplayWidth,
+            displayHeight: cropWindowDisplayHeight,
+            imgDisplayWidth: imgDisplayWidth,
+            imgDisplayHeight: imgDisplayHeight,
+            targetWidth: targetWidth, // Store target for final canvas
+            targetHeight: targetHeight
+        };
+    }
+
+    function clearModalCropperUI(containerElement) {
+        const elementsToRemove = containerElement.querySelectorAll(`.modal-cropper-mask-element`);
+        elementsToRemove.forEach(el => el.remove());
+    }
+
+    confirmCropBtn.addEventListener('click', async () => {
+        if (!cropModalImageToCrop.src || cropModalImageToCrop.src.endsWith('#') || !originalUploadedFile) {
+            showFabricNotification("No image loaded in cropper.", "error");
+            return;
+        }
+        if (!currentCropDataForModal.targetWidth) {
+            showFabricNotification("Crop data is incomplete.", "error");
+            return;
+        }
+
+        const originalImg = new Image();
+        originalImg.src = cropModalImageToCrop.src; // This is the dataURL of the uploaded image
+
+        originalImg.onload = async () => {
+            const scaleX = originalImg.naturalWidth / currentCropDataForModal.imgDisplayWidth;
+            const scaleY = originalImg.naturalHeight / currentCropDataForModal.imgDisplayHeight;
+
+            const sourceX = currentCropDataForModal.displayX * scaleX;
+            const sourceY = currentCropDataForModal.displayY * scaleY;
+            const sourceWidth = currentCropDataForModal.displayWidth * scaleX;
+            const sourceHeight = currentCropDataForModal.displayHeight * scaleY;
 
             const canvas = document.createElement('canvas');
-            canvas.width = Math.round(finalTargetWidth);
-            canvas.height = Math.round(finalTargetHeight);
+            canvas.width = Math.round(currentCropDataForModal.targetWidth);
+            canvas.height = Math.round(currentCropDataForModal.targetHeight);
             const ctx = canvas.getContext('2d');
-            const imgToDraw = new Image();
-            imgToDraw.src = originalImageElement.src;
 
-            return new Promise((resolve, reject) => {
-                imgToDraw.onload = () => {
-                    try {
-                        ctx.drawImage(
-                            imgToDraw,
-                            cropData.sourceX, cropData.sourceY,
-                            cropData.sourceWidth, cropData.sourceHeight,
-                            0, 0, canvas.width, canvas.height
-                        );
-                        resolve(canvas);
-                    } catch (error) { console.error("Error drawing image to canvas:", error); reject(null); }
-                };
-                imgToDraw.onerror = () => { console.error("Image to draw on canvas failed to load."); reject(null); };
-            });
+            try {
+                ctx.drawImage(
+                    originalImg,
+                    sourceX, sourceY, sourceWidth, sourceHeight,
+                    0, 0, canvas.width, canvas.height
+                );
+                const croppedImageDataURL = canvas.toDataURL('image/png');
+                hideCropModal();
+                applyCroppedImageToFabric(croppedImageDataURL); // Pass to Fabric.js logic
+            } catch (error) {
+                console.error("Error cropping image:", error);
+                showFabricNotification("Error during cropping. Please try again.", "error");
+                hideCropModal();
+            }
+        };
+        originalImg.onerror = () => {
+            showFabricNotification("Error loading image for cropping.", "error");
+            hideCropModal();
+        };
+    });
+
+    cancelCropBtn.addEventListener('click', hideCropModal);
+    // --- End Cropping Modal Logic ---
+
+    // --- FABRIC.JS CUSTOMIZER SCRIPT END ---
+
+    // const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn'); 
+    // if (panel1NextBtn) { 
+        //     panel1NextBtn.disabled = true;
+        // }
+        
+        // Default design selection to "No Custom Design"
+        const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+        if (noDesignOption && !orderDetails.design) { // Check if design isn't already set (e.g. by custom upload)
+             orderDetails.design = {
+                name: noDesignOption.dataset.designName,
+                image: noDesignOption.dataset.designImage
+            };
+            document.getElementById('selectedDesignName').textContent = noDesignOption.dataset.designName;
+            noDesignOption.classList.add('selected'); // Visually select it
         }
+        updateSummary(); // Initial summary update
     })();
-    // --- ADVANCED IMAGE CROPPER SCRIPT END ---
     </script>
+
+    <!-- Cropping Modal HTML -->
+    <div id="cropModalOverlay" class="crop-modal-overlay">
+        <div class="crop-modal-content">
+            <h3>Crop Your Design</h3>
+            <p id="cropModalDimensionsNote" class="crop-modal-dimensions-note">Target dimensions: N/A</p>
+            <div id="cropModalPreviewContainer" class="crop-modal-preview-container">
+                <img id="cropModalImageToCrop" src="#" alt="Image to crop">
+                <!-- Masks and border will be added here by JS -->
+            </div>
+            <div class="crop-modal-actions">
+                <button id="confirmCropBtn" class="fabric-button"><i class="fas fa-check"></i> Confirm Crop</button>
+                <button id="cancelCropBtn" class="fabric-button secondary"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
