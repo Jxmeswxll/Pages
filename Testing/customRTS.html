@@ -958,14 +958,17 @@ body {
                                   </div>
 
                                   <div id="view-tabs"> <!-- Moved view tabs here -->
-                                    <div class="tab active" onclick="switchFabricView('front')">
+                                    <div class="tab active" data-viewkey="front">
                                       <i class="fas fa-desktop"></i> Front
                                     </div>
-                                    <div class="tab" onclick="switchFabricView('side')">
+                                    <div class="tab" data-viewkey="side">
                                       <i class="fas fa-columns"></i> Side
                                     </div>
-                                    <div class="tab" onclick="switchFabricView('top')">
+                                    <div class="tab" data-viewkey="top">
                                       <i class="fas fa-square"></i> Top
+                                    </div>
+                                    <div class="tab" data-viewkey="back">
+                                      <i class="fas fa-undo-alt"></i> Back
                                     </div>
                                   </div>
                                   
@@ -1328,10 +1331,10 @@ body {
         // Define base path and image names for dynamic loading
         const chassisBasePath = 'Zeal Pastel/';
         const chassisImageFiles = {
-            blue: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
-            green: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
-            pink: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
-            purple: { front: 'Purple Zeal M-Front.png', side: 'Purple Zeal M-Side.png', top: 'Purple Zeal M-Top.png' }
+            blue: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
+            green: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
+            pink: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
+            purple: { front: 'Purple Zeal M-Front.png', side: 'Purple Zeal M-Side.png', top: 'Purple Zeal M-Top.png', back: 'Purple Zeal M-Back.png' }
         };
 
         const fabricViews = { // Panel coordinates might need adjustment based on actual chassis images
@@ -1349,7 +1352,12 @@ body {
             top: {
               panel: { left: 300, top: 100, width: 200, height: 150 },
               panelColor: 'transparent',
-              designs: []
+              designs: {} // Corrected from array to object
+            },
+            back: { // New back view
+              panel: { left: 250, top: 200, width: 300, height: 200 }, // Assuming similar to front for now, adjust as needed
+              panelColor: 'transparent',
+              designs: {}
             }
         };
 
@@ -1519,13 +1527,7 @@ body {
             });
 
             document.querySelectorAll('#panel-2 .tab').forEach(tab => tab.classList.remove('active'));
-            const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => {
-                const tabIconClass = t.querySelector('i').classList[1]; // e.g., fa-desktop
-                if (viewKey === 'front' && tabIconClass === 'fa-desktop') return true;
-                if (viewKey === 'side' && tabIconClass === 'fa-columns') return true;
-                if (viewKey === 'top' && tabIconClass === 'fa-square') return true;
-                return false;
-            });
+            const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
             if(activeTab) activeTab.classList.add('active');
             
             // Animate out existing objects before loading new view
@@ -1647,10 +1649,9 @@ body {
             // Event listeners for Fabric customizer (scoped to Panel 2)
             document.querySelectorAll('#panel-2 .tab').forEach(tab => {
                 tab.addEventListener('click', function() { 
-                    const viewName = this.textContent.trim().split(" ")[0].toLowerCase();
-                    // Ensure the first word is a valid key (front, side, top)
-                    if (fabricViews.hasOwnProperty(viewName)) {
-                       switchFabricView(viewName);
+                    const viewKey = this.dataset.viewkey;
+                    if (fabricViews.hasOwnProperty(viewKey)) {
+                       switchFabricView(viewKey);
                     }
                 });
             });
