@@ -456,8 +456,8 @@ body {
     position: relative;
     margin: 0 auto 10px auto; /* Reduced bottom margin */
     width: 100%;
-    max-width: 600px; /* Adjusted max-width for a less squashed look */
-    aspect-ratio: 4 / 3.5; /* Make it taller, closer to a typical case side */
+    max-width: 700px; /* Increased max-width for better scaling */
+    aspect-ratio: 16 / 12; /* Adjusted aspect ratio for a common case shape */
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--box-shadow);
@@ -904,9 +904,9 @@ body {
                                 <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
                             </div>
                         </div>
-                        <div class="panel-navigation">
-                            <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
-                        </div>
+                    </div>
+                    <div class="panel-navigation" style="margin-top: 20px; border-top: none; padding-top: 0;"> <!-- Moved and adjusted style -->
+                        <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
                     </div>
                 </section>
 
@@ -944,31 +944,18 @@ body {
                                     </div>
                                   </div>
 
-                                  <div class="color-section" style="margin-top: 20px;">
-                                    <div class="section-title">
-                                      <i class="fas fa-palette"></i> Design Area Color
-                                    </div>
-                                    <div class="color-grid" id="panelOverlayColors">
-                                      <div class="swatch design-area-swatch active" style="background:transparent; border: 1px dashed var(--text-gray);" data-color="transparent" title="No Color (Transparent)"></div>
-                                      <div class="swatch design-area-swatch" style="background:#121212" data-color="#121212" title="Black"></div>
-                                      <div class="swatch design-area-swatch" style="background:#f8f8f8" data-color="#f8f8f8" title="White"></div>
-                                      <div class="swatch design-area-swatch" style="background:#e61919" data-color="#e61919" title="Primary Red"></div>
-                                      <div class="swatch design-area-swatch" style="background:#4a4a4a" data-color="#4a4a4a" title="Dark Grey"></div>
-                                    </div>
-                                  </div>
-
-                                  <div id="view-tabs"> <!-- Moved view tabs here -->
+                                  <div id="view-tabs">
                                     <div class="tab active" data-viewkey="front">
                                       <i class="fas fa-desktop"></i> Front
                                     </div>
-                                    <div class="tab" data-viewkey="side">
-                                      <i class="fas fa-columns"></i> Side
-                                    </div>
                                     <div class="tab" data-viewkey="top">
-                                      <i class="fas fa-square"></i> Top
+                                      <i class="fas fa-arrow-up"></i> Top
                                     </div>
-                                    <div class="tab" data-viewkey="back">
-                                      <i class="fas fa-undo-alt"></i> Back
+                                    <div class="tab" data-viewkey="side1">
+                                      <i class="fas fa-columns"></i> Side 1
+                                    </div>
+                                    <div class="tab" data-viewkey="side2">
+                                      <i class="fas fa-columns fa-flip-horizontal"></i> Side 2
                                     </div>
                                   </div>
                                   
@@ -1331,32 +1318,27 @@ body {
         // Define base path and image names for dynamic loading
         const chassisBasePath = 'Zeal Pastel/';
         const chassisImageFiles = {
-            blue: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
-            green: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
-            pink: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png', back: 'back_2000px.png' },
-            purple: { front: 'Purple Zeal M-Front.png', side: 'Purple Zeal M-Side.png', top: 'Purple Zeal M-Top.png', back: 'Purple Zeal M-Back.png' }
+            blue: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' }, // Assuming rear_2000px.png can be side2
+            green: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' },
+            pink: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png' }, // Using rear_2000px (1).png or (2).png might be specific
+            purple: { front: 'Purple Zeal M-Front.png', top: 'Purple Zeal M-Top.png', side1: 'Purple Zeal M-Side.png', side2: 'Purple Zeal M-Rear.png' }
         };
 
-        const fabricViews = { // Panel coordinates might need adjustment based on actual chassis images
+        const fabricViews = { 
             front: {
-              // bg will be set dynamically
               panel: { left: 250, top: 200, width: 300, height: 200 }, 
-              panelColor: 'transparent', // Default overlay panel color to transparent
-              designs: {} // Changed to object to store designs per color/view
-            },
-            side: {
-              panel: { left: 200, top: 150, width: 350, height: 250 },
-              panelColor: 'transparent',
-              designs: {}
+              designs: {} 
             },
             top: {
               panel: { left: 300, top: 100, width: 200, height: 150 },
-              panelColor: 'transparent',
-              designs: {} // Corrected from array to object
+              designs: {} 
             },
-            back: { // New back view
-              panel: { left: 250, top: 200, width: 300, height: 200 }, // Assuming similar to front for now, adjust as needed
-              panelColor: 'transparent',
+            side1: { // Was 'side'
+              panel: { left: 200, top: 150, width: 350, height: 250 },
+              designs: {}
+            },
+            side2: { // New view, assuming similar panel to side1 for now
+              panel: { left: 200, top: 150, width: 350, height: 250 }, // Adjust if side2 image has different designable area
               designs: {}
             }
         };
@@ -1384,12 +1366,13 @@ body {
         function resizeFabricCanvas() {
             if (!fabricCanvas || !fabricCanvasContainer) return;
             const containerWidth = fabricCanvasContainer.clientWidth;
-            // Maintain aspect ratio, e.g., 4:3 for the canvas area, or let it be defined by content
-            const containerHeight = containerWidth * 0.75; 
+            // Maintain aspect ratio from CSS (16:12 or 4:3.5)
+            const aspectRatio = 16 / 12; // Or parse from css aspect-ratio if more dynamic
+            const containerHeight = containerWidth / aspectRatio; 
             
             fabricCanvas.setWidth(containerWidth);
             fabricCanvas.setHeight(containerHeight);
-            // fabricCanvas.setZoom(containerWidth / 800); // Original base width was 800
+            fabricCanvas.calcOffset(); // Recalculate canvas offset after resizing
             fabricCanvas.renderAll();
             
             if (currentFabricView) {
@@ -1440,29 +1423,19 @@ body {
                 });
                 
                 // Recreate the design panel overlay (where custom designs are placed)
-                // Its color is controlled by the 'Panel Color' swatches
+                // Recreate the design panel overlay (where custom designs are placed)
                 fabricPanelRect = new fabric.Rect({
                     left: viewConfig.panel.left * (canvasWidth / 800), 
                     top: viewConfig.panel.top * (canvasHeight / 600), 
                     width: viewConfig.panel.width * (canvasWidth / 800),
                     height: viewConfig.panel.height * (canvasHeight / 600),
-                    fill: viewConfig.panelColor === 'transparent' ? 'rgba(0,0,0,0)' : viewConfig.panelColor, 
+                    fill: 'rgba(0,0,0,0)', // Always transparent now
                     selectable: false, evented: false,
-                    opacity: viewConfig.panelColor === 'transparent' && !((viewConfig.designs[currentChassisColor + "_" + viewKey] || []).length > 0) ? 0 : 1, // Hide if transparent and no designs
+                    // Opacity will be 1 if there's a design, 0 otherwise (or just always 1 and rely on transparent fill)
+                    opacity: ((viewConfig.designs[currentChassisColor + "_" + viewKey] || []).length > 0) ? 1 : 0.01, // Slight opacity to keep it in object list if needed, effectively invisible
                     absolutePositioned: true 
                 });
-                // Only add fabricPanelRect if it's not meant to be fully transparent initially without a design
-                // OR always add it and control visibility via opacity based on whether a design is applied or color chosen.
-                // For now, let's always add it and control opacity.
                 fabricCanvas.add(fabricPanelRect);
-
-
-                // if (animate && fabricPanelRect.opacity === 1) { // Only animate if it's becoming visible
-                //     setTimeout(() => {
-                //         fabricPanelRect.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
-                //     }, 200);
-                // }
-
 
                 // Load stored user designs for this view and chassis color combination
                 const designStorageKey = currentChassisColor + "_" + viewKey;
@@ -1493,7 +1466,7 @@ body {
                 hideFabricLoading();
                 fabricCanvas.renderAll();
             }, { crossOrigin: 'anonymous' });
-            updateFabricColorSelection(viewConfig.panelColor, '#panelOverlayColors .design-area-swatch'); 
+            // updateFabricColorSelection removed as panel color is no longer user-selectable
         }
         
         function changeChassisColor(newColor) {
@@ -1510,21 +1483,23 @@ body {
             if (currentFabricView === viewKey || !fabricCanvas) return;
             
             const currentViewConfig = fabricViews[currentFabricView];
-            const currentDesignStorageKey = currentChassisColor + "_" + currentFabricView;
-            currentViewConfig.designs[currentDesignStorageKey] = []; 
-            
-            fabricCanvas.getObjects().forEach(obj => {
-                if (obj !== fabricPanelRect && obj.type === 'image') { 
-                    currentViewConfig.designs[currentDesignStorageKey].push({
-                        src: obj.getSrc(),
-                        left: obj.left / (fabricCanvas.width / 800), 
-                        top: obj.top / (fabricCanvas.height / 600),
-                        scaleX: obj.scaleX, 
-                        scaleY: obj.scaleY,
-                        angle: obj.angle
-                    });
-                }
-            });
+            if (currentViewConfig) { // Ensure currentViewConfig exists
+                const currentDesignStorageKey = currentChassisColor + "_" + currentFabricView;
+                currentViewConfig.designs[currentDesignStorageKey] = []; 
+                
+                fabricCanvas.getObjects().forEach(obj => {
+                    if (obj !== fabricPanelRect && obj.type === 'image' && obj.getSrc()) { // Check obj.getSrc()
+                        currentViewConfig.designs[currentDesignStorageKey].push({
+                            src: obj.getSrc(),
+                            left: obj.left / (fabricCanvas.width / 800), 
+                            top: obj.top / (fabricCanvas.height / 600),
+                            scaleX: obj.scaleX, 
+                            scaleY: obj.scaleY,
+                            angle: obj.angle
+                        });
+                    }
+                });
+            }
 
             document.querySelectorAll('#panel-2 .tab').forEach(tab => tab.classList.remove('active'));
             const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
@@ -1551,23 +1526,7 @@ body {
             }
         }
 
-        function changeFabricPanelColor(color) {
-            if (fabricPanelRect) {
-                const newFill = (color === 'transparent') ? 'rgba(0,0,0,0)' : color;
-                fabricPanelRect.set('fill', newFill);
-                fabricPanelRect.set('opacity', (color === 'transparent' && !(fabricViews[currentFabricView].designs[currentChassisColor + "_" + currentFabricView] || []).length > 0) ? 0 : 1);
-                fabricCanvas.renderAll();
-                fabricViews[currentFabricView].panelColor = color; // Store the selected color (even if transparent)
-                updateFabricColorSelection(color, '#panelOverlayColors .design-area-swatch');
-            }
-        }
-        
-        function updateFabricColorSelection(color, swatchSelector) {
-            document.querySelectorAll(swatchSelector).forEach(swatch => {
-                swatch.classList.remove('active');
-                if (swatch.dataset.color === color) swatch.classList.add('active');
-            });
-        }
+        // Removed changeFabricPanelColor and updateFabricColorSelection functions
 
         function handleFabricFileUpload(e) {
             const file = e.target.files[0];
@@ -1593,10 +1552,11 @@ body {
                     fabricCanvas.setActiveObject(img);
                     img.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
                     
-                    // Make design panel visible if it was transparent
-                    if (fabricPanelRect.get('fill') === 'rgba(0,0,0,0)') {
-                        fabricPanelRect.set('opacity', 1); // Or set to a default color like --secondary-black
+                    // Make design panel visible if it was effectively invisible
+                    if (fabricPanelRect.get('opacity') < 0.1) { // Check if it was the placeholder opacity
+                        fabricPanelRect.set('opacity', 1); 
                     }
+                    fabricCanvas.renderAll(); // Render after opacity change
 
                     hideFabricLoading();
                     showFabricNotification('Design uploaded successfully!');
@@ -1655,10 +1615,7 @@ body {
                     }
                 });
             });
-            // Design Area Color Swatches
-            document.querySelectorAll('#panel-2 #panelOverlayColors .design-area-swatch').forEach(swatch => {
-                swatch.addEventListener('click', function() { changeFabricPanelColor(this.dataset.color); });
-            });
+            // Design Area Color Swatches removed
             // Chassis Color Swatches
             document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
                 swatch.addEventListener('click', function() { 
