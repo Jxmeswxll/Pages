@@ -343,32 +343,48 @@ body {
 }
 
 .design-preview-area {
-    flex: 2; /* Takes 2/3 of the space */
-    background-color: var(--background-dark); /* Placeholder background */
+    flex: 2; 
+    background-color: var(--background-dark); 
     border-radius: var(--border-radius-md);
+    display: flex; /* Changed to flex to allow layering */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    min-height: 300px; 
+    position: relative; /* For absolute positioning of artwork */
+    overflow: hidden; /* Clip artwork if it's larger than the area */
+}
+.design-preview-area #pcModelPreview { 
+    max-width: 100%;
+    max-height: 100%; /* Allow PC model to fill the area */
+    object-fit: contain;
+    z-index: 1; /* Base image */
+}
+.design-preview-area #artworkOverlayContainer { /* New container for artwork */
+    position: absolute;
+    top: 20%; /* Example: position artwork 20% from top */
+    left: 25%; /* Example: position artwork 25% from left */
+    width: 50%;  /* Example: artwork takes 50% width of preview area */
+    height: 60%; /* Example: artwork takes 60% height of preview area */
+    /* background-color: rgba(255,0,0,0.1); */ /* Optional: for visualizing the area */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    min-height: 300px; /* Minimum height for the preview */
+    overflow: hidden;
+    z-index: 2; /* Artwork on top of PC model */
 }
-.design-preview-area #pcModelPreview { /* Placeholder for PC model image */
+.design-preview-area #artworkOnPcPreview { 
     max-width: 100%;
-    max-height: 70%; /* Adjust as needed */
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-.design-preview-area #artworkOnPcPreview { /* For the uploaded artwork */
-    position: absolute; /* Will be positioned over the PC model */
-    max-width: 50%; /* Example, JS will control this */
-    max-height: 50%;
-    /* Further styling for positioning and appearance */
+    max-height: 100%;
+    object-fit: cover; /* Cover the area, might crop if aspect ratio differs */
+    display: none; /* Initially hidden */
 }
 .design-preview-area .preview-placeholder-text {
     color: var(--text-placeholder);
     font-size: 1.2em;
+    z-index: 3; /* On top of everything if no image is shown */
+    position: absolute; /* Centered over the area */
 }
 
 
@@ -581,9 +597,54 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    /* body already set to stretch and no padding */
-    /* .checkout-container already full width/height and no radius/max-width */
-    
+    body {
+        padding: 0; /* Remove padding for mobile full screen */
+        align-items: stretch;
+    }
+    .checkout-container {
+        height: 100vh; /* Full viewport height */
+        min-height: 0; /* Remove min-height for mobile */
+        border-radius: 0; /* No border radius on mobile */
+        box-shadow: none; /* No shadow on mobile */
+        margin: 0;
+    }
+    .checkout-main {
+        padding: 10px; /* Smaller padding for mobile */
+        border-radius: 0;
+    }
+    .panel-container {
+        flex-direction: column; /* Stack panels vertically */
+        width: 100%;
+        height: auto; /* Height based on content */
+    }
+    .panel {
+        flex-basis: auto !important; /* Override desktop flex-basis */
+        width: 100%;
+        height: auto; /* Height based on content */
+        margin: 0 0 10px 0; /* Margin between vertical panels */
+        cursor: pointer; /* Headers are always clickable */
+    }
+    .panel.active {
+        /* No change in width/flex-grow needed for vertical stack, active just shows content */
+    }
+    .panel .panel-header {
+        /* Styles for header are mostly fine, ensure it's clickable */
+    }
+    .panel .panel-content-wrapper {
+        /* Transitions for max-height and opacity remain */
+    }
+    .panel.active .panel-content-wrapper {
+        max-height: none; /* Allow content to define height, or set a large enough value */
+    }
+     /* Ensure panel content specific to step 2 still works in vertical layout */
+    #panel-2.active .panel-content {
+        flex-direction: column; /* Stack preview and controls vertically on mobile */
+    }
+    .design-preview-area, .design-controls-area {
+        flex: none; /* Remove flex sizing from desktop */
+        width: 100%; /* Take full width */
+    }
+
     .checkout-header {
         flex-direction: column;
         gap: 15px;
@@ -697,9 +758,11 @@ body {
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
                             <div class="design-preview-area">
-                                <img id="pcModelPreview" src="https://via.placeholder.com/400x300/1a1a1c/3a3a3c?text=PC+Model+Preview" alt="PC Model Preview Area">
-                                <img id="artworkOnPcPreview" src="#" alt="Artwork on PC" style="display:none;">
-                                <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Your Design on PC Here</span>
+                                <img id="pcModelPreview" src="https://via.placeholder.com/400x300/1a1a1c/3a3a3c?text=PC+Chassis+Base" alt="PC Chassis Preview">
+                                <div id="artworkOverlayContainer">
+                                    <img id="artworkOnPcPreview" src="#" alt="Custom Artwork Preview">
+                                </div>
+                                <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Your Design Will Appear Here</span>
                             </div>
                             <div class="design-controls-area">
                                 <div class="design-option">
