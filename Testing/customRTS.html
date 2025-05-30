@@ -938,21 +938,8 @@ body {
                                     <div class="spinner"></div>
                                   </div>
                                 </div>
-
-                                <div class="controls-section">
-                                  <div class="color-section">
-                                    <div class="section-title">
-                                      <i class="fas fa-paint-roller"></i> Chassis Color
-                                    </div>
-                                    <div class="color-grid" id="chassisColors">
-                                      <div class="swatch chassis-color-swatch active" style="background:#3B82F6;" data-chassis-color="blue" title="Blue Chassis"></div>
-                                      <div class="swatch chassis-color-swatch" style="background:#10B981;" data-chassis-color="green" title="Green Chassis"></div>
-                                      <div class="swatch chassis-color-swatch" style="background:#EC4899;" data-chassis-color="pink" title="Pink Chassis"></div>
-                                      <div class="swatch chassis-color-swatch" style="background:#8B5CF6;" data-chassis-color="purple" title="Purple Chassis"></div>
-                                    </div>
-                                  </div>
-
-                                  <div id="view-tabs">
+                                
+                                <div id="view-tabs"> <!-- MOVED HERE -->
                                     <div class="tab active" data-viewkey="front">
                                       <i class="fas fa-desktop"></i> Front
                                     </div>
@@ -964,6 +951,19 @@ body {
                                     </div>
                                     <div class="tab" data-viewkey="side2">
                                       <i class="fas fa-columns fa-flip-horizontal"></i> Side 2
+                                    </div>
+                                  </div>
+
+                                <div class="controls-section">
+                                  <div class="color-section">
+                                    <div class="section-title">
+                                      <i class="fas fa-paint-roller"></i> Chassis Color
+                                    </div>
+                                    <div class="color-grid" id="chassisColors">
+                                      <div class="swatch chassis-color-swatch active" style="background:#3B82F6;" data-chassis-color="blue" title="Blue Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#10B981;" data-chassis-color="green" title="Green Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#EC4899;" data-chassis-color="pink" title="Pink Chassis"></div>
+                                      <div class="swatch chassis-color-swatch" style="background:#8B5CF6;" data-chassis-color="purple" title="Purple Chassis"></div>
                                     </div>
                                   </div>
                                   
@@ -1371,11 +1371,10 @@ body {
             if (fabricLoadingIndicator) fabricLoadingIndicator.classList.remove('active');
         }
 
-        function showFabricNotification(message) {
-            // Reuse existing notification system if possible, or implement one for Fabric
-            // For now, using alert as a placeholder for notification
-            alert(message); 
-            // const notification = document.getElementById('notification'); // Assuming a general notification element exists
+        function showFabricNotification(message, type = 'info') { // Added type for potential styling
+            // Removed alert(message);
+            console.log(`Notification (${type}): ${message}`); // Log to console instead
+            // const notification = document.getElementById('notification'); 
             // const notificationText = document.getElementById('notificationText');
             // if(notification && notificationText) {
             //     notificationText.textContent = message;
@@ -1638,7 +1637,7 @@ body {
                     fabricCanvas.requestRenderAll();
 
                     hideFabricLoading();
-                    showFabricNotification('Design uploaded successfully!');
+                    // showFabricNotification('Design uploaded successfully!'); // Removed pop-up
                 }, { crossOrigin: 'anonymous' });
             };
             reader.readAsDataURL(file);
