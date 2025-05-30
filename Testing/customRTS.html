@@ -894,25 +894,25 @@ body {
                         <div class="panel-content">
                             <!-- PC Options will go here -->
                             <div class="option-card">
-                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Base+Gaming+PC" alt="Base Gaming PC">
-                                <h3>Starter Custom Rig</h3>
+                                <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS-SR-LVL-7-5070-V1_-_Copy_2.png?v=1747799855" alt="EOFY ZEAL MINI : LVL 7">
+                                <h3>EOFY ZEAL MINI : LVL 7</h3>
                                 <p>Balanced performance for everyday gaming and productivity.</p>
                                 <p class="price">$1,499 AUD</p>
-                                <button class="select-button" data-pc-name="Starter Custom Rig" data-pc-price="1499">Select This PC</button>
+                                <button class="select-button" data-pc-name="EOFY ZEAL MINI : LVL 7" data-pc-price="1499">Select This PC</button>
                             </div>
                             <div class="option-card">
-                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Pro+Gamer+PC" alt="Pro Gamer PC">
-                                <h3>Pro Gamer Custom</h3>
+                                <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/ZMKOIPOND_f4aeac9a-c709-48e1-91ed-e98fac12c63c.jpg?v=1747187487" alt="KOI POND">
+                                <h3>KOI POND</h3>
                                 <p>High-end components for serious 1440p/4K gaming.</p>
                                 <p class="price">$2,499 AUD</p>
-                                <button class="select-button" data-pc-name="Pro Gamer Custom" data-pc-price="2499">Select This PC</button>
+                                <button class="select-button" data-pc-name="KOI POND" data-pc-price="2499">Select This PC</button>
                             </div>
                             <div class="option-card">
-                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Ultra+Creative+PC" alt="Ultra Creative PC">
-                                <h3>Ultra Creative Custom</h3>
+                                <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/ZEALMINIBLUEKOI_SR_45833da9-4b60-463f-b5af-7dbd24e13622.jpg?v=1747187458" alt="BLUE KOI">
+                                <h3>BLUE KOI</h3>
                                 <p>Top-tier power for demanding creative workloads.</p>
                                 <p class="price">$3,999 AUD</p>
-                                <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
+                                <button class="select-button" data-pc-name="BLUE KOI" data-pc-price="3999">Select This PC</button>
                             </div>
                         </div>
                     </div>
@@ -1156,7 +1156,8 @@ body {
                     name: button.dataset.pcName,
                     price: parseFloat(button.dataset.pcPrice)
                 };
-                const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
+                // Ensure the next button is correctly targeted even after moving it to the header of panel-1
+                const panel1NextBtn = document.querySelector('#panel-1 .panel-header .next-step-btn');
                 if (panel1NextBtn) {
                     panel1NextBtn.disabled = false;
                 }
