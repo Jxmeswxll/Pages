@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom RTS Image Cropper V2</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .image-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .image-section h2 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .image-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .image-section input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .preview-container {
+            border: 1px dashed #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 150px; /* Default min height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            position: relative; /* For crop overlay */
+        }
+        .preview-container img {
+            max-width: 100%;
+            max-height: 300px; /* Limit preview size */
+            display: block;
+        }
+        .crop-mask {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent overlay */
+            pointer-events: none;
+        }
+        /* Optional: if you want a border around the clear crop area */
+        .crop-window-border {
+            position: absolute;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.7); /* Light border for the crop window */
+            pointer-events: none;
+        }
+        .export-button {
+            display: block;
+            margin: 10px auto 0;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .export-button:hover {
+            background-color: #218838;
+        }
+        .dimensions-note {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Cropping Tool</h1>
+
+        <div class="image-section" id="side-glass-section">
+            <h2>Side Glass</h2>
+            <label for="side-glass-file">Upload Side Glass Image:</label>
+            <input type="file" id="side-glass-file" accept="image/*">
+            <div class="dimensions-note">Required: 1167.87 x 983.62 px</div>
+            <div class="preview-container" id="side-glass-preview-container">
+                <img id="side-glass-preview" src="#" alt="Side Glass Preview" style="display:none;">
+                <!-- Crop outline will be dynamically added here by JS -->
+            </div>
+            <button class="export-button" id="export-side-glass">Export Side Glass</button>
+        </div>
+
+        <div class="image-section" id="front-glass-section">
+            <h2>Front Glass</h2>
+            <label for="front-glass-file">Upload Front Glass Image:</label>
+            <input type="file" id="front-glass-file" accept="image/*">
+            <div class="dimensions-note">Required: 785.20 x 992.13 px</div>
+            <div class="preview-container" id="front-glass-preview-container">
+                <img id="front-glass-preview" src="#" alt="Front Glass Preview" style="display:none;">
+            </div>
+            <button class="export-button" id="export-front-glass">Export Front Glass</button>
+        </div>
+
+        <div class="image-section" id="rear-panel-section">
+            <h2>Rear Panel</h2>
+            <label for="rear-panel-file">Upload Rear Panel Image:</label>
+            <input type="file" id="rear-panel-file" accept="image/*">
+            <div class="dimensions-note">Required: 1173.54 x 986.46 px</div>
+            <div class="preview-container" id="rear-panel-preview-container">
+                <img id="rear-panel-preview" src="#" alt="Rear Panel Preview" style="display:none;">
+            </div>
+            <button class="export-button" id="export-rear-panel">Export Rear Panel</button>
+        </div>
+
+        <div class="image-section" id="top-grill-section">
+            <h2>Top Grill</h2>
+            <label for="top-grill-file">Upload Top Grill Image:</label>
+            <input type="file" id="top-grill-file" accept="image/*">
+            <div class="dimensions-note">Required: 490.39 x 1057.32 px</div>
+            <div class="preview-container" id="top-grill-preview-container">
+                <img id="top-grill-preview" src="#" alt="Top Grill Preview" style="display:none;">
+            </div>
+            <button class="export-button" id="export-top-grill">Export Top Grill</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for image handling, cropping, and exporting will go here.
+        // For now, basic image preview functionality.
+
+        const imageSections = [
+            {
+                idPrefix: 'side-glass',
+                targetWidth: 1167.87,
+                targetHeight: 983.62,
+                fileInputId: 'side-glass-file',
+                previewImgId: 'side-glass-preview',
+                previewContainerId: 'side-glass-preview-container',
+                exportBtnId: 'export-side-glass'
+            },
+            {
+                idPrefix: 'front-glass',
+                targetWidth: 785.20,
+                targetHeight: 992.13,
+                fileInputId: 'front-glass-file',
+                previewImgId: 'front-glass-preview',
+                previewContainerId: 'front-glass-preview-container',
+                exportBtnId: 'export-front-glass'
+            },
+            {
+                idPrefix: 'rear-panel',
+                targetWidth: 1173.54,
+                targetHeight: 986.46,
+                fileInputId: 'rear-panel-file',
+                previewImgId: 'rear-panel-preview',
+                previewContainerId: 'rear-panel-preview-container',
+                exportBtnId: 'export-rear-panel'
+            },
+            {
+                idPrefix: 'top-grill',
+                targetWidth: 490.39,
+                targetHeight: 1057.32,
+                fileInputId: 'top-grill-file',
+                previewImgId: 'top-grill-preview',
+                previewContainerId: 'top-grill-preview-container',
+                exportBtnId: 'export-top-grill'
+            }
+        ];
+
+        imageSections.forEach(section => {
+            const fileInput = document.getElementById(section.fileInputId);
+            const previewImg = document.getElementById(section.previewImgId);
+            const previewContainer = document.getElementById(section.previewContainerId);
+            const exportBtn = document.getElementById(section.exportBtnId);
+
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        previewImg.style.display = 'block';
+                        // Ensure image is loaded before initializing cropper
+                        previewImg.onload = () => {
+                            initializeCropper(previewImg, previewContainer, section.targetWidth, section.targetHeight, section.idPrefix);
+                        };
+                        // If image is already cached and loaded, onload might not fire, so call directly
+                        if (previewImg.complete) {
+                           initializeCropper(previewImg, previewContainer, section.targetWidth, section.targetHeight, section.idPrefix);
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.src = '#';
+                    previewImg.style.display = 'none';
+                    clearCropper(previewContainer, section.idPrefix);
+                }
+            });
+
+            exportBtn.addEventListener('click', async function() { // Made async
+                const cropData = window[`${section.idPrefix}_cropData`];
+                if (!previewImg.src || previewImg.src.endsWith('#')) {
+                    alert('Please upload an image first.');
+                    return;
+                }
+                if (!cropData) {
+                    alert('Cropping data not available. Please ensure image is loaded and crop area is defined.');
+                    return;
+                }
+
+                const croppedCanvas = await getCroppedCanvas(previewImg, section.targetWidth, section.targetHeight, cropData); // Added await
+                if (croppedCanvas) {
+                    // To simulate "image outside crop zone disappears", we can replace the preview
+                    // previewImg.src = croppedCanvas.toDataURL('image/png'); // Optional: update preview
+                    // clearCropper(previewContainer, section.idPrefix); // Remove outline
+
+                    const link = document.createElement('a');
+                    link.download = `${section.idPrefix}_${Math.round(section.targetWidth)}x${Math.round(section.targetHeight)}.png`;
+                    link.href = croppedCanvas.toDataURL('image/png');
+                    document.body.appendChild(link); // Required for Firefox
+                    link.click();
+                    document.body.removeChild(link);
+                    alert(`${section.idPrefix} exported successfully!`);
+                } else {
+                    alert(`Failed to export ${section.idPrefix}.`);
+                }
+            });
+        });
+
+        function initializeCropper(imageElement, containerElement, targetWidth, targetHeight, idPrefix) {
+            console.log(`Initializing cropper for ${imageElement.id} with target ${targetWidth}x${targetHeight}`);
+            clearCropper(containerElement, idPrefix); // Clear previous instance
+
+            const originalImage = new Image();
+            originalImage.src = imageElement.src;
+            originalImage.onload = () => {
+                const imgDisplayWidth = imageElement.offsetWidth;
+                const imgDisplayHeight = imageElement.offsetHeight;
+
+                const scaleX = originalImage.naturalWidth / imgDisplayWidth;
+                const scaleY = originalImage.naturalHeight / imgDisplayHeight;
+
+                const targetAspectRatio = targetWidth / targetHeight;
+                let cropWindowDisplayWidth, cropWindowDisplayHeight;
+
+                if (imgDisplayWidth / imgDisplayHeight > targetAspectRatio) {
+                    cropWindowDisplayHeight = imgDisplayHeight;
+                    cropWindowDisplayWidth = cropWindowDisplayHeight * targetAspectRatio;
+                } else {
+                    cropWindowDisplayWidth = imgDisplayWidth;
+                    cropWindowDisplayHeight = cropWindowDisplayWidth / targetAspectRatio;
+                }
+
+                const cropWindowDisplayLeft = (imgDisplayWidth - cropWindowDisplayWidth) / 2;
+                const cropWindowDisplayTop = (imgDisplayHeight - cropWindowDisplayHeight) / 2;
+
+                // Create masks
+                const masks = {
+                    top: document.createElement('div'),
+                    bottom: document.createElement('div'),
+                    left: document.createElement('div'),
+                    right: document.createElement('div')
+                };
+
+                // Common properties for masks
+                for (const key in masks) {
+                    masks[key].className = 'crop-mask';
+                    masks[key].classList.add(`${idPrefix}-mask`); // For easier removal
+                    containerElement.appendChild(masks[key]);
+                }
+                
+                const imgOffsetX = imageElement.offsetLeft;
+                const imgOffsetY = imageElement.offsetTop;
+
+                // Position masks
+                // Top mask
+                masks.top.style.top = `${imgOffsetY}px`;
+                masks.top.style.left = `${imgOffsetX}px`;
+                masks.top.style.width = `${imgDisplayWidth}px`;
+                masks.top.style.height = `${cropWindowDisplayTop}px`;
+
+                // Bottom mask
+                masks.bottom.style.top = `${imgOffsetY + cropWindowDisplayTop + cropWindowDisplayHeight}px`;
+                masks.bottom.style.left = `${imgOffsetX}px`;
+                masks.bottom.style.width = `${imgDisplayWidth}px`;
+                masks.bottom.style.height = `${imgDisplayHeight - (cropWindowDisplayTop + cropWindowDisplayHeight)}px`;
+
+                // Left mask (covers area to the left of the crop window, within the crop window's height)
+                masks.left.style.top = `${imgOffsetY + cropWindowDisplayTop}px`;
+                masks.left.style.left = `${imgOffsetX}px`;
+                masks.left.style.width = `${cropWindowDisplayLeft}px`;
+                masks.left.style.height = `${cropWindowDisplayHeight}px`;
+
+                // Right mask
+                masks.right.style.top = `${imgOffsetY + cropWindowDisplayTop}px`;
+                masks.right.style.left = `${imgOffsetX + cropWindowDisplayLeft + cropWindowDisplayWidth}px`;
+                masks.right.style.width = `${imgDisplayWidth - (cropWindowDisplayLeft + cropWindowDisplayWidth)}px`;
+                masks.right.style.height = `${cropWindowDisplayHeight}px`;
+                
+                // Optional: Add a border for the clear crop window itself
+                const cropWindowBorder = document.createElement('div');
+                cropWindowBorder.className = 'crop-window-border';
+                cropWindowBorder.classList.add(`${idPrefix}-mask`); // Add to mask group for easy removal
+                cropWindowBorder.style.top = `${imgOffsetY + cropWindowDisplayTop}px`;
+                cropWindowBorder.style.left = `${imgOffsetX + cropWindowDisplayLeft}px`;
+                cropWindowBorder.style.width = `${cropWindowDisplayWidth}px`;
+                cropWindowBorder.style.height = `${cropWindowDisplayHeight}px`;
+                containerElement.appendChild(cropWindowBorder);
+
+
+                // Store crop data relative to the *original* image dimensions
+                // This is crucial for accurate cropping.
+                window[`${idPrefix}_cropData`] = {
+                    sourceX: cropWindowDisplayLeft * scaleX,
+                    sourceY: cropWindowDisplayTop * scaleY,
+                    sourceWidth: cropWindowDisplayWidth * scaleX,
+                    sourceHeight: cropWindowDisplayHeight * scaleY,
+                    targetWidth: targetWidth, // Store the final target dimensions
+                    targetHeight: targetHeight
+                };
+                console.log(`Crop data for ${idPrefix}:`, window[`${idPrefix}_cropData`]);
+
+                // The masks visually make the outside "disappear".
+                // For a real application, you'd use a library or more complex canvas masking.
+                // Here, we're just setting up the data for export.
+                // The actual "disappearance" will happen when getCroppedCanvas draws only the selection.
+            };
+            originalImage.onerror = () => {
+                console.error("Original image for cropper failed to load.");
+            }
+        }
+
+        function clearCropper(containerElement, idPrefix) {
+            // Remove all elements associated with this cropper instance (masks and border)
+            const elementsToRemove = containerElement.querySelectorAll(`.${idPrefix}-mask`);
+            elementsToRemove.forEach(el => el.remove());
+
+            if (window[`${idPrefix}_cropData`]) {
+                delete window[`${idPrefix}_cropData`];
+            }
+        }
+
+        function getCroppedCanvas(originalImageElement, finalTargetWidth, finalTargetHeight, cropData) {
+            if (!cropData) {
+                console.error("Crop data is missing.");
+                return null;
+            }
+
+            const canvas = document.createElement('canvas');
+            // Use Math.round for final canvas dimensions as pixels are integers
+            canvas.width = Math.round(finalTargetWidth);
+            canvas.height = Math.round(finalTargetHeight);
+            const ctx = canvas.getContext('2d');
+
+            // The originalImageElement is the <img> tag in the DOM. We need its source for the full image.
+            const imgToDraw = new Image();
+            imgToDraw.src = originalImageElement.src; // This should be the original uploaded image data URL
+
+            // We need to wait for this image to load before drawing,
+            // otherwise, drawImage might do nothing or draw an incomplete image.
+            return new Promise((resolve, reject) => {
+                imgToDraw.onload = () => {
+                    try {
+                        console.log('Drawing to canvas with:', cropData.sourceX, cropData.sourceY, cropData.sourceWidth, cropData.sourceHeight, 0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(
+                            imgToDraw,        // The original image (not the scaled preview <img>)
+                            cropData.sourceX, // X coordinate of the top-left corner of the sub-rectangle of the source image
+                            cropData.sourceY, // Y coordinate of the top-left corner of the sub-rectangle of the source image
+                            cropData.sourceWidth,  // Width of the sub-rectangle of the source image
+                            cropData.sourceHeight, // Height of the sub-rectangle of the source image
+                            0,                // X coordinate where to place the image on the canvas
+                            0,                // Y coordinate where to place the image on the canvas
+                            canvas.width,     // Width to draw the image in the destination canvas
+                            canvas.height     // Height to draw the image in the destination canvas
+                        );
+                        resolve(canvas);
+                    } catch (error) {
+                        console.error("Error drawing image to canvas:", error);
+                        reject(null);
+                    }
+                };
+                imgToDraw.onerror = () => {
+                    console.error("Image to draw on canvas failed to load.");
+                    reject(null);
+                };
+            }).then(cvs => cvs).catch(() => null); // Ensure it returns the canvas or null
+        }
+
+
+        // Note on fractional pixels:
+        // Canvas dimensions and image export typically use integer pixels.
+        // The provided dimensions (e.g., 1167.87px) will likely need to be rounded
+        // (e.g., Math.round()) when creating the final canvas for export.
+        // This has been implemented using Math.round() in getCroppedCanvas.
+    </script>
+</body>
+</html>
