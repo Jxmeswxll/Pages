@@ -197,6 +197,12 @@ body {
     margin-bottom: 0; 
     transition: margin-bottom 0.4s ease;
     width: 100%; 
+    display: flex; /* Added for button alignment */
+    justify-content: space-between; /* Added for button alignment */
+    align-items: center; /* Added for button alignment */
+}
+.panel .panel-header > div:first-child { /* Target the title/description block */
+    flex-grow: 1;
 }
 .panel .panel-header h2 { /* Ensure h2 within panel-header uses new theme fonts/colors */
     font-family: var(--font-header);
@@ -876,8 +882,13 @@ body {
                 <!-- Panel 1: Choose PC -->
                 <section id="panel-1" class="panel active" data-panel-index="0">
                     <div class="panel-header">
-                        <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
-                        <p>Select the base model or configuration that suits your needs.</p>
+                        <div> <!-- Wrapper for title and p -->
+                            <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
+                            <p>Select the base model or configuration that suits your needs.</p>
+                        </div>
+                        <div class="panel-navigation" style="border-top: none; padding-top: 0; margin-top: 0;"> <!-- Moved Next button here -->
+                            <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
+                        </div>
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
@@ -904,9 +915,6 @@ body {
                                 <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel-navigation" style="margin-top: 20px; border-top: none; padding-top: 0;"> <!-- Moved and adjusted style -->
-                        <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
                     </div>
                 </section>
 
@@ -1128,8 +1136,20 @@ body {
         }
 
         // Panel 1: PC Selection
+        const optionCards = document.querySelectorAll('#panel-1 .option-card');
+        optionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Find the button within this card and click it
+                const button = card.querySelector('.select-button');
+                if (button) {
+                    button.click(); // This will trigger the existing button's event listener
+                }
+            });
+        });
+
         pcSelectionButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent card click from re-triggering if button is clicked directly
                 pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
                 button.closest('.option-card').classList.add('selected');
                 orderDetails.pc = {
@@ -1400,42 +1420,56 @@ body {
                 const canvasWidth = fabricCanvas.getWidth();
                 const canvasHeight = fabricCanvas.getHeight();
                 
-                // Calculate scale factor to make the image cover the canvas
-                const scaleX = canvasWidth / img.width;
-                const scaleY = canvasHeight / img.height;
-                const scaleToCover = Math.max(scaleX, scaleY);
+                // Determine the scale factor to make the image fit while maintaining aspect ratio
+                // This time, we want to ensure the entire image is visible (object-fit: contain behavior)
+                // and then we will center it.
+                const imgAspectRatio = img.width / img.height;
+                const canvasAspectRatio = canvasWidth / canvasHeight;
+                let scaleFactor;
+
+                if (imgAspectRatio > canvasAspectRatio) {
+                    // Image is wider than canvas, scale to fit width
+                    scaleFactor = canvasWidth / img.width;
+                } else {
+                    // Image is taller than canvas, scale to fit height
+                    scaleFactor = canvasHeight / img.height;
+                }
+                
+                const scaledWidth = img.width * scaleFactor;
+                const scaledHeight = img.height * scaleFactor;
 
                 img.set({
-                    scaleX: scaleToCover,
-                    scaleY: scaleToCover,
-                    left: canvasWidth / 2,
-                    top: canvasHeight / 2,
-                    originX: 'center',
-                    originY: 'center',
+                    scaleX: scaleFactor,
+                    scaleY: scaleFactor,
+                    left: (canvasWidth - scaledWidth) / 2, // Center horizontally
+                    top: (canvasHeight - scaledHeight) / 2, // Center vertically
+                    originX: 'left', // Origin is top-left for easier calculations
+                    originY: 'top',
                     selectable: false,
                     evented: false
                 });
                 fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
                 
-                // Calculate the visual top-left of the scaled and centered background image
-                const bgActualWidth = img.width * scaleToCover;
-                const bgActualHeight = img.height * scaleToCover;
-                const bgActualLeft = (canvasWidth - bgActualWidth) / 2;
-                const bgActualTop = (canvasHeight - bgActualHeight) / 2;
+                // The designable panel coordinates are relative to the original image dimensions.
+                // We need to scale and offset them based on the background image's scaled size and position.
+                const panelLeftOnImage = viewConfig.panel.left;
+                const panelTopOnImage = viewConfig.panel.top;
+                const panelWidthOnImage = viewConfig.panel.width;
+                const panelHeightOnImage = viewConfig.panel.height;
 
-                // Recreate the design panel overlay, positioned relative to the scaled background image
                 fabricPanelRect = new fabric.Rect({
-                    left: bgActualLeft + (viewConfig.panel.left * scaleToCover),
-                    top: bgActualTop + (viewConfig.panel.top * scaleToCover),
-                    width: viewConfig.panel.width * scaleToCover,
-                    height: viewConfig.panel.height * scaleToCover,
-                    fill: 'rgba(0,0,0,0)', // Always transparent
+                    left: img.left + (panelLeftOnImage * scaleFactor),
+                    top: img.top + (panelTopOnImage * scaleFactor),
+                    width: panelWidthOnImage * scaleFactor,
+                    height: panelHeightOnImage * scaleFactor,
+                    fill: 'rgba(0,0,0,0.0)', // Transparent, but helps in debugging if set to a color
                     selectable: false, 
                     evented: false,
-                    opacity: ((viewConfig.designs[currentChassisColor + "_" + viewKey] || []).length > 0) ? 1 : 0.01,
-                    absolutePositioned: true 
+                    opacity: 1, // Keep it visible for design placement
+                    absolutePositioned: true // This might not be strictly necessary if coords are canvas-relative
                 });
                 fabricCanvas.add(fabricPanelRect);
+                // fabricPanelRect.set('fill', 'rgba(255,0,0,0.3)'); // For debugging panel position
 
                 // Load stored user designs for this view and chassis color combination
                 const designStorageKey = currentChassisColor + "_" + viewKey;
