@@ -7,6 +7,39 @@
     <meta name="description" content="Design your own custom-printed PC with high-performance components. Upload your artwork or choose from our gallery for a truly personalised gaming computer.">
     <meta name="keywords" content="custom printed PC, personalised gaming computer, upload your own design PC case, custom PC artwork, high-performance PC">
     <title>Design Your Own Custom Panel PC | Aftershock</title>
+    <script>
+        function openTab(evt, tabName) {
+            console.log("Opening tab:", tabName); // Debug log
+            var i, tabcontent, tabbuttons;
+            
+            // Get all elements with class="tab-content" and hide them
+            tabcontent = document.getElementsByClassName("tab-content");
+            console.log("Found tabcontent elements:", tabcontent.length); // Debug log
+            for (i = 0; i < tabcontent.length; i++) {
+                console.log("Hiding:", tabcontent[i].id); // Debug log
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tab-button" and remove the "active" class
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            var targetTabElement = document.getElementById(tabName);
+            if (targetTabElement) {
+                console.log("Showing:", targetTabElement.id); // Debug log
+                targetTabElement.style.display = "block";
+            } else {
+                console.error("Target tab element not found:", tabName); // Debug log
+            }
+            
+            if (evt && evt.currentTarget) { 
+                 evt.currentTarget.classList.add("active");
+            }
+        }
+    </script>
     <style>
         :root {
             --primary-red: #E60000; /* Bright red accent */
@@ -27,63 +60,23 @@
             background-color: var(--dark-bg);
             color: var(--text-primary);
             line-height: 1.6;
-            font-size: 16px;
+            font-size: 15px; /* Reduced base font size */
         }
 
-        .site-header {
-            background-color: #000000; /* Solid black header like screenshot */
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .site-header .logo img {
-            height: 40px; /* Adjust as needed */
-            /* Assuming you'll add a logo image later */
-        }
-        .site-header .logo-placeholder {
-             font-size: 1.8em;
-             font-weight: bold;
-             color: var(--text-primary); /* Changed from red to primary text */
-        }
-
-        .site-header nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        .site-header nav ul li {
-            margin-left: 25px;
-        }
-
-        .site-header nav ul li a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .site-header nav ul li a:hover,
-        .site-header nav ul li a.active {
-            color: var(--primary-red);
-        }
+        /* Site header CSS removed */
 
         .main-container {
             width: 90%;
-            max-width: 1400px; /* Wider for a more modern feel */
-            margin: 30px auto;
-            padding: 0; /* Padding will be on columns */
+            max-width: 1200px; /* Reduced max-width */
+            margin: 20px auto; /* Reduced margin */
+            padding: 0; 
         }
         
         .product-main-title {
             text-align: center;
-            font-size: 2.2em;
-            color: var(--text-primary); /* Changed from red */
-            margin-bottom: 30px;
+            font-size: 2em; /* Reduced font size */
+            color: var(--text-primary); 
+            margin-bottom: 20px; /* Reduced margin */
             font-weight: 700;
             display: inline-block; /* For border to fit content */
             padding-bottom: 10px;
@@ -100,12 +93,12 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr; /* Left column wider for visuals */
-            gap: 30px;
+            grid-template-columns: 1.5fr 1fr; 
+            gap: 20px; /* Reduced gap */
         }
 
-        .left-column, .right-column {
-            padding: 20px;
+        .left-column, .right-column { /* General padding for columns */
+            padding: 15px; /* Reduced padding */
             background-color: var(--medium-bg);
             border-radius: 8px;
         }
@@ -116,11 +109,11 @@
         }
 
         h2.section-title {
-            color: var(--text-primary); /* Changed from red */
-            font-size: 1.6em;
+            color: var(--text-primary); 
+            font-size: 1.5em; /* Reduced font size */
             margin-top: 0;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 15px; /* Reduced margin */
+            padding-bottom: 8px; /* Adjusted padding */
             border-bottom: 2px solid var(--primary-red);
         }
         
@@ -152,8 +145,8 @@
             justify-content: center; /* Center thumbnails */
         }
         .product-visuals .thumb {
-            width: 80px;
-            height: 80px;
+            width: 70px; /* Reduced size */
+            height: 70px; /* Reduced size */
             background-color: var(--light-bg);
             border-radius: 4px;
             border: 1px solid var(--border-color);
@@ -170,9 +163,9 @@
         /* Design Customization specific styles */
         .design-customisation-area {
             background-color: var(--medium-bg);
-            padding: 25px;
+            padding: 20px; /* Reduced padding */
             border-radius: 8px;
-            margin-top: 20px; /* Space from mockups */
+            margin-top: 20px; 
             box-shadow: var(--shadow-md);
         }
 
@@ -225,21 +218,21 @@
 
         /* Right Column Sections */
         .right-column .section-block {
-            background-color: var(--light-bg); /* Distinct blocks like screenshot */
-            padding: 20px;
+            background-color: var(--light-bg); 
+            padding: 15px; /* Reduced padding */
             border-radius: 6px;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced margin */
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-md);
         }
         .right-column .section-block h3,
-        .design-customisation-area .section-block h3, /* For "Artwork Guidelines" */
-        .trust-elements-detailed h3.section-title /* For "Peace of Mind Guaranteed" if it uses h3.section-title */
+        .design-customisation-area .section-block h3, 
+        .trust-elements-detailed h3.section-title 
          {
-            font-size: 1.3em;
+            font-size: 1.2em; /* Reduced font size */
             color: var(--text-primary);
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Reduced margin */
             padding-bottom: 8px;
             border-bottom: 2px solid var(--primary-red);
             display: inline-block;
@@ -305,6 +298,129 @@
             font-weight: bold;
             margin-right: 10px;
             font-size: 1.2em;
+        }
+
+        /* Tab styling */
+        .tabs-container {
+            background-color: var(--light-bg); 
+            border-radius: 6px;
+            margin-bottom: 15px; 
+            box-shadow: var(--shadow-md);
+            overflow: hidden; 
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-button {
+            padding: 12px 18px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95em; 
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-right: 1px solid var(--border-color);
+            flex-grow: 1;
+            text-align: center;
+        }
+        .tab-button:last-child {
+            border-right: none;
+        }
+        .tab-button:hover {
+            color: var(--text-primary);
+            background-color: var(--medium-bg); 
+        }
+        .tab-button.active {
+            color: var(--primary-red);
+            /* border-bottom: 2px solid var(--primary-red); */ /* Alternative active style */
+            background-color: var(--medium-bg); 
+            font-weight: bold;
+        }
+        .tab-content {
+            padding: 0; /* Content sections will have their own padding */
+        }
+        .tab-content > .section-block {
+            margin-top: 0 !important;
+            border-top: none !important;
+            box-shadow: none !important; 
+            border-radius: 0 0 6px 6px !important; /* Keep bottom radius of container */
+            padding: 15px; /* Restore padding for the section content */
+        }
+
+        /* FPS Performance Section */
+        .fps-performance-section .fps-game {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+        }
+        .fps-performance-section .fps-game-image {
+            width: 120px; /* Adjusted size */
+            height: auto;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .fps-performance-section .fps-details h4 {
+            margin-top: 0;
+            color: var(--primary-red);
+            font-size: 1.1em; /* Adjusted size */
+        }
+        .fps-performance-section .fps-bar {
+            margin-bottom: 8px;
+            font-size: 0.9em; /* Adjusted size */
+        }
+        .fps-performance-section .fps-bar span:first-child {
+            font-weight: bold;
+            min-width: 50px; /* Adjusted size */
+            display: inline-block;
+        }
+        .fps-performance-section .fps-disclaimer {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        /* Bundles Section */
+        .bundles-section .bundle-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+            margin-bottom: 15px; 
+        }
+        .bundles-section .bundle-image {
+            width: 80px; /* Adjusted size */
+            height: 80px; /* Adjusted size */
+            object-fit: contain;
+            border-radius: 4px;
+            background-color: var(--dark-bg); 
+        }
+        .bundles-section .bundle-details h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-size: 1.1em; /* Adjusted size */
+        }
+        .bundles-section .bundle-price {
+            font-size: 1em; /* Adjusted size */
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+        .bundles-section .bundle-price s {
+            color: var(--text-secondary);
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        .bundles-section .bundle-cta {
+            padding: 8px 15px;
+            font-size: 0.9em;
         }
         
         /* Enhanced styling for config option lists */
@@ -517,20 +633,7 @@
     </style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="logo">
-            <!-- Placeholder for logo image, you can use text or an <img> tag -->
-            <span class="logo-placeholder">AFTERSHOCK</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#special-offers">Special Offers</a></li>
-                <li><a href="#gaming-pc" class="active">Gaming PC</a></li>
-                <li><a href="#workstation">Workstation</a></li>
-                <li><a href="#laptop">Laptop</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Site header HTML removed -->
 
     <div class="main-container">
         <h1 class="product-main-title">Design Your Ultimate Custom Panel PC</h1>
@@ -597,30 +700,41 @@
             </div>
 
             <div class="right-column">
-                <section class="section-block tech-specs">
-                    <h3>Select Base Specifications</h3>
-                    <p>Built with quality components, fully customizable in the next step:</p>
-                    <ul>
-                        <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5</li>
-                        <li><strong>GPU:</strong> NVIDIA GeForce RTX 4060 / AMD Radeon RX 7600</li>
-                        <li><strong>RAM:</strong> 16GB DDR5 High-Speed RAM</li>
-                        <li><strong>Storage:</strong> 1TB NVMe SSD</li>
-                        <li><strong>Motherboard:</strong> Reputable Brand (B/X Series)</li>
-                        <li><strong>Cooling:</strong> Premium Air/Liquid Options</li>
-                        <li><strong>PSU:</strong> 650W+ 80 PLUS Bronze</li>
-                    </ul>
-                </section>
+                <div class="tabs-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tabtarget="specificationsTab">Specifications</button>
+                        <button class="tab-button" data-tabtarget="descriptionTab">Description</button>
+                    </div>
 
-                <section class="section-block product-description">
-                    <h3>Your Vision, Our Rig</h3>
-                    <p>Elevate your setup with a PC that's uniquely yours. We transform high-performance machines into personalized masterpieces using durable, high-resolution UV printing.</p>
-                    <ul class="perfect-for-list">
-                        <li>Gaming</li>
-                        <li>Streaming</li>
-                        <li>Creative Work</li>
-                        <li>Professional Branding</li>
-                    </ul>
-                </section>
+                    <div id="specificationsTab" class="tab-content" style="display: block;">
+                        <section class="section-block tech-specs" style="margin-top: 0; border-top: none; box-shadow: none;">
+                            <h3>Select Base Specifications</h3>
+                            <p>Built with quality components, fully customizable in the next step:</p>
+                            <ul>
+                                <li><strong>CPU:</strong> Latest Gen Intel Core i5 / AMD Ryzen 5</li>
+                                <li><strong>GPU:</strong> NVIDIA GeForce RTX 4060 / AMD Radeon RX 7600</li>
+                                <li><strong>RAM:</strong> 16GB DDR5 High-Speed RAM</li>
+                                <li><strong>Storage:</strong> 1TB NVMe SSD</li>
+                                <li><strong>Motherboard:</strong> Reputable Brand (B/X Series)</li>
+                                <li><strong>Cooling:</strong> Premium Air/Liquid Options</li>
+                                <li><strong>PSU:</strong> 650W+ 80 PLUS Bronze</li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <div id="descriptionTab" class="tab-content" style="display: none;">
+                        <section class="section-block product-description" style="margin-top: 0; border-top: none; box-shadow: none;">
+                            <h3>Your Vision, Our Rig</h3>
+                            <p>Elevate your setup with a PC that's uniquely yours. We transform high-performance machines into personalized masterpieces using durable, high-resolution UV printing.</p>
+                            <ul class="perfect-for-list">
+                                <li>Gaming</li>
+                                <li>Streaming</li>
+                                <li>Creative Work</li>
+                                <li>Professional Branding</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
 
                 <section class="section-block config-options-detailed">
                     <h3>Choose Configuration Style</h3>
@@ -658,6 +772,43 @@
         </div>
 
         <!-- Lower sections moved outside the grid -->
+
+        <section class="lower-content-section fps-performance-section section-block">
+            <h2 class="section-title">FPS Performance</h2>
+            <div class="fps-game">
+                <img src="https://via.placeholder.com/120x170.png/2a2a2a/ffffff?text=Game+Art" alt="Game Title Example" class="fps-game-image">
+                <div class="fps-details">
+                    <h4>Red Dead Redemption 2 (Example)</h4>
+                    <div class="fps-bar"><span>1080p:</span> <span>122-142 FPS</span></div>
+                    <div class="fps-bar"><span>1440p:</span> <span>90-110 FPS</span></div>
+                    <div class="fps-bar"><span>4K:</span> <span>67-87 FPS</span></div>
+                    <p class="fps-disclaimer"><em>Results based on high settings for a comparable system. Performance may vary.</em></p>
+                </div>
+            </div>
+            <!-- Add more .fps-game divs for other games as needed -->
+        </section>
+
+        <section class="lower-content-section bundles-section section-block">
+            <h2 class="section-title">Complete Your Setup</h2>
+            <div class="bundle-item">
+                <img src="https://via.placeholder.com/80x80.png/2a2a2a/ffffff?text=Bundle1" alt="Aftershock Kit Example" class="bundle-image">
+                <div class="bundle-details">
+                    <h4>Aftershock Kit (Example)</h4>
+                    <p class="bundle-price"><s>$568.00</s> $169.00</p> <!-- Example pricing -->
+                    <a href="#" class="cta-secondary bundle-cta">More Info</a>
+                </div>
+            </div>
+            <div class="bundle-item">
+                <img src="https://via.placeholder.com/80x80.png/2a2a2a/ffffff?text=Bundle2" alt="Ultimate Aftershock Kit Example" class="bundle-image">
+                <div class="bundle-details">
+                    <h4>Ultimate Aftershock Kit (Example)</h4>
+                    <p class="bundle-price"><s>$1037.0</s> $768.00</p> <!-- Example pricing -->
+                    <a href="#" class="cta-secondary bundle-cta">More Info</a>
+                </div>
+            </div>
+            <!-- Add more .bundle-item divs as needed -->
+        </section>
+
         <section class="lower-content-section">
             <!-- Customer Reviews -->
             <div class="customer-reviews-detailed section-block">
@@ -777,6 +928,75 @@
         // Placeholder for more complex JS like dynamic pricing, 3D preview, configuration logic
         // For a real application, this would be significantly more complex and likely involve backend communication.
         console.log("Product page script loaded. Placeholder for advanced interactions.");
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOMContentLoaded event fired."); 
+
+            // Tab functionality (prioritized)
+            const tabButtons = document.querySelectorAll('.tab-button');
+            console.log("Found tabButtons:", tabButtons.length); 
+            
+            tabButtons.forEach(button => {
+                console.log("Attaching listener to button with data-tabtarget:", button.getAttribute('data-tabtarget')); 
+                button.addEventListener('click', function(event) {
+                    // This is the direct click handler for the button
+                    const tabName = this.getAttribute('data-tabtarget');
+                    // The openTab function (in head) has its own console.logs
+                    if (typeof openTab === 'function') {
+                         openTab(event, tabName); 
+                    } else {
+                        console.error("CRITICAL: openTab function is not defined when button was clicked.");
+                    }
+                });
+            });
+
+            // Existing Image Preview Handler
+            const imageUpload = document.getElementById('imageUpload');
+            if (imageUpload) { 
+                const imagePreview = document.getElementById('imagePreview'); 
+                const imagePreviewText = document.getElementById('imagePreviewText');
+                
+                imageUpload.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        if (file.type === "image/jpeg" || file.type === "image/png") {
+                            if (file.size <= 10 * 1024 * 1024) { // 10MB
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    imagePreview.src = e.target.result;
+                                    imagePreview.style.display = 'block';
+                                    imagePreviewText.style.display = 'none';
+                                }
+                                reader.readAsDataURL(file);
+                            } else {
+                                alert("File is too large. Maximum size is 10MB.");
+                                imagePreview.src = "#";
+                                imagePreview.style.display = 'none';
+                                imagePreviewText.style.display = 'block';
+                                imageUpload.value = ""; // Reset file input
+                            }
+                        } else {
+                            alert("Invalid file type. Please upload JPG or PNG.");
+                            imagePreview.src = "#";
+                            imagePreview.style.display = 'none';
+                            imagePreviewText.style.display = 'block';
+                            imageUpload.value = ""; // Reset file input
+                        }
+                    } else {
+                        imagePreview.src = "#";
+                        imagePreview.style.display = 'none';
+                        imagePreviewText.style.display = 'block';
+                    }
+                });
+            }
+
+            // Set current year in footer
+            const currentYearSpan = document.getElementById('currentYear');
+            if (currentYearSpan) { // Ensure element exists
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+        });
+        // Note: The openTab function itself is now in the <head>
 
     </script>
 </body>
