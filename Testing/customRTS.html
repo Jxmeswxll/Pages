@@ -1417,8 +1417,24 @@ body {
             fabricCanvas.clear(); // Clear previous objects
             
             fabric.Image.fromURL(bgImageUrl, function(img) {
-                const canvasWidth = fabricCanvas.getWidth();
-                const canvasHeight = fabricCanvas.getHeight();
+                // --- Force re-read of container dimensions and update Fabric canvas ---
+                let canvasWidth = fabricCanvasContainer.clientWidth;
+                const aspectRatio = 16 / 12; // Must match CSS aspect-ratio for #canvas-container
+                let canvasHeight = canvasWidth / aspectRatio;
+
+                // If containerWidth is 0, it might mean it's not visible/rendered yet.
+                // Fallback to a minimum or last known good, though this indicates a deeper layout issue.
+                if (canvasWidth === 0) {
+                    console.warn("Canvas container width is 0, attempting fallback or default.");
+                    // Attempt to get width from canvas element style if set, or default
+                    canvasWidth = fabricCanvas.getElement().style.width ? parseInt(fabricCanvas.getElement().style.width, 10) : 600;
+                    canvasHeight = canvasWidth / aspectRatio;
+                }
+                
+                fabricCanvas.setWidth(canvasWidth);
+                fabricCanvas.setHeight(canvasHeight);
+                fabricCanvas.calcOffset();
+                // --- End of forced re-read ---
                 
                 // Determine the scale factor to make the image fit while maintaining aspect ratio
                 // This time, we want to ensure the entire image is visible (object-fit: contain behavior)
@@ -1476,17 +1492,30 @@ body {
                 const designsToLoad = viewConfig.designs[designStorageKey] || [];
                 if (designsToLoad.length > 0) {
                     designsToLoad.forEach((designData, index) => {
+                        // Important: When loading designs, their saved left/top/scale might need
+                        // to be re-interpreted based on the *current* scaled background and panelRect.
+                        // For now, assuming they were saved relative to an 800x600 canvas.
+                        // This part might need further refinement if designs don't place correctly after scaling.
                         fabric.Image.fromURL(designData.src, function(designImg) {
+                            // Re-calculate position and scale based on current fabricPanelRect
+                            const designRectCenterX = fabricPanelRect.left + fabricPanelRect.width / 2;
+                            const designRectCenterY = fabricPanelRect.top + fabricPanelRect.height / 2;
+                            const maxDesignWidth = fabricPanelRect.width * 0.95;
+                            const maxDesignHeight = fabricPanelRect.height * 0.95;
+                            let designScaleFactor = Math.min(maxDesignWidth / designImg.width, maxDesignHeight / designImg.height);
+                            designScaleFactor = Math.max(designScaleFactor, 0.01);
+
                             designImg.set({
-                                left: designData.left * (canvasWidth / 800),
-                                top: designData.top * (canvasHeight / 600),
-                                scaleX: designData.scaleX, // Assuming scale was relative to the panel, not canvas
-                                scaleY: designData.scaleY,
-                                angle: designData.angle,
+                                left: designRectCenterX, // Position relative to current panelRect
+                                top: designRectCenterY,
+                                originX: 'center',
+                                originY: 'center',
+                                scaleX: designScaleFactor, // Scale relative to current panelRect
+                                scaleY: designScaleFactor,
+                                angle: designData.angle || 0, // Use saved angle or default
                                 cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
                                 borderColor: 'var(--primary-red)', cornerSize: 10,
                                 opacity: animate ? 0 : 1,
-                                absolutePositioned: true
                             });
                             fabricCanvas.add(designImg);
                             if (animate) {
@@ -1498,7 +1527,7 @@ body {
                     });
                 }
                 hideFabricLoading();
-                fabricCanvas.renderAll();
+                fabricCanvas.requestRenderAll(); // Use requestRenderAll for potentially better timing
             }, { crossOrigin: 'anonymous' });
             // updateFabricColorSelection removed as panel color is no longer user-selectable
         }
