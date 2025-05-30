@@ -945,21 +945,27 @@ body {
                                 <div class="controls-section">
                                   <div class="color-section">
                                     <div class="section-title">
-                                      <i class="fas fa-palette"></i> Panel Color
+                                      <i class="fas fa-paint-roller"></i> Chassis Color
                                     </div>
-                                    <div class="color-grid" id="colors">
-                                      <div class="swatch active" style="background:#ffffff" data-color="#ffffff"></div>
-                                      <div class="swatch" style="background:#000000" data-color="#000000"></div>
-                                      <div class="swatch" style="background:#e61919" data-color="#e61919"></div>
-                                      <div class="swatch" style="background:#ff3b30" data-color="#ff3b30"></div>
-                                      <div class="swatch" style="background:#4a4a4a" data-color="#4a4a4a"></div>
-                                      <div class="swatch" style="background:#2c2c2c" data-color="#2c2c2c"></div>
-                                      <div class="swatch" style="background:#3a3a3c" data-color="#3a3a3c"></div>
-                                      <div class="swatch" style="background:#8e8e93" data-color="#8e8e93"></div>
-                                      <div class="swatch" style="background:#007aff" data-color="#007aff"></div>
-                                      <div class="swatch" style="background:#5856d6" data-color="#5856d6"></div>
-                                      <div class="swatch" style="background:#34c759" data-color="#34c759"></div>
-                                      <div class="swatch" style="background:#ff9500" data-color="#ff9500"></div>
+                                    <div class="color-grid" id="chassisColors">
+                                      <div class="swatch chassis-color-swatch active" style="background:#3B82F6;" data-chassis-color="blue"></div> <!-- Blue -->
+                                      <div class="swatch chassis-color-swatch" style="background:#10B981;" data-chassis-color="green"></div> <!-- Green -->
+                                      <div class="swatch chassis-color-swatch" style="background:#EC4899;" data-chassis-color="pink"></div> <!-- Pink -->
+                                      <div class="swatch chassis-color-swatch" style="background:#8B5CF6;" data-chassis-color="purple"></div> <!-- Purple -->
+                                    </div>
+                                  </div>
+
+                                  <div class="color-section" style="margin-top: 20px;">
+                                    <div class="section-title">
+                                      <i class="fas fa-palette"></i> Design Area Color
+                                    </div>
+                                    <div class="color-grid" id="panelOverlayColors"> <!-- Renamed id for clarity -->
+                                      <div class="swatch design-area-swatch active" style="background:#1e1e1e" data-color="#1e1e1e"></div> <!-- Default secondary black -->
+                                      <div class="swatch design-area-swatch" style="background:#ffffff" data-color="#ffffff"></div>
+                                      <div class="swatch design-area-swatch" style="background:#000000" data-color="#000000"></div>
+                                      <div class="swatch design-area-swatch" style="background:#e61919" data-color="#e61919"></div>
+                                      <div class="swatch design-area-swatch" style="background:#ff3b30" data-color="#ff3b30"></div>
+                                      <div class="swatch design-area-swatch" style="background:#4a4a4a" data-color="#4a4a4a"></div>
                                     </div>
                                   </div>
                                   
@@ -1313,28 +1319,36 @@ body {
         // Adapted from user-provided HTML for Panel 2
 
         const fabricCanvasContainer = document.querySelector('#panel-2 #canvas-container');
-        let fabricCanvas; // Declare fabricCanvas here to be accessible
-        let currentFabricView = 'front'; // Default view for Fabric
-        let fabricPanelRect; // To store the colored panel on Fabric canvas
+        let fabricCanvas; 
+        let currentFabricView = 'front'; 
+        let fabricPanelRect; 
         const fabricLoadingIndicator = document.querySelector('#panel-2 #loadingIndicator');
+        let currentChassisColor = 'blue'; // Default chassis color
 
-        const fabricViews = {
+        // Define base path and image names for dynamic loading
+        const chassisBasePath = 'Zeal Pastel/';
+        const chassisImageFiles = {
+            blue: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
+            green: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
+            pink: { front: 'front_2000px.png', side: 'hero_2000 px.png', top: 'top_2000px.png' },
+            purple: { front: 'Purple Zeal M-Front.png', side: 'Purple Zeal M-Side.png', top: 'Purple Zeal M-Top.png' }
+        };
+
+        const fabricViews = { // Panel coordinates might need adjustment based on actual chassis images
             front: {
-              bg: 'https://i.ibb.co/SvhhcZ0/pc-case-front.png',
-              panel: { left: 250, top: 200, width: 300, height: 200 },
-              panelColor: '#ffffff', // Default color
+              // bg will be set dynamically
+              panel: { left: 250, top: 200, width: 300, height: 200 }, // These are for the design overlay area
+              panelColor: '#1e1e1e', // Default overlay panel color, can be changed by user
               designs: []
             },
             side: {
-              bg: 'https://i.ibb.co/hK7z9nD/pc-case-side.png',
               panel: { left: 200, top: 150, width: 350, height: 250 },
-              panelColor: '#ffffff',
+              panelColor: '#1e1e1e',
               designs: []
             },
             top: {
-              bg: 'https://i.ibb.co/3ypZ9BB/pc-case-top.png',
               panel: { left: 300, top: 100, width: 200, height: 150 },
-              panelColor: '#ffffff',
+              panelColor: '#1e1e1e',
               designs: []
             }
         };
@@ -1378,25 +1392,56 @@ body {
         function loadFabricView(viewKey, animate = true) {
             if (!fabricCanvas) return;
             showFabricLoading();
-            const view = fabricViews[viewKey];
-            currentFabricView = viewKey;
+            const viewConfig = fabricViews[viewKey]; // Contains panel overlay info
+            currentFabricView = viewKey; // front, side, top
+
+            const chassisImageSet = chassisImageFiles[currentChassisColor];
+            if (!chassisImageSet) {
+                console.error("Chassis color not found:", currentChassisColor);
+                hideFabricLoading();
+                return;
+            }
+            const bgImageUrl = chassisBasePath + currentChassisColor + '/' + chassisImageSet[viewKey];
             
-            fabricCanvas.clear();
+            fabricCanvas.clear(); // Clear previous objects
             
-            fabric.Image.fromURL(view.bg, function(img) {
+            fabric.Image.fromURL(bgImageUrl, function(img) {
                 img.set({ selectable: false, evented: false, originX: 'left', originY: 'top' });
-                const scale = fabricCanvas.width / img.width;
-                img.scale(scale);
-                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
                 
+                // Scale background image to fit canvas width while maintaining aspect ratio
+                const canvasWidth = fabricCanvas.getWidth();
+                const canvasHeight = fabricCanvas.getHeight();
+                const imgAspectRatio = img.width / img.height;
+                let newWidth = canvasWidth;
+                let newHeight = canvasWidth / imgAspectRatio;
+
+                if (newHeight > canvasHeight) {
+                    newHeight = canvasHeight;
+                    newWidth = canvasHeight * imgAspectRatio;
+                }
+                // Center the image
+                const offsetX = (canvasWidth - newWidth) / 2;
+                const offsetY = (canvasHeight - newHeight) / 2;
+
+                img.scaleToWidth(newWidth);
+                img.set({left: offsetX, top: offsetY});
+
+                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas), {
+                    originX: 'left',
+                    originY: 'top'
+                });
+                
+                // Recreate the design panel overlay (where custom designs are placed)
+                // Its color is controlled by the 'Panel Color' swatches
                 fabricPanelRect = new fabric.Rect({
-                    left: view.panel.left * (fabricCanvas.width / 800), // Scale positions
-                    top: view.panel.top * (fabricCanvas.height / 600), // Scale positions (assuming 800x600 original canvas)
-                    width: view.panel.width * (fabricCanvas.width / 800),
-                    height: view.panel.height * (fabricCanvas.height / 600),
-                    fill: view.panelColor,
+                    left: viewConfig.panel.left * (canvasWidth / 800), 
+                    top: viewConfig.panel.top * (canvasHeight / 600), 
+                    width: viewConfig.panel.width * (canvasWidth / 800),
+                    height: viewConfig.panel.height * (canvasHeight / 600),
+                    fill: viewConfig.panelColor, // This is the color of the designable area, not chassis
                     selectable: false, evented: false,
-                    opacity: animate ? 0 : 1
+                    opacity: animate ? 0 : 1,
+                    absolutePositioned: true // Important for some Fabric.js versions if doing complex layering
                 });
                 fabricCanvas.add(fabricPanelRect);
 
@@ -1406,19 +1451,21 @@ body {
                     }, 200);
                 }
 
-                if (view.designs.length > 0) {
-                    view.designs.forEach((designData, index) => {
+                // Load stored user designs for this view and chassis color combination
+                const designsToLoad = viewConfig.designs[currentChassisColor + "_" + viewKey] || [];
+                if (designsToLoad.length > 0) {
+                    designsToLoad.forEach((designData, index) => {
                         fabric.Image.fromURL(designData.src, function(designImg) {
-                            // Apply stored transformations, scaled to current canvas
                             designImg.set({
-                                left: designData.left * (fabricCanvas.width / 800),
-                                top: designData.top * (fabricCanvas.height / 600),
-                                scaleX: designData.scaleX * (fabricCanvas.width / 800),
-                                scaleY: designData.scaleY * (fabricCanvas.height / 600),
+                                left: designData.left * (canvasWidth / 800),
+                                top: designData.top * (canvasHeight / 600),
+                                scaleX: designData.scaleX, // Assuming scale was relative to the panel, not canvas
+                                scaleY: designData.scaleY,
                                 angle: designData.angle,
                                 cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
                                 borderColor: 'var(--primary-red)', cornerSize: 10,
-                                opacity: animate ? 0 : 1
+                                opacity: animate ? 0 : 1,
+                                absolutePositioned: true
                             });
                             fabricCanvas.add(designImg);
                             if (animate) {
@@ -1426,28 +1473,43 @@ body {
                                     designImg.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
                                 }, 300 + (index * 100));
                             }
-                        });
+                        }, { crossOrigin: 'anonymous' });
                     });
                 }
                 hideFabricLoading();
-                fabricCanvas.renderAll(); // Ensure canvas renders after all async operations
-            }, { crossOrigin: 'anonymous' }); // Handle CORS for images if needed
-            updateFabricColorSelection(view.panelColor);
+                fabricCanvas.renderAll();
+            }, { crossOrigin: 'anonymous' });
+            updateFabricColorSelection(viewConfig.panelColor); // This updates the design panel color swatches
         }
+        
+        function changeChassisColor(newColor) {
+            currentChassisColor = newColor;
+            // Update the active state for chassis color swatches (if you add them)
+            // For now, just reload the view with the new chassis color
+            loadFabricView(currentFabricView, true); 
+            // Potentially update a different set of swatches for chassis color
+            // For example, if you add swatches with data-chassis-color attribute:
+            document.querySelectorAll('#panel-2 .chassis-color-swatch').forEach(swatch => {
+                 swatch.classList.toggle('active', swatch.dataset.chassisColor === newColor);
+            });
+        }
+
 
         function switchFabricView(viewKey) {
             if (currentFabricView === viewKey || !fabricCanvas) return;
             
-            const currentViewData = fabricViews[currentFabricView];
-            currentViewData.designs = [];
+            const viewConfig = fabricViews[currentFabricView];
+            // Store designs specific to current chassis color and view
+            const designStorageKey = currentChassisColor + "_" + currentFabricView;
+            viewConfig.designs[designStorageKey] = []; 
             fabricCanvas.getObjects().forEach(obj => {
-                if (obj !== fabricPanelRect && obj.type === 'image') { // Only store design images
-                    currentViewData.designs.push({
+                if (obj !== fabricPanelRect && obj.type === 'image') { 
+                    viewConfig.designs[designStorageKey].push({
                         src: obj.getSrc(),
-                        left: obj.left / (fabricCanvas.width / 800), // Store original-scale positions
+                        left: obj.left / (fabricCanvas.width / 800), 
                         top: obj.top / (fabricCanvas.height / 600),
-                        scaleX: obj.scaleX / (fabricCanvas.width / 800),
-                        scaleY: obj.scaleY / (fabricCanvas.height / 600),
+                        scaleX: obj.scaleX, // Store scale as is, it's relative to object's original size
+                        scaleY: obj.scaleY,
                         angle: obj.angle
                     });
                 }
@@ -1556,12 +1618,26 @@ body {
             document.querySelectorAll('#panel-2 .tab').forEach(tab => {
                 tab.addEventListener('click', function() { 
                     const viewName = this.textContent.trim().split(" ")[0].toLowerCase();
-                    switchFabricView(viewName);
+                    // Ensure the first word is a valid key (front, side, top)
+                    if (fabricViews.hasOwnProperty(viewName)) {
+                       switchFabricView(viewName);
+                    }
                 });
             });
-            document.querySelectorAll('#panel-2 .swatch').forEach(swatch => {
+            // Design Area Color Swatches
+            document.querySelectorAll('#panel-2 #panelOverlayColors .design-area-swatch').forEach(swatch => {
                 swatch.addEventListener('click', function() { changeFabricPanelColor(this.dataset.color); });
             });
+            // Chassis Color Swatches
+            document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
+                swatch.addEventListener('click', function() { 
+                    changeChassisColor(this.dataset.chassisColor); 
+                    // Visually update active chassis swatch
+                    document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
             const fabricFileInput = document.querySelector('#panel-2 #fileInput');
             if(fabricFileInput) fabricFileInput.addEventListener('change', handleFabricFileUpload);
             
