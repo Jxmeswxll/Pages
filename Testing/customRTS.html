@@ -1397,42 +1397,42 @@ body {
             fabricCanvas.clear(); // Clear previous objects
             
             fabric.Image.fromURL(bgImageUrl, function(img) {
-                img.set({ selectable: false, evented: false, originX: 'left', originY: 'top' });
-                
-                // Scale background image to fit canvas width while maintaining aspect ratio
                 const canvasWidth = fabricCanvas.getWidth();
                 const canvasHeight = fabricCanvas.getHeight();
-                const imgAspectRatio = img.width / img.height;
-                let newWidth = canvasWidth;
-                let newHeight = canvasWidth / imgAspectRatio;
-
-                if (newHeight > canvasHeight) {
-                    newHeight = canvasHeight;
-                    newWidth = canvasHeight * imgAspectRatio;
-                }
-                // Center the image
-                const offsetX = (canvasWidth - newWidth) / 2;
-                const offsetY = (canvasHeight - newHeight) / 2;
-
-                img.scaleToWidth(newWidth);
-                img.set({left: offsetX, top: offsetY});
-
-                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas), {
-                    originX: 'left',
-                    originY: 'top'
-                });
                 
-                // Recreate the design panel overlay (where custom designs are placed)
-                // Recreate the design panel overlay (where custom designs are placed)
+                // Calculate scale factor to make the image cover the canvas
+                const scaleX = canvasWidth / img.width;
+                const scaleY = canvasHeight / img.height;
+                const scaleToCover = Math.max(scaleX, scaleY);
+
+                img.set({
+                    scaleX: scaleToCover,
+                    scaleY: scaleToCover,
+                    left: canvasWidth / 2,
+                    top: canvasHeight / 2,
+                    originX: 'center',
+                    originY: 'center',
+                    selectable: false,
+                    evented: false
+                });
+                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
+                
+                // Calculate the visual top-left of the scaled and centered background image
+                const bgActualWidth = img.width * scaleToCover;
+                const bgActualHeight = img.height * scaleToCover;
+                const bgActualLeft = (canvasWidth - bgActualWidth) / 2;
+                const bgActualTop = (canvasHeight - bgActualHeight) / 2;
+
+                // Recreate the design panel overlay, positioned relative to the scaled background image
                 fabricPanelRect = new fabric.Rect({
-                    left: viewConfig.panel.left * (canvasWidth / 800), 
-                    top: viewConfig.panel.top * (canvasHeight / 600), 
-                    width: viewConfig.panel.width * (canvasWidth / 800),
-                    height: viewConfig.panel.height * (canvasHeight / 600),
-                    fill: 'rgba(0,0,0,0)', // Always transparent now
-                    selectable: false, evented: false,
-                    // Opacity will be 1 if there's a design, 0 otherwise (or just always 1 and rely on transparent fill)
-                    opacity: ((viewConfig.designs[currentChassisColor + "_" + viewKey] || []).length > 0) ? 1 : 0.01, // Slight opacity to keep it in object list if needed, effectively invisible
+                    left: bgActualLeft + (viewConfig.panel.left * scaleToCover),
+                    top: bgActualTop + (viewConfig.panel.top * scaleToCover),
+                    width: viewConfig.panel.width * scaleToCover,
+                    height: viewConfig.panel.height * scaleToCover,
+                    fill: 'rgba(0,0,0,0)', // Always transparent
+                    selectable: false, 
+                    evented: false,
+                    opacity: ((viewConfig.designs[currentChassisColor + "_" + viewKey] || []).length > 0) ? 1 : 0.01,
                     absolutePositioned: true 
                 });
                 fabricCanvas.add(fabricPanelRect);
@@ -1535,18 +1535,31 @@ body {
             const reader = new FileReader();
             reader.onload = function(f) {
                 fabric.Image.fromURL(f.target.result, function(img) {
-                    const panelCenterX = fabricPanelRect.left + fabricPanelRect.width / 2;
-                    const panelCenterY = fabricPanelRect.top + fabricPanelRect.height / 2;
-                    const maxWidth = fabricPanelRect.width * 0.9; // Slightly smaller than panel for padding
-                    const maxHeight = fabricPanelRect.height * 0.9;
-                    let scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                    // Scale and position the uploaded design relative to the fabricPanelRect
+                    // The fabricPanelRect itself is now correctly scaled and positioned.
+                    // Uploaded images should be scaled to fit within this rect.
+                    const designRectCenterX = fabricPanelRect.left + fabricPanelRect.width / 2;
+                    const designRectCenterY = fabricPanelRect.top + fabricPanelRect.height / 2;
                     
+                    // Scale the uploaded image to fit within the fabricPanelRect (designable area)
+                    const maxDesignWidth = fabricPanelRect.width * 0.95; // Allow slight padding
+                    const maxDesignHeight = fabricPanelRect.height * 0.95;
+                    
+                    let designScaleFactor = Math.min(maxDesignWidth / img.width, maxDesignHeight / img.height);
+                    // Ensure scale is not zero or negative if panel rect is tiny
+                    designScaleFactor = Math.max(designScaleFactor, 0.01);
+
+
                     img.set({
-                        left: panelCenterX, top: panelCenterY, originX: 'center', originY: 'center',
-                        scaleX: scale, scaleY: scale,
+                        left: designRectCenterX, 
+                        top: designRectCenterY, 
+                        originX: 'center', 
+                        originY: 'center',
+                        scaleX: designScaleFactor, 
+                        scaleY: designScaleFactor,
                         cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
                         borderColor: 'var(--primary-red)', cornerSize: 10, opacity: 0,
-                        absolutePositioned: true
+                        absolutePositioned: true // This might not be needed if positioning relative to canvas
                     });
                     fabricCanvas.add(img);
                     fabricCanvas.setActiveObject(img);
