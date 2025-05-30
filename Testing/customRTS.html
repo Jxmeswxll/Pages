@@ -1621,18 +1621,20 @@ body {
                         scaleX: designScaleFactor, 
                         scaleY: designScaleFactor,
                         cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
-                        borderColor: 'var(--primary-red)', cornerSize: 10, opacity: 0,
-                        absolutePositioned: true // This might not be needed if positioning relative to canvas
+                        borderColor: 'var(--primary-red)', cornerSize: 10, 
+                        opacity: 1, // Start fully opaque
+                        isCustomDesign: true, // Mark as custom design
+                        absolutePositioned: true 
                     });
                     fabricCanvas.add(img);
-                    fabricCanvas.setActiveObject(img);
-                    img.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                    fabricCanvas.setActiveObject(img); // This will trigger 'selection:created'
+                    // Opacity change to 0.7 will be handled by the 'selection:created' event listener
                     
                     // Make design panel visible if it was effectively invisible
-                    if (fabricPanelRect.get('opacity') < 0.1) { // Check if it was the placeholder opacity
+                    if (fabricPanelRect.get('opacity') < 0.1) { 
                         fabricPanelRect.set('opacity', 1); 
                     }
-                    fabricCanvas.renderAll(); // Render after opacity change
+                    fabricCanvas.requestRenderAll();
 
                     hideFabricLoading();
                     showFabricNotification('Design uploaded successfully!');
@@ -1678,9 +1680,53 @@ body {
         function initializeFabricCanvas() {
             if (fabricCanvas || !document.getElementById('panel-2').classList.contains('active')) return; // Already initialized or panel not active
 
-            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true, selection: false });
+            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true }); // Allow selection
             resizeFabricCanvas(); // Initial resize
             loadFabricView(currentFabricView, false); // Load default view without animation first time
+
+            let currentlyEditedObject = null;
+
+            fabricCanvas.on('selection:created', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) {
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    currentlyEditedObject = null; 
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:updated', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign && (!opt.selected || opt.selected.length === 0 || currentlyEditedObject !== opt.selected[0])) {
+                     currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    if(currentlyEditedObject && currentlyEditedObject.isCustomDesign) currentlyEditedObject.set('opacity', 1);
+                    currentlyEditedObject = null;
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:cleared', function(opt) {
+                if (opt.deselected) {
+                    opt.deselected.forEach(obj => {
+                        if (obj.isCustomDesign) {
+                            obj.set('opacity', 1);
+                        }
+                    });
+                } else if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) { 
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                currentlyEditedObject = null;
+                fabricCanvas.requestRenderAll();
+            });
+
 
             // Event listeners for Fabric customizer (scoped to Panel 2)
             document.querySelectorAll('#panel-2 .tab').forEach(tab => {
