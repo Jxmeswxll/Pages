@@ -457,6 +457,15 @@ body {
     border-color: var(--primary-red);
     box-shadow: 0 0 15px rgba(230, 25, 25, 0.4);
 }
+#panel-2 .tab.view-confirmed { /* New style for confirmed views */
+    background: var(--success-color);
+    color: var(--text-light);
+    border-color: var(--success-color);
+}
+#panel-2 .tab.view-confirmed:hover {
+    background: #28a745; /* Darker green for hover on confirmed */
+}
+
 
 #panel-2 #canvas-container {
     position: relative;
@@ -990,7 +999,7 @@ body {
                                     <button class="fabric-button" id="deleteBtn">
                                       <i class="fas fa-trash"></i> Remove Design
                                     </button>
-                                    <button class="fabric-button" id="downloadBtn">
+                                    <button class="fabric-button" id="downloadBtn"> <!-- Moved Save Design button -->
                                       <i class="fas fa-download"></i> Save Design
                                     </button>
                                   </div>
@@ -1530,6 +1539,14 @@ body {
                 fabricCanvas.requestRenderAll(); // Use requestRenderAll for potentially better timing
             }, { crossOrigin: 'anonymous' });
             // updateFabricColorSelection removed as panel color is no longer user-selectable
+            
+            // Update view tab confirmation status
+            const activeTabElement = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
+            if (activeTabElement) {
+                // For now, let's assume loading a view means it's "pending" confirmation until a design is added.
+                // The actual "confirmation" (green highlight) will happen when a design is added/modified for this view.
+                // We might need a separate mechanism to track if a view *has* a design.
+            }
         }
         
         function changeChassisColor(newColor) {
@@ -1546,27 +1563,31 @@ body {
             if (currentFabricView === viewKey || !fabricCanvas) return;
             
             const currentViewConfig = fabricViews[currentFabricView];
-            if (currentViewConfig) { // Ensure currentViewConfig exists
+            if (currentViewConfig) { 
                 const currentDesignStorageKey = currentChassisColor + "_" + currentFabricView;
                 currentViewConfig.designs[currentDesignStorageKey] = []; 
                 
                 fabricCanvas.getObjects().forEach(obj => {
-                    if (obj !== fabricPanelRect && obj.type === 'image' && obj.getSrc()) { // Check obj.getSrc()
+                    if (obj !== fabricPanelRect && obj.type === 'image' && obj.getSrc() && obj.isCustomDesign) { 
                         currentViewConfig.designs[currentDesignStorageKey].push({
                             src: obj.getSrc(),
-                            left: obj.left / (fabricCanvas.width / 800), 
-                            top: obj.top / (fabricCanvas.height / 600),
+                            left: obj.left, // Save actual canvas coordinates
+                            top: obj.top,
                             scaleX: obj.scaleX, 
                             scaleY: obj.scaleY,
-                            angle: obj.angle
+                            angle: obj.angle,
+                            isCustomDesign: true // Persist this flag
                         });
                     }
                 });
             }
 
-            document.querySelectorAll('#panel-2 .tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
+                tab.classList.remove('active');
+                // Do not remove 'view-confirmed' here, it should persist until reset
+            });
             const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === viewKey);
-            if(activeTab) activeTab.classList.add('active');
+            if(activeTab) activeTab.classList.add('active'); // Red for active, green for confirmed will layer or be specific
             
             // Animate out existing objects before loading new view
             let objectsToAnimate = fabricCanvas.getObjects().filter(obj => obj !== fabricCanvas.backgroundImage);
@@ -1627,17 +1648,20 @@ body {
                         absolutePositioned: true 
                     });
                     fabricCanvas.add(img);
-                    fabricCanvas.setActiveObject(img); // This will trigger 'selection:created'
-                    // Opacity change to 0.7 will be handled by the 'selection:created' event listener
+                    fabricCanvas.setActiveObject(img); 
                     
-                    // Make design panel visible if it was effectively invisible
                     if (fabricPanelRect.get('opacity') < 0.1) { 
                         fabricPanelRect.set('opacity', 1); 
                     }
-                    fabricCanvas.requestRenderAll();
+                    
+                    // Mark current view tab as confirmed
+                    const activeTabElement = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.dataset.viewkey === currentFabricView);
+                    if (activeTabElement) {
+                        activeTabElement.classList.add('view-confirmed');
+                    }
 
+                    fabricCanvas.requestRenderAll();
                     hideFabricLoading();
-                    // showFabricNotification('Design uploaded successfully!'); // Removed pop-up
                 }, { crossOrigin: 'anonymous' });
             };
             reader.readAsDataURL(file);
@@ -1789,10 +1813,10 @@ body {
         }
         // --- FABRIC.JS CUSTOMIZER SCRIPT END ---
 
-        const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
-        if (panel1NextBtn) {
-            panel1NextBtn.disabled = true;
-        }
+        // const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn'); // This line is now problematic and redundant
+        // if (panel1NextBtn) {
+        //     panel1NextBtn.disabled = true;
+        // }
         
         // Default design selection to "No Custom Design"
         const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
