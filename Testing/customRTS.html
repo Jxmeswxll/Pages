@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your custom PC order with our easy 3-step checkout process.">
+    <title>RTS PC Customiser</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* New Red & Black Theme Variables */
+    --primary-red: #e61919;
+    --primary-black: #121212;
+    --secondary-black: #1e1e1e;
+    --accent-red: #ff3b30;
+    --text-light: #f8f8f8;
+    --text-gray: #a0a0a0;
+    
+    /* Adapted from old theme or new additions for compatibility */
+    --primary-color: var(--primary-red); /* Main interactive color */
+    --primary-hover: #ff4d4d; /* Lighter red for hover */
+    --background-dark: var(--primary-black);
+    --surface-dark: var(--secondary-black); /* For main panel backgrounds */
+    --surface-medium: #2a2a2a; /* Slightly lighter than secondary-black for elements */
+    --surface-light: #383838; /* For hover states or subtle borders */
+    --text-primary: var(--text-light);
+    --text-secondary: var(--text-gray);
+    --text-placeholder: #6E6E73; /* Kept from old, adjust if needed */
+    --border-color: rgba(255, 255, 255, 0.1); /* New border color */
+    --error-color: var(--accent-red);
+    --success-color: #34C759; /* Kept green for success, can change to a red theme success if desired */
+
+    --font-main: 'Roboto', sans-serif;
+    --font-header: 'Rajdhani', sans-serif;
+
+    --border-radius: 8px; /* General border radius */
+    --border-radius-sm: 6px; /* Specific if needed */
+    --border-radius-md: 8px; /* Match general */
+    --border-radius-lg: 12px; /* Larger radius */
+    
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* General shadow */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+    --shadow-md: 0 6px 16px rgba(0,0,0,0.25);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.3);
+
+    --transition: all 0.3s ease;
+    --transition-speed: 0.3s; /* For compatibility with old JS if any uses it */
+}
+
+body {
+    font-family: var(--font-main); /* Uses new --font-main: 'Roboto' */
+    margin: 0;
+    padding: 0;
+    background: var(--primary-black); /* New theme body background */
+    color: var(--text-light); /* New theme body text color */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Align items for the whole page */
+    align-items: center; /* Center content for the whole page */
+    padding: 20px; /* Overall page padding */
+    overflow-x: hidden;
+}
+
+.checkout-container {
+    width: 100%;
+    max-width: 1400px; 
+    background-color: var(--primary-black); /* Main container background, same as body or slightly different */
+    border-radius: var(--border-radius-lg); /* Use new theme radius */
+    box-shadow: var(--box-shadow); /* Use new theme shadow */
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    height: 85vh; 
+    min-height: 650px;
+}
+
+.checkout-header {
+    padding: 20px 30px; /* Adjusted padding */
+    background-color: var(--secondary-black); /* Use theme color for header distinct from main content area */
+    border-bottom: 1px solid var(--border-color); /* Uses new --border-color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkout-header .logo-placeholder { /* This will be the "AFTERSHOCK CHECKOUT" text */
+    font-family: var(--font-header); /* Use Rajdhani */
+    font-size: 1.8em; /* Keep size or adjust */
+    font-weight: 700;
+    color: var(--primary-red); /* Themed color */
+    letter-spacing: 1px;
+}
+
+.progress-indicator {
+    display: flex;
+    gap: 10px;
+}
+
+.progress-indicator .step {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--surface-medium);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.progress-indicator .step span {
+    background-color: var(--text-placeholder);
+    color: var(--surface-dark);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.8em;
+    transition: all var(--transition-speed) ease;
+}
+
+.progress-indicator .step.active {
+    color: var(--text-primary);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+.progress-indicator .step.active span {
+    background-color: var(--text-primary);
+    color: var(--primary-color);
+}
+.progress-indicator .step.completed {
+    color: var(--text-secondary);
+    background-color: var(--surface-light);
+    border-color: var(--success-color);
+}
+.progress-indicator .step.completed span {
+    background-color: var(--success-color);
+    color: var(--text-primary);
+}
+
+
+.checkout-main {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    padding: 20px; /* Add padding inside main area */
+    background-color: var(--surface-dark); /* Background for the main content area */
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* Match container rounding if header is separate */
+    overflow: hidden; 
+}
+
+.panel-container {
+    display: flex;
+    width: 100%; 
+    height: 100%; 
+    /* transition: none; */ 
+}
+
+.panel {
+    flex-shrink: 0; 
+    flex-grow: 0;   
+    flex-basis: 120px; /* Minimized width for inactive panels - can adjust */
+    height: 100%; 
+    padding: 20px; 
+    box-sizing: border-box;
+    background-color: var(--secondary-black); /* Inactive panel bg from new theme */
+    border-radius: var(--border-radius); /* Use new theme radius */
+    box-shadow: var(--box-shadow); /* Use new theme shadow */
+    margin: 0 5px; 
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    cursor: pointer; 
+    transition: flex-basis 0.4s ease-in-out, background-color 0.4s ease, box-shadow 0.4s ease;
+    position: relative; 
+}
+
+.panel.active {
+    flex-grow: 1; 
+    flex-basis: 75%; /* Active panel takes up most space */
+    background-color: var(--primary-black); /* Active panel bg - could be same as body or slightly different */
+    box-shadow: 0 8px 30px rgba(230, 25, 25, 0.2); /* More prominent shadow for active, themed */
+    cursor: default; 
+    margin: 0 10px; /* Slightly more margin for active panel if desired */
+}
+
+.panel .panel-header { 
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0; 
+    transition: margin-bottom 0.4s ease;
+    width: 100%; 
+}
+.panel .panel-header h2 { /* Ensure h2 within panel-header uses new theme fonts/colors */
+    font-family: var(--font-header);
+    color: var(--text-light);
+}
+.panel .panel-header h2 .step-number {
+    color: var(--primary-red);
+}
+.panel .panel-header p {
+    font-family: var(--font-main);
+    color: var(--text-gray);
+}
+
+
+.panel.active .panel-header {
+    margin-bottom: 20px; 
+}
+
+.panel .panel-content-wrapper { /* New wrapper for content and navigation */
+    flex-grow: 1;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out 0.1s;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel.active .panel-content-wrapper {
+    max-height: 100vh; /* Allow it to take full available height */
+    opacity: 1;
+}
+
+.panel .panel-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll content within the wrapper */
+}
+
+/* Panel 2 will have its content replaced, so specific styles for its old content might not be needed.
+   The new Fabric.js customizer will have its own structure and styles.
+   We need to ensure the .panel-content area within panel-2 can accommodate it. */
+#panel-2.active .panel-content {
+    display: flex; 
+    flex-direction: column; /* Changed for Fabric customizer layout */
+    gap: 0; /* Remove gap if Fabric customizer handles its own spacing */
+    height: 100%; /* Ensure it fills the wrapper */
+    padding: 0; /* Remove padding if Fabric customizer has its own */
+}
+
+
+.panel .panel-navigation {
+    padding-top: 20px; 
+    border-top: 1px solid var(--border-color); 
+}
+/* General button styling from new theme, adapted for checkout buttons */
+.next-step-btn, .prev-step-btn, .checkout-button, .select-button {
+    padding: 10px 20px; /* Adjusted padding */
+    font-family: var(--font-main);
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    text-align: center;
+    display: inline-flex; /* For icon alignment */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.next-step-btn, .select-button {
+    background: var(--primary-red);
+    color: var(--text-light);
+}
+.next-step-btn:hover, .select-button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 0 10px rgba(230, 25, 25, 0.3);
+}
+.next-step-btn:disabled, .select-button:disabled { /* Assuming .select-button can be disabled */
+    background-color: var(--surface-light) !important; /* Use important if needed to override */
+    color: var(--text-placeholder) !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+.prev-step-btn {
+    background: transparent;
+    border: 1px solid var(--primary-red);
+    color: var(--primary-red);
+}
+.prev-step-btn:hover {
+    background: rgba(230, 25, 25, 0.1);
+    color: var(--primary-hover);
+}
+
+.checkout-button { /* This is the final checkout button */
+    background-color: var(--success-color); /* Or use a themed red if preferred */
+    color: var(--text-light);
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 1.2em;
+}
+.checkout-button:hover {
+    background-color: #28a745; /* Darker green, or themed red hover */
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); /* Or themed red shadow */
+}
+
+/* Styles for content within panels - general */
+.panel-content {
+     /* General styling for panel content if needed, but specific panels might override */
+}
+
+/* Specific styles for option cards in Panel 1, adapted to new theme */
+
+/* Panel 1: Choose PC */
+#panel-1 .panel-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.option-card {
+    background-color: var(--secondary-black); /* Use new theme color */
+    border-radius: var(--border-radius);
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.option-card:hover {
+    border-color: var(--primary-color);
+    background-color: var(--surface-light); /* Subtle background change on hover */
+    box-shadow: var(--shadow-sm); /* Softer shadow */
+}
+.option-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color); /* Simpler outline shadow */
+    background-color: var(--surface-light);
+}
+
+.option-card img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 15px;
+    background-color: var(--background-dark); /* Placeholder bg */
+}
+
+.option-card h3 {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+}
+
+.option-card p {
+    font-size: 0.95em;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+.option-card .price {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.select-button, .next-step-btn, .prev-step-btn, .checkout-button {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    border: none;
+    text-align: center;
+}
+
+.select-button {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    width: 100%;
+}
+.select-button:hover {
+    background-color: var(--primary-hover);
+}
+.option-card.selected .select-button {
+    background-color: var(--success-color);
+    /* content: "Selected"; Removed as it's better handled by JS if text needs to change */
+}
+
+
+/* Panel 2: Fabric.js Customizer Styles */
+#panel-2 .panel-content { /* Ensure panel content area is ready for Fabric */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the customizer content */
+    height: 100%;
+    overflow-y: auto; /* Allow scrolling if customizer is tall */
+}
+
+/* Styles from the provided Fabric.js example */
+    /* Copied from user-provided HTML for Panel 2 */
+    /* Note: Some selectors might need adjustment to fit within .panel-content */
+    /* e.g., .container might become #panel-2 .fabric-container */
+
+#panel-2 .fabric-container { /* Renamed to avoid conflict with body > .container */
+    width: 100%;
+    /* max-width: 1200px; */ /* Max width handled by panel */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#panel-2 #view-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#panel-2 .tab {
+    padding: 10px 20px; /* Adjusted padding */
+    background: var(--secondary-black);
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#panel-2 .tab:hover {
+    background: rgba(230, 25, 25, 0.1);
+    border-color: var(--primary-red);
+}
+
+#panel-2 .tab.active {
+    background: var(--primary-red);
+    color: var(--text-light);
+    border-color: var(--primary-red);
+    box-shadow: 0 0 15px rgba(230, 25, 25, 0.4);
+}
+
+#panel-2 #canvas-container {
+    position: relative;
+    margin: 0 auto 20px auto; /* Added bottom margin */
+    width: 100%;
+    max-width: 700px; /* Max width for canvas area */
+    /* height: auto; */ /* Let canvas define height */
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    background: var(--secondary-black); /* Canvas bg */
+}
+
+#panel-2 #c { /* Target canvas specifically */
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+    /* background: var(--secondary-black); */ /* Set on container */
+}
+
+#panel-2 .controls-section {
+    width: 100%;
+    max-width: 700px; /* Match canvas area */
+    margin-top: 20px; /* Adjusted margin */
+    background: var(--secondary-black);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+#panel-2 .section-title {
+    font-family: var(--font-header);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#panel-2 #controls { /* Original had this, might not be needed if sections are structured */
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+#panel-2 .color-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+#panel-2 .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); /* Adjusted for smaller swatches */
+    gap: 10px;
+}
+
+#panel-2 .swatch {
+    width: 40px; /* Adjusted size */
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#panel-2 .swatch:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#panel-2 .swatch.active {
+    border: 3px solid var(--text-light);
+}
+
+#panel-2 .swatch.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-light); /* Check contrast with swatch bg */
+    font-size: 18px; /* Adjusted size */
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+#panel-2 .upload-section {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#panel-2 .file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+#panel-2 .upload-area {
+    width: 100%;
+    padding: 25px; /* Adjusted padding */
+    border: 2px dashed var(--border-color); /* Use theme border color */
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.03); /* Subtle background */
+}
+
+#panel-2 .upload-area:hover {
+    border-color: var(--primary-red);
+    background: rgba(230, 25, 25, 0.05);
+}
+
+#panel-2 .upload-area i {
+    font-size: 36px; /* Adjusted size */
+    color: var(--text-gray);
+}
+
+#panel-2 .upload-text {
+    color: var(--text-gray);
+    text-align: center;
+}
+
+#panel-2 .fabric-button { /* Renamed to avoid conflict with general .button */
+    padding: 10px 20px; /* Adjusted padding */
+    background: var(--primary-red);
+    color: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex; /* Changed from flex for inline behavior */
+    align-items: center;
+    gap: 8px;
+    font-size: 15px; /* Adjusted font size */
+}
+
+#panel-2 .fabric-button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 0 15px rgba(230, 25, 25, 0.4);
+}
+
+#panel-2 .fabric-button.secondary {
+    background: transparent;
+    border: 1px solid var(--primary-red);
+    color: var(--primary-red);
+}
+
+#panel-2 .fabric-button.secondary:hover {
+    background: rgba(230, 25, 25, 0.1);
+}
+
+#panel-2 .actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#panel-2 .loading { /* Specific to fabric canvas loading */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; /* Ensure it's above canvas but below panel header if needed */
+    border-radius: var(--border-radius);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+#panel-2 .loading.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#panel-2 .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-red);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+/* End of Fabric.js Customizer Styles */
+
+/* Panel 3: Summary */
+.summary-details {
+    background-color: var(--surface-medium);
+    padding: 25px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+.summary-details h3 {
+    font-size: 1.6em;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.summary-details h4 {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.summary-details p {
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+.summary-details p span {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+#summaryDesignSelection, #summaryPcSelection {
+    margin-bottom: 20px;
+}
+#summaryDesignImage {
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--background-dark);
+}
+.total-price {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+.total-price h4 {
+    font-size: 1.8em;
+    color: var(--text-primary);
+    text-align: right;
+}
+.total-price h4 span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.checkout-button {
+    background-color: var(--success-color);
+    color: var(--text-primary);
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 1.2em;
+}
+.checkout-button:hover {
+    background-color: #28a745; /* Darker green */
+}
+
+/* Panel Navigation */
+.panel-navigation {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.next-step-btn {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+}
+.next-step-btn:hover {
+    background-color: var(--primary-hover);
+}
+.next-step-btn:disabled {
+    background-color: var(--surface-light);
+    color: var(--text-placeholder);
+    cursor: not-allowed;
+}
+
+.prev-step-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.prev-step-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 0; /* Remove padding for mobile full screen */
+        align-items: stretch;
+    }
+    .checkout-container {
+        height: 100vh; /* Full viewport height */
+        min-height: 0; /* Remove min-height for mobile */
+        border-radius: 0; /* No border radius on mobile */
+        box-shadow: none; /* No shadow on mobile */
+        margin: 0;
+    }
+    .checkout-main {
+        padding: 10px; /* Smaller padding for mobile */
+        border-radius: 0;
+    }
+    .panel-container {
+        flex-direction: column; /* Stack panels vertically */
+        width: 100%;
+        height: auto; /* Height based on content */
+    }
+    .panel {
+        flex-basis: auto !important; /* Override desktop flex-basis */
+        width: 100%;
+        height: auto; /* Height based on content */
+        margin: 0 0 10px 0; /* Margin between vertical panels */
+        cursor: pointer; /* Headers are always clickable */
+    }
+    .panel.active {
+        /* No change in width/flex-grow needed for vertical stack, active just shows content */
+    }
+    .panel .panel-header {
+        /* Styles for header are mostly fine, ensure it's clickable */
+    }
+    .panel .panel-content-wrapper {
+        /* Transitions for max-height and opacity remain */
+    }
+    .panel.active .panel-content-wrapper {
+        max-height: none; /* Allow content to define height, or set a large enough value */
+    }
+     /* Ensure panel content specific to step 2 still works in vertical layout */
+    #panel-2.active .panel-content {
+        flex-direction: column; /* Stack preview and controls vertically on mobile */
+    }
+    .design-preview-area, .design-controls-area {
+        flex: none; /* Remove flex sizing from desktop */
+        width: 100%; /* Take full width */
+    }
+
+    .checkout-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    .progress-indicator {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .progress-indicator .step {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+    .panel {
+        padding: 20px;
+        min-height: calc(100vh - 150px); /* Adjust based on header height */
+    }
+    .panel-header h2 {
+        font-size: 1.6em;
+    }
+    #panel-1 .panel-content {
+        grid-template-columns: 1fr; /* Stack cards on mobile */
+    }
+    .panel-navigation {
+        flex-direction: column-reverse; /* Stack buttons */
+        gap: 15px;
+    }
+    .next-step-btn, .prev-step-btn, .checkout-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-header .logo-placeholder {
+        font-size: 1.5em;
+    }
+    .progress-indicator .step {
+        font-size: 0.7em; /* Further reduce for very small screens */
+        gap: 5px;
+    }
+    .progress-indicator .step span {
+        width: 18px;
+        height: 18px;
+        font-size: 0.7em;
+    }
+    .panel-header h2 {
+        font-size: 1.4em;
+    }
+    .panel-header p {
+        font-size: 0.9em;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <header class="checkout-header">
+            <div class="logo-placeholder">AFTERSHOCK CHECKOUT</div>
+            <div class="progress-indicator">
+                <div class="step active" id="step-indicator-1"><span>1</span> Choose PC</div>
+                <div class="step" id="step-indicator-2"><span>2</span> Choose Design</div>
+                <div class="step" id="step-indicator-3"><span>3</span> Summary & Pay</div>
+            </div>
+        </header>
+
+        <main class="checkout-main">
+            <div class="panel-container">
+                <!-- Panel 1: Choose PC -->
+                <section id="panel-1" class="panel active" data-panel-index="0">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
+                        <p>Select the base model or configuration that suits your needs.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <!-- PC Options will go here -->
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Base+Gaming+PC" alt="Base Gaming PC">
+                                <h3>Starter Custom Rig</h3>
+                                <p>Balanced performance for everyday gaming and productivity.</p>
+                                <p class="price">$1,499 AUD</p>
+                                <button class="select-button" data-pc-name="Starter Custom Rig" data-pc-price="1499">Select This PC</button>
+                            </div>
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Pro+Gamer+PC" alt="Pro Gamer PC">
+                                <h3>Pro Gamer Custom</h3>
+                                <p>High-end components for serious 1440p/4K gaming.</p>
+                                <p class="price">$2,499 AUD</p>
+                                <button class="select-button" data-pc-name="Pro Gamer Custom" data-pc-price="2499">Select This PC</button>
+                            </div>
+                            <div class="option-card">
+                                <img src="https://via.placeholder.com/300x200/2a2a2a/ffffff?text=Ultra+Creative+PC" alt="Ultra Creative PC">
+                                <h3>Ultra Creative Custom</h3>
+                                <p>Top-tier power for demanding creative workloads.</p>
+                                <p class="price">$3,999 AUD</p>
+                                <button class="select-button" data-pc-name="Ultra Creative Custom" data-pc-price="3999">Select This PC</button>
+                            </div>
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Panel 2: Choose Design -->
+                <section id="panel-2" class="panel" data-panel-index="1">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 2:</span> Choose Your Design</h2>
+                        <p>Personalize your PC with custom artwork or select from our gallery.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <!-- This entire .panel-content will be replaced by the Fabric.js customizer HTML -->
+                            <!-- User provided HTML for Fabric.js customizer -->
+                            <div class="fabric-container"> <!-- Renamed from .container -->
+                                <!-- Header for customizer (optional, if different from panel header) -->
+                                <!-- <h1>Custom PC Case Designer</h1> --> <!-- This title is now part of panel-header -->
+                                
+                                <div id="view-tabs">
+                                  <div class="tab active" onclick="switchView('front')"> <!-- JS function to be adapted -->
+                                    <i class="fas fa-desktop"></i> Front View
+                                  </div>
+                                  <div class="tab" onclick="switchView('side')">
+                                    <i class="fas fa-columns"></i> Side View
+                                  </div>
+                                  <div class="tab" onclick="switchView('top')">
+                                    <i class="fas fa-square"></i> Top View
+                                  </div>
+                                </div>
+                                
+                                <div id="canvas-container">
+                                  <canvas id="c"></canvas>
+                                  <div class="loading" id="loadingIndicator"> <!-- Renamed id to avoid conflict -->
+                                    <div class="spinner"></div>
+                                  </div>
+                                </div>
+                                
+                                <div class="controls-section">
+                                  <div class="color-section">
+                                    <div class="section-title">
+                                      <i class="fas fa-palette"></i> Panel Color
+                                    </div>
+                                    <div class="color-grid" id="colors">
+                                      <div class="swatch active" style="background:#ffffff" data-color="#ffffff"></div>
+                                      <div class="swatch" style="background:#000000" data-color="#000000"></div>
+                                      <div class="swatch" style="background:#e61919" data-color="#e61919"></div>
+                                      <div class="swatch" style="background:#ff3b30" data-color="#ff3b30"></div>
+                                      <div class="swatch" style="background:#4a4a4a" data-color="#4a4a4a"></div>
+                                      <div class="swatch" style="background:#2c2c2c" data-color="#2c2c2c"></div>
+                                      <div class="swatch" style="background:#3a3a3c" data-color="#3a3a3c"></div>
+                                      <div class="swatch" style="background:#8e8e93" data-color="#8e8e93"></div>
+                                      <div class="swatch" style="background:#007aff" data-color="#007aff"></div>
+                                      <div class="swatch" style="background:#5856d6" data-color="#5856d6"></div>
+                                      <div class="swatch" style="background:#34c759" data-color="#34c759"></div>
+                                      <div class="swatch" style="background:#ff9500" data-color="#ff9500"></div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="upload-section">
+                                    <div class="section-title">
+                                      <i class="fas fa-upload"></i> Custom Design
+                                    </div>
+                                    <div class="file-upload">
+                                      <div class="upload-area" id="uploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <div class="upload-text">
+                                          <strong>Click to upload</strong> or drag and drop<br>
+                                          your custom design image
+                                        </div>
+                                      </div>
+                                      <input type="file" id="fileInput" style="display: none;" accept="image/*">
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="actions">
+                                    <button class="fabric-button" id="resetBtn"> <!-- Renamed class -->
+                                      <i class="fas fa-undo"></i> Reset View
+                                    </button>
+                                    <button class="fabric-button" id="deleteBtn">
+                                      <i class="fas fa-trash"></i> Remove Design
+                                    </button>
+                                    <button class="fabric-button" id="downloadBtn">
+                                      <i class="fas fa-download"></i> Save Design
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- End of user provided HTML -->
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="0">Back: Choose PC</button>
+                            <button class="next-step-btn" data-target-panel-index="2">Next: Summary</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Panel 3: Summary + Checkout -->
+                <section id="panel-3" class="panel" data-panel-index="2">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 3:</span> Summary & Checkout</h2>
+                        <p>Review your selections and proceed to payment.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="summary-details">
+                                <h3>Order Summary</h3>
+                                <div id="summaryPcSelection">
+                                    <h4>Selected PC:</h4>
+                                    <p>Name: <span id="summaryPcName">N/A</span></p>
+                                    <p>Price: $<span id="summaryPcPrice">0.00</span> AUD</p>
+                                </div>
+                                <div id="summaryDesignSelection">
+                                    <h4>Selected Design:</h4>
+                                    <p>Name: <span id="summaryDesignName">N/A</span></p>
+                                    <img id="summaryDesignImage" src="#" alt="Selected Design Preview" style="max-width: 200px; max-height: 150px; margin-top: 10px; display: none;">
+                                </div>
+                                <hr>
+                                <div class="total-price">
+                                    <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
+                                </div>
+                            </div>
+                            <button class="checkout-button">Proceed to Checkout</button>
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="1">Back: Choose Design</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+    (function () {
+        const panelContainer = document.querySelector('.panel-container');
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        const nextButtons = document.querySelectorAll('.next-step-btn');
+        const prevButtons = document.querySelectorAll('.prev-step-btn');
+        const progressSteps = document.querySelectorAll('.progress-indicator .step');
+
+        const pcSelectionButtons = document.querySelectorAll('#panel-1 .select-button');
+        const artworkUploadInput = document.getElementById('artworkUpload');
+        const artworkPreview = document.getElementById('artworkPreview'); // Thumbnail preview
+        const artworkPreviewText = document.getElementById('artworkPreviewText'); // Text for thumbnail
+        const artworkOnPcPreview = document.getElementById('artworkOnPcPreview'); // Main preview on PC model
+        const pcPreviewPlaceholderText = document.getElementById('pcPreviewPlaceholderText'); // Text for main PC preview
+        const galleryItems = document.querySelectorAll('#panel-2 .gallery-item');
+
+        const summaryPcName = document.getElementById('summaryPcName');
+        const summaryPcPrice = document.getElementById('summaryPcPrice');
+        const summaryDesignName = document.getElementById('summaryDesignName');
+        const summaryDesignImage = document.getElementById('summaryDesignImage');
+        const summaryTotalPrice = document.getElementById('summaryTotalPrice');
+
+        const checkoutButton = document.querySelector('.checkout-button');
+
+        let currentPanelIndex = 0; // Use index for clarity
+        let orderDetails = {
+            pc: null, 
+            design: null 
+        };
+
+        function setActivePanel(targetIndex) {
+            if (targetIndex < 0 || targetIndex >= panels.length) return;
+
+            // Validation for stepping forward
+            if (targetIndex > currentPanelIndex) {
+                if (currentPanelIndex === 0 && !orderDetails.pc) {
+                    alert("Please select a PC configuration to continue.");
+                    return;
+                }
+                if (currentPanelIndex === 1 && !orderDetails.design) {
+                    alert("Please choose a design or select 'No Custom Design' to continue.");
+                    return;
+                }
+            }
+            
+            currentPanelIndex = targetIndex;
+
+            panels.forEach((panel, index) => {
+                if (index === currentPanelIndex) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+
+            progressSteps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index < currentPanelIndex) {
+                    step.classList.add('completed');
+                } else if (index === currentPanelIndex) {
+                    step.classList.add('active');
+                }
+            });
+
+            if (currentPanelIndex === panels.length - 1) { // If on the summary panel
+                updateSummary();
+            }
+        }
+
+        function updateSummary() {
+            let total = 0;
+            if (orderDetails.pc) {
+                summaryPcName.textContent = orderDetails.pc.name;
+                summaryPcPrice.textContent = parseFloat(orderDetails.pc.price).toFixed(2);
+                total += parseFloat(orderDetails.pc.price);
+            } else {
+                summaryPcName.textContent = 'N/A';
+                summaryPcPrice.textContent = '0.00';
+            }
+
+            if (orderDetails.design && orderDetails.design.name !== "No Custom Design") {
+                summaryDesignName.textContent = orderDetails.design.name;
+                if(orderDetails.design.image && orderDetails.design.image !== "") {
+                    summaryDesignImage.src = orderDetails.design.image;
+                    summaryDesignImage.style.display = 'block';
+                } else {
+                    summaryDesignImage.style.display = 'none';
+                }
+            } else {
+                summaryDesignName.textContent = 'No Custom Design (Included)';
+                summaryDesignImage.style.display = 'none';
+            }
+            summaryTotalPrice.textContent = total.toFixed(2);
+        }
+
+        // Panel 1: PC Selection
+        pcSelectionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
+                button.closest('.option-card').classList.add('selected');
+                orderDetails.pc = {
+                    name: button.dataset.pcName,
+                    price: parseFloat(button.dataset.pcPrice)
+                };
+                const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
+                if (panel1NextBtn) {
+                    panel1NextBtn.disabled = false;
+                }
+                updateSummary();
+            });
+        });
+
+        // Panel 2: Design Selection
+        if (artworkUploadInput) {
+            artworkUploadInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    if (file.type === "image/jpeg" || file.type === "image/png") {
+                        if (file.size <= 10 * 1024 * 1024) { // 10MB
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                // Update thumbnail preview
+                                artworkPreview.src = e.target.result;
+                                artworkPreview.style.display = 'block';
+                                artworkPreviewText.style.display = 'none';
+                                
+                                // Update main PC preview
+                                if (artworkOnPcPreview) {
+                                    artworkOnPcPreview.src = e.target.result;
+                                    artworkOnPcPreview.style.display = 'block';
+                                }
+                                if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'none';
+
+                                orderDetails.design = { name: `Custom: ${file.name}`, image: e.target.result };
+                                galleryItems.forEach(item => item.classList.remove('selected'));
+                                document.getElementById('selectedDesignName').textContent = `Custom: ${file.name}`;
+                                updateSummary();
+                                // Show crop/rotate buttons for custom uploads
+                                document.getElementById('cropBtn').style.display = 'inline-block';
+                                document.getElementById('rotateBtn').style.display = 'inline-block';
+                            }
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert("File is too large. Maximum size is 10MB.");
+                            artworkPreview.src = "#"; artworkPreview.style.display = 'none'; artworkPreviewText.style.display = 'block';
+                            if (artworkOnPcPreview) { artworkOnPcPreview.src = "#"; artworkOnPcPreview.style.display = 'none'; }
+                            if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
+                            artworkUploadInput.value = "";
+                        }
+                    } else {
+                        alert("Invalid file type. Please upload JPG or PNG.");
+                        artworkPreview.src = "#"; artworkPreview.style.display = 'none'; artworkPreviewText.style.display = 'block';
+                        if (artworkOnPcPreview) { artworkOnPcPreview.src = "#"; artworkOnPcPreview.style.display = 'none'; }
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
+                        artworkUploadInput.value = "";
+                    }
+                }
+            });
+        }
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                galleryItems.forEach(it => it.classList.remove('selected'));
+                item.classList.add('selected');
+                orderDetails.design = {
+                    name: item.dataset.designName,
+                    image: item.dataset.designImage
+                };
+
+                // Update thumbnail preview (if needed, or clear it)
+                if (artworkPreview) { artworkPreview.src = "#"; artworkPreview.style.display = 'none'; }
+                if (artworkPreviewText) artworkPreviewText.style.display = 'block'; // Show placeholder for upload thumbnail
+                if (artworkUploadInput) artworkUploadInput.value = ""; // Clear file input
+
+                // Update main PC preview
+                if (artworkOnPcPreview) {
+                    if (item.dataset.designImage && item.dataset.designImage !== "") {
+                        artworkOnPcPreview.src = item.dataset.designImage;
+                        artworkOnPcPreview.style.display = 'block';
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'none';
+                    } else { // "No Custom Design" or empty image
+                        artworkOnPcPreview.src = "#";
+                        artworkOnPcPreview.style.display = 'none';
+                        if (pcPreviewPlaceholderText) pcPreviewPlaceholderText.style.display = 'block';
+                    }
+                }
+                
+                document.getElementById('selectedDesignName').textContent = item.dataset.designName;
+                updateSummary();
+                // Hide crop/rotate buttons for gallery items
+                document.getElementById('cropBtn').style.display = 'none';
+                document.getElementById('rotateBtn').style.display = 'none';
+            });
+        });
+
+        // Navigation Buttons
+        nextButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
+            });
+        });
+
+        prevButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
+            });
+        });
+
+        // Click on minimized panel headers to activate them
+        panels.forEach((panel, index) => {
+            const header = panel.querySelector('.panel-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    if (!panel.classList.contains('active')) {
+                        setActivePanel(index);
+                    }
+                });
+            }
+        });
+        
+        // Click on progress steps to navigate
+        progressSteps.forEach((stepIndicator, index) => {
+            stepIndicator.addEventListener('click', () => {
+                 // Allow navigation to any step via progress bar if it's already completed or current
+                if (index <= currentPanelIndex || panels[index].classList.contains('completed-step-via-progress')) {
+                     setActivePanel(index);
+                } else {
+                    // Check if requirements for previous steps are met before jumping
+                    let canProceed = true;
+                    for (let i = 0; i < index; i++) {
+                        if (i === 0 && !orderDetails.pc) {
+                            alert("Please select a PC configuration first (Step 1).");
+                            canProceed = false;
+                            setActivePanel(0); // Go to step 1
+                            break;
+                        }
+                        if (i === 1 && !orderDetails.design) {
+                            alert("Please choose a design first (Step 2).");
+                            canProceed = false;
+                            setActivePanel(1); // Go to step 2
+                            break;
+                        }
+                    }
+                    if (canProceed) {
+                        setActivePanel(index);
+                    }
+                }
+            });
+        });
+
+
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', () => {
+                if (!orderDetails.pc) {
+                    alert("Please complete PC selection (Step 1).");
+                    setActivePanel(0);
+                    return;
+                }
+                if (!orderDetails.design) {
+                    alert("Please complete design selection (Step 2).");
+                    setActivePanel(1);
+                    return;
+                }
+                alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
+                console.log("Order Details:", orderDetails);
+            });
+        }
+
+        // Initial setup calls
+        setActivePanel(0); // Start with the first panel active
+        
+        // --- FABRIC.JS CUSTOMIZER SCRIPT START ---
+        // Adapted from user-provided HTML for Panel 2
+
+        const fabricCanvasContainer = document.querySelector('#panel-2 #canvas-container');
+        let fabricCanvas; // Declare fabricCanvas here to be accessible
+        let currentFabricView = 'front'; // Default view for Fabric
+        let fabricPanelRect; // To store the colored panel on Fabric canvas
+        const fabricLoadingIndicator = document.querySelector('#panel-2 #loadingIndicator');
+
+        const fabricViews = {
+            front: {
+              bg: 'https://i.ibb.co/SvhhcZ0/pc-case-front.png',
+              panel: { left: 250, top: 200, width: 300, height: 200 },
+              panelColor: '#ffffff', // Default color
+              designs: []
+            },
+            side: {
+              bg: 'https://i.ibb.co/hK7z9nD/pc-case-side.png',
+              panel: { left: 200, top: 150, width: 350, height: 250 },
+              panelColor: '#ffffff',
+              designs: []
+            },
+            top: {
+              bg: 'https://i.ibb.co/3ypZ9BB/pc-case-top.png',
+              panel: { left: 300, top: 100, width: 200, height: 150 },
+              panelColor: '#ffffff',
+              designs: []
+            }
+        };
+
+        function showFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.add('active');
+        }
+        function hideFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.remove('active');
+        }
+
+        function showFabricNotification(message) {
+            // Reuse existing notification system if possible, or implement one for Fabric
+            // For now, using alert as a placeholder for notification
+            alert(message); 
+            // const notification = document.getElementById('notification'); // Assuming a general notification element exists
+            // const notificationText = document.getElementById('notificationText');
+            // if(notification && notificationText) {
+            //     notificationText.textContent = message;
+            //     notification.classList.add('show');
+            //     setTimeout(() => { notification.classList.remove('show'); }, 3000);
+            // }
+        }
+
+        function resizeFabricCanvas() {
+            if (!fabricCanvas || !fabricCanvasContainer) return;
+            const containerWidth = fabricCanvasContainer.clientWidth;
+            // Maintain aspect ratio, e.g., 4:3 for the canvas area, or let it be defined by content
+            const containerHeight = containerWidth * 0.75; 
+            
+            fabricCanvas.setWidth(containerWidth);
+            fabricCanvas.setHeight(containerHeight);
+            // fabricCanvas.setZoom(containerWidth / 800); // Original base width was 800
+            fabricCanvas.renderAll();
+            
+            if (currentFabricView) {
+                loadFabricView(currentFabricView, false); // Reload to adjust objects
+            }
+        }
+
+        function loadFabricView(viewKey, animate = true) {
+            if (!fabricCanvas) return;
+            showFabricLoading();
+            const view = fabricViews[viewKey];
+            currentFabricView = viewKey;
+            
+            fabricCanvas.clear();
+            
+            fabric.Image.fromURL(view.bg, function(img) {
+                img.set({ selectable: false, evented: false, originX: 'left', originY: 'top' });
+                const scale = fabricCanvas.width / img.width;
+                img.scale(scale);
+                fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
+                
+                fabricPanelRect = new fabric.Rect({
+                    left: view.panel.left * (fabricCanvas.width / 800), // Scale positions
+                    top: view.panel.top * (fabricCanvas.height / 600), // Scale positions (assuming 800x600 original canvas)
+                    width: view.panel.width * (fabricCanvas.width / 800),
+                    height: view.panel.height * (fabricCanvas.height / 600),
+                    fill: view.panelColor,
+                    selectable: false, evented: false,
+                    opacity: animate ? 0 : 1
+                });
+                fabricCanvas.add(fabricPanelRect);
+
+                if (animate) {
+                    setTimeout(() => {
+                        fabricPanelRect.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                    }, 200);
+                }
+
+                if (view.designs.length > 0) {
+                    view.designs.forEach((designData, index) => {
+                        fabric.Image.fromURL(designData.src, function(designImg) {
+                            // Apply stored transformations, scaled to current canvas
+                            designImg.set({
+                                left: designData.left * (fabricCanvas.width / 800),
+                                top: designData.top * (fabricCanvas.height / 600),
+                                scaleX: designData.scaleX * (fabricCanvas.width / 800),
+                                scaleY: designData.scaleY * (fabricCanvas.height / 600),
+                                angle: designData.angle,
+                                cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
+                                borderColor: 'var(--primary-red)', cornerSize: 10,
+                                opacity: animate ? 0 : 1
+                            });
+                            fabricCanvas.add(designImg);
+                            if (animate) {
+                                setTimeout(() => {
+                                    designImg.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                                }, 300 + (index * 100));
+                            }
+                        });
+                    });
+                }
+                hideFabricLoading();
+                fabricCanvas.renderAll(); // Ensure canvas renders after all async operations
+            }, { crossOrigin: 'anonymous' }); // Handle CORS for images if needed
+            updateFabricColorSelection(view.panelColor);
+        }
+
+        function switchFabricView(viewKey) {
+            if (currentFabricView === viewKey || !fabricCanvas) return;
+            
+            const currentViewData = fabricViews[currentFabricView];
+            currentViewData.designs = [];
+            fabricCanvas.getObjects().forEach(obj => {
+                if (obj !== fabricPanelRect && obj.type === 'image') { // Only store design images
+                    currentViewData.designs.push({
+                        src: obj.getSrc(),
+                        left: obj.left / (fabricCanvas.width / 800), // Store original-scale positions
+                        top: obj.top / (fabricCanvas.height / 600),
+                        scaleX: obj.scaleX / (fabricCanvas.width / 800),
+                        scaleY: obj.scaleY / (fabricCanvas.height / 600),
+                        angle: obj.angle
+                    });
+                }
+            });
+
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => tab.classList.remove('active'));
+            const activeTab = Array.from(document.querySelectorAll('#panel-2 .tab')).find(t => t.textContent.toLowerCase().includes(viewKey.toLowerCase()));
+            if(activeTab) activeTab.classList.add('active');
+            
+            if (fabricCanvas.getObjects().length > 0) {
+                fabricCanvas.getObjects().forEach(obj => {
+                    obj.animate('opacity', 0, { duration: 200, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                });
+                setTimeout(() => loadFabricView(viewKey), 300);
+            } else {
+                loadFabricView(viewKey);
+            }
+        }
+
+        function changeFabricPanelColor(color) {
+            if (fabricPanelRect) {
+                fabricPanelRect.animate('fill', color, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                fabricViews[currentFabricView].panelColor = color;
+                updateFabricColorSelection(color);
+            }
+        }
+        
+        function updateFabricColorSelection(color) {
+            document.querySelectorAll('#panel-2 .swatch').forEach(swatch => {
+                swatch.classList.remove('active');
+                if (swatch.dataset.color === color) swatch.classList.add('active');
+            });
+        }
+
+        function handleFabricFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file || !fabricCanvas) return;
+            showFabricLoading();
+            const reader = new FileReader();
+            reader.onload = function(f) {
+                fabric.Image.fromURL(f.target.result, function(img) {
+                    const panelCenterX = fabricPanelRect.left + fabricPanelRect.width / 2;
+                    const panelCenterY = fabricPanelRect.top + fabricPanelRect.height / 2;
+                    const maxWidth = fabricPanelRect.width * 0.8;
+                    const maxHeight = fabricPanelRect.height * 0.8;
+                    let scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                    
+                    img.set({
+                        left: panelCenterX, top: panelCenterY, originX: 'center', originY: 'center',
+                        scaleX: scale, scaleY: scale,
+                        cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
+                        borderColor: 'var(--primary-red)', cornerSize: 10, opacity: 0
+                    });
+                    fabricCanvas.add(img);
+                    fabricCanvas.setActiveObject(img);
+                    img.animate('opacity', 1, { duration: 300, onChange: fabricCanvas.renderAll.bind(fabricCanvas) });
+                    hideFabricLoading();
+                    showFabricNotification('Design uploaded successfully!');
+                }, { crossOrigin: 'anonymous' });
+            };
+            reader.readAsDataURL(file);
+            document.querySelector('#panel-2 #fileInput').value = '';
+        }
+
+        function resetFabricView() {
+            if(!fabricCanvas) return;
+            fabricViews[currentFabricView].designs = [];
+            loadFabricView(currentFabricView); // This will clear and reload
+            showFabricNotification('View reset successfully!');
+        }
+
+        function deleteSelectedFabricDesign() {
+            if(!fabricCanvas) return;
+            const activeObject = fabricCanvas.getActiveObject();
+            if (activeObject && activeObject !== fabricPanelRect) {
+                activeObject.animate('opacity', 0, {
+                    duration: 200, onChange: fabricCanvas.renderAll.bind(fabricCanvas),
+                    onComplete: function() { fabricCanvas.remove(activeObject); showFabricNotification('Design removed successfully!'); }
+                });
+            } else {
+                showFabricNotification('Please select a design to remove');
+            }
+        }
+
+        function saveFabricDesign() {
+            if(!fabricCanvas) return;
+            fabricCanvas.discardActiveObject().renderAll();
+            const dataURL = fabricCanvas.toDataURL({ format: 'png', quality: 1 });
+            const link = document.createElement('a');
+            link.download = `pc-design-${currentFabricView}-view.png`;
+            link.href = dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showFabricNotification('Design saved successfully!');
+        }
+        
+        function initializeFabricCanvas() {
+            if (fabricCanvas || !document.getElementById('panel-2').classList.contains('active')) return; // Already initialized or panel not active
+
+            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true, selection: false });
+            resizeFabricCanvas(); // Initial resize
+            loadFabricView(currentFabricView, false); // Load default view without animation first time
+
+            // Event listeners for Fabric customizer (scoped to Panel 2)
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
+                tab.addEventListener('click', function() { 
+                    const viewName = this.textContent.trim().split(" ")[0].toLowerCase();
+                    switchFabricView(viewName);
+                });
+            });
+            document.querySelectorAll('#panel-2 .swatch').forEach(swatch => {
+                swatch.addEventListener('click', function() { changeFabricPanelColor(this.dataset.color); });
+            });
+            const fabricFileInput = document.querySelector('#panel-2 #fileInput');
+            if(fabricFileInput) fabricFileInput.addEventListener('change', handleFabricFileUpload);
+            
+            const fabricUploadArea = document.querySelector('#panel-2 #uploadArea');
+            if(fabricUploadArea) {
+                fabricUploadArea.addEventListener('click', function() { if(fabricFileInput) fabricFileInput.click(); });
+                fabricUploadArea.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor = 'var(--primary-red)'; this.style.background = 'rgba(230, 25, 25, 0.05)'; });
+                fabricUploadArea.addEventListener('dragleave', function(e) { e.preventDefault(); this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)'; });
+                fabricUploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)';
+                    if (e.dataTransfer.files.length && fabricFileInput) {
+                        fabricFileInput.files = e.dataTransfer.files;
+                        handleFabricFileUpload({ target: { files: e.dataTransfer.files } });
+                    }
+                });
+            }
+            const fabricResetBtn = document.querySelector('#panel-2 #resetBtn');
+            if(fabricResetBtn) fabricResetBtn.addEventListener('click', resetFabricView);
+            const fabricDeleteBtn = document.querySelector('#panel-2 #deleteBtn');
+            if(fabricDeleteBtn) fabricDeleteBtn.addEventListener('click', deleteSelectedFabricDesign);
+            const fabricDownloadBtn = document.querySelector('#panel-2 #downloadBtn');
+            if(fabricDownloadBtn) fabricDownloadBtn.addEventListener('click', saveFabricDesign);
+            
+            window.addEventListener('resize', resizeFabricCanvas); // Fabric canvas resize
+        }
+        
+        // Modify setActivePanel to initialize Fabric when Panel 2 becomes active
+        const originalSetActivePanel = setActivePanel;
+        setActivePanel = function(targetIndex) {
+            originalSetActivePanel(targetIndex); // Call original function
+            if (targetIndex === 1 && panels[1].classList.contains('active')) { // Panel 2 is index 1
+                setTimeout(initializeFabricCanvas, 50); // Delay slightly for panel to be visible
+            } else if (fabricCanvas && targetIndex !== 1) {
+                // Optional: clean up fabric instance or listeners if navigating away from panel 2
+                // fabricCanvas.dispose(); fabricCanvas = null;
+                // window.removeEventListener('resize', resizeFabricCanvas);
+            }
+        }
+        // --- FABRIC.JS CUSTOMIZER SCRIPT END ---
+
+        const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
+        if (panel1NextBtn) {
+            panel1NextBtn.disabled = true;
+        }
+        
+        // Default design selection to "No Custom Design"
+        const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+        if (noDesignOption && !orderDetails.design) { // Check if design isn't already set (e.g. by custom upload)
+             orderDetails.design = {
+                name: noDesignOption.dataset.designName,
+                image: noDesignOption.dataset.designImage
+            };
+            document.getElementById('selectedDesignName').textContent = noDesignOption.dataset.designName;
+            noDesignOption.classList.add('selected'); // Visually select it
+        }
+        updateSummary(); // Initial summary update
+    })();
+    </script>
+</body>
+</html>
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+<environment_details>
+# VSCode Visible Files
+product_checkout.html
+
+# VSCode Open Tabs
+product_checkout.html
+
+# Recently Modified Files
+These files have been modified since you last accessed them (file was just edited so you may need to re-read it before editing):
+product_checkout.html
+
+# Current Time
+5/30/2025, 10:26:50 AM (Australia/Sydney, UTC+10:00)
+
+# Context Window Usage
+223,116 / 1,048.576K tokens used (21%)
+
+# Current Mode
+ACT MODE
+</environment_details>
