@@ -1484,7 +1484,7 @@ body {
         // --- THREE.JS 3D PREVIEWER SCRIPT START ---
         let threeScene, threeCamera, threeRenderer, threeCube, threeControls;
         const threeJsContainer = document.getElementById('threejs-viewer-container');
-        const defaultFaceImage = 'Testing/Assets/hero.png'; // A generic placeholder
+        const defaultFaceImage = 'Assets/hero.png'; // Corrected: Relative to Testing/CustomRTSv3d.html
 
         function initThreeJs() {
             if (!threeJsContainer || threeScene) return; // Already initialized or container not found
