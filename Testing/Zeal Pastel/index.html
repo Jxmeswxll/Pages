@@ -1310,8 +1310,15 @@ body {
         // Navigation Buttons
         nextButtons.forEach(button => {
             button.addEventListener('click', () => {
-                console.log(`Next button clicked. Target panel index: ${button.dataset.targetPanelIndex}`);
                 const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                console.log(`Next button clicked. Target panel index: ${targetIndex}`);
+
+                // Explicitly check orderDetails.pc for the Panel 1 next button
+                if (currentPanelIndex === 0 && targetIndex === 1 && !orderDetails.pc) {
+                    alert("Please select a PC configuration to continue (from button click).");
+                    console.log("Panel 1 Next button: PC not selected.");
+                    return;
+                }
                 setActivePanel(targetIndex);
             });
         });
