@@ -1163,85 +1163,75 @@ body {
     </div>
     <script>
     (function () {
+        // Global let variables
+        let currentPanelIndex = 0;
+        let orderDetails = {
+            pc: null,
+            customDesigns: {} 
+        };
+        let fabricCanvas;
+        let currentFabricView = 'front';
+        let fabricPanelRect;
+        let currentChassisColor = 'blue';
+        let originalUploadedFile = null;
+        let currentCropDataForModal = {};
+        let threeScene, threeCamera, threeRenderer, threeCube, threeControls;
+
+        // DOM Element constants
         const panelContainer = document.querySelector('.panel-container');
         const panels = Array.from(document.querySelectorAll('.panel'));
         const nextButtons = document.querySelectorAll('.next-step-btn');
         const prevButtons = document.querySelectorAll('.prev-step-btn');
         const progressSteps = document.querySelectorAll('.progress-indicator .step');
-
         const pcSelectionButtons = document.querySelectorAll('#panel-1 .select-button');
-        
         const summaryPcName = document.getElementById('summaryPcName');
         const summaryPcPrice = document.getElementById('summaryPcPrice');
         const summaryDesignName = document.getElementById('summaryDesignName');
         const summaryDesignImage = document.getElementById('summaryDesignImage');
         const summaryTotalPrice = document.getElementById('summaryTotalPrice');
-
         const checkoutButton = document.querySelector('.checkout-button');
+        
+        const fabricCanvasContainer = document.querySelector('#panel-2 #canvas-container');
+        const fabricLoadingIndicator = document.querySelector('#panel-2 #loadingIndicator');
+        
+        // Cropping Modal Elements
+        const cropModalOverlay = document.getElementById('cropModalOverlay');
+        const cropModalImageToCrop = document.getElementById('cropModalImageToCrop');
+        const cropModalPreviewContainer = document.getElementById('cropModalPreviewContainer');
+        const cropModalDimensionsNote = document.getElementById('cropModalDimensionsNote');
+        const confirmCropBtn = document.getElementById('confirmCropBtn');
+        const cancelCropBtn = document.getElementById('cancelCropBtn');
 
-        let currentPanelIndex = 0; 
-        // Updated orderDetails structure to support multiple custom designs per view
-        let orderDetails = {
-            pc: null, 
-            customDesigns: {} // Stores designs for each view: { front: { name, image, angle }, top: { name, image, angle }, ... }
+        // Three.js container
+        const threeJsContainer = document.getElementById('threejs-viewer-container');
+
+        // Define base path and image names for dynamic loading
+        const chassisBasePath = ''; 
+        const defaultFaceImage = '../Assets/hero.png'; 
+        const chassisImageFiles = {
+            blue: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
+            green: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
+            pink: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px (1).png', back: 'back_2000px.png' },
+            purple: { front: 'Purple Zeal M-Front.png', top: 'Purple Zeal M-Top.png', side1: 'Purple Zeal M-Side.png', side2: 'Purple Zeal M-Rear.png', back: 'Purple Zeal M-Back.png' }
+        };
+        const fabricViews = {
+            front: { panel: { left: 250, top: 200, width: 300, height: 200 }, targetWidth: 785.20, targetHeight: 992.13, designs: {}, threeJSFaceIndex: 4 },
+            top: { panel: { left: 300, top: 100, width: 200, height: 150 }, targetWidth: 490.39, targetHeight: 1057.32, designs: {}, threeJSFaceIndex: 2 },
+            side1: { panel: { left: 200, top: 150, width: 350, height: 250 }, targetWidth: 1167.87, targetHeight: 983.62, designs: {}, threeJSFaceIndex: 0 },
+            side2: { panel: { left: 200, top: 150, width: 350, height: 250 }, targetWidth: 1173.54, targetHeight: 986.46, designs: {}, threeJSFaceIndex: 1 },
+            back: { designs: {}, threeJSFaceIndex: 5 } 
         };
 
-        function setActivePanel(targetIndex) {
-            console.log(`setActivePanel called: current=${currentPanelIndex}, target=${targetIndex}`);
-            if (targetIndex < 0 || targetIndex >= panels.length) return;
+        // Function Definitions
 
-            // Validation for stepping forward
-            if (targetIndex > currentPanelIndex) {
-                if (currentPanelIndex === 0 && !orderDetails.pc) {
-                    alert("Please select a PC configuration to continue.");
-                    return;
-                }
-                // Panel 2 (Design) validation: Allowing to proceed without custom design.
-                // The summary will reflect 'No Custom Design'.
-            }
-            
-            currentPanelIndex = targetIndex;
-
-            panels.forEach((panel, index) => {
-                if (index === currentPanelIndex) {
-                    panel.classList.add('active');
-                } else {
-                    panel.classList.remove('active');
-                }
-            });
-
-            progressSteps.forEach((step, index) => {
-                step.classList.remove('active', 'completed');
-                if (index < currentPanelIndex) {
-                    step.classList.add('completed');
-                } else if (index === currentPanelIndex) {
-                    step.classList.add('active');
-                }
-            });
-
-            if (currentPanelIndex === panels.length - 1) { // If on the summary panel
-                updateSummary();
-            }
-
-            // Specific initialization logic for Panel 2
-            if (targetIndex === 1 && panels[1].classList.contains('active')) {
-                console.log("Panel 2 is active, initializing Fabric.js and Three.js");
-                setTimeout(() => { // Small delay to ensure panel is fully visible and has dimensions
-                    initializeFabricCanvas();
-                    initThreeJs(); // Initialize Three.js when panel 2 is active
-                    onThreeJsWindowResize(); // Ensure 3D canvas is sized correctly
-                }, 50);
-            } else if (targetIndex !== 1) {
-                // Optional: Cleanup Three.js scene if navigating away from panel 2 to free resources
-                // if (threeScene) {
-                //     if (threeRenderer) threeJsContainer.removeChild(threeRenderer.domElement);
-                //     threeScene = null; threeCamera = null; threeRenderer = null; threeCube = null;
-                //     window.removeEventListener('resize', onThreeJsWindowResize, false);
-                // }
-                if (cropModalOverlay && cropModalOverlay.style.display === 'flex') {
-                    hideCropModal();
-                }
-            }
+        function showFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.add('active');
+        }
+        function hideFabricLoading() {
+            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.remove('active');
+        }
+        function showFabricNotification(message, type = 'info') {
+            console.log(`Notification (${type}): ${message}`);
         }
 
         function updateSummary() {
@@ -1284,171 +1274,59 @@ body {
             }
             summaryTotalPrice.textContent = total.toFixed(2);
         }
-
-        // Panel 1: PC Selection
-        const panel1NextBtn = document.querySelector('#panel-1 .panel-header .next-step-btn');
-        if (panel1NextBtn) {
-            panel1NextBtn.disabled = true; // Ensure it's disabled on load
-        }
-
-        const optionCards = document.querySelectorAll('#panel-1 .option-card');
-        optionCards.forEach(card => {
-            card.addEventListener('click', () => {
-                // Find the button within this card and click it
-                const button = card.querySelector('.select-button');
-                if (button) {
-                    button.click(); // This will trigger the existing button's event listener
-                }
-            });
-        });
-
-        pcSelectionButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent card click from re-triggering if button is clicked directly
-                pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
-                button.closest('.option-card').classList.add('selected');
-                orderDetails.pc = {
-                    name: button.dataset.pcName,
-                    price: parseFloat(button.dataset.pcPrice)
-                };
-                
-                if (panel1NextBtn) {
-                    panel1NextBtn.disabled = false;
-                    console.log("Panel 1 Next button enabled.");
-                }
-                updateSummary();
-            });
-        });
         
-        // Navigation Buttons
-        nextButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetIndex = parseInt(button.dataset.targetPanelIndex);
-                console.log(`Next button clicked. Target index: ${targetIndex}`);
-                setActivePanel(targetIndex);
-            });
-        });
+        function setActivePanel_core(targetIndex) { // Renamed original setActivePanel
+            console.log(`setActivePanel_core called: current=${currentPanelIndex}, target=${targetIndex}`);
+            if (targetIndex < 0 || targetIndex >= panels.length) return;
 
-        prevButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetIndex = parseInt(button.dataset.targetPanelIndex);
-                console.log(`Previous button clicked. Target index: ${targetIndex}`);
-                setActivePanel(targetIndex);
-            });
-        });
-
-        // Click on minimized panel headers to activate them
-        panels.forEach((panel, index) => {
-            const header = panel.querySelector('.panel-header');
-            if (header) {
-                header.addEventListener('click', () => {
-                    if (!panel.classList.contains('active')) {
-                        console.log(`Panel header clicked. Activating panel ${index}`);
-                        setActivePanel(index);
-                    }
-                });
-            }
-        });
-        
-        // Click on progress steps to navigate
-        progressSteps.forEach((stepIndicator, index) => {
-            stepIndicator.addEventListener('click', () => {
-                 // Allow navigation to any step via progress bar if it's already completed or current
-                if (index <= currentPanelIndex || stepIndicator.classList.contains('completed-step-via-progress')) { // Assuming a class 'completed-step-via-progress' might be added
-                     console.log(`Progress step ${index + 1} clicked. Activating panel ${index}`);
-                     setActivePanel(index);
-                } else {
-                    // Check if requirements for previous steps are met before jumping
-                    let canProceed = true;
-                    for (let i = 0; i < index; i++) {
-                        if (i === 0 && !orderDetails.pc) {
-                            alert("Please select a PC configuration first (Step 1).");
-                            canProceed = false;
-                            setActivePanel(0); // Go to step 1
-                            break;
-                        }
-                    }
-                    if (canProceed) {
-                        console.log(`Progress step ${index + 1} clicked. Activating panel ${index}`);
-                        setActivePanel(index);
-                    }
-                }
-            });
-        });
-
-
-        if (checkoutButton) {
-            checkoutButton.addEventListener('click', () => {
-                if (!orderDetails.pc) {
-                    alert("Please complete PC selection (Step 1).");
-                    setActivePanel(0);
+            // Validation for stepping forward
+            if (targetIndex > currentPanelIndex) {
+                if (currentPanelIndex === 0 && !orderDetails.pc) {
+                    alert("Please select a PC configuration to continue.");
                     return;
                 }
-                
-                let orderSummaryText = `Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\n`;
-                let hasCustomDesign = Object.values(orderDetails.customDesigns).some(design => design !== null);
-                if (hasCustomDesign) {
-                    orderSummaryText += "Custom Designs:\n";
-                    for (const viewKey in orderDetails.customDesigns) {
-                        if (orderDetails.customDesigns[viewKey]) {
-                            orderSummaryText += `- ${orderDetails.customDesigns[viewKey].name}\n`;
-                        }
-                    }
+            }
+            
+            currentPanelIndex = targetIndex;
+
+            panels.forEach((panel, idx) => { 
+                if (idx === currentPanelIndex) {
+                    panel.classList.add('active');
                 } else {
-                    orderSummaryText += "Design: No Custom Design\n";
+                    panel.classList.remove('active');
                 }
-                orderSummaryText += `Total: $${summaryTotalPrice.textContent} AUD`;
-
-                alert(orderSummaryText);
-                console.log("Order Details:", orderDetails);
             });
+
+            progressSteps.forEach((step, idx) => { 
+                step.classList.remove('active', 'completed');
+                if (idx < currentPanelIndex) {
+                    step.classList.add('completed');
+                } else if (idx === currentPanelIndex) {
+                    step.classList.add('active');
+                }
+            });
+
+            if (currentPanelIndex === panels.length - 1) {
+                updateSummary();
+            }
         }
-
-        // Initial setup calls
-        setActivePanel(0); // Start with the first panel active
         
-        // --- FABRIC.JS CUSTOMIZER SCRIPT START ---
-        const fabricCanvasContainer = document.querySelector('#panel-2 #canvas-container');
-        let fabricCanvas;
-        let currentFabricView = 'front';
-        let fabricPanelRect;
-        const fabricLoadingIndicator = document.querySelector('#panel-2 #loadingIndicator');
-        let currentChassisColor = 'blue'; // Default chassis color
-        let originalUploadedFile = null;
-
-        // Cropping Modal Elements
-        const cropModalOverlay = document.getElementById('cropModalOverlay');
-        const cropModalImageToCrop = document.getElementById('cropModalImageToCrop');
-        const cropModalPreviewContainer = document.getElementById('cropModalPreviewContainer');
-        const cropModalDimensionsNote = document.getElementById('cropModalDimensionsNote');
-        const confirmCropBtn = document.getElementById('confirmCropBtn');
-        const cancelCropBtn = document.getElementById('cancelCropBtn');
-        let currentCropDataForModal = {}; // To store crop selection from modal
-
-        // Define base path and image names for dynamic loading
-        // !!! IMPORTANT: Adjust this path if your 'Assets' folder is elsewhere relative to your HTML file !!!
-        const chassisBasePath = './Assets/Zeal Pastel/'; 
-        const chassisImageFiles = {
-            blue: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
-            green: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
-            pink: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px (1).png', back: 'back_2000px.png' }, // Note: Pink has rear_2000px (1).png
-            purple: { front: 'Purple Zeal M-Front.png', top: 'Purple Zeal M-Top.png', side1: 'Purple Zeal M-Side.png', side2: 'Purple Zeal M-Rear.png', back: 'Purple Zeal M-Back.png' }
+        // Wrapper for setActivePanel to handle Panel 2 initializations
+        const setActivePanel = function(targetIndex) {
+            setActivePanel_core(targetIndex); 
+            if (targetIndex === 1 && panels[1] && panels[1].classList.contains('active')) {
+                console.log("Panel 2 is active, scheduling Fabric.js and Three.js initialization");
+                setTimeout(() => { 
+                    initializeFabricCanvas();
+                    initThreeJs(); 
+                    onThreeJsWindowResize(); 
+                }, 50);
+            } else if (targetIndex !== 1) {
+                if (cropModalOverlay && cropModalOverlay.style.display === 'flex') {
+                    hideCropModal();
+                }
+            }
         };
-        
-        // Fabric views define the 2D customization areas and map to 3D model faces
-        const fabricViews = {
-            front: { panel: { left: 250, top: 200, width: 300, height: 200 }, targetWidth: 785.20, targetHeight: 992.13, designs: {}, threeJSFaceIndex: 4 }, // Front face (+Z)
-            top: { panel: { left: 300, top: 100, width: 200, height: 150 }, targetWidth: 490.39, targetHeight: 1057.32, designs: {}, threeJSFaceIndex: 2 }, // Top face (+Y)
-            side1: { panel: { left: 200, top: 150, width: 350, height: 250 }, targetWidth: 1167.87, targetHeight: 983.62, designs: {}, threeJSFaceIndex: 0 }, // Right face (+X)
-            side2: { panel: { left: 200, top: 150, width: 350, height: 250 }, targetWidth: 1173.54, targetHeight: 986.46, designs: {}, threeJSFaceIndex: 1 }, // Left face (-X)
-            back: { designs: {}, threeJSFaceIndex: 5 } // Back face (-Z), not directly customizable in 2D but part of 3D model
-        };
-        
-        // --- THREE.JS 3D PREVIEWER SCRIPT START ---
-        let threeScene, threeCamera, threeRenderer, threeCube, threeControls;
-        const threeJsContainer = document.getElementById('threejs-viewer-container');
-        // !!! IMPORTANT: Adjust this path if your 'Assets' folder is elsewhere relative to your HTML file !!!
-        const defaultFaceImage = './Assets/hero.png'; 
 
         function initThreeJs() {
             if (!threeJsContainer || threeScene) {
@@ -1463,94 +1341,78 @@ body {
 
             const aspect = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
             threeCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-            threeCamera.position.set(2, 2, 3); // Adjusted camera position
+            threeCamera.position.set(2, 2, 3); 
             threeCamera.lookAt(0, 0, 0);
 
             threeRenderer = new THREE.WebGLRenderer({ antialias: true });
             threeRenderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
             threeJsContainer.appendChild(threeRenderer.domElement);
 
-            // Basic cube geometry (adjust dimensions as needed for a PC case shape)
-            const geometry = new THREE.BoxGeometry(2, 2.5, 1); // width, height, depth
-            
-            // Create an array of materials. Each face can have a different material/texture.
-            // Order: +X, -X, +Y, -Y, +Z, -Z (Right, Left, Top, Bottom, Front, Back)
+            const geometry = new THREE.BoxGeometry(2, 2.5, 1); 
             const materials = [];
             const loader = new THREE.TextureLoader();
-            loader.setCrossOrigin('anonymous'); // Important for external images if any
+            loader.setCrossOrigin('anonymous'); 
 
-            // Initial load of textures based on current chassis color
             const initialChassisImages = chassisImageFiles[currentChassisColor];
-            // Order maps to BoxGeometry faces: Right, Left, Top, Bottom, Front, Back
             const faceOrderForThreeJS_views = [ 'side1', 'side2', 'top', 'bottom_placeholder', 'front', 'back' ]; 
 
             faceOrderForThreeJS_views.forEach(viewKey => {
                 let imgPath = '';
                 if (viewKey === 'bottom_placeholder') {
                     imgPath = defaultFaceImage;
-                } else if (initialChassisImages[viewKey]) {
+                } else if (initialChassisImages && initialChassisImages[viewKey]) { // Added check for initialChassisImages
                     imgPath = chassisBasePath + currentChassisColor + '/' + initialChassisImages[viewKey];
                 }
 
+
                 if (orderDetails.customDesigns[viewKey] && orderDetails.customDesigns[viewKey].image) {
-                    imgPath = orderDetails.customDesigns[viewKey].image; // Use custom design if available
+                    imgPath = orderDetails.customDesigns[viewKey].image; 
                     console.log(`3D: Loading custom design for ${viewKey}: ${imgPath}`);
-                } else {
+                } else if (imgPath) { // Only log if imgPath is set (not an empty string from missing initialChassisImages[viewKey])
                      console.log(`3D: Loading chassis image for ${viewKey}: ${imgPath}`);
                 }
 
+
                 if (imgPath) {
                     loader.load(imgPath, 
-                        (texture) => { // On load
+                        (texture) => { 
                             texture.colorSpace = THREE.SRGBColorSpace; 
                             materials.push(new THREE.MeshStandardMaterial({ map: texture, roughness: 0.7, metalness: 0.3 }));
-                            if (materials.length === 6) { // Once all 6 textures are loaded
+                            if (materials.length === 6) { 
                                 threeCube = new THREE.Mesh(geometry, materials);
                                 threeScene.add(threeCube);
-                                threeRenderer.render(threeScene, threeCamera);
+                                if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera);
                                 console.log("3D model fully loaded and rendered.");
                             }
                         },
-                        undefined, // On progress
-                        (error) => { // On error
+                        undefined, 
+                        (error) => { 
                             console.error(`3D: Error loading texture for ${viewKey} from ${imgPath}:`, error);
-                            // Fallback to a plain color if texture fails to load
                             materials.push(new THREE.MeshStandardMaterial({ color: 0x555555 }));
-                            if (materials.length === 6) { // Ensure cube is still added even if some textures fail
+                            if (materials.length === 6) { 
                                 threeCube = new THREE.Mesh(geometry, materials);
                                 threeScene.add(threeCube);
-                                threeRenderer.render(threeScene, threeCamera);
+                                if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera);
                                 console.log("3D model rendered with fallback color due to texture errors.");
                             }
                         }
                     );
                 } else {
-                    materials.push(new THREE.MeshStandardMaterial({ color: 0x555555 })); // Placeholder if no path
+                    console.warn(`3D: No image path found for viewKey: ${viewKey}. Using fallback material.`);
+                    materials.push(new THREE.MeshStandardMaterial({ color: 0x555555 })); 
                     if (materials.length === 6) { 
                         threeCube = new THREE.Mesh(geometry, materials);
                         threeScene.add(threeCube);
-                        threeRenderer.render(threeScene, threeCamera);
+                        if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera);
                     }
                 }
             });
             
-            // Lighting
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             threeScene.add(ambientLight);
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(5, 10, 7.5);
             threeScene.add(directionalLight);
-
-            // OrbitControls (optional, if not already included, add CDN or local file)
-            // For now, let's assume no OrbitControls to keep dependencies minimal.
-            // If you add OrbitControls:
-            // threeControls = new THREE.OrbitControls(threeCamera, threeRenderer.domElement);
-            // threeControls.enableDamping = true;
-            // threeControls.dampingFactor = 0.05;
-            // threeControls.screenSpacePanning = false;
-            // threeControls.minDistance = 2;
-            // threeControls.maxDistance = 10;
-            // threeControls.target.set(0, 0, 0);
 
             animateThreeJs();
             window.addEventListener('resize', onThreeJsWindowResize, false);
@@ -1561,18 +1423,13 @@ body {
             threeCamera.aspect = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
             threeCamera.updateProjectionMatrix();
             threeRenderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
-            threeRenderer.render(threeScene, threeCamera);
+            if (threeScene && threeCamera) threeRenderer.render(threeScene, threeCamera);
         }
 
         function animateThreeJs() {
-            if (!threeScene || !threeRenderer) return; // Stop if not initialized
+            if (!threeScene || !threeRenderer) return; 
             requestAnimationFrame(animateThreeJs);
-            // if (threeControls) threeControls.update(); // If using OrbitControls
-            // if (threeCube) {
-            //      // Simple rotation for demonstration if no controls
-            //      threeCube.rotation.y += 0.005;
-            // }
-            threeRenderer.render(threeScene, threeCamera);
+            if (threeScene && threeCamera) threeRenderer.render(threeScene, threeCamera);
         }
         
         function updateThreeJSModelTexture(viewKey, imageDataUrl) {
@@ -1587,7 +1444,7 @@ body {
                 if (threeCube.material[faceIndex]) {
                     threeCube.material[faceIndex].map = newTexture;
                     threeCube.material[faceIndex].needsUpdate = true;
-                    threeRenderer.render(threeScene, threeCamera);
+                    if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera);
                     console.log(`Texture updated for 3D model face: ${viewKey} (index ${faceIndex})`);
                 }
             }, undefined, (error) => {
@@ -1601,17 +1458,13 @@ body {
             const loader = new THREE.TextureLoader();
             loader.setCrossOrigin('anonymous');
 
-            const faceOrderMap = { // Map viewKey to the image file for that view
-                side1: newChassisImages.side1,
-                side2: newChassisImages.side2,
-                top: newChassisImages.top,
-                front: newChassisImages.front,
-                back: newChassisImages.back
+            const faceOrderMap = { 
+                side1: newChassisImages.side1, side2: newChassisImages.side2,
+                top: newChassisImages.top, front: newChassisImages.front, back: newChassisImages.back
             };
             
             threeCube.material.forEach((material, index) => {
                 let viewKeyForFace = null;
-                // Determine which viewKey corresponds to this face index
                 for (const vk in fabricViews) {
                     if (fabricViews[vk].threeJSFaceIndex === index) {
                         viewKeyForFace = vk;
@@ -1621,17 +1474,13 @@ body {
 
                 let imgPath = '';
                 if (viewKeyForFace && faceOrderMap[viewKeyForFace]) {
-                    // Priority: custom design > base chassis image
                     if (orderDetails.customDesigns[viewKeyForFace] && orderDetails.customDesigns[viewKeyForFace].image) {
                         imgPath = orderDetails.customDesigns[viewKeyForFace].image;
-                        console.log(`3D: Loading custom design for ${viewKeyForFace} with new chassis color: ${imgPath}`);
                     } else {
                         imgPath = chassisBasePath + newColor + '/' + faceOrderMap[viewKeyForFace];
-                        console.log(`3D: Loading base chassis image for ${viewKeyForFace} with new chassis color: ${imgPath}`);
                     }
-                } else if (index === 3) { // Bottom face
+                } else if (index === 3) { 
                     imgPath = defaultFaceImage;
-                    console.log(`3D: Loading default image for bottom face with new chassis color: ${imgPath}`);
                 }
 
                 if (imgPath) {
@@ -1644,8 +1493,8 @@ body {
                         undefined, 
                         (error) => {
                             console.error(`3D: Error loading texture for face ${index} (view: ${viewKeyForFace}) from ${imgPath}:`, error);
-                            material.map = null; // Clear map
-                            material.color.set(0x555555); // Set to a plain color
+                            material.map = null; 
+                            material.color.set(0x555555); 
                             material.needsUpdate = true;
                         }
                     );
@@ -1655,37 +1504,120 @@ body {
                     material.needsUpdate = true;
                 }
             });
-            setTimeout(() => threeRenderer.render(threeScene, threeCamera), 100); // Render after a short delay
+            setTimeout(() => { if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera); }, 100);
         }
 
+        function initializeFabricCanvas() {
+            if (fabricCanvas) {
+                console.log("Fabric.js canvas already initialized.");
+                resizeFabricCanvas(); 
+                return; 
+            }
+            console.log("Initializing Fabric.js canvas...");
 
-        // --- END THREE.JS 3D PREVIEWER SCRIPT ---
+            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true }); 
+            resizeFabricCanvas(); 
+            loadFabricView(currentFabricView, false); 
 
-        function showFabricLoading() {
-            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.add('active');
-        }
-        function hideFabricLoading() {
-            if (fabricLoadingIndicator) fabricLoadingIndicator.classList.remove('active');
-        }
+            let currentlyEditedObject = null;
 
-        function showFabricNotification(message, type = 'info') { // Added type for potential styling
-            console.log(`Notification (${type}): ${message}`); // Log to console instead
+            fabricCanvas.on('selection:created', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) {
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    currentlyEditedObject = null; 
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:updated', function(opt) {
+                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign && (!opt.selected || opt.selected.length === 0 || currentlyEditedObject !== opt.selected[0])) {
+                     currentlyEditedObject.set('opacity', 1);
+                }
+                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
+                    currentlyEditedObject = opt.selected[0];
+                    currentlyEditedObject.set('opacity', 0.7);
+                } else {
+                    if(currentlyEditedObject && currentlyEditedObject.isCustomDesign) currentlyEditedObject.set('opacity', 1);
+                    currentlyEditedObject = null;
+                }
+                fabricCanvas.requestRenderAll();
+            });
+
+            fabricCanvas.on('selection:cleared', function(opt) {
+                if (opt.deselected) {
+                    opt.deselected.forEach(obj => {
+                        if (obj.isCustomDesign) {
+                            obj.set('opacity', 1);
+                        }
+                    });
+                } else if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) { 
+                    currentlyEditedObject.set('opacity', 1);
+                }
+                currentlyEditedObject = null;
+                fabricCanvas.requestRenderAll();
+            });
+             // Event listeners for Fabric customizer elements
+            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
+                tab.addEventListener('click', function() { 
+                    const viewKey = this.dataset.viewkey;
+                    if (fabricViews.hasOwnProperty(viewKey)) {
+                       switchFabricView(viewKey);
+                    }
+                });
+            });
+            document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
+                swatch.addEventListener('click', function() { 
+                    changeChassisColor(this.dataset.chassisColor); 
+                    document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const fabricFileInput = document.querySelector('#panel-2 #fileInput');
+            if(fabricFileInput) fabricFileInput.addEventListener('change', handleFabricFileUpload);
+            
+            const fabricUploadArea = document.querySelector('#panel-2 #uploadArea');
+            if(fabricUploadArea) {
+                fabricUploadArea.addEventListener('click', function() { if(fabricFileInput) fabricFileInput.click(); });
+                fabricUploadArea.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor = 'var(--primary-red)'; this.style.background = 'rgba(230, 25, 25, 0.05)'; });
+                fabricUploadArea.addEventListener('dragleave', function(e) { e.preventDefault(); this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)'; });
+                fabricUploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)';
+                    if (e.dataTransfer.files.length && fabricFileInput) {
+                        fabricFileInput.files = e.dataTransfer.files;
+                        handleFabricFileUpload({ target: { files: e.dataTransfer.files } });
+                    }
+                });
+            }
+            const fabricResetBtn = document.querySelector('#panel-2 #resetBtn');
+            if(fabricResetBtn) fabricResetBtn.addEventListener('click', resetFabricView);
+            const fabricDeleteBtn = document.querySelector('#panel-2 #deleteBtn');
+            if(fabricDeleteBtn) fabricDeleteBtn.addEventListener('click', deleteSelectedFabricDesign);
+            const fabricDownloadBtn = document.querySelector('#panel-2 #downloadBtn');
+            if(fabricDownloadBtn) fabricDownloadBtn.addEventListener('click', saveFabricDesign);
+            
+            window.addEventListener('resize', resizeFabricCanvas); 
         }
 
         function resizeFabricCanvas() {
             if (!fabricCanvas || !fabricCanvasContainer) return;
             const containerWidth = fabricCanvasContainer.clientWidth;
-            // Maintain aspect ratio from CSS (16:12 or 4:3.5)
             const aspectRatio = 16 / 12; 
             const containerHeight = containerWidth / aspectRatio; 
             
             fabricCanvas.setWidth(containerWidth);
             fabricCanvas.setHeight(containerHeight);
-            fabricCanvas.calcOffset(); // Recalculate canvas offset after resizing
+            fabricCanvas.calcOffset(); 
             fabricCanvas.renderAll();
             
             if (currentFabricView) {
-                loadFabricView(currentFabricView, false); // Reload to adjust objects
+                loadFabricView(currentFabricView, false); 
             }
         }
 
@@ -1703,7 +1635,7 @@ body {
             }
             const bgImageUrl = chassisBasePath + currentChassisColor + '/' + chassisImageSet[viewKey];
             
-            fabricCanvas.clear(); // Clear previous objects
+            fabricCanvas.clear(); 
             
             fabric.Image.fromURL(bgImageUrl, function(img) {
                 let canvasWidth = fabricCanvasContainer.clientWidth;
@@ -1732,14 +1664,10 @@ body {
                 const scaledHeight = img.height * scaleFactor;
 
                 img.set({
-                    scaleX: scaleFactor,
-                    scaleY: scaleFactor,
-                    left: (canvasWidth - scaledWidth) / 2, 
-                    top: (canvasHeight - scaledHeight) / 2, 
-                    originX: 'left', 
-                    originY: 'top',
-                    selectable: false,
-                    evented: false
+                    scaleX: scaleFactor, scaleY: scaleFactor,
+                    left: (canvasWidth - scaledWidth) / 2, top: (canvasHeight - scaledHeight) / 2, 
+                    originX: 'left', originY: 'top',
+                    selectable: false, evented: false
                 });
                 fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
                 
@@ -1754,15 +1682,11 @@ body {
                     width: panelWidthOnImage * scaleFactor,
                     height: panelHeightOnImage * scaleFactor,
                     fill: 'rgba(0,0,0,0.0)', 
-                    selectable: false, 
-                    evented: false,
-                    opacity: 1, 
+                    selectable: false, evented: false, opacity: 1, 
                     absolutePositioned: true
                 });
                 fabricCanvas.add(fabricPanelRect);
-                // fabricPanelRect.set('fill', 'rgba(255,0,0,0.3)'); // For debugging panel position
 
-                // Load stored user designs for this view (from orderDetails.customDesigns)
                 const storedDesign = orderDetails.customDesigns[viewKey];
                 if (storedDesign && storedDesign.image) {
                     fabric.Image.fromURL(storedDesign.image, function(designImg) {
@@ -1774,12 +1698,9 @@ body {
                         designScaleFactor = Math.max(designScaleFactor, 0.01);
 
                         designImg.set({
-                            left: designRectCenterX, 
-                            top: designRectCenterY,
-                            originX: 'center',
-                            originY: 'center',
-                            scaleX: designScaleFactor, 
-                            scaleY: designScaleFactor,
+                            left: designRectCenterX, top: designRectCenterY,
+                            originX: 'center', originY: 'center',
+                            scaleX: designScaleFactor, scaleY: designScaleFactor,
                             angle: storedDesign.angle || 0, 
                             cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
                             borderColor: 'var(--primary-red)', cornerSize: 10,
@@ -1797,7 +1718,6 @@ body {
 
                     const activeTabElement = document.querySelector(`#panel-2 .tab[data-viewkey="${viewKey}"]`);
                     if (activeTabElement) activeTabElement.classList.add('view-confirmed');
-
                 } else {
                     const activeTabElement = document.querySelector(`#panel-2 .tab[data-viewkey="${viewKey}"]`);
                     if (activeTabElement) activeTabElement.classList.remove('view-confirmed');
@@ -1864,7 +1784,6 @@ body {
                 showFabricNotification("Error: Target dimensions for the current view are not defined.", "error");
                 return;
             }
-
             showCropModal(file, currentViewConfig.targetWidth, currentViewConfig.targetHeight);
         }
 
@@ -1876,7 +1795,6 @@ body {
             }
             showFabricLoading(); 
             
-            // Clear any previous custom designs for this view before adding new one
             fabricCanvas.getObjects().forEach(obj => {
                 if (obj.isCustomDesign) {
                     fabricCanvas.remove(obj);
@@ -1899,15 +1817,11 @@ body {
                 img.set({
                     left: fabricPanelRect.left + fabricPanelRect.width / 2,
                     top: fabricPanelRect.top + fabricPanelRect.height / 2,
-                    originX: 'center',
-                    originY: 'center',
-                    scaleX: displayScaleFactor,
-                    scaleY: displayScaleFactor,
+                    originX: 'center', originY: 'center',
+                    scaleX: displayScaleFactor, scaleY: displayScaleFactor,
                     cornerColor: 'var(--primary-red)', cornerStyle: 'circle', transparentCorners: false,
                     borderColor: 'var(--primary-red)', cornerSize: 10,
-                    opacity: 1,
-                    isCustomDesign: true,
-                    absolutePositioned: true
+                    opacity: 1, isCustomDesign: true, absolutePositioned: true
                 });
                 fabricCanvas.add(img);
                 fabricCanvas.setActiveObject(img);
@@ -1941,16 +1855,14 @@ body {
         function resetFabricView() {
             if(!fabricCanvas) return;
             console.log(`Resetting ${currentFabricView} view.`);
-            // Clear custom design objects from canvas
             fabricCanvas.getObjects().forEach(obj => {
                 if (obj.isCustomDesign) {
                     fabricCanvas.remove(obj);
                 }
             });
             
-            // Clear stored design for this view in orderDetails
             orderDetails.customDesigns[currentFabricView] = null;
-            updateSummary(); // Update summary after design is cleared
+            updateSummary(); 
 
             loadFabricView(currentFabricView); 
             
@@ -1972,7 +1884,7 @@ body {
                     if (threeCube.material[faceIndex]) {
                         threeCube.material[faceIndex].map = texture;
                         threeCube.material[faceIndex].needsUpdate = true;
-                        threeRenderer.render(threeScene, threeCamera);
+                        if (threeScene && threeCamera && threeRenderer) threeRenderer.render(threeScene, threeCamera);
                     }
                 }, undefined, (error) => {
                     console.error(`3D: Error loading base texture for reset of ${currentFabricView} from ${baseImageForFace}:`, error);
@@ -1995,7 +1907,6 @@ body {
                         const activeTabElement = document.querySelector(`#panel-2 .tab[data-viewkey="${currentFabricView}"]`);
                         if (activeTabElement) activeTabElement.classList.remove('view-confirmed');
                         showFabricNotification('Design removed successfully!'); 
-                        // Trigger reset of 3D model texture as well
                         resetFabricView(); 
                     }
                 });
@@ -2018,257 +1929,258 @@ body {
             showFabricNotification('Design saved successfully!');
         }
         
-        function initializeFabricCanvas() {
-            if (fabricCanvas) {
-                console.log("Fabric.js canvas already initialized.");
-                resizeFabricCanvas(); // Ensure it's resized if panel dimensions changed
-                return; 
+        function showCropModal(file, targetWidth, targetHeight) {
+            console.log("Showing crop modal for file:", file.name);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                cropModalImageToCrop.src = e.target.result;
+                cropModalImageToCrop.style.display = 'block'; 
+                cropModalDimensionsNote.textContent = `Target: ${Math.round(targetWidth)} x ${Math.round(targetHeight)} px (for ${currentFabricView} view)`;
+                
+                cropModalImageToCrop.onload = () => { 
+                    initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+                };
+                if (cropModalImageToCrop.complete) { 
+                    initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+                }
+                cropModalOverlay.style.display = 'flex';
             }
-            console.log("Initializing Fabric.js canvas...");
-
-            fabricCanvas = new fabric.Canvas('c', { preserveObjectStacking: true }); 
-            resizeFabricCanvas(); 
-            loadFabricView(currentFabricView, false); 
-
-            let currentlyEditedObject = null;
-
-            fabricCanvas.on('selection:created', function(opt) {
-                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) {
-                    currentlyEditedObject.set('opacity', 1);
-                }
-                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
-                    currentlyEditedObject = opt.selected[0];
-                    currentlyEditedObject.set('opacity', 0.7);
-                } else {
-                    currentlyEditedObject = null; 
-                }
-                fabricCanvas.requestRenderAll();
-            });
-
-            fabricCanvas.on('selection:updated', function(opt) {
-                if (currentlyEditedObject && currentlyEditedObject.isCustomDesign && (!opt.selected || opt.selected.length === 0 || currentlyEditedObject !== opt.selected[0])) {
-                     currentlyEditedObject.set('opacity', 1);
-                }
-                if (opt.selected && opt.selected.length === 1 && opt.selected[0].isCustomDesign) {
-                    currentlyEditedObject = opt.selected[0];
-                    currentlyEditedObject.set('opacity', 0.7);
-                } else {
-                    if(currentlyEditedObject && currentlyEditedObject.isCustomDesign) currentlyEditedObject.set('opacity', 1);
-                    currentlyEditedObject = null;
-                }
-                fabricCanvas.requestRenderAll();
-            });
-
-            fabricCanvas.on('selection:cleared', function(opt) {
-                if (opt.deselected) {
-                    opt.deselected.forEach(obj => {
-                        if (obj.isCustomDesign) {
-                            obj.set('opacity', 1);
-                        }
-                    });
-                } else if (currentlyEditedObject && currentlyEditedObject.isCustomDesign) { 
-                    currentlyEditedObject.set('opacity', 1);
-                }
-                currentlyEditedObject = null;
-                fabricCanvas.requestRenderAll();
-            });
-
-
-            // Event listeners for Fabric customizer (scoped to Panel 2)
-            document.querySelectorAll('#panel-2 .tab').forEach(tab => {
-                tab.addEventListener('click', function() { 
-                    const viewKey = this.dataset.viewkey;
-                    if (fabricViews.hasOwnProperty(viewKey)) {
-                       switchFabricView(viewKey);
-                    }
-                });
-            });
-            // Chassis Color Swatches
-            document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(swatch => {
-                swatch.addEventListener('click', function() { 
-                    changeChassisColor(this.dataset.chassisColor); 
-                    document.querySelectorAll('#panel-2 #chassisColors .chassis-color-swatch').forEach(s => s.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            const fabricFileInput = document.querySelector('#panel-2 #fileInput');
-            if(fabricFileInput) fabricFileInput.addEventListener('change', handleFabricFileUpload);
-            
-            const fabricUploadArea = document.querySelector('#panel-2 #uploadArea');
-            if(fabricUploadArea) {
-                fabricUploadArea.addEventListener('click', function() { if(fabricFileInput) fabricFileInput.click(); });
-                fabricUploadArea.addEventListener('dragover', function(e) { e.preventDefault(); this.style.borderColor = 'var(--primary-red)'; this.style.background = 'rgba(230, 25, 25, 0.05)'; });
-                fabricUploadArea.addEventListener('dragleave', function(e) { e.preventDefault(); this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)'; });
-                fabricUploadArea.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.style.borderColor = 'var(--border-color)'; this.style.background = 'rgba(255, 255, 255, 0.03)';
-                    if (e.dataTransfer.files.length && fabricFileInput) {
-                        fabricFileInput.files = e.dataTransfer.files;
-                        handleFabricFileUpload({ target: { files: e.dataTransfer.files } });
-                    }
-                });
-            }
-            const fabricResetBtn = document.querySelector('#panel-2 #resetBtn');
-            if(fabricResetBtn) fabricResetBtn.addEventListener('click', resetFabricView);
-            const fabricDeleteBtn = document.querySelector('#panel-2 #deleteBtn');
-            if(fabricDeleteBtn) fabricDeleteBtn.addEventListener('click', deleteSelectedFabricDesign);
-            const fabricDownloadBtn = document.querySelector('#panel-2 #downloadBtn');
-            if(fabricDownloadBtn) fabricDownloadBtn.addEventListener('click', saveFabricDesign);
-            
-            window.addEventListener('resize', resizeFabricCanvas); 
+            reader.readAsDataURL(file);
         }
-        
-    // --- Cropping Modal Logic ---
-    function showCropModal(file, targetWidth, targetHeight) {
-        console.log("Showing crop modal for file:", file.name);
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            cropModalImageToCrop.src = e.target.result;
-            cropModalImageToCrop.style.display = 'block'; 
-            cropModalDimensionsNote.textContent = `Target: ${Math.round(targetWidth)} x ${Math.round(targetHeight)} px (for ${currentFabricView} view)`;
+
+        function hideCropModal() {
+            console.log("Hiding crop modal.");
+            cropModalOverlay.style.display = 'none';
+            cropModalImageToCrop.src = '#'; 
+            clearModalCropperUI(cropModalPreviewContainer);
+            currentCropDataForModal = {}; 
+            const fileInput = document.querySelector('#panel-2 #fileInput');
+            if(fileInput) { 
+                fileInput.value = '';
+            }
+        }
+
+        function initializeModalCropperUI(imageElement, containerElement, targetWidth, targetHeight) {
+            console.log("Initializing modal cropper UI.");
+            clearModalCropperUI(containerElement);
             
-            cropModalImageToCrop.onload = () => { 
-                initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+            const imageRect = imageElement.getBoundingClientRect();
+            const containerRect = containerElement.getBoundingClientRect();
+
+            const imgDisplayWidth = imageRect.width;
+            const imgDisplayHeight = imageRect.height;
+            const imgOffsetX = imageRect.left - containerRect.left;
+            const imgOffsetY = imageRect.top - containerRect.top;
+
+            const targetAspectRatio = targetWidth / targetHeight;
+            let cropWindowDisplayWidth, cropWindowDisplayHeight;
+
+            if (imgDisplayWidth / imgDisplayHeight > targetAspectRatio) {
+                cropWindowDisplayHeight = imgDisplayHeight;
+                cropWindowDisplayWidth = cropWindowDisplayHeight * targetAspectRatio;
+            } else {
+                cropWindowDisplayWidth = imgDisplayWidth;
+                cropWindowDisplayHeight = cropWindowDisplayWidth / targetAspectRatio;
+            }
+
+            const cropWindowDisplayLeft = (imgDisplayWidth - cropWindowDisplayWidth) / 2;
+            const cropWindowDisplayTop = (imgDisplayHeight - cropWindowDisplayHeight) / 2;
+            
+            const masks = {
+                top: document.createElement('div'), bottom: document.createElement('div'),
+                left: document.createElement('div'), right: document.createElement('div')
             };
-            if (cropModalImageToCrop.complete) { 
-                initializeModalCropperUI(cropModalImageToCrop, cropModalPreviewContainer, targetWidth, targetHeight);
+            for (const key in masks) {
+                masks[key].className = 'crop-modal-mask'; 
+                masks[key].classList.add(`modal-cropper-mask-element`); 
+                containerElement.appendChild(masks[key]);
             }
-            cropModalOverlay.style.display = 'flex';
-        }
-        reader.readAsDataURL(file);
-    }
+            masks.top.style.cssText = `top:${imgOffsetY}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${cropWindowDisplayTop}px;`;
+            masks.bottom.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop + cropWindowDisplayHeight}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${imgDisplayHeight - (cropWindowDisplayTop + cropWindowDisplayHeight)}px;`;
+            masks.left.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX}px; width:${cropWindowDisplayLeft}px; height:${cropWindowDisplayHeight}px;`;
+            masks.right.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft + cropWindowDisplayWidth}px; width:${imgDisplayWidth - (cropWindowDisplayLeft + cropWindowDisplayWidth)}px; height:${cropWindowDisplayHeight}px;`;
 
-    function hideCropModal() {
-        console.log("Hiding crop modal.");
-        cropModalOverlay.style.display = 'none';
-        cropModalImageToCrop.src = '#'; 
-        clearModalCropperUI(cropModalPreviewContainer);
-        currentCropDataForModal = {}; 
-        const fileInput = document.querySelector('#panel-2 #fileInput');
-        if(fileInput) { 
-            fileInput.value = '';
-        }
-    }
+            const cropWindowBorder = document.createElement('div');
+            cropWindowBorder.className = 'crop-modal-window-border'; 
+            cropWindowBorder.classList.add(`modal-cropper-mask-element`);
+            cropWindowBorder.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft}px; width:${cropWindowDisplayWidth}px; height:${cropWindowDisplayHeight}px;`;
+            containerElement.appendChild(cropWindowBorder);
 
-    function initializeModalCropperUI(imageElement, containerElement, targetWidth, targetHeight) {
-        console.log("Initializing modal cropper UI.");
-        clearModalCropperUI(containerElement);
+            currentCropDataForModal = {
+                displayX: cropWindowDisplayLeft, displayY: cropWindowDisplayTop,
+                displayWidth: cropWindowDisplayWidth, displayHeight: cropWindowDisplayHeight,
+                imgDisplayWidth: imgDisplayWidth, imgDisplayHeight: imgDisplayHeight,
+                targetWidth: targetWidth, targetHeight: targetHeight
+            };
+        }
+
+        function clearModalCropperUI(containerElement) {
+            const elementsToRemove = containerElement.querySelectorAll(`.modal-cropper-mask-element`);
+            elementsToRemove.forEach(el => el.remove());
+        }
+
+        // Event Listener Attachments
+        const panel1NextBtn = document.querySelector('#panel-1 .panel-header .next-step-btn');
+        if (panel1NextBtn) {
+            panel1NextBtn.disabled = true; 
+        }
+
+        optionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const button = card.querySelector('.select-button');
+                if (button) button.click();
+            });
+        });
+
+        pcSelectionButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation(); 
+                pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
+                button.closest('.option-card').classList.add('selected');
+                orderDetails.pc = {
+                    name: button.dataset.pcName,
+                    price: parseFloat(button.dataset.pcPrice)
+                };
+                if (panel1NextBtn) {
+                    panel1NextBtn.disabled = false;
+                    console.log("Panel 1 Next button enabled.");
+                }
+                updateSummary();
+                console.log("orderDetails.pc after selection:", orderDetails.pc);
+            });
+        });
         
-        // Get actual displayed dimensions of the image within its container
-        const imageRect = imageElement.getBoundingClientRect();
-        const containerRect = containerElement.getBoundingClientRect();
+        nextButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                console.log(`Next button clicked. Target index: ${targetIndex}`);
+                setActivePanel(targetIndex); 
+            });
+        });
 
-        const imgDisplayWidth = imageRect.width;
-        const imgDisplayHeight = imageRect.height;
-        const imgOffsetX = imageRect.left - containerRect.left;
-        const imgOffsetY = imageRect.top - containerRect.top;
+        prevButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                console.log(`Previous button clicked. Target index: ${targetIndex}`);
+                setActivePanel(targetIndex);
+            });
+        });
 
-
-        const targetAspectRatio = targetWidth / targetHeight;
-        let cropWindowDisplayWidth, cropWindowDisplayHeight;
-
-        if (imgDisplayWidth / imgDisplayHeight > targetAspectRatio) {
-            cropWindowDisplayHeight = imgDisplayHeight;
-            cropWindowDisplayWidth = cropWindowDisplayHeight * targetAspectRatio;
-        } else {
-            cropWindowDisplayWidth = imgDisplayWidth;
-            cropWindowDisplayHeight = cropWindowDisplayWidth / targetAspectRatio;
-        }
-
-        const cropWindowDisplayLeft = (imgDisplayWidth - cropWindowDisplayWidth) / 2;
-        const cropWindowDisplayTop = (imgDisplayHeight - cropWindowDisplayHeight) / 2;
-        
-        const masks = {
-            top: document.createElement('div'), bottom: document.createElement('div'),
-            left: document.createElement('div'), right: document.createElement('div')
-        };
-        for (const key in masks) {
-            masks[key].className = 'crop-modal-mask'; 
-            masks[key].classList.add(`modal-cropper-mask-element`); 
-            containerElement.appendChild(masks[key]);
-        }
-        masks.top.style.cssText = `top:${imgOffsetY}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${cropWindowDisplayTop}px;`;
-        masks.bottom.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop + cropWindowDisplayHeight}px; left:${imgOffsetX}px; width:${imgDisplayWidth}px; height:${imgDisplayHeight - (cropWindowDisplayTop + cropWindowDisplayHeight)}px;`;
-        masks.left.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX}px; width:${cropWindowDisplayLeft}px; height:${cropWindowDisplayHeight}px;`;
-        masks.right.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft + cropWindowDisplayWidth}px; width:${imgDisplayWidth - (cropWindowDisplayLeft + cropWindowDisplayWidth)}px; height:${cropWindowDisplayHeight}px;`;
-
-        const cropWindowBorder = document.createElement('div');
-        cropWindowBorder.className = 'crop-modal-window-border'; 
-        cropWindowBorder.classList.add(`modal-cropper-mask-element`);
-        cropWindowBorder.style.cssText = `top:${imgOffsetY + cropWindowDisplayTop}px; left:${imgOffsetX + cropWindowDisplayLeft}px; width:${cropWindowDisplayWidth}px; height:${cropWindowDisplayHeight}px;`;
-        containerElement.appendChild(cropWindowBorder);
-
-        currentCropDataForModal = {
-            displayX: cropWindowDisplayLeft,
-            displayY: cropWindowDisplayTop,
-            displayWidth: cropWindowDisplayWidth,
-            displayHeight: cropWindowDisplayHeight,
-            imgDisplayWidth: imgDisplayWidth,
-            imgDisplayHeight: imgDisplayHeight,
-            targetWidth: targetWidth, 
-            targetHeight: targetHeight
-        };
-    }
-
-    function clearModalCropperUI(containerElement) {
-        const elementsToRemove = containerElement.querySelectorAll(`.modal-cropper-mask-element`);
-        elementsToRemove.forEach(el => el.remove());
-    }
-
-    confirmCropBtn.addEventListener('click', async () => {
-        console.log("Confirm Crop button clicked.");
-        if (!cropModalImageToCrop.src || cropModalImageToCrop.src.endsWith('#') || !originalUploadedFile) {
-            showFabricNotification("No image loaded in cropper.", "error");
-            return;
-        }
-        if (!currentCropDataForModal.targetWidth) {
-            showFabricNotification("Crop data is incomplete.", "error");
-            return;
-        }
-
-        const originalImg = new Image();
-        originalImg.src = cropModalImageToCrop.src; 
-
-        originalImg.onload = async () => {
-            const scaleX = originalImg.naturalWidth / currentCropDataForModal.imgDisplayWidth;
-            const scaleY = originalImg.naturalHeight / currentCropDataForModal.imgDisplayHeight;
-
-            const sourceX = currentCropDataForModal.displayX * scaleX;
-            const sourceY = currentCropDataForModal.displayY * scaleY;
-            const sourceWidth = currentCropDataForModal.displayWidth * scaleX;
-            const sourceHeight = currentCropDataForModal.displayHeight * scaleY;
-
-            const canvas = document.createElement('canvas');
-            canvas.width = Math.round(currentCropDataForModal.targetWidth);
-            canvas.height = Math.round(currentCropDataForModal.targetHeight);
-            const ctx = canvas.getContext('2d');
-
-            try {
-                ctx.drawImage(
-                    originalImg,
-                    sourceX, sourceY, sourceWidth, sourceHeight,
-                    0, 0, canvas.width, canvas.height
-                );
-                const croppedImageDataURL = canvas.toDataURL('image/png');
-                hideCropModal();
-                applyCroppedImageToFabric(croppedImageDataURL); 
-            } catch (error) {
-                console.error("Error cropping image:", error);
-                showFabricNotification("Error during cropping. Please try again.", "error");
-                hideCropModal();
+        panels.forEach((panel, index) => {
+            const header = panel.querySelector('.panel-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    if (!panel.classList.contains('active')) {
+                        console.log(`Panel header clicked. Activating panel ${index}`);
+                        setActivePanel(index);
+                    }
+                });
             }
-        };
-        originalImg.onerror = () => {
-            console.error("Error loading original image for cropping.");
-            showFabricNotification("Error loading image for cropping.", "error");
-            hideCropModal();
-        };
-    });
+        });
+        
+        progressSteps.forEach((stepIndicator, index) => {
+            stepIndicator.addEventListener('click', () => {
+                if (index <= currentPanelIndex || stepIndicator.classList.contains('completed-step-via-progress')) {
+                     console.log(`Progress step ${index + 1} clicked. Activating panel ${index}`);
+                     setActivePanel(index);
+                } else {
+                    let canProceed = true;
+                    for (let i = 0; i < index; i++) {
+                        if (i === 0 && !orderDetails.pc) {
+                            alert("Please select a PC configuration first (Step 1).");
+                            canProceed = false;
+                            setActivePanel(0); 
+                            break;
+                        }
+                    }
+                    if (canProceed) {
+                        console.log(`Progress step ${index + 1} clicked. Activating panel ${index}`);
+                        setActivePanel(index);
+                    }
+                }
+            });
+        });
 
-    cancelCropBtn.addEventListener('click', hideCropModal);
-    // --- End Cropping Modal Logic ---
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', () => {
+                if (!orderDetails.pc) {
+                    alert("Please complete PC selection (Step 1).");
+                    setActivePanel(0);
+                    return;
+                }
+                let orderSummaryText = `Checkout initiated!\nPC: ${orderDetails.pc.name} ($${orderDetails.pc.price})\n`;
+                let hasCustomDesign = Object.values(orderDetails.customDesigns).some(design => design !== null && typeof design === 'object' && design.image);
+                if (hasCustomDesign) {
+                    orderSummaryText += "Custom Designs:\n";
+                    for (const viewKey in orderDetails.customDesigns) {
+                        if (orderDetails.customDesigns[viewKey]) {
+                            orderSummaryText += `- ${orderDetails.customDesigns[viewKey].name}\n`;
+                        }
+                    }
+                } else {
+                    orderSummaryText += "Design: No Custom Design\n";
+                }
+                orderSummaryText += `Total: $${summaryTotalPrice.textContent} AUD`;
+                alert(orderSummaryText);
+                console.log("Order Details:", orderDetails);
+            });
+        }
+        
+        confirmCropBtn.addEventListener('click', async () => {
+            console.log("Confirm Crop button clicked.");
+            if (!cropModalImageToCrop.src || cropModalImageToCrop.src.endsWith('#') || !originalUploadedFile) {
+                showFabricNotification("No image loaded in cropper.", "error");
+                return;
+            }
+            if (!currentCropDataForModal.targetWidth) {
+                showFabricNotification("Crop data is incomplete.", "error");
+                return;
+            }
 
+            const originalImg = new Image();
+            originalImg.src = cropModalImageToCrop.src; 
+
+            originalImg.onload = async () => {
+                const scaleX = originalImg.naturalWidth / currentCropDataForModal.imgDisplayWidth;
+                const scaleY = originalImg.naturalHeight / currentCropDataForModal.imgDisplayHeight;
+
+                const sourceX = currentCropDataForModal.displayX * scaleX;
+                const sourceY = currentCropDataForModal.displayY * scaleY;
+                const sourceWidth = currentCropDataForModal.displayWidth * scaleX;
+                const sourceHeight = currentCropDataForModal.displayHeight * scaleY;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.round(currentCropDataForModal.targetWidth);
+                canvas.height = Math.round(currentCropDataForModal.targetHeight);
+                const ctx = canvas.getContext('2d');
+
+                try {
+                    ctx.drawImage(
+                        originalImg,
+                        sourceX, sourceY, sourceWidth, sourceHeight,
+                        0, 0, canvas.width, canvas.height
+                    );
+                    const croppedImageDataURL = canvas.toDataURL('image/png');
+                    hideCropModal();
+                    applyCroppedImageToFabric(croppedImageDataURL); 
+                } catch (error) {
+                    console.error("Error cropping image:", error);
+                    showFabricNotification("Error during cropping. Please try again.", "error");
+                    hideCropModal();
+                }
+            };
+            originalImg.onerror = () => {
+                console.error("Error loading original image for cropping.");
+                showFabricNotification("Error loading image for cropping.", "error");
+                hideCropModal();
+            };
+        });
+
+        cancelCropBtn.addEventListener('click', hideCropModal);
+        
+        // Initial setup calls
+        setActivePanel(0); 
+        updateSummary(); 
     })(); 
     </script>
 
