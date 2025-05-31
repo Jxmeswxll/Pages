@@ -1300,14 +1300,17 @@ body {
                 const panel1NextBtn = document.querySelector('#panel-1 .panel-header .next-step-btn');
                 if (panel1NextBtn) {
                     panel1NextBtn.disabled = false;
+                    console.log("Panel 1 Next button enabled.");
                 }
                 updateSummary();
+                console.log("orderDetails.pc after selection:", orderDetails.pc);
             });
         });
         
         // Navigation Buttons
         nextButtons.forEach(button => {
             button.addEventListener('click', () => {
+                console.log(`Next button clicked. Target panel index: ${button.dataset.targetPanelIndex}`);
                 const targetIndex = parseInt(button.dataset.targetPanelIndex);
                 setActivePanel(targetIndex);
             });
@@ -1410,7 +1413,7 @@ body {
         let currentCropDataForModal = {}; // To store crop selection from modal
 
         // Define base path and image names for dynamic loading
-        const chassisBasePath = 'Zeal Pastel/';
+        const chassisBasePath = ''; // Corrected: Paths are now relative to current dir (Zeal Pastel)
         const chassisImageFiles = {
             blue: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
             green: { front: 'front_2000px.png', top: 'top_2000px.png', side1: 'hero_2000 px.png', side2: 'rear_2000px.png', back: 'back_2000px.png' },
@@ -1430,7 +1433,7 @@ body {
         // --- THREE.JS 3D PREVIEWER SCRIPT START ---
         let threeScene, threeCamera, threeRenderer, threeCube, threeControls;
         const threeJsContainer = document.getElementById('threejs-viewer-container');
-        const defaultFaceImage = 'Assets/hero.png'; // Corrected: Relative to Testing/CustomRTSv3d.html
+        const defaultFaceImage = '../Assets/hero.png'; // Corrected: Path relative to Testing/Zeal Pastel/index.html
 
         function initThreeJs() {
             if (!threeJsContainer || threeScene) return; // Already initialized or container not found
@@ -1467,7 +1470,19 @@ body {
             ];
 
             faceOrderForThreeJS.forEach(imgPath => {
-                const texture = loader.load(chassisBasePath + currentChassisColor + '/' + imgPath, () => threeRenderer.render(threeScene, threeCamera));
+                let fullTexturePath;
+                if (imgPath === defaultFaceImage) { // Check if it's the default placeholder image
+                    fullTexturePath = imgPath; // Use the path directly (e.g., '../Assets/hero.png')
+                } else {
+                    // For chassis-specific images, prepend base path and color folder
+                    fullTexturePath = chassisBasePath + currentChassisColor + '/' + imgPath; 
+                }
+                const texture = loader.load(
+                    fullTexturePath, 
+                    () => threeRenderer.render(threeScene, threeCamera), // onLoad
+                    undefined, // onProgress
+                    (err) => console.error(`Error loading initial texture: ${fullTexturePath}`, err) // onError
+                );
                 texture.colorSpace = THREE.SRGBColorSpace; // Correct colorspace for textures
                 materials.push(new THREE.MeshStandardMaterial({ map: texture, roughness: 0.7, metalness: 0.3 }));
             });
@@ -1513,15 +1528,20 @@ body {
             const loader = new THREE.TextureLoader();
             loader.setCrossOrigin('anonymous');
             
-            loader.load(imageDataUrl, (newTexture) => {
-                newTexture.colorSpace = THREE.SRGBColorSpace;
-                if (threeCube.material[faceIndex]) {
-                    threeCube.material[faceIndex].map = newTexture;
-                    threeCube.material[faceIndex].needsUpdate = true;
-                    threeRenderer.render(threeScene, threeCamera);
-                    console.log(`Texture updated for 3D model face: ${viewKey} (index ${faceIndex})`);
-                }
-            });
+            loader.load(
+                imageDataUrl, 
+                (newTexture) => {
+                    newTexture.colorSpace = THREE.SRGBColorSpace;
+                    if (threeCube.material[faceIndex]) {
+                        threeCube.material[faceIndex].map = newTexture;
+                        threeCube.material[faceIndex].needsUpdate = true;
+                        threeRenderer.render(threeScene, threeCamera);
+                        console.log(`Texture updated for 3D model face: ${viewKey} (index ${faceIndex})`);
+                    }
+                },
+                undefined, // onProgress
+                (err) => console.error(`Error loading texture for 3D model update (${viewKey}): ${imageDataUrl}`, err) // onError
+            );
         }
         
         function updateThreeJSChassisColor(newColor) {
@@ -1556,25 +1576,40 @@ body {
 
                     // Priority: custom design > base chassis image
                     if (orderDetails.customDesigns[viewKeyForFace] && orderDetails.customDesigns[viewKeyForFace].image) {
-                        loader.load(orderDetails.customDesigns[viewKeyForFace].image, (texture) => {
-                            texture.colorSpace = THREE.SRGBColorSpace;
-                            material.map = texture;
-                            material.needsUpdate = true;
-                        });
+                        loader.load(
+                            orderDetails.customDesigns[viewKeyForFace].image, 
+                            (texture) => {
+                                texture.colorSpace = THREE.SRGBColorSpace;
+                                material.map = texture;
+                                material.needsUpdate = true;
+                            },
+                            undefined,
+                            (err) => console.error(`Error loading custom design texture for ${viewKeyForFace}: ${orderDetails.customDesigns[viewKeyForFace].image}`, err)
+                        );
                     } else {
                         // Load base chassis image
-                        loader.load(imgPath, (texture) => {
+                        loader.load(
+                            imgPath, 
+                            (texture) => {
+                                texture.colorSpace = THREE.SRGBColorSpace;
+                                material.map = texture;
+                                material.needsUpdate = true;
+                            },
+                            undefined,
+                            (err) => console.error(`Error loading base chassis texture for ${viewKeyForFace}: ${imgPath}`, err)
+                        );
+                    }
+                } else if (index === 3) { // Bottom face, use defaultFaceImage
+                     loader.load(
+                        defaultFaceImage, 
+                        (texture) => { 
                             texture.colorSpace = THREE.SRGBColorSpace;
                             material.map = texture;
                             material.needsUpdate = true;
-                        });
-                    }
-                } else if (index === 3) { // Bottom face, keep default or update if you have a bottom image
-                     loader.load(defaultFaceImage, (texture) => { // Or specific bottom image
-                        texture.colorSpace = THREE.SRGBColorSpace;
-                        material.map = texture;
-                        material.needsUpdate = true;
-                    });
+                        },
+                        undefined,
+                        (err) => console.error(`Error loading default bottom texture: ${defaultFaceImage}`, err)
+                    );
                 }
             });
             setTimeout(() => threeRenderer.render(threeScene, threeCamera), 100); // Render after a short delay
@@ -1627,9 +1662,11 @@ body {
             
             fabricCanvas.clear(); // Clear previous objects
             
-            fabric.Image.fromURL(bgImageUrl, function(img) {
-                // --- Force re-read of container dimensions ---
-                let canvasWidth = fabricCanvasContainer.clientWidth;
+            fabric.Image.fromURL(
+                bgImageUrl, 
+                function(img) { // onLoad callback
+                    // --- Force re-read of container dimensions ---
+                    let canvasWidth = fabricCanvasContainer.clientWidth;
                 const aspectRatio = 16 / 12; 
                 let canvasHeight = canvasWidth / aspectRatio;
                 if (canvasWidth === 0) {
@@ -1739,7 +1776,15 @@ body {
                 
                 hideFabricLoading();
                 fabricCanvas.requestRenderAll(); // Use requestRenderAll for potentially better timing
-            }, { crossOrigin: 'anonymous' });
+            }, 
+            { // options object for fromURL
+                crossOrigin: 'anonymous' 
+            },
+            // Note: Fabric's Image.fromURL doesn't have a direct third error callback argument like THREE.TextureLoader.
+            // Errors here would typically be network errors caught by browser or if the image format is unsupported by Fabric.
+            // We can wrap this in a try-catch or rely on browser console for such errors.
+            // For simplicity, not adding explicit error handling here as path issues are more common with TextureLoader.
+            );
         }
         
         function changeChassisColor(newColor) {
@@ -1899,20 +1944,27 @@ body {
                 let baseImageForFace = defaultFaceImage; // Fallback
                 if (baseChassisImageSet && baseChassisImageSet[currentFabricView]) {
                     baseImageForFace = chassisBasePath + currentChassisColor + '/' + baseChassisImageSet[currentFabricView];
-                } else if (currentFabricView === 'back' && baseChassisImageSet && baseChassisImageSet.back) { // Explicit back handling
+                } else if (currentFabricView === 'back' && baseChassisImageSet && baseChassisImageSet.back) { // Explicit back handling for 2D canvas background
                     baseImageForFace = chassisBasePath + currentChassisColor + '/' + baseChassisImageSet.back;
                 }
+                // If baseImageForFace is still defaultFaceImage, it means it's a view not directly mapped (like bottom) or an issue.
+                // For 3D model reset, we need to ensure the correct base texture is re-applied.
 
                 const loader = new THREE.TextureLoader();
                 loader.setCrossOrigin('anonymous');
-                loader.load(baseImageForFace, (texture) => {
-                    texture.colorSpace = THREE.SRGBColorSpace;
-                    if (threeCube.material[faceIndex]) {
-                        threeCube.material[faceIndex].map = texture;
-                        threeCube.material[faceIndex].needsUpdate = true;
-                        threeRenderer.render(threeScene, threeCamera);
-                    }
-                });
+                loader.load(
+                    baseImageForFace, 
+                    (texture) => {
+                        texture.colorSpace = THREE.SRGBColorSpace;
+                        if (threeCube.material[faceIndex]) {
+                            threeCube.material[faceIndex].map = texture;
+                            threeCube.material[faceIndex].needsUpdate = true;
+                            threeRenderer.render(threeScene, threeCamera);
+                        }
+                    },
+                    undefined,
+                    (err) => console.error(`Error loading texture for 3D reset (${currentFabricView}): ${baseImageForFace}`, err)
+                );
             }
             showFabricNotification('View reset successfully!');
         }
