@@ -941,16 +941,17 @@ body {
             if (targetIndex > currentPanelIndex) {
                 if (currentPanelIndex === 0 && !orderDetails.pc) {
                     alert("Please select a PC configuration to continue.");
-                    setActivePanel(0); 
+                    // setActivePanel(0); // Avoid recursive call, just return
                     return;
                 }
                 if (currentPanelIndex === 1 && !orderDetails.design) {
                     const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
                     if (noDesignOption) {
                          handleGallerySelection(noDesignOption); 
-                    } else {
+                    }
+                    if (!orderDetails.design) { // Check again after attempting auto-selection
                         alert("Please choose a design or select 'No Custom Design' to continue.");
-                        setActivePanel(1); 
+                        // setActivePanel(1); // Avoid recursive call, just return
                         return;
                     }
                 }
@@ -1057,7 +1058,9 @@ body {
         }
 
         pcSelectionButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (event) => { // Add event parameter
+                event.stopPropagation(); // FIX: Stop event from bubbling to panel listener
+                
                 pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
                 button.closest('.option-card').classList.add('selected');
                 
@@ -1096,24 +1099,39 @@ body {
             if(selectedDesignNameOutput) { 
                 selectedDesignNameOutput.textContent = designName;
             }
+            // Fix 2 (Gallery Item Price Display) - update price visibility if needed in JS
+            galleryItems.forEach(galleryItem => {
+                const priceDiv = galleryItem.querySelector('.design-item-price');
+                if (priceDiv) {
+                    priceDiv.style.display = galleryItem.dataset.designName === "No Custom Design" ? 'none' : 'block';
+                }
+            });
+
 
             updateDesignPreviewArea(); 
             updateSummary();
         }
 
         galleryItems.forEach(item => {
-            item.addEventListener('click', () => handleGallerySelection(item));
+            item.addEventListener('click', (event) => { 
+                // event.stopPropagation(); // Not strictly necessary here as it doesn't change panel
+                                         // but good practice if it had other side effects on parent.
+                                         // For now, this click does not navigate, so it's fine.
+                handleGallerySelection(item);
+            });
         });
 
         nextButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (event) => { // Add event parameter
+                event.stopPropagation(); // FIX: Stop event from bubbling to panel listener
                 const targetIndex = parseInt(button.dataset.targetPanelIndex);
                 setActivePanel(targetIndex);
             });
         });
 
         prevButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (event) => { // Add event parameter
+                event.stopPropagation(); // FIX: Stop event from bubbling to panel listener
                 const targetIndex = parseInt(button.dataset.targetPanelIndex);
                 setActivePanel(targetIndex);
             });
@@ -1132,15 +1150,18 @@ body {
             setActivePanel(index);
         }
 
-        // Fix 1: Panel click listener adjustment
         panels.forEach((panel, index) => {
             panel.addEventListener('click', (event) => {
-                // Only switch panel if the clicked panel is NOT already active.
+                // This listener is primarily for making collapsed panels clickable.
+                // If the panel is already active, we don't want this listener to interfere
+                // with clicks on elements inside it (like buttons).
+                // Those internal elements should handle their own clicks and stop propagation if they navigate.
                 if (!panel.classList.contains('active')) {
+                     // Check if the direct target of the click is something that should NOT trigger panel navigation
+                     // e.g. if there were ever other interactive elements in the collapsed header itself.
+                     // For now, any click on a non-active panel is meant to activate it.
                     navigateToPanelOnClick(index);
                 }
-                // If it IS active, the click will be handled by individual element listeners (buttons etc.)
-                // and we don't want to re-trigger navigateToPanelOnClick for the same panel.
             });
         });
         
@@ -1150,7 +1171,9 @@ body {
 
 
         if (checkoutButton) {
-            checkoutButton.addEventListener('click', () => {
+            checkoutButton.addEventListener('click', (event) => { // Add event parameter
+                event.stopPropagation(); // FIX: Stop event from bubbling to panel listener
+
                 if (!orderDetails.pc) {
                     alert("Please complete PC selection (Step 1).");
                     setActivePanel(0);
@@ -1171,18 +1194,20 @@ body {
             });
         }
 
+        // Initial setup calls
         setActivePanel(0); 
         const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
         if (panel1NextBtn) {
             panel1NextBtn.disabled = true;
         }
         
+        // Default design selection to "No Custom Design" on load
         const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
         if (noDesignOption) { 
-             handleGallerySelection(noDesignOption); 
+             handleGallerySelection(noDesignOption); // This will set orderDetails.design and update UI
         }
-        updateDesignPreviewArea(); 
-        updateSummary(); 
+        updateDesignPreviewArea(); // Initial call for preview area
+        updateSummary(); // Initial summary update
     })();
     </script>
 </body>
