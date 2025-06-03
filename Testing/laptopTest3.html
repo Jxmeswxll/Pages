@@ -58,7 +58,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 85vh; 
-    min-height: 650px; 
+    min-height: 700px; /* Increased slightly for more content */
 }
 
 .checkout-header {
@@ -150,7 +150,7 @@ body {
     flex-grow: 0;   
     flex-basis: 100px; 
     height: 100%; 
-    padding: 20px; 
+    padding: 10px; /* Adjusted panel padding for collapsed state */
     box-sizing: border-box;
     background-color: var(--surface-medium); 
     border-radius: var(--border-radius-md);
@@ -161,7 +161,7 @@ body {
     flex-direction: column;
     overflow: hidden; 
     cursor: pointer; 
-    transition: flex-basis 0.4s ease-in-out, background-color 0.4s ease;
+    transition: flex-basis 0.4s ease-in-out, background-color 0.4s ease, padding 0.4s ease;
     position: relative; 
 }
 
@@ -171,19 +171,68 @@ body {
     background-color: var(--surface-dark); 
     box-shadow: var(--shadow-lg);
     cursor: default; 
+    padding: 20px; /* Restore padding for active panel */
 }
 
-.panel .panel-header { 
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 0; 
+/* Fix 1: Panel Header Styling */
+.panel .panel-header {
+    margin-bottom: 0;
     transition: margin-bottom 0.4s ease;
-    width: 100%; 
+    width: 100%;
+    border-bottom: none; /* No border by default */
+    padding-bottom: 0; /* No padding by default */
+}
+.panel.active .panel-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color); /* Border only when active */
+    padding-bottom: 15px; /* Padding only when active */
 }
 
-.panel.active .panel-header {
-    margin-bottom: 20px; 
+.panel .panel-header-collapsed-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0; /* Padding for the icon container */
 }
+.panel .panel-header-collapsed-content .step-number-icon {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    border-radius: 50%;
+    width: 36px; /* Size of the circle */
+    height: 36px; /* Size of the circle */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1em; /* Number font size */
+}
+
+.panel .panel-header-expanded-content {
+    display: none;
+}
+.panel.active .panel-header-collapsed-content {
+    display: none;
+}
+.panel.active .panel-header-expanded-content {
+    display: block;
+}
+
+.panel-header-expanded-content h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+}
+.panel-header-expanded-content h2 .step-number-text {
+    color: var(--primary-color);
+    font-weight: 800;
+}
+.panel-header-expanded-content p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
 
 .panel .panel-content-wrapper { 
     flex-grow: 1;
@@ -205,61 +254,22 @@ body {
     overflow-y: auto; 
 }
 
-#panel-2.active .panel-content {
-    display: flex; 
-    gap: 20px;
-    height: auto; 
-}
-
-
-.panel .panel-navigation {
-    padding-top: 20px; 
-    border-top: 1px solid var(--border-color); 
-}
-
-
-.panel-header {
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.panel-header h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 5px 0;
-}
-.panel-header h2 .step-number {
-    color: var(--primary-color);
-    font-weight: 800;
-}
-
-.panel-header p {
-    font-size: 1em;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.panel-content {
-    /* Styles for content within panels */
-}
-
 /* Panel 1: Choose PC */
 #panel-1 .panel-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Min width slightly increased for specs */
     gap: 25px;
 }
 
 .option-card {
     background-color: var(--surface-medium);
     border-radius: var(--border-radius-md);
-    padding: 25px; /* Fix 2: Increased padding */
+    padding: 20px; 
     border: 1px solid var(--border-color);
     transition: all var(--transition-speed) ease;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; Removed to allow specs to align left */
     text-align: center;
 }
 .option-card:hover {
@@ -275,27 +285,67 @@ body {
 
 .option-card img {
     width: 100%;
-    max-height: 180px;
-    object-fit: contain; /* Changed from cover to contain */
+    height: 180px; /* Fix 4/5: Set a fixed height for consistency */
+    object-fit: contain; 
     border-radius: var(--border-radius-sm);
     margin-bottom: 15px;
-    background-color: var(--surface-dark); /* Added background for letterboxing */
+    background-color: var(--surface-dark); 
 }
 
-.option-card h3 {
+.option-card h3 { /* PC Title */
     font-size: 1.4em;
     font-weight: 600;
     color: var(--text-primary);
     margin: 0 0 10px 0;
-    min-height: 2.8em; /* Ensure consistent height for title */
+    min-height: auto; /* Was 2.8em, removed as specs add height */
+    text-align: center;
 }
+
+/* Fix 4/5: PC Specs Styling */
+.option-card .pc-specs {
+    text-align: left;
+    margin: 15px 0;
+    font-size: 0.85em; /* Slightly smaller for more content */
+    color: var(--text-secondary);
+    width: 100%;
+    flex-grow: 1; /* Allows this section to take available vertical space */
+    line-height: 1.5;
+}
+.option-card .pc-specs h4 {
+    font-size: 1em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.option-card .pc-specs ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+.option-card .pc-specs ul li {
+    margin-bottom: 5px;
+    padding-left: 16px; 
+    position: relative;
+}
+.option-card .pc-specs ul li::before {
+    content: '•'; 
+    color: var(--primary-color);
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: -1px; /* Fine-tune vertical alignment */
+}
+
 
 .option-card .price {
     font-size: 1.3em;
     font-weight: 700;
     color: var(--primary-color);
+    margin-top: 15px; /* Added margin top for spacing from specs */
     margin-bottom: 15px;
     line-height: 1.4; 
+    text-align: center;
 }
 .option-card .price .original-price {
     text-decoration: line-through;
@@ -320,7 +370,7 @@ body {
     transition: all var(--transition-speed) ease;
     border: none;
     text-align: center;
-    margin-top: auto; /* Push button to bottom if card content varies */
+    margin-top: auto; 
 }
 
 .select-button {
@@ -336,8 +386,8 @@ body {
 }
 
 
-/* Panel 2: Choose Design - Redesigned Layout */
-#panel-2 .panel-content {
+/* Panel 2: Choose Design */
+#panel-2.active .panel-content { /* Ensure this only applies when active */
     display: flex; 
     gap: 20px;
     height: 100%; 
@@ -351,7 +401,7 @@ body {
     display: flex; 
     justify-content: center;
     align-items: center;
-    padding: 10px; /* Reduced padding to maximize image space */
+    padding: 0; /* Fix 2: Removed padding to allow artwork to fill */
     border: 1px solid var(--border-color);
     min-height: 300px; 
     position: relative; 
@@ -360,27 +410,28 @@ body {
 .design-preview-area #pcModelPreview { 
     max-width: 100%;
     max-height: 100%; 
-    object-fit: contain; /* Show the whole PC */
+    object-fit: contain;
     z-index: 1; 
-    display: none; /* Initially hidden until a PC is selected */
+    display: none; 
 }
+/* Fix 2: Artwork Overlay Container takes full space */
 .design-preview-area #artworkOverlayContainer { 
     position: absolute;
-    /* Adjusted to cover a larger, more typical lid area */
-    top: 10%; 
-    left: 10%; 
-    width: 80%;  
-    height: 80%; 
+    top: 0; 
+    left: 0; 
+    width: 100%;  
+    height: 100%; 
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     z-index: 2; 
 }
+/* Fix 2: Artwork itself fills the overlay container */
 .design-preview-area #artworkOnPcPreview { 
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* Cover the overlay area, might crop if aspect ratios differ */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
     display: none; 
 }
 .design-preview-area .preview-placeholder-text {
@@ -389,6 +440,7 @@ body {
     z-index: 3; 
     position: absolute; 
     text-align: center;
+    padding: 20px; /* Add padding to placeholder text if preview area has none */
 }
 
 
@@ -422,15 +474,14 @@ body {
 .gallery-item {
     background-color: var(--surface-light);
     border-radius: var(--border-radius-sm);
-    /* padding: 8px; /* Fix 3: REMOVED padding from item */
     text-align: center;
     cursor: pointer;
     border: 2px solid transparent;
     transition: all var(--transition-speed) ease;
-    display: flex; /* For vertical alignment of content */
-    flex-direction: column; /* Stack image and text */
-    justify-content: space-between; /* Push text to bottom */
-    overflow: hidden; /* Fix 3: ADDED to clip image corners correctly */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    overflow: hidden; 
 }
 .gallery-item:hover {
     border-color: var(--primary-color);
@@ -447,20 +498,19 @@ body {
 }
 .gallery-item img {
     width: 100%;
-    height: 80px; /* Increased height for gallery images */
-    object-fit: cover; /* Changed to cover for better fill */
-    /* border-radius: var(--border-radius-sm); /* Fix 3: REMOVED, parent handles clipping */
-    border-radius: 0; /* Fix 3: Explicitly set to 0 */
-    margin-bottom: 5px;
-    background-color: var(--surface-dark); /* Background for images */
+    height: 80px; 
+    object-fit: cover; 
+    border-radius: 0; 
+    /* margin-bottom: 5px; No margin-bottom needed if text has top padding */
+    background-color: var(--surface-dark); 
 }
 .gallery-item p {
     font-size: 0.8em;
     color: var(--text-secondary);
     margin: 0;
     transition: color var(--transition-speed) ease;
-    margin-top: auto; /* Ensure text is at the bottom */
-    padding: 5px 8px 8px; /* Fix 3: ADDED padding for text (top from img margin, L/R 8px, Bottom 8px) */
+    margin-top: auto; 
+    padding: 5px 8px 8px; 
 }
 #selectedDesignName {
     color: var(--primary-color);
@@ -502,6 +552,17 @@ body {
 #summaryDesignSelection, #summaryPcSelection {
     margin-bottom: 20px;
 }
+/* Fix 3: Design Price Display in Summary */
+#summaryDesignPriceLine {
+    font-size: 0.95em;
+}
+#summaryDesignOriginalPrice {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
 #summaryDesignImage {
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--border-color);
@@ -534,14 +595,15 @@ body {
 }
 
 /* Panel Navigation */
-.panel-navigation {
-    margin-top: auto; /* Push navigation to the bottom of the panel */
+.panel .panel-navigation { /* Ensure specificity for panel context */
+    margin-top: auto; 
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 
 .next-step-btn {
     background-color: var(--primary-color);
@@ -582,7 +644,7 @@ body {
     .checkout-main {
         padding: 10px; 
         border-radius: 0;
-        overflow-y: auto; /* Allow main content to scroll if panels overflow */
+        overflow-y: auto; 
     }
     .panel-container {
         flex-direction: column; 
@@ -595,14 +657,18 @@ body {
         height: auto; 
         margin: 0 0 10px 0; 
         cursor: pointer; 
-        min-height: auto; /* Remove fixed min-height for mobile panels */
+        min-height: auto; 
+        padding: 10px; /* Consistent padding for mobile */
+    }
+     .panel.active {
+        padding: 15px; /* Slightly more padding for active mobile panel */
     }
     .panel.active .panel-content-wrapper {
-        max-height: none; /* Allow content to define height */
-        overflow: visible; /* Ensure content isn't clipped if panel-content itself doesn't scroll */
+        max-height: none; 
+        overflow: visible; 
     }
     .panel .panel-content {
-        overflow-y: visible; /* Let wrapper or main handle scroll */
+        overflow-y: visible; 
     }
 
     #panel-2.active .panel-content {
@@ -613,13 +679,13 @@ body {
         width: 100%; 
     }
     .design-preview-area {
-        min-height: 250px; /* Adjust for mobile */
+        min-height: 250px; 
     }
     .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Smaller items for mobile */
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); 
     }
     .gallery-item img {
-        height: 60px; /* Slightly smaller gallery images for mobile */
+        height: 60px; 
     }
 
     .checkout-header {
@@ -635,16 +701,22 @@ body {
         font-size: 0.8em;
         padding: 6px 10px;
     }
-    .panel-header h2 {
+    .panel-header-expanded-content h2 { /* Target expanded content for active panels on mobile */
         font-size: 1.6em;
     }
+    .panel .panel-header-collapsed-content .step-number-icon { /* Adjust icon size for mobile */
+        width: 30px;
+        height: 30px;
+        font-size: 0.9em;
+    }
+
     #panel-1 .panel-content {
         grid-template-columns: 1fr; 
     }
-    .panel-navigation {
+    .panel .panel-navigation {
         flex-direction: column-reverse; 
         gap: 15px;
-        margin-top: 20px; /* Ensure some space before nav buttons */
+        margin-top: 20px; 
     }
     .next-step-btn, .prev-step-btn, .checkout-button {
         width: 100%;
@@ -664,11 +736,14 @@ body {
         height: 18px;
         font-size: 0.7em;
     }
-    .panel-header h2 {
+    .panel-header-expanded-content h2 {
         font-size: 1.4em;
     }
-    .panel-header p {
+    .panel-header-expanded-content p {
         font-size: 0.9em;
+    }
+    .option-card .pc-specs {
+        font-size: 0.8em;
     }
 }
     </style>
@@ -689,26 +764,55 @@ body {
                 <!-- Panel 1: Choose PC -->
                 <section id="panel-1" class="panel active" data-panel-index="0">
                     <div class="panel-header">
-                        <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
-                        <p>Select the base model or configuration that suits your needs.</p>
+                        <div class="panel-header-collapsed-content"><span class="step-number-icon">1</span></div>
+                        <div class="panel-header-expanded-content">
+                            <h2><span class="step-number-text">Step 1:</span> Choose Your PC</h2>
+                            <p>Select the base model or configuration that suits your needs.</p>
+                        </div>
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
                             <div class="option-card">
                                 <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBA16CMH16.jpg?v=1748407225" alt="Gigabyte A16 CMH 16 Laptop">
                                 <h3>Gigabyte A16 CMH 16"</h3>
+                                <div class="pc-specs">
+                                    <h4>Key Specifications:</h4>
+                                    <ul>
+                                        <li>16.0“ 16x10 IPS WUXGA (1920x1200) 165Hz Display</li>
+                                        <li>Intel Core i7 13620H Processor | 4.9 GHz | 10 Cores 16 Threads</li>
+                                        <li>16GB (2x8GB) DDR5 5200MHz</li>
+                                        <li>Nvidia Geforce RTX 4050 6GB GDDR6</li>
+                                        <li>1TB M.2 NVMe PCIe 4.0 SSD</li>
+                                        <li>76Whr Battery</li>
+                                        <li>~2.2 KG</li>
+                                        <li>Windows 11 Home 64 bit (Activated)</li>
+                                    </ul>
+                                </div>
                                 <p class="price">$1,799.00 AUD</p>
-                                <button class="select-button" data-pc-name="Gigabyte A16 CMH 16"" data-pc-price="1799">Select This PC</button>
+                                <button class="select-button" data-pc-name="Gigabyte A16 CMH 16" data-pc-price="1799" data-pc-image-src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBA16CMH16.jpg?v=1748407225">Select This PC</button>
                             </div>
                             <div class="option-card">
                                 <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBG6MF_f80ed243-4e24-42ae-b05a-dc23bc0862b5.jpg?v=1747208260" alt="Gigabyte G6 KF 16 Laptop">
                                 <h3>Gigabyte G6 KF 16"</h3>
+                                 <div class="pc-specs">
+                                    <h4>Key Specifications:</h4>
+                                    <ul>
+                                        <li>16.0" FHD+ (1920x1200) 144Hz Display</li>
+                                        <li>Intel Core i5 13500H Processor | 4.7 GHz | 12 Cores 16 Threads</li>
+                                        <li>16GB (2x8GB) DDR4 3200MHz</li>
+                                        <li>Nvidia Geforce RTX 4060 8GB GDDR6</li>
+                                        <li>512GB M.2 NVMe PCIe 4.0 SSD</li>
+                                        <li>54Whr Battery</li>
+                                        <li>~2.0 KG</li>
+                                        <li>Windows 11 Home 64 bit (Activated)</li>
+                                    </ul>
+                                </div>
                                 <p class="price">
                                     <span class="original-price">$1,999.00</span>
                                     <span class="savings">You save $300.00</span>
                                     $1,699.00 AUD
                                 </p>
-                                <button class="select-button" data-pc-name="Gigabyte G6 KF 16"" data-pc-price="1699">Select This PC</button>
+                                <button class="select-button" data-pc-name="Gigabyte G6 KF 16" data-pc-price="1699" data-pc-image-src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBG6MF_f80ed243-4e24-42ae-b05a-dc23bc0862b5.jpg?v=1747208260">Select This PC</button>
                             </div>
                         </div>
                         <div class="panel-navigation">
@@ -719,9 +823,12 @@ body {
 
                 <!-- Panel 2: Choose Design -->
                 <section id="panel-2" class="panel" data-panel-index="1">
-                    <div class="panel-header">
-                        <h2><span class="step-number">Step 2:</span> Choose Your Design</h2>
-                        <p>Personalize your PC by selecting from our gallery.</p>
+                     <div class="panel-header">
+                        <div class="panel-header-collapsed-content"><span class="step-number-icon">2</span></div>
+                        <div class="panel-header-expanded-content">
+                            <h2><span class="step-number-text">Step 2:</span> Choose Your Design</h2>
+                            <p>Personalize your PC by selecting from our gallery.</p>
+                        </div>
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
@@ -733,7 +840,6 @@ body {
                                 <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Select a PC in Step 1 to see a preview.</span>
                             </div>
                             <div class="design-controls-area">
-                                <!-- Custom Uploader Removed -->
                                 <div class="design-option">
                                     <h4>Choose from Gallery</h4>
                                     <div class="gallery-grid">
@@ -753,7 +859,7 @@ body {
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Mecha-LaptopPrint.png?v=1669698777" alt="Mech Fight Design">
                                             <p>Mech Fight</p>
                                         </div>
-                                         <div class="gallery-item" data-design-name="No Custom Design" data-design-image=""> <!-- data-design-image is empty for "No Design" -->
+                                         <div class="gallery-item" data-design-name="No Custom Design" data-design-image=""> 
                                             <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
                                             <p>No Custom Design</p>
                                         </div>
@@ -771,9 +877,12 @@ body {
 
                 <!-- Panel 3: Summary + Checkout -->
                 <section id="panel-3" class="panel" data-panel-index="2">
-                    <div class="panel-header">
-                        <h2><span class="step-number">Step 3:</span> Summary & Checkout</h2>
-                        <p>Review your selections and proceed to payment.</p>
+                     <div class="panel-header">
+                        <div class="panel-header-collapsed-content"><span class="step-number-icon">3</span></div>
+                        <div class="panel-header-expanded-content">
+                            <h2><span class="step-number-text">Step 3:</span> Summary & Checkout</h2>
+                            <p>Review your selections and proceed to payment.</p>
+                        </div>
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
@@ -787,6 +896,10 @@ body {
                                 <div id="summaryDesignSelection">
                                     <h4>Selected Design:</h4>
                                     <p>Name: <span id="summaryDesignNameDisplay">N/A</span></p> 
+                                    <p id="summaryDesignPriceLine" style="display: none;">
+                                        Price: <span id="summaryDesignPriceValue">$0.00</span> AUD
+                                        <span id="summaryDesignOriginalPrice"></span>
+                                    </p>
                                     <img id="summaryDesignImage" src="#" alt="Selected Design Preview" style="max-width: 200px; max-height: 150px; margin-top: 10px; display: none;">
                                 </div>
                                 <hr>
@@ -813,21 +926,24 @@ body {
 
         const pcSelectionButtons = document.querySelectorAll('#panel-1 .select-button');
         
-        // References for Panel 2 (Design Selection)
-        const pcModelPreview = document.getElementById('pcModelPreview'); // Base PC image in preview
-        const artworkOnPcPreview = document.getElementById('artworkOnPcPreview'); // Overlay artwork in preview
-        const pcPreviewPlaceholderText = document.getElementById('pcPreviewPlaceholderText'); // Placeholder text in preview area
+        const pcModelPreview = document.getElementById('pcModelPreview'); 
+        const artworkOnPcPreview = document.getElementById('artworkOnPcPreview'); 
+        const pcPreviewPlaceholderText = document.getElementById('pcPreviewPlaceholderText'); 
         const galleryItems = document.querySelectorAll('#panel-2 .gallery-item');
-        const selectedDesignNameOutput = document.getElementById('selectedDesignName'); // Text display for selected design in Panel 2
+        const selectedDesignNameOutput = document.getElementById('selectedDesignName'); 
 
-        // References for Panel 3 (Summary)
         const summaryPcName = document.getElementById('summaryPcName');
         const summaryPcPrice = document.getElementById('summaryPcPrice');
-        const summaryDesignNameDisplay = document.getElementById('summaryDesignNameDisplay'); // Text display for design in Summary
-        const summaryDesignImage = document.getElementById('summaryDesignImage'); // Image display for design in Summary
+        const summaryDesignNameDisplay = document.getElementById('summaryDesignNameDisplay'); 
+        const summaryDesignImage = document.getElementById('summaryDesignImage'); 
         const summaryTotalPrice = document.getElementById('summaryTotalPrice');
+        // Fix 3: Summary Design Price Elements
+        const summaryDesignPriceLine = document.getElementById('summaryDesignPriceLine');
+        const summaryDesignPriceValue = document.getElementById('summaryDesignPriceValue');
+        const summaryDesignOriginalPrice = document.getElementById('summaryDesignOriginalPrice');
 
         const checkoutButton = document.querySelector('.checkout-button');
+        const PANEL_PRINT_ORIGINAL_PRICE = 160.00;
 
         let currentPanelIndex = 0; 
         let orderDetails = {
@@ -844,10 +960,9 @@ body {
                     return;
                 }
                 if (currentPanelIndex === 1 && !orderDetails.design) {
-                    // Default to "No Custom Design" if user tries to proceed without selection
                     const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
                     if (noDesignOption) {
-                         handleGallerySelection(noDesignOption); // Select "No Custom Design" automatically
+                         handleGallerySelection(noDesignOption); 
                     } else {
                         alert("Please choose a design or select 'No Custom Design' to continue.");
                         return;
@@ -874,6 +989,39 @@ body {
                 updateSummary();
             }
         }
+        
+        // Fix 2: Centralized function to update the design preview area
+        function updateDesignPreviewArea() {
+            if (!orderDetails.pc) {
+                pcPreviewPlaceholderText.textContent = "Select a PC in Step 1 to see a preview.";
+                pcPreviewPlaceholderText.style.display = 'block';
+                if (pcModelPreview) pcModelPreview.style.display = 'none';
+                if (artworkOnPcPreview) artworkOnPcPreview.style.display = 'none';
+                return;
+            }
+
+            pcPreviewPlaceholderText.style.display = 'none';
+
+            if (orderDetails.design && orderDetails.design.name !== "No Custom Design" && orderDetails.design.image) {
+                // Custom design selected: show artwork, hide base PC
+                if (pcModelPreview) pcModelPreview.style.display = 'none';
+                if (artworkOnPcPreview) {
+                    artworkOnPcPreview.src = orderDetails.design.image;
+                    artworkOnPcPreview.style.display = 'block';
+                }
+            } else {
+                // No custom design (or no design selected yet which defaults to "No Custom Design"): show base PC, hide artwork
+                if (pcModelPreview) {
+                    pcModelPreview.src = orderDetails.pc.imageSrc; // Make sure orderDetails.pc.imageSrc is set
+                    pcModelPreview.style.display = 'block';
+                }
+                if (artworkOnPcPreview) {
+                    artworkOnPcPreview.src = "#"; 
+                    artworkOnPcPreview.style.display = 'none';
+                }
+            }
+        }
+
 
         function updateSummary() {
             let total = 0;
@@ -888,63 +1036,54 @@ body {
 
             if (orderDetails.design) {
                 summaryDesignNameDisplay.textContent = orderDetails.design.name;
-                selectedDesignNameOutput.textContent = orderDetails.design.name;
 
                 if (orderDetails.design.name !== "No Custom Design" && orderDetails.design.image && orderDetails.design.image !== "") {
                     summaryDesignImage.src = orderDetails.design.image;
                     summaryDesignImage.style.display = 'block';
+                    // Fix 3: Display pricing for panel print
+                    summaryDesignPriceLine.style.display = 'block';
+                    summaryDesignPriceValue.textContent = '$0.00';
+                    summaryDesignOriginalPrice.textContent = `(was $${PANEL_PRINT_ORIGINAL_PRICE.toFixed(2)} AUD)`;
                 } else {
                     summaryDesignImage.style.display = 'none';
+                    summaryDesignPriceLine.style.display = 'none'; // Hide price line for "No Design"
                     if (orderDetails.design.name === "No Custom Design") {
                          summaryDesignNameDisplay.textContent = 'No Custom Design (Base PC Look)';
                     }
                 }
             } else {
                 summaryDesignNameDisplay.textContent = 'N/A';
-                selectedDesignNameOutput.textContent = 'None';
                 summaryDesignImage.style.display = 'none';
+                summaryDesignPriceLine.style.display = 'none';
             }
             summaryTotalPrice.textContent = total.toFixed(2);
         }
 
-        // Panel 1: PC Selection
         pcSelectionButtons.forEach(button => {
             button.addEventListener('click', () => {
                 pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
                 button.closest('.option-card').classList.add('selected');
                 
-                const pcImageSrc = button.closest('.option-card').querySelector('img').src;
+                // Ensure we get the image source from a data attribute if specific, otherwise from img tag
+                const pcImageSrc = button.dataset.pcImageSrc || button.closest('.option-card').querySelector('img').src;
                 
                 orderDetails.pc = {
                     name: button.dataset.pcName,
                     price: parseFloat(button.dataset.pcPrice),
                     imageSrc: pcImageSrc 
                 };
-
-                // Update PC preview in Panel 2
-                if (pcModelPreview) {
-                    pcModelPreview.src = pcImageSrc;
-                    pcModelPreview.style.display = 'block';
-                }
-                if (pcPreviewPlaceholderText) {
-                    pcPreviewPlaceholderText.style.display = 'none';
-                }
-                // If "No Custom Design" is currently selected, ensure only PC model shows
-                if (orderDetails.design && orderDetails.design.name === "No Custom Design" && artworkOnPcPreview) {
-                    artworkOnPcPreview.style.display = 'none';
-                }
-
-
+                
                 const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
                 if (panel1NextBtn) {
                     panel1NextBtn.disabled = false;
                 }
+                
+                updateDesignPreviewArea(); // Fix 2: Call centralized preview update
                 updateSummary();
-                setActivePanel(1); // Fix 1: Go to Step 2 after selecting a PC
+                setActivePanel(1); 
             });
         });
 
-        // Panel 2: Design Selection from Gallery
         function handleGallerySelection(item) {
             galleryItems.forEach(it => it.classList.remove('selected'));
             item.classList.add('selected');
@@ -956,31 +1095,12 @@ body {
                 name: designName,
                 image: designImage
             };
-
-            if (pcModelPreview && !orderDetails.pc) { // If PC not selected yet, show placeholder
-                 pcPreviewPlaceholderText.textContent = "Select a PC in Step 1 first.";
-                 pcPreviewPlaceholderText.style.display = 'block';
-                 if(pcModelPreview) pcModelPreview.style.display = 'none';
-                 if(artworkOnPcPreview) artworkOnPcPreview.style.display = 'none';
-            } else if (pcModelPreview && orderDetails.pc) { // PC is selected
-                pcModelPreview.src = orderDetails.pc.imageSrc; // Ensure base PC image is set
-                pcModelPreview.style.display = 'block';
-                pcPreviewPlaceholderText.style.display = 'none';
-
-                if (designName === "No Custom Design" || !designImage) { // Also check if designImage is empty/null
-                    if (artworkOnPcPreview) {
-                        artworkOnPcPreview.src = "#"; // Clear any previous artwork
-                        artworkOnPcPreview.style.display = 'none';
-                    }
-                } else {
-                    if (artworkOnPcPreview && designImage) {
-                        artworkOnPcPreview.src = designImage;
-                        artworkOnPcPreview.style.display = 'block';
-                    } else if (artworkOnPcPreview) {
-                        artworkOnPcPreview.style.display = 'none'; // Hide if no image for selected design
-                    }
-                }
+            
+            if(selectedDesignNameOutput) { // Update text in Panel 2
+                selectedDesignNameOutput.textContent = designName;
             }
+
+            updateDesignPreviewArea(); // Fix 2: Call centralized preview update
             updateSummary();
         }
 
@@ -988,7 +1108,6 @@ body {
             item.addEventListener('click', () => handleGallerySelection(item));
         });
 
-        // Navigation Buttons
         nextButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const targetIndex = parseInt(button.dataset.targetPanelIndex);
@@ -1003,32 +1122,7 @@ body {
             });
         });
 
-        // Click on minimized panel headers/progress steps to activate them
         function navigateToPanelOnClick(index) {
-            let canProceed = true;
-            // Check prerequisites only if moving to a panel beyond the current one,
-            // or if trying to access a panel that requires prior steps to be completed.
-            if (index > currentPanelIndex) {
-                for (let i = currentPanelIndex; i < index; i++) { 
-                    if (i === 0 && !orderDetails.pc) {
-                        alert("Please select a PC configuration first (Step 1).");
-                        setActivePanel(0); // Stay or move to panel 0
-                        return; // Stop further processing
-                    }
-                    if (i === 1 && !orderDetails.design) {
-                        const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
-                        if (noDesignOption) handleGallerySelection(noDesignOption);
-                        // No alert here, just proceed with default if possible
-                    }
-                }
-            } else if (index < currentPanelIndex) {
-                // Allow going back freely
-            } else { // index === currentPanelIndex, probably clicking on active panel header
-                 // Do nothing or allow re-evaluation if needed based on specific UI interaction
-            }
-
-
-            // Additional checks before activating any panel by direct click
             if (index > 0 && !orderDetails.pc) {
                 alert("Please select a PC configuration first (Step 1).");
                 setActivePanel(0);
@@ -1038,7 +1132,6 @@ body {
                  const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
                  if (noDesignOption) handleGallerySelection(noDesignOption);
             }
-
             setActivePanel(index);
         }
 
@@ -1066,7 +1159,6 @@ body {
                     return;
                 }
                 if (!orderDetails.design) {
-                    // Default to "No Custom Design" if somehow missed
                     const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
                     if (noDesignOption) handleGallerySelection(noDesignOption);
                     else {
@@ -1075,26 +1167,24 @@ body {
                         return;
                     }
                 }
-                // Re-update summary just before alert to ensure it's current
                 updateSummary();
                 alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${parseFloat(orderDetails.pc.price).toFixed(2)})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
                 console.log("Order Details:", orderDetails);
             });
         }
 
-        // Initial setup calls
         setActivePanel(0); 
         const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
         if (panel1NextBtn) {
             panel1NextBtn.disabled = true;
         }
         
-        // Default design selection to "No Custom Design" on load for Panel 2 logic
         const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
-        if (noDesignOption) { // Ensure it exists
-             handleGallerySelection(noDesignOption); // This will set orderDetails.design and update UI
+        if (noDesignOption) { 
+             handleGallerySelection(noDesignOption); 
         }
-        updateSummary(); // Initial summary update
+        updateDesignPreviewArea(); // Initial call for preview area
+        updateSummary(); 
     })();
     </script>
 </body>
