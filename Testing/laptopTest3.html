@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your custom PC order with our easy 3-step checkout process.">
+    <title>Checkout - Custom PC | Aftershock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary-color: #D90429; /* Aftershock Red */
+    --primary-hover: #B00020; /* Darker Aftershock Red for hover */
+    --background-dark: #0D0D0F; /* Very dark, almost black */
+    --surface-dark: #1A1A1C; /* For panels and cards */
+    --surface-medium: #2C2C2E; /* Slightly lighter elements */
+    --surface-light: #3A3A3C; /* Hover states or subtle borders */
+    --text-primary: #F5F5F7; /* Off-white for primary text */
+    --text-secondary: #A0A0A5; /* Lighter gray for secondary text */
+    --text-placeholder: #6E6E73;
+    --border-color: #3A3A3C;
+    --error-color: #FF3B30;
+    --success-color: #34C759; /* Kept as green for standard success indication */
+
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-md: 0 6px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: var(--font-main);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh;
+    padding: 20px; 
+    overflow-x: hidden; 
+}
+
+.checkout-container {
+    width: 100%;
+    max-width: 1400px; 
+    background-color: var(--background-dark); 
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    height: 85vh; 
+    min-height: 650px; 
+}
+
+.checkout-header {
+    padding: 25px 30px;
+    background-color: rgba(0,0,0,0.3); 
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkout-header .logo-placeholder {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: var(--primary-color); 
+    letter-spacing: 1px;
+}
+
+.progress-indicator {
+    display: flex;
+    gap: 10px;
+}
+
+.progress-indicator .step {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--surface-medium);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.progress-indicator .step span {
+    background-color: var(--text-placeholder);
+    color: var(--surface-dark);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.8em;
+    transition: all var(--transition-speed) ease;
+}
+
+.progress-indicator .step.active {
+    color: var(--text-primary);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+.progress-indicator .step.active span {
+    background-color: var(--text-primary);
+    color: var(--primary-color);
+}
+.progress-indicator .step.completed {
+    color: var(--text-secondary);
+    background-color: var(--surface-light);
+    border-color: var(--success-color);
+}
+.progress-indicator .step.completed span {
+    background-color: var(--success-color);
+    color: var(--text-primary);
+}
+
+
+.checkout-main {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    padding: 20px; 
+    background-color: var(--surface-dark); 
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); 
+    overflow: hidden; 
+}
+
+.panel-container {
+    display: flex;
+    width: 100%; 
+    height: 100%; 
+}
+
+.panel {
+    flex-shrink: 0; 
+    flex-grow: 0;   
+    flex-basis: 100px; 
+    height: 100%; 
+    padding: 20px; 
+    box-sizing: border-box;
+    background-color: var(--surface-medium); 
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin: 0 5px; 
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    cursor: pointer; 
+    transition: flex-basis 0.4s ease-in-out, background-color 0.4s ease;
+    position: relative; 
+}
+
+.panel.active {
+    flex-grow: 1; 
+    flex-basis: 75%; 
+    background-color: var(--surface-dark); 
+    box-shadow: var(--shadow-lg);
+    cursor: default; 
+}
+
+.panel .panel-header { 
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0; 
+    transition: margin-bottom 0.4s ease;
+    width: 100%; 
+}
+
+.panel.active .panel-header {
+    margin-bottom: 20px; 
+}
+
+.panel .panel-content-wrapper { 
+    flex-grow: 1;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out 0.1s;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel.active .panel-content-wrapper {
+    max-height: 100vh; 
+    opacity: 1;
+}
+
+.panel .panel-content {
+    flex-grow: 1;
+    overflow-y: auto; 
+}
+
+#panel-2.active .panel-content {
+    display: flex; 
+    gap: 20px;
+    height: auto; 
+}
+
+
+.panel .panel-navigation {
+    padding-top: 20px; 
+    border-top: 1px solid var(--border-color); 
+}
+
+
+.panel-header {
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+}
+.panel-header h2 .step-number {
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.panel-header p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.panel-content {
+    /* Styles for content within panels */
+}
+
+/* Panel 1: Choose PC */
+#panel-1 .panel-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.option-card {
+    background-color: var(--surface-medium);
+    border-radius: var(--border-radius-md);
+    padding: 25px; /* Fix 2: Increased padding */
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.option-card:hover {
+    border-color: var(--primary-color);
+    background-color: var(--surface-light); 
+    box-shadow: var(--shadow-sm); 
+}
+.option-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color); 
+    background-color: var(--surface-light);
+}
+
+.option-card img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain; /* Changed from cover to contain */
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 15px;
+    background-color: var(--surface-dark); /* Added background for letterboxing */
+}
+
+.option-card h3 {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+    min-height: 2.8em; /* Ensure consistent height for title */
+}
+
+.option-card .price {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    line-height: 1.4; 
+}
+.option-card .price .original-price {
+    text-decoration: line-through;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+.option-card .price .savings {
+    color: var(--success-color);
+    font-size: 0.8em;
+    font-weight: 500;
+    display: block; 
+    margin: 2px 0;
+}
+
+
+.select-button, .next-step-btn, .prev-step-btn, .checkout-button {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    border: none;
+    text-align: center;
+    margin-top: auto; /* Push button to bottom if card content varies */
+}
+
+.select-button {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    width: 100%;
+}
+.select-button:hover {
+    background-color: var(--primary-hover);
+}
+.option-card.selected .select-button {
+    background-color: var(--success-color);
+}
+
+
+/* Panel 2: Choose Design - Redesigned Layout */
+#panel-2 .panel-content {
+    display: flex; 
+    gap: 20px;
+    height: 100%; 
+    flex-grow: 1;
+}
+
+.design-preview-area {
+    flex: 2; 
+    background-color: var(--background-dark); 
+    border-radius: var(--border-radius-md);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Reduced padding to maximize image space */
+    border: 1px solid var(--border-color);
+    min-height: 300px; 
+    position: relative; 
+    overflow: hidden; 
+}
+.design-preview-area #pcModelPreview { 
+    max-width: 100%;
+    max-height: 100%; 
+    object-fit: contain; /* Show the whole PC */
+    z-index: 1; 
+    display: none; /* Initially hidden until a PC is selected */
+}
+.design-preview-area #artworkOverlayContainer { 
+    position: absolute;
+    /* Adjusted to cover a larger, more typical lid area */
+    top: 10%; 
+    left: 10%; 
+    width: 80%;  
+    height: 80%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 2; 
+}
+.design-preview-area #artworkOnPcPreview { 
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Cover the overlay area, might crop if aspect ratios differ */
+    display: none; 
+}
+.design-preview-area .preview-placeholder-text {
+    color: var(--text-placeholder);
+    font-size: 1.2em;
+    z-index: 3; 
+    position: absolute; 
+    text-align: center;
+}
+
+
+.design-controls-area {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto; 
+    padding-right: 10px; 
+}
+
+.design-option { 
+    background-color: var(--surface-medium);
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--border-color);
+}
+.design-option h4 {
+    font-size: 1.2em;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.gallery-grid { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+    gap: 10px;
+}
+.gallery-item {
+    background-color: var(--surface-light);
+    border-radius: var(--border-radius-sm);
+    /* padding: 8px; /* Fix 3: REMOVED padding from item */
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--transition-speed) ease;
+    display: flex; /* For vertical alignment of content */
+    flex-direction: column; /* Stack image and text */
+    justify-content: space-between; /* Push text to bottom */
+    overflow: hidden; /* Fix 3: ADDED to clip image corners correctly */
+}
+.gallery-item:hover {
+    border-color: var(--primary-color);
+    background-color: var(--background-dark);
+}
+.gallery-item.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color);
+    background-color: var(--surface-light);
+}
+.gallery-item.selected p {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.gallery-item img {
+    width: 100%;
+    height: 80px; /* Increased height for gallery images */
+    object-fit: cover; /* Changed to cover for better fill */
+    /* border-radius: var(--border-radius-sm); /* Fix 3: REMOVED, parent handles clipping */
+    border-radius: 0; /* Fix 3: Explicitly set to 0 */
+    margin-bottom: 5px;
+    background-color: var(--surface-dark); /* Background for images */
+}
+.gallery-item p {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin: 0;
+    transition: color var(--transition-speed) ease;
+    margin-top: auto; /* Ensure text is at the bottom */
+    padding: 5px 8px 8px; /* Fix 3: ADDED padding for text (top from img margin, L/R 8px, Bottom 8px) */
+}
+#selectedDesignName {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top:10px;
+    display: block;
+}
+
+/* Panel 3: Summary */
+.summary-details {
+    background-color: var(--surface-medium);
+    padding: 25px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+.summary-details h3 {
+    font-size: 1.6em;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.summary-details h4 {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.summary-details p {
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+.summary-details p span {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+#summaryDesignSelection, #summaryPcSelection {
+    margin-bottom: 20px;
+}
+#summaryDesignImage {
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--background-dark);
+}
+.total-price {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+.total-price h4 {
+    font-size: 1.8em;
+    color: var(--text-primary);
+    text-align: right;
+}
+.total-price h4 span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.checkout-button {
+    background-color: var(--success-color);
+    color: var(--text-primary);
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 1.2em;
+}
+.checkout-button:hover {
+    background-color: #28a745; 
+}
+
+/* Panel Navigation */
+.panel-navigation {
+    margin-top: auto; /* Push navigation to the bottom of the panel */
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.next-step-btn {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+}
+.next-step-btn:hover {
+    background-color: var(--primary-hover);
+}
+.next-step-btn:disabled {
+    background-color: var(--surface-light);
+    color: var(--text-placeholder);
+    cursor: not-allowed;
+}
+
+.prev-step-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.prev-step-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 0; 
+        align-items: stretch;
+    }
+    .checkout-container {
+        height: 100vh; 
+        min-height: 0; 
+        border-radius: 0; 
+        box-shadow: none; 
+        margin: 0;
+    }
+    .checkout-main {
+        padding: 10px; 
+        border-radius: 0;
+        overflow-y: auto; /* Allow main content to scroll if panels overflow */
+    }
+    .panel-container {
+        flex-direction: column; 
+        width: 100%;
+        height: auto; 
+    }
+    .panel {
+        flex-basis: auto !important; 
+        width: 100%;
+        height: auto; 
+        margin: 0 0 10px 0; 
+        cursor: pointer; 
+        min-height: auto; /* Remove fixed min-height for mobile panels */
+    }
+    .panel.active .panel-content-wrapper {
+        max-height: none; /* Allow content to define height */
+        overflow: visible; /* Ensure content isn't clipped if panel-content itself doesn't scroll */
+    }
+    .panel .panel-content {
+        overflow-y: visible; /* Let wrapper or main handle scroll */
+    }
+
+    #panel-2.active .panel-content {
+        flex-direction: column; 
+    }
+    .design-preview-area, .design-controls-area {
+        flex: none; 
+        width: 100%; 
+    }
+    .design-preview-area {
+        min-height: 250px; /* Adjust for mobile */
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Smaller items for mobile */
+    }
+    .gallery-item img {
+        height: 60px; /* Slightly smaller gallery images for mobile */
+    }
+
+    .checkout-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    .progress-indicator {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .progress-indicator .step {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+    .panel-header h2 {
+        font-size: 1.6em;
+    }
+    #panel-1 .panel-content {
+        grid-template-columns: 1fr; 
+    }
+    .panel-navigation {
+        flex-direction: column-reverse; 
+        gap: 15px;
+        margin-top: 20px; /* Ensure some space before nav buttons */
+    }
+    .next-step-btn, .prev-step-btn, .checkout-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-header .logo-placeholder {
+        font-size: 1.5em;
+    }
+    .progress-indicator .step {
+        font-size: 0.7em; 
+        gap: 5px;
+    }
+    .progress-indicator .step span {
+        width: 18px;
+        height: 18px;
+        font-size: 0.7em;
+    }
+    .panel-header h2 {
+        font-size: 1.4em;
+    }
+    .panel-header p {
+        font-size: 0.9em;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <header class="checkout-header">
+            <div class="logo-placeholder">AFTERSHOCK CHECKOUT</div>
+            <div class="progress-indicator">
+                <div class="step active" id="step-indicator-1"><span>1</span> Choose PC</div>
+                <div class="step" id="step-indicator-2"><span>2</span> Choose Design</div>
+                <div class="step" id="step-indicator-3"><span>3</span> Summary & Pay</div>
+            </div>
+        </header>
+
+        <main class="checkout-main">
+            <div class="panel-container">
+                <!-- Panel 1: Choose PC -->
+                <section id="panel-1" class="panel active" data-panel-index="0">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 1:</span> Choose Your PC</h2>
+                        <p>Select the base model or configuration that suits your needs.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="option-card">
+                                <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBA16CMH16.jpg?v=1748407225" alt="Gigabyte A16 CMH 16 Laptop">
+                                <h3>Gigabyte A16 CMH 16"</h3>
+                                <p class="price">$1,799.00 AUD</p>
+                                <button class="select-button" data-pc-name="Gigabyte A16 CMH 16"" data-pc-price="1799">Select This PC</button>
+                            </div>
+                            <div class="option-card">
+                                <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBG6MF_f80ed243-4e24-42ae-b05a-dc23bc0862b5.jpg?v=1747208260" alt="Gigabyte G6 KF 16 Laptop">
+                                <h3>Gigabyte G6 KF 16"</h3>
+                                <p class="price">
+                                    <span class="original-price">$1,999.00</span>
+                                    <span class="savings">You save $300.00</span>
+                                    $1,699.00 AUD
+                                </p>
+                                <button class="select-button" data-pc-name="Gigabyte G6 KF 16"" data-pc-price="1699">Select This PC</button>
+                            </div>
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="next-step-btn" data-target-panel-index="1" disabled>Next: Choose Design</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Panel 2: Choose Design -->
+                <section id="panel-2" class="panel" data-panel-index="1">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 2:</span> Choose Your Design</h2>
+                        <p>Personalize your PC by selecting from our gallery.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="design-preview-area">
+                                <img id="pcModelPreview" src="#" alt="Selected PC Preview">
+                                <div id="artworkOverlayContainer">
+                                    <img id="artworkOnPcPreview" src="#" alt="Custom Artwork Preview">
+                                </div>
+                                <span class="preview-placeholder-text" id="pcPreviewPlaceholderText">Select a PC in Step 1 to see a preview.</span>
+                            </div>
+                            <div class="design-controls-area">
+                                <!-- Custom Uploader Removed -->
+                                <div class="design-option">
+                                    <h4>Choose from Gallery</h4>
+                                    <div class="gallery-grid">
+                                        <div class="gallery-item" data-design-name="Endgame" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Endgame-LaptopPrint_104f7f0a-4756-4cbf-9fa3-76d3641673f0.png?v=1669768163">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Endgame-LaptopPrint_104f7f0a-4756-4cbf-9fa3-76d3641673f0.png?v=1669768163" alt="Endgame Design">
+                                            <p>Endgame</p>
+                                        </div>
+                                        <div class="gallery-item" data-design-name="Koi Pond" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Koi-LaptopPrint.png?v=1669698824">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Koi-LaptopPrint.png?v=1669698824" alt="Koi Pond Design">
+                                            <p>Koi Pond</p>
+                                        </div>
+                                        <div class="gallery-item" data-design-name="Lofi Girl" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/LofiGirl-LaptopPrint.png?v=1669698748">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/LofiGirl-LaptopPrint.png?v=1669698748" alt="Lofi Girl Design">
+                                            <p>Lofi Girl</p>
+                                        </div>
+                                        <div class="gallery-item" data-design-name="Mech Fight" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Mecha-LaptopPrint.png?v=1669698777">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Mecha-LaptopPrint.png?v=1669698777" alt="Mech Fight Design">
+                                            <p>Mech Fight</p>
+                                        </div>
+                                         <div class="gallery-item" data-design-name="No Custom Design" data-design-image=""> <!-- data-design-image is empty for "No Design" -->
+                                            <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
+                                            <p>No Custom Design</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Selected Design: <strong id="selectedDesignName">None</strong></p>
+                            </div>
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="0">Back: Choose PC</button>
+                            <button class="next-step-btn" data-target-panel-index="2">Next: Summary</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Panel 3: Summary + Checkout -->
+                <section id="panel-3" class="panel" data-panel-index="2">
+                    <div class="panel-header">
+                        <h2><span class="step-number">Step 3:</span> Summary & Checkout</h2>
+                        <p>Review your selections and proceed to payment.</p>
+                    </div>
+                    <div class="panel-content-wrapper">
+                        <div class="panel-content">
+                            <div class="summary-details">
+                                <h3>Order Summary</h3>
+                                <div id="summaryPcSelection">
+                                    <h4>Selected PC:</h4>
+                                    <p>Name: <span id="summaryPcName">N/A</span></p>
+                                    <p>Price: $<span id="summaryPcPrice">0.00</span> AUD</p>
+                                </div>
+                                <div id="summaryDesignSelection">
+                                    <h4>Selected Design:</h4>
+                                    <p>Name: <span id="summaryDesignNameDisplay">N/A</span></p> 
+                                    <img id="summaryDesignImage" src="#" alt="Selected Design Preview" style="max-width: 200px; max-height: 150px; margin-top: 10px; display: none;">
+                                </div>
+                                <hr>
+                                <div class="total-price">
+                                    <h4>Total: $<span id="summaryTotalPrice">0.00</span> AUD</h4>
+                                </div>
+                            </div>
+                            <button class="checkout-button">Proceed to Checkout</button>
+                        </div>
+                        <div class="panel-navigation">
+                            <button class="prev-step-btn" data-target-panel-index="1">Back: Choose Design</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+    (function () {
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        const nextButtons = document.querySelectorAll('.next-step-btn');
+        const prevButtons = document.querySelectorAll('.prev-step-btn');
+        const progressSteps = document.querySelectorAll('.progress-indicator .step');
+
+        const pcSelectionButtons = document.querySelectorAll('#panel-1 .select-button');
+        
+        // References for Panel 2 (Design Selection)
+        const pcModelPreview = document.getElementById('pcModelPreview'); // Base PC image in preview
+        const artworkOnPcPreview = document.getElementById('artworkOnPcPreview'); // Overlay artwork in preview
+        const pcPreviewPlaceholderText = document.getElementById('pcPreviewPlaceholderText'); // Placeholder text in preview area
+        const galleryItems = document.querySelectorAll('#panel-2 .gallery-item');
+        const selectedDesignNameOutput = document.getElementById('selectedDesignName'); // Text display for selected design in Panel 2
+
+        // References for Panel 3 (Summary)
+        const summaryPcName = document.getElementById('summaryPcName');
+        const summaryPcPrice = document.getElementById('summaryPcPrice');
+        const summaryDesignNameDisplay = document.getElementById('summaryDesignNameDisplay'); // Text display for design in Summary
+        const summaryDesignImage = document.getElementById('summaryDesignImage'); // Image display for design in Summary
+        const summaryTotalPrice = document.getElementById('summaryTotalPrice');
+
+        const checkoutButton = document.querySelector('.checkout-button');
+
+        let currentPanelIndex = 0; 
+        let orderDetails = {
+            pc: null, 
+            design: null 
+        };
+
+        function setActivePanel(targetIndex) {
+            if (targetIndex < 0 || targetIndex >= panels.length) return;
+
+            if (targetIndex > currentPanelIndex) {
+                if (currentPanelIndex === 0 && !orderDetails.pc) {
+                    alert("Please select a PC configuration to continue.");
+                    return;
+                }
+                if (currentPanelIndex === 1 && !orderDetails.design) {
+                    // Default to "No Custom Design" if user tries to proceed without selection
+                    const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+                    if (noDesignOption) {
+                         handleGallerySelection(noDesignOption); // Select "No Custom Design" automatically
+                    } else {
+                        alert("Please choose a design or select 'No Custom Design' to continue.");
+                        return;
+                    }
+                }
+            }
+            
+            currentPanelIndex = targetIndex;
+
+            panels.forEach((panel, index) => {
+                panel.classList.toggle('active', index === currentPanelIndex);
+            });
+
+            progressSteps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index < currentPanelIndex) {
+                    step.classList.add('completed');
+                } else if (index === currentPanelIndex) {
+                    step.classList.add('active');
+                }
+            });
+
+            if (currentPanelIndex === panels.length - 1) { 
+                updateSummary();
+            }
+        }
+
+        function updateSummary() {
+            let total = 0;
+            if (orderDetails.pc) {
+                summaryPcName.textContent = orderDetails.pc.name;
+                summaryPcPrice.textContent = parseFloat(orderDetails.pc.price).toFixed(2);
+                total += parseFloat(orderDetails.pc.price);
+            } else {
+                summaryPcName.textContent = 'N/A';
+                summaryPcPrice.textContent = '0.00';
+            }
+
+            if (orderDetails.design) {
+                summaryDesignNameDisplay.textContent = orderDetails.design.name;
+                selectedDesignNameOutput.textContent = orderDetails.design.name;
+
+                if (orderDetails.design.name !== "No Custom Design" && orderDetails.design.image && orderDetails.design.image !== "") {
+                    summaryDesignImage.src = orderDetails.design.image;
+                    summaryDesignImage.style.display = 'block';
+                } else {
+                    summaryDesignImage.style.display = 'none';
+                    if (orderDetails.design.name === "No Custom Design") {
+                         summaryDesignNameDisplay.textContent = 'No Custom Design (Base PC Look)';
+                    }
+                }
+            } else {
+                summaryDesignNameDisplay.textContent = 'N/A';
+                selectedDesignNameOutput.textContent = 'None';
+                summaryDesignImage.style.display = 'none';
+            }
+            summaryTotalPrice.textContent = total.toFixed(2);
+        }
+
+        // Panel 1: PC Selection
+        pcSelectionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pcSelectionButtons.forEach(btn => btn.closest('.option-card').classList.remove('selected'));
+                button.closest('.option-card').classList.add('selected');
+                
+                const pcImageSrc = button.closest('.option-card').querySelector('img').src;
+                
+                orderDetails.pc = {
+                    name: button.dataset.pcName,
+                    price: parseFloat(button.dataset.pcPrice),
+                    imageSrc: pcImageSrc 
+                };
+
+                // Update PC preview in Panel 2
+                if (pcModelPreview) {
+                    pcModelPreview.src = pcImageSrc;
+                    pcModelPreview.style.display = 'block';
+                }
+                if (pcPreviewPlaceholderText) {
+                    pcPreviewPlaceholderText.style.display = 'none';
+                }
+                // If "No Custom Design" is currently selected, ensure only PC model shows
+                if (orderDetails.design && orderDetails.design.name === "No Custom Design" && artworkOnPcPreview) {
+                    artworkOnPcPreview.style.display = 'none';
+                }
+
+
+                const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
+                if (panel1NextBtn) {
+                    panel1NextBtn.disabled = false;
+                }
+                updateSummary();
+                setActivePanel(1); // Fix 1: Go to Step 2 after selecting a PC
+            });
+        });
+
+        // Panel 2: Design Selection from Gallery
+        function handleGallerySelection(item) {
+            galleryItems.forEach(it => it.classList.remove('selected'));
+            item.classList.add('selected');
+            
+            const designName = item.dataset.designName;
+            const designImage = item.dataset.designImage;
+
+            orderDetails.design = {
+                name: designName,
+                image: designImage
+            };
+
+            if (pcModelPreview && !orderDetails.pc) { // If PC not selected yet, show placeholder
+                 pcPreviewPlaceholderText.textContent = "Select a PC in Step 1 first.";
+                 pcPreviewPlaceholderText.style.display = 'block';
+                 if(pcModelPreview) pcModelPreview.style.display = 'none';
+                 if(artworkOnPcPreview) artworkOnPcPreview.style.display = 'none';
+            } else if (pcModelPreview && orderDetails.pc) { // PC is selected
+                pcModelPreview.src = orderDetails.pc.imageSrc; // Ensure base PC image is set
+                pcModelPreview.style.display = 'block';
+                pcPreviewPlaceholderText.style.display = 'none';
+
+                if (designName === "No Custom Design" || !designImage) { // Also check if designImage is empty/null
+                    if (artworkOnPcPreview) {
+                        artworkOnPcPreview.src = "#"; // Clear any previous artwork
+                        artworkOnPcPreview.style.display = 'none';
+                    }
+                } else {
+                    if (artworkOnPcPreview && designImage) {
+                        artworkOnPcPreview.src = designImage;
+                        artworkOnPcPreview.style.display = 'block';
+                    } else if (artworkOnPcPreview) {
+                        artworkOnPcPreview.style.display = 'none'; // Hide if no image for selected design
+                    }
+                }
+            }
+            updateSummary();
+        }
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => handleGallerySelection(item));
+        });
+
+        // Navigation Buttons
+        nextButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
+            });
+        });
+
+        prevButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetIndex = parseInt(button.dataset.targetPanelIndex);
+                setActivePanel(targetIndex);
+            });
+        });
+
+        // Click on minimized panel headers/progress steps to activate them
+        function navigateToPanelOnClick(index) {
+            let canProceed = true;
+            // Check prerequisites only if moving to a panel beyond the current one,
+            // or if trying to access a panel that requires prior steps to be completed.
+            if (index > currentPanelIndex) {
+                for (let i = currentPanelIndex; i < index; i++) { 
+                    if (i === 0 && !orderDetails.pc) {
+                        alert("Please select a PC configuration first (Step 1).");
+                        setActivePanel(0); // Stay or move to panel 0
+                        return; // Stop further processing
+                    }
+                    if (i === 1 && !orderDetails.design) {
+                        const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+                        if (noDesignOption) handleGallerySelection(noDesignOption);
+                        // No alert here, just proceed with default if possible
+                    }
+                }
+            } else if (index < currentPanelIndex) {
+                // Allow going back freely
+            } else { // index === currentPanelIndex, probably clicking on active panel header
+                 // Do nothing or allow re-evaluation if needed based on specific UI interaction
+            }
+
+
+            // Additional checks before activating any panel by direct click
+            if (index > 0 && !orderDetails.pc) {
+                alert("Please select a PC configuration first (Step 1).");
+                setActivePanel(0);
+                return;
+            }
+            if (index > 1 && !orderDetails.design) {
+                 const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+                 if (noDesignOption) handleGallerySelection(noDesignOption);
+            }
+
+            setActivePanel(index);
+        }
+
+        panels.forEach((panel, index) => {
+            const header = panel.querySelector('.panel-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    if (!panel.classList.contains('active')) {
+                        navigateToPanelOnClick(index);
+                    }
+                });
+            }
+        });
+        
+        progressSteps.forEach((stepIndicator, index) => {
+            stepIndicator.addEventListener('click', () => navigateToPanelOnClick(index));
+        });
+
+
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', () => {
+                if (!orderDetails.pc) {
+                    alert("Please complete PC selection (Step 1).");
+                    setActivePanel(0);
+                    return;
+                }
+                if (!orderDetails.design) {
+                    // Default to "No Custom Design" if somehow missed
+                    const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+                    if (noDesignOption) handleGallerySelection(noDesignOption);
+                    else {
+                        alert("Please complete design selection (Step 2).");
+                        setActivePanel(1);
+                        return;
+                    }
+                }
+                // Re-update summary just before alert to ensure it's current
+                updateSummary();
+                alert(`Checkout initiated!\nPC: ${orderDetails.pc.name} ($${parseFloat(orderDetails.pc.price).toFixed(2)})\nDesign: ${orderDetails.design.name}\nTotal: $${summaryTotalPrice.textContent} AUD`);
+                console.log("Order Details:", orderDetails);
+            });
+        }
+
+        // Initial setup calls
+        setActivePanel(0); 
+        const panel1NextBtn = document.querySelector('#panel-1 .next-step-btn');
+        if (panel1NextBtn) {
+            panel1NextBtn.disabled = true;
+        }
+        
+        // Default design selection to "No Custom Design" on load for Panel 2 logic
+        const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
+        if (noDesignOption) { // Ensure it exists
+             handleGallerySelection(noDesignOption); // This will set orderDetails.design and update UI
+        }
+        updateSummary(); // Initial summary update
+    })();
+    </script>
+</body>
+</html>
