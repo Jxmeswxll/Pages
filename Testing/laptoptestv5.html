@@ -392,7 +392,7 @@ body {
 
 .design-preview-area {
     flex: 2; 
-    background-color: var(--background-dark); /* Default background */
+    background-color: var(--background-dark); 
     border-radius: var(--border-radius-md);
     display: flex; 
     justify-content: center;
@@ -402,7 +402,7 @@ body {
     min-height: 300px; 
     position: relative; 
     overflow: hidden; 
-    transition: background-color var(--transition-speed) ease; /* For smooth bg change */
+    transition: background-color var(--transition-speed) ease; 
 }
 .design-preview-area #pcModelPreview { 
     max-width: 100%;
@@ -426,9 +426,9 @@ body {
 .design-preview-area #artworkOnPcPreview { 
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Default, changed by JS for icon */
+    object-fit: cover; 
     display: none; 
-    padding: 0; /* Default, changed by JS for icon */
+    padding: 0; 
     transition: padding var(--transition-speed) ease;
 }
 .design-preview-area .preview-placeholder-text {
@@ -479,6 +479,7 @@ body {
     flex-direction: column; 
     justify-content: space-between; 
     overflow: hidden; 
+    padding-bottom: 5px; /* Space for price */
 }
 .gallery-item:hover {
     border-color: var(--primary-color);
@@ -505,14 +506,31 @@ body {
     padding: 5px; 
 }
 
-.gallery-item p {
+.gallery-item p { /* Design Name */
     font-size: 0.8em;
     color: var(--text-secondary);
     margin: 0;
     transition: color var(--transition-speed) ease;
-    margin-top: auto; 
-    padding: 5px 8px 8px; 
+    padding: 5px 8px 0; /* Removed bottom padding */
+    margin-bottom: 3px; /* Space between name and price */
 }
+
+/* Fix 2: Gallery Item Price Styling */
+.gallery-item .design-item-price {
+    font-size: 0.75em;
+    line-height: 1.2;
+}
+.gallery-item .current-design-price {
+    color: var(--success-color);
+    font-weight: 600;
+}
+.gallery-item .original-design-price {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    margin-left: 4px;
+}
+
+
 #selectedDesignName {
     color: var(--primary-color);
     font-weight: 600;
@@ -562,9 +580,8 @@ body {
     margin-left: 5px;
 }
 
-/* Fix 3: Summary PC Price Styling */
 #summaryPcPriceDetails .current-price {
-    margin-bottom: 3px; /* Adjust spacing */
+    margin-bottom: 3px; 
 }
 #summaryPcPriceDetails .original-price-info {
     font-size: 0.9em;
@@ -578,7 +595,7 @@ body {
 #summaryPcPriceDetails .savings-value {
     color: var(--success-color);
     font-weight: 500;
-    display: block; /* To match card style */
+    display: block; 
 }
 
 
@@ -783,22 +800,39 @@ body {
                                         <div class="gallery-item" data-design-name="Endgame" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Endgame-LaptopPrint_104f7f0a-4756-4cbf-9fa3-76d3641673f0.png?v=1669768163">
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Endgame-LaptopPrint_104f7f0a-4756-4cbf-9fa3-76d3641673f0.png?v=1669768163" alt="Endgame Design">
                                             <p>Endgame</p>
+                                            <div class="design-item-price">
+                                                <span class="current-design-price">+$0</span>
+                                                <span class="original-design-price">$160</span>
+                                            </div>
                                         </div>
                                         <div class="gallery-item" data-design-name="Koi Pond" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Koi-LaptopPrint.png?v=1669698824">
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Koi-LaptopPrint.png?v=1669698824" alt="Koi Pond Design">
                                             <p>Koi Pond</p>
+                                            <div class="design-item-price">
+                                                <span class="current-design-price">+$0</span>
+                                                <span class="original-design-price">$160</span>
+                                            </div>
                                         </div>
                                         <div class="gallery-item" data-design-name="Lofi Girl" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/LofiGirl-LaptopPrint.png?v=1669698748">
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/LofiGirl-LaptopPrint.png?v=1669698748" alt="Lofi Girl Design">
                                             <p>Lofi Girl</p>
+                                            <div class="design-item-price">
+                                                <span class="current-design-price">+$0</span>
+                                                <span class="original-design-price">$160</span>
+                                            </div>
                                         </div>
                                         <div class="gallery-item" data-design-name="Mech Fight" data-design-image="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Mecha-LaptopPrint.png?v=1669698777">
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/products/Mecha-LaptopPrint.png?v=1669698777" alt="Mech Fight Design">
                                             <p>Mech Fight</p>
+                                            <div class="design-item-price">
+                                                <span class="current-design-price">+$0</span>
+                                                <span class="original-design-price">$160</span>
+                                            </div>
                                         </div>
                                          <div class="gallery-item" data-design-name="No Custom Design" data-design-image=""> 
                                             <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/Icons_Laptop_20_White.png?v=1718273518" alt="No Custom Design">
                                             <p>No Custom Design</p>
+                                            <!-- No price div for this one -->
                                         </div>
                                     </div>
                                 </div>
@@ -885,7 +919,6 @@ body {
         const summaryDesignPriceLine = document.getElementById('summaryDesignPriceLine');
         const summaryDesignPriceValue = document.getElementById('summaryDesignPriceValue');
         const summaryDesignOriginalPrice = document.getElementById('summaryDesignOriginalPrice');
-        // Fix 3: Summary PC Price Elements
         const summaryPcOriginalPriceContainer = document.getElementById('summaryPcOriginalPriceContainer');
         const summaryPcOriginalPriceTextValue = document.getElementById('summaryPcOriginalPriceTextValue');
         const summaryPcSavingsTextValue = document.getElementById('summaryPcSavingsTextValue');
@@ -908,7 +941,7 @@ body {
             if (targetIndex > currentPanelIndex) {
                 if (currentPanelIndex === 0 && !orderDetails.pc) {
                     alert("Please select a PC configuration to continue.");
-                    setActivePanel(0); // Ensure user stays on or returns to panel 0
+                    setActivePanel(0); 
                     return;
                 }
                 if (currentPanelIndex === 1 && !orderDetails.design) {
@@ -917,7 +950,7 @@ body {
                          handleGallerySelection(noDesignOption); 
                     } else {
                         alert("Please choose a design or select 'No Custom Design' to continue.");
-                        setActivePanel(1); // Ensure user stays on or returns to panel 1
+                        setActivePanel(1); 
                         return;
                     }
                 }
@@ -941,18 +974,17 @@ body {
             if (currentPanelIndex === panels.length - 1) { 
                 updateSummary();
             }
-            if (currentPanelIndex === 1) { // When panel 2 becomes active
+            if (currentPanelIndex === 1) { 
                 updateDesignPreviewArea();
             }
         }
         
         function updateDesignPreviewArea() {
-            // Defaults
             pcModelPreview.style.display = 'none';
             artworkOnPcPreview.style.display = 'none';
-            artworkOnPcPreview.style.objectFit = 'cover'; // Default for designs
-            artworkOnPcPreview.style.padding = '0';       // Default for designs
-            designPreviewArea.style.backgroundColor = 'var(--background-dark)'; // Default
+            artworkOnPcPreview.style.objectFit = 'cover'; 
+            artworkOnPcPreview.style.padding = '0';       
+            designPreviewArea.style.backgroundColor = 'var(--background-dark)'; 
 
             if (!orderDetails.pc) {
                 pcPreviewPlaceholderText.textContent = "Select a PC in Step 1 to see a preview.";
@@ -963,21 +995,16 @@ body {
             pcPreviewPlaceholderText.style.display = 'none';
 
             if (orderDetails.design && orderDetails.design.name === "No Custom Design") {
-                // Fix 1: Show icon for "No Custom Design"
                 artworkOnPcPreview.src = NO_DESIGN_ICON_URL;
                 artworkOnPcPreview.style.objectFit = 'contain';
-                artworkOnPcPreview.style.padding = '20px'; // Padding for the icon itself
+                artworkOnPcPreview.style.padding = '20px'; 
                 artworkOnPcPreview.style.display = 'block';
-                designPreviewArea.style.backgroundColor = 'var(--surface-medium)'; // Different BG for icon
+                designPreviewArea.style.backgroundColor = 'var(--surface-medium)'; 
             } else if (orderDetails.design && orderDetails.design.image) {
-                // Custom design selected
                 artworkOnPcPreview.src = orderDetails.design.image;
-                artworkOnPcPreview.style.objectFit = 'cover'; // Ensure it's cover for designs
+                artworkOnPcPreview.style.objectFit = 'cover'; 
                 artworkOnPcPreview.style.display = 'block';
             } else {
-                 // Fallback or if PC is selected but somehow no design.
-                 // This case should ideally be covered by "No Custom Design" being default.
-                 // For safety, show base PC image from Step 1 if no specific design.
                 pcModelPreview.src = orderDetails.pc.imageSrc;
                 pcModelPreview.style.display = 'block';
             }
@@ -991,7 +1018,6 @@ body {
                 summaryPcPrice.textContent = parseFloat(orderDetails.pc.price).toFixed(2);
                 total += parseFloat(orderDetails.pc.price);
 
-                // Fix 3: Display PC original price and savings in summary
                 if (orderDetails.pc.originalPrice && orderDetails.pc.savingsText) {
                     summaryPcOriginalPriceTextValue.textContent = `$${orderDetails.pc.originalPrice.toFixed(2)}`;
                     summaryPcSavingsTextValue.textContent = orderDetails.pc.savingsText;
@@ -1019,7 +1045,7 @@ body {
                     summaryDesignImage.style.display = 'none';
                     summaryDesignPriceLine.style.display = 'none'; 
                     if (orderDetails.design.name === "No Custom Design") {
-                         summaryDesignNameDisplay.textContent = 'No Custom Design'; // Simpler text for summary
+                         summaryDesignNameDisplay.textContent = 'No Custom Design'; 
                     }
                 }
             } else {
@@ -1041,7 +1067,6 @@ body {
                     name: button.dataset.pcName,
                     price: parseFloat(button.dataset.pcPrice),
                     imageSrc: pcImageSrc,
-                    // Fix 3: Store original price and savings text
                     originalPrice: button.dataset.pcOriginalPrice ? parseFloat(button.dataset.pcOriginalPrice) : null,
                     savingsText: button.dataset.pcSavings || null
                 };
@@ -1051,8 +1076,8 @@ body {
                     panel1NextBtn.disabled = false;
                 }
                 
-                updateSummary(); // Update summary as PC selection affects it
-                setActivePanel(1); // This will also trigger updateDesignPreviewArea if panel 2 becomes active
+                updateSummary(); 
+                setActivePanel(1); 
             });
         });
 
@@ -1095,32 +1120,27 @@ body {
         });
 
         function navigateToPanelOnClick(index) {
-            // Prerequisite checks before allowing navigation by direct click
-            if (index > 0 && !orderDetails.pc) { // Trying to go to panel 2 or 3 without PC
+            if (index > 0 && !orderDetails.pc) { 
                 alert("Please select a PC configuration first (Step 1).");
-                setActivePanel(0); // Force back to panel 1
+                setActivePanel(0); 
                 return;
             }
-            if (index > 1 && !orderDetails.design) { // Trying to go to panel 3 without design
+            if (index > 1 && !orderDetails.design) { 
                  const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
-                 if (noDesignOption) handleGallerySelection(noDesignOption); // Auto-select "No Design"
+                 if (noDesignOption) handleGallerySelection(noDesignOption); 
             }
             setActivePanel(index);
         }
 
-        // Fix 2: Make entire collapsed panel clickable, and progress steps clickable
+        // Fix 1: Panel click listener adjustment
         panels.forEach((panel, index) => {
             panel.addEventListener('click', (event) => {
+                // Only switch panel if the clicked panel is NOT already active.
                 if (!panel.classList.contains('active')) {
-                    // If the click target is an interactive element within the *currently active* panel,
-                    // do not switch panels. This prevents unintended navigation.
-                    const activePanel = document.querySelector('.panel.active');
-                    if (activePanel && activePanel.contains(event.target) && 
-                        event.target.closest('button, a, input, select, textarea, .gallery-item')) {
-                        return; 
-                    }
                     navigateToPanelOnClick(index);
                 }
+                // If it IS active, the click will be handled by individual element listeners (buttons etc.)
+                // and we don't want to re-trigger navigateToPanelOnClick for the same panel.
             });
         });
         
