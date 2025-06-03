@@ -504,6 +504,12 @@ body {
     /* margin-bottom: 5px; No margin-bottom needed if text has top padding */
     background-color: var(--surface-dark); 
 }
+/* Specific styling for the "No Custom Design" icon to make it fit better if needed */
+.gallery-item[data-design-name="No Custom Design"] img {
+    object-fit: contain; /* Use contain for the icon if it's not square or has transparency */
+    padding: 5px; /* Add some padding around the icon */
+}
+
 .gallery-item p {
     font-size: 0.8em;
     color: var(--text-secondary);
@@ -860,7 +866,7 @@ body {
                                             <p>Mech Fight</p>
                                         </div>
                                          <div class="gallery-item" data-design-name="No Custom Design" data-design-image=""> 
-                                            <img src="https://via.placeholder.com/150x100/2a2a2a/ffffff?text=No+Design" alt="No Custom Design">
+                                            <img src="https://cdn.shopify.com/s/files/1/0532/3266/4731/files/Icons_Laptop_20_White.png?v=1718273518" alt="No Custom Design">
                                             <p>No Custom Design</p>
                                         </div>
                                     </div>
