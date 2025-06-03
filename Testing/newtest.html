@@ -60,18 +60,17 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    /* Removed max-width, specific height, border-radius, box-shadow for fullscreen */
 }
 
 .checkout-header {
-    padding: 20px 30px; /* Adjusted padding */
-    background-color: rgba(0,0,0,0.4); /* Slightly more distinct header */
+    padding: 20px 30px; 
+    background-color: rgba(0,0,0,0.4); 
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0; /* Header should not shrink */
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    flex-shrink: 0; 
+    flex-wrap: wrap; 
     gap: 15px;
 }
 
@@ -80,10 +79,10 @@ body {
     font-weight: 800;
     color: var(--primary-color);
     letter-spacing: 1px;
-    margin-right: auto; /* Pushes other items to the right */
+    margin-right: auto; 
 }
 
-#fullscreen-button { /* This button uses Browser Fullscreen API */
+#fullscreen-button { 
     padding: 8px 12px;
     background-color: var(--primary-color);
     color: var(--text-primary);
@@ -93,12 +92,11 @@ body {
     font-size: 0.9em;
     font-weight: 500;
     transition: background-color var(--transition-speed) ease;
-    order: 1; /* Control order on wrap */
+    order: 1; 
 }
 #fullscreen-button:hover {
     background-color: var(--primary-hover);
 }
-/* Hide browser-api fullscreen button when in browser fullscreen */
 html:fullscreen #fullscreen-button,
 html:-webkit-full-screen #fullscreen-button,
 html:-moz-full-screen #fullscreen-button,
@@ -106,13 +104,11 @@ html:-ms-fullscreen #fullscreen-button {
     display: none !important;
 }
 
-
 .progress-indicator {
     display: flex;
     gap: 10px;
-    order: 2; /* Control order on wrap */
+    order: 2; 
 }
-
 .progress-indicator .step {
     color: var(--text-secondary);
     font-size: 0.9em;
@@ -161,60 +157,57 @@ html:-ms-fullscreen #fullscreen-button {
 
 .checkout-main {
     flex-grow: 1;
-    position: relative; /* For absolute positioning of panel-container */
-    display: flex; /* To make panel-container fill */
-    overflow: hidden; /* Crucial for panel transitions */
+    position: relative; 
+    display: flex; 
+    overflow: hidden; 
     background-color: var(--surface-dark);
 }
 
 .panel-container {
     width: 100%;
     height: 100%;
-    position: relative; /* For absolute positioning of panels */
-    overflow: hidden; /* Clip panels during transition */
+    position: relative; 
+    overflow: hidden; 
 }
 
-/* --- New Panel System --- */
 .panel {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 30px; /* Generous padding for content */
+    padding: 30px; 
     box-sizing: border-box;
-    background-color: var(--surface-dark); /* Match main background */
+    background-color: var(--surface-dark); 
     
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Panel itself handles its overflow */
+    overflow: hidden; 
 
     opacity: 0;
-    transform: translateX(100%); /* Default start: off-screen right */
+    transform: translateX(100%); /* Default start: off-screen right for non-active panels */
     transition: opacity var(--transition-speed-panel) var(--easing-panel), 
                 transform var(--transition-speed-panel) var(--easing-panel);
-    pointer-events: none;
+    pointer-events: none; /* Non-active panels don't intercept clicks */
 }
 
 .panel.active {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
-    z-index: 10; /* Active panel on top */
+    z-index: 10; 
 }
-/* JS will set transform for non-active panels explicitly for direction */
-
-.panel .panel-header { /* Panel header is always "expanded" style now */
+.panel .panel-header { 
     margin-bottom: 25px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
-.panel .panel-header-collapsed-content { display: none !important; } /* No longer used */
-.panel .panel-header-expanded-content { display: block !important; } /* Always used */
+.panel .panel-header-collapsed-content { display: none !important; } 
+.panel .panel-header-expanded-content { display: block !important; } 
 
 .panel-header-expanded-content h2 {
-    font-size: 2.2em; /* Slightly larger */
+    font-size: 2.2em; 
     font-weight: 700;
     color: var(--text-primary);
     margin: 0 0 5px 0;
@@ -231,44 +224,35 @@ html:-ms-fullscreen #fullscreen-button {
 
 .panel .panel-content-wrapper {
     flex-grow: 1;
-    overflow: hidden; /* Wrapper to contain scrolling content */
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
 
 .panel .panel-content {
     flex-grow: 1;
-    overflow-y: auto; /* Enable scrolling for panel content */
-    padding-right: 15px; /* Space for scrollbar, customize if needed */
+    overflow-y: auto; 
+    padding-right: 15px; 
 }
 
-/* --- Animations for Panel 1 Content --- */
 @keyframes fadeInSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #panel-1.active .option-card {
     animation: fadeInSlideUp 0.5s var(--easing-panel) forwards;
-    opacity: 0; /* Start hidden for animation */
+    opacity: 0; 
 }
-/* Stagger animation for cards */
 #panel-1.active .option-card:nth-child(1) { animation-delay: 0.1s; }
 #panel-1.active .option-card:nth-child(2) { animation-delay: 0.2s; }
-#panel-1.active .option-card:nth-child(3) { animation-delay: 0.3s; } /* Add more if needed */
+#panel-1.active .option-card:nth-child(3) { animation-delay: 0.3s; }
 
 
-/* --- Content Specific Styling (largely unchanged but check context) --- */
 #panel-1 .panel-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly larger minmax */
-    gap: 30px; /* Increased gap */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    gap: 30px; 
 }
 
 .option-card {
@@ -276,7 +260,7 @@ html:-ms-fullscreen #fullscreen-button {
     border-radius: var(--border-radius-md);
     padding: 25px;
     border: 1px solid var(--border-color);
-    transition: all var(--transition-speed) ease, transform 0.2s ease-out; /* Added transform */
+    transition: all var(--transition-speed) ease, transform 0.2s ease-out; 
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -284,90 +268,53 @@ html:-ms-fullscreen #fullscreen-button {
 .option-card:hover {
     border-color: var(--primary-color);
     background-color: var(--surface-light);
-    box-shadow: var(--shadow-md); /* More pronounced shadow on hover */
-    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: var(--shadow-md); 
+    transform: translateY(-5px); 
 }
 .option-card.selected {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color), var(--shadow-md); /* Enhanced selected state */
+    box-shadow: 0 0 0 3px var(--primary-color), var(--shadow-md); 
     background-color: var(--surface-light);
     transform: translateY(-5px);
 }
 .option-card img {
-    width: 100%;
-    height: 200px; /* Slightly larger */
-    object-fit: contain;
-    border-radius: var(--border-radius-sm);
-    margin-bottom: 20px;
+    width: 100%; height: 200px; object-fit: contain;
+    border-radius: var(--border-radius-sm); margin-bottom: 20px;
     background-color: var(--surface-dark);
 }
-.option-card h3 {
-    font-size: 1.5em;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0 0 15px 0;
-}
+.option-card h3 { font-size: 1.5em; font-weight: 600; color: var(--text-primary); margin: 0 0 15px 0; }
 .option-card .pc-specs {
-    text-align: left;
-    margin: 15px 0;
-    font-size: 0.9em;
-    color: var(--text-secondary);
-    flex-grow: 1;
-    line-height: 1.5;
+    text-align: left; margin: 15px 0; font-size: 0.9em;
+    color: var(--text-secondary); flex-grow: 1; line-height: 1.5;
 }
-.option-card .pc-specs h4 {
-    font-size: 1.1em;
-    color: var(--text-primary);
-    margin-bottom: 10px;
-}
+.option-card .pc-specs h4 { font-size: 1.1em; color: var(--text-primary); margin-bottom: 10px; }
 .option-card .pc-specs ul { list-style: none; padding-left: 0; margin: 0; }
 .option-card .pc-specs ul li { margin-bottom: 6px; padding-left: 18px; position: relative; }
 .option-card .pc-specs ul li::before {
     content: '•'; color: var(--primary-color); font-weight: bold;
     display: inline-block; position: absolute; left: 0; top: 0px;
 }
-.option-card .price {
-    font-size: 1.4em;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+.option-card .price { font-size: 1.4em; font-weight: 700; color: var(--primary-color); margin: 20px 0; }
 .option-card .price .original-price { text-decoration: line-through; font-size: 0.8em; color: var(--text-secondary); }
 .option-card .price .savings { color: var(--success-color); font-size: 0.8em; font-weight: 500; display: block; margin: 2px 0; }
 
 .select-button, .next-step-btn, .prev-step-btn, .checkout-button {
-    padding: 14px 28px; /* Larger buttons */
-    font-size: 1.05em;
-    font-weight: 600;
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    border: none;
-    text-align: center;
-    margin-top: auto;
+    padding: 14px 28px; font-size: 1.05em; font-weight: 600;
+    border-radius: var(--border-radius-sm); cursor: pointer;
+    transition: all var(--transition-speed) ease; border: none;
+    text-align: center; margin-top: auto;
 }
 .select-button { background-color: var(--primary-color); color: var(--text-primary); width: 100%; }
 .select-button:hover { background-color: var(--primary-hover); }
 .option-card.selected .select-button { background-color: var(--success-color); }
 
-/* Panel 2: Design */
-#panel-2.active .panel-content {
-    display: flex;
-    gap: 30px; /* Increased gap */
-    height: 100%;
-}
+#panel-2.active .panel-content { display: flex; gap: 30px; height: 100%; }
 .design-preview-area {
-    flex: 3; /* More space for preview */
-    background-color: var(--background-dark);
-    border-radius: var(--border-radius-md);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid var(--border-color);
-    min-height: 300px;
-    position: relative;
-    overflow: hidden;
+    flex: 3; background-color: var(--background-dark);
+    border-radius: var(--border-radius-md); display: flex;
+    justify-content: center; align-items: center;
+    border: 1px solid var(--border-color); min-height: 300px;
+    position: relative; overflow: hidden;
     transition: background-color var(--transition-speed) ease;
 }
 .design-preview-area #pcModelPreview, .design-preview-area #artworkOnPcPreview {
@@ -383,8 +330,7 @@ html:-ms-fullscreen #fullscreen-button {
     text-align: center; padding: 20px;
 }
 .design-controls-area {
-    flex: 2; /* Adjusted flex ratio */
-    display: flex; flex-direction: column; gap: 25px;
+    flex: 2; display: flex; flex-direction: column; gap: 25px;
     overflow-y: auto; padding-right: 10px;
 }
 .design-option {
@@ -393,7 +339,7 @@ html:-ms-fullscreen #fullscreen-button {
 }
 .design-option h4 { font-size: 1.3em; color: var(--text-primary); margin:0 0 15px 0; }
 .gallery-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Larger items */
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
     gap: 15px;
 }
 .gallery-item {
@@ -405,7 +351,7 @@ html:-ms-fullscreen #fullscreen-button {
 }
 .gallery-item:hover {
     border-color: var(--primary-color); background-color: var(--background-dark);
-    transform: scale(1.03); /* Slight scale on hover */
+    transform: scale(1.03); 
 }
 .gallery-item.selected {
     border-color: var(--primary-color); box-shadow: 0 0 0 2px var(--primary-color);
@@ -413,7 +359,7 @@ html:-ms-fullscreen #fullscreen-button {
 }
 .gallery-item.selected p { color: var(--primary-color); font-weight: 600; }
 .gallery-item img {
-    width: 100%; height: 100px; /* Larger image */
+    width: 100%; height: 100px; 
     object-fit: cover; background-color: var(--surface-dark);
 }
 .gallery-item[data-design-name="No Custom Design"] img { object-fit: contain; padding: 5px; }
@@ -423,7 +369,6 @@ html:-ms-fullscreen #fullscreen-button {
 .gallery-item .original-design-price { text-decoration: line-through; color: var(--text-secondary); margin-left: 4px; }
 #selectedDesignName { color: var(--primary-color); font-weight: 600; margin-top:15px; display: block; font-size: 1.1em; }
 
-/* Panel 3: Summary */
 .summary-details {
     background-color: var(--surface-medium); padding: 30px;
     border-radius: var(--border-radius-md); margin-bottom: 30px;
@@ -453,19 +398,18 @@ html:-ms-fullscreen #fullscreen-button {
 .total-price h4 span { color: var(--primary-color); font-weight: 700; }
 .checkout-button {
     background-color: var(--success-color); color: var(--text-primary); width: 100%;
-    padding: 18px 30px; font-size: 1.3em; /* Larger checkout button */
+    padding: 18px 30px; font-size: 1.3em; 
 }
 .checkout-button:hover { background-color: #28a745; }
 
-/* Panel Navigation (Footer) */
 .panel .panel-navigation {
-    margin-top: auto; /* Pushes to bottom */
+    margin-top: auto; 
     padding-top: 25px;
     border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0; 
 }
 .next-step-btn { background-color: var(--primary-color); color: var(--text-primary); }
 .next-step-btn:hover { background-color: var(--primary-hover); }
@@ -473,11 +417,10 @@ html:-ms-fullscreen #fullscreen-button {
 .prev-step-btn { background-color: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
 .prev-step-btn:hover { background-color: var(--primary-color); color: var(--text-primary); }
 
-/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
     .checkout-header { padding: 15px 20px; flex-direction: column; align-items: stretch; }
     .checkout-header .logo-placeholder { margin-right: 0; text-align: center; margin-bottom: 10px; }
-    #fullscreen-button { width: 100%; margin-bottom: 10px; order: 0; } /* Fullscreen button first on mobile */
+    #fullscreen-button { width: 100%; margin-bottom: 10px; order: 0; } 
     .progress-indicator { justify-content: center; width: 100%; order: 1;}
     .progress-indicator .step { font-size: 0.8em; padding: 6px 10px; }
 
@@ -490,15 +433,14 @@ html:-ms-fullscreen #fullscreen-button {
     .option-card img { height: 160px; }
 
     #panel-2.active .panel-content { flex-direction: column; }
-    .design-preview-area { min-height: 250px; flex: 1; } /* Let it take available space */
-    .design-controls-area { flex: 1; } /* Let it take available space */
+    .design-preview-area { min-height: 250px; flex: 1; } 
+    .design-controls-area { flex: 1; } 
     .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     .gallery-item img { height: 80px; }
 
     .panel .panel-navigation { flex-direction: column-reverse; gap: 15px; }
     .next-step-btn, .prev-step-btn, .checkout-button { width: 100%; }
 }
-
 @media (max-width: 480px) {
     .checkout-header .logo-placeholder { font-size: 1.5em; }
     .progress-indicator .step { font-size: 0.7em; gap: 5px; }
@@ -511,7 +453,6 @@ html:-ms-fullscreen #fullscreen-button {
     .select-button, .next-step-btn, .prev-step-btn, .checkout-button { padding: 12px 20px; font-size: 1em;}
     .checkout-button { font-size: 1.1em; }
 }
-
     </style>
 </head>
 <body>
@@ -529,7 +470,7 @@ html:-ms-fullscreen #fullscreen-button {
         <main class="checkout-main">
             <div class="panel-container">
                 <!-- Panel 1: Choose PC -->
-                <section id="panel-1" class="panel" data-panel-index="0" data-position="current">
+                <section id="panel-1" class="panel active" data-panel-index="0" data-position="current">
                     <div class="panel-header">
                         <div class="panel-header-expanded-content">
                             <h2><span class="step-number-text">Step 1:</span> Choose Your PC</h2>
@@ -538,7 +479,6 @@ html:-ms-fullscreen #fullscreen-button {
                     </div>
                     <div class="panel-content-wrapper">
                         <div class="panel-content">
-                            <!-- Content from original, will be animated by CSS -->
                             <div class="option-card">
                                 <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/GGBA16CMH16.jpg?v=1748407225" alt="Gigabyte A16 CMH 16 Laptop">
                                 <h3>Gigabyte A16 CMH 16"</h3>
@@ -593,7 +533,6 @@ html:-ms-fullscreen #fullscreen-button {
                     </div>
                 </section>
 
-                <!-- Panel 2: Choose Design -->
                 <section id="panel-2" class="panel" data-panel-index="1" data-position="right">
                      <div class="panel-header">
                         <div class="panel-header-expanded-content">
@@ -662,7 +601,6 @@ html:-ms-fullscreen #fullscreen-button {
                     </div>
                 </section>
 
-                <!-- Panel 3: Summary + Checkout -->
                 <section id="panel-3" class="panel" data-panel-index="2" data-position="right">
                      <div class="panel-header">
                         <div class="panel-header-expanded-content">
@@ -748,12 +686,16 @@ html:-ms-fullscreen #fullscreen-button {
         let currentPanelIndex = 0; 
         let orderDetails = { pc: null, design: null };
 
-        function setActivePanel(targetIndex) {
+        function setActivePanel(targetIndex, isInitialCall = false) {
             if (targetIndex < 0 || targetIndex >= panels.length) return;
-            if (targetIndex === currentPanelIndex && panels[targetIndex].classList.contains('active')) return; // Already active
+            
+            // If it's not the initial call and we are already on the target panel, do nothing.
+            if (!isInitialCall && targetIndex === currentPanelIndex && panels[targetIndex].classList.contains('active')) {
+                return;
+            }
 
-            // Validation checks (same as before)
-            if (targetIndex > currentPanelIndex) { // Moving forward
+            // Validation checks
+            if (!isInitialCall && targetIndex > currentPanelIndex) { // Moving forward
                 if (currentPanelIndex === 0 && !orderDetails.pc) {
                     alert("Please select a PC configuration to continue.");
                     return;
@@ -770,38 +712,51 @@ html:-ms-fullscreen #fullscreen-button {
 
             const oldActivePanel = panels[currentPanelIndex];
             const newActivePanel = panels[targetIndex];
-
-            // Determine direction for transform
             const movingForward = targetIndex > currentPanelIndex;
 
-            // Prepare old panel to transition out
-            if (oldActivePanel && oldActivePanel !== newActivePanel) {
-                oldActivePanel.classList.remove('active');
-                // Set its resting position after deactivation for next time
-                oldActivePanel.style.transform = movingForward ? 'translateX(-100%)' : 'translateX(100%)';
-                oldActivePanel.dataset.position = movingForward ? 'left' : 'right';
+            // 1. Handle the outgoing panel (if it's not the initial call and there's a different old panel)
+            if (!isInitialCall && oldActivePanel && oldActivePanel !== newActivePanel) {
+                oldActivePanel.classList.remove('active'); 
+                if (movingForward) {
+                    oldActivePanel.style.transform = 'translateX(-100%)'; 
+                    oldActivePanel.dataset.position = 'left';
+                } else {
+                    oldActivePanel.style.transform = 'translateX(100%)'; 
+                    oldActivePanel.dataset.position = 'right';
+                }
             }
             
-            // Prepare new panel to transition in
+            // 2. Handle the incoming panel
             if (newActivePanel) {
-                // Set its starting position based on where it should come from
-                if (newActivePanel.dataset.position === 'left' && !movingForward) { // Coming back to a left panel
-                     newActivePanel.style.transform = 'translateX(-100%)';
-                } else if (newActivePanel.dataset.position === 'right' && movingForward) { // Coming to a right panel
-                     newActivePanel.style.transform = 'translateX(100%)';
-                } else if (!newActivePanel.dataset.position && movingForward) { // New panel, default from right
-                     newActivePanel.style.transform = 'translateX(100%)';
-                } else if (!newActivePanel.dataset.position && !movingForward) { // New panel, default from left (less common scenario unless jumping)
-                     newActivePanel.style.transform = 'translateX(-100%)';
+                // For the very first panel load, we just ensure it's styled correctly without transition.
+                if (isInitialCall && targetIndex === 0) {
+                    newActivePanel.style.transition = 'none';
+                    newActivePanel.style.opacity = '1';
+                    newActivePanel.style.transform = 'translateX(0)';
+                    newActivePanel.classList.add('active'); // Ensure class is there
+                    newActivePanel.dataset.position = 'current';
+                     // Force reflow might be good even here to ensure styles apply before any subsequent transitions
+                    void newActivePanel.offsetHeight;
+                    newActivePanel.style.transition = ''; // Restore for future
+                } else {
+                    // Standard transition for other panels
+                    newActivePanel.style.transition = 'none'; 
+                    if (movingForward) {
+                        newActivePanel.style.transform = 'translateX(100%)'; 
+                    } else { 
+                        newActivePanel.style.transform = 'translateX(-100%)'; 
+                    }
+                    newActivePanel.style.opacity = '0'; 
+                    
+                    void newActivePanel.offsetHeight; 
+                    
+                    newActivePanel.style.transition = ''; 
+                    
+                    requestAnimationFrame(() => {
+                        newActivePanel.classList.add('active'); 
+                        newActivePanel.dataset.position = 'current';
+                    });
                 }
-
-
-                // Force reflow/repaint before adding 'active' might be needed in some browsers for complex transitions
-                // but requestAnimationFrame usually handles timing well.
-                requestAnimationFrame(() => {
-                    newActivePanel.classList.add('active'); // This triggers the transition to translateX(0)
-                    newActivePanel.dataset.position = 'current'; 
-                });
             }
             
             currentPanelIndex = targetIndex;
@@ -814,9 +769,14 @@ html:-ms-fullscreen #fullscreen-button {
 
             if (currentPanelIndex === panels.length - 1) updateSummary();
             if (currentPanelIndex === 1) updateDesignPreviewArea();
+            
+            if (newActivePanel) {
+                const panelContent = newActivePanel.querySelector('.panel-content');
+                if (panelContent) panelContent.scrollTop = 0;
+            }
         }
         
-        function updateDesignPreviewArea() { /* Same as before */ 
+        function updateDesignPreviewArea() { 
             pcModelPreview.style.display = 'none';
             artworkOnPcPreview.style.display = 'none';
             artworkOnPcPreview.style.objectFit = 'cover'; 
@@ -828,9 +788,7 @@ html:-ms-fullscreen #fullscreen-button {
                 pcPreviewPlaceholderText.style.display = 'block';
                 return;
             }
-
             pcPreviewPlaceholderText.style.display = 'none';
-
             if (orderDetails.design && orderDetails.design.name === "No Custom Design") {
                 artworkOnPcPreview.src = NO_DESIGN_ICON_URL;
                 artworkOnPcPreview.style.objectFit = 'contain';
@@ -847,7 +805,7 @@ html:-ms-fullscreen #fullscreen-button {
             }
         }
 
-        function updateSummary() { /* Same as before */
+        function updateSummary() { 
             let total = 0;
             if (orderDetails.pc) {
                 summaryPcName.textContent = orderDetails.pc.name;
@@ -861,16 +819,13 @@ html:-ms-fullscreen #fullscreen-button {
                 } else {
                     summaryPcOriginalPriceContainer.style.display = 'none';
                 }
-
             } else {
                 summaryPcName.textContent = 'N/A';
                 summaryPcPrice.textContent = '0.00';
                 summaryPcOriginalPriceContainer.style.display = 'none';
             }
-
             if (orderDetails.design) {
                 summaryDesignNameDisplay.textContent = orderDetails.design.name;
-
                 if (orderDetails.design.name !== "No Custom Design" && orderDetails.design.image && orderDetails.design.image !== "") {
                     summaryDesignImage.src = orderDetails.design.image;
                     summaryDesignImage.style.display = 'block';
@@ -906,36 +861,24 @@ html:-ms-fullscreen #fullscreen-button {
                     originalPrice: button.dataset.pcOriginalPrice ? parseFloat(button.dataset.pcOriginalPrice) : null,
                     savingsText: button.dataset.pcSavings || null
                 };
-                
                 document.querySelector('#panel-1 .next-step-btn').disabled = false;
                 updateSummary();
-                // Automatically move to next step after selection for a more fluid feel
-                // setActivePanel(1); // You can uncomment this if you want auto-advance
             });
         });
 
-        function handleGallerySelection(item) { /* Same as before */
+        function handleGallerySelection(item) { 
             galleryItems.forEach(it => it.classList.remove('selected'));
             item.classList.add('selected');
             
             const designName = item.dataset.designName;
             const designImage = item.dataset.designImage;
-
-            orderDetails.design = {
-                name: designName,
-                image: designImage
-            };
+            orderDetails.design = { name: designName, image: designImage };
             
-            if(selectedDesignNameOutput) { 
-                selectedDesignNameOutput.textContent = designName;
-            }
+            if(selectedDesignNameOutput) selectedDesignNameOutput.textContent = designName;
             galleryItems.forEach(galleryItem => {
                 const priceDiv = galleryItem.querySelector('.design-item-price');
-                if (priceDiv) {
-                    priceDiv.style.display = galleryItem.dataset.designName === "No Custom Design" ? 'none' : 'block';
-                }
+                if (priceDiv) priceDiv.style.display = galleryItem.dataset.designName === "No Custom Design" ? 'none' : 'block';
             });
-
             updateDesignPreviewArea(); 
             updateSummary();
         }
@@ -954,29 +897,23 @@ html:-ms-fullscreen #fullscreen-button {
             });
         });
         
-        // Remove panel click navigation as it's not part of the new design
-        // panels.forEach((panel, index) => { panel.addEventListener('click', ... ) });
-
         progressSteps.forEach((stepIndicator, index) => {
             stepIndicator.addEventListener('click', () => setActivePanel(index));
         });
 
-        if (checkoutButton) { /* Same as before */
+        if (checkoutButton) { 
             checkoutButton.addEventListener('click', (event) => { 
                 event.stopPropagation(); 
-
                 if (!orderDetails.pc) {
                     alert("Please complete PC selection (Step 1).");
-                    setActivePanel(0);
-                    return;
+                    setActivePanel(0); return;
                 }
                 if (!orderDetails.design) {
                     const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
                     if (noDesignOption) handleGallerySelection(noDesignOption);
                     else {
                         alert("Please complete design selection (Step 2).");
-                        setActivePanel(1);
-                        return;
+                        setActivePanel(1); return;
                     }
                 }
                 updateSummary();
@@ -985,12 +922,10 @@ html:-ms-fullscreen #fullscreen-button {
             });
         }
 
-        // Fullscreen API (Browser UI toggle) - Same as before
         if (fullscreenButton) {
             fullscreenButton.addEventListener('click', (event) => {
                 event.stopPropagation();
-                if (!document.fullscreenElement &&
-                    !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
                     if (docEl.requestFullscreen) docEl.requestFullscreen();
                     else if (docEl.mozRequestFullScreen) docEl.mozRequestFullScreen();
                     else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
@@ -1012,9 +947,17 @@ html:-ms-fullscreen #fullscreen-button {
         }
 
         // Initial setup
-        setActivePanel(0); // Set the first panel as active
-        document.querySelector('#panel-1 .next-step-btn').disabled = true;
+        // Set initial state for non-active panels
+        panels.forEach((panel, index) => {
+            if (index !== 0) { // Panel 0 is active by HTML class
+                panel.style.transform = 'translateX(100%)';
+                panel.style.opacity = '0';
+                panel.dataset.position = 'right'; // Their default off-screen position
+            }
+        });
+        setActivePanel(0, true); // Pass true for isInitialCall
         
+        document.querySelector('#panel-1 .next-step-btn').disabled = true;
         const noDesignOption = document.querySelector('.gallery-item[data-design-name="No Custom Design"]');
         if (noDesignOption) handleGallerySelection(noDesignOption);
         updateDesignPreviewArea();
