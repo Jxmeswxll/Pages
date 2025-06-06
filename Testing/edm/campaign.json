@@ -1,0 +1,1332 @@
+[
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Creator & Modelling PC Sale",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion for creator and modelling PCs.",
+        "success_criteria": "Increase sales of featured PC models."
+      },
+      "promoted_products": [
+        { "product_name": "FOCUS : MODELLING", "bundle_or_category": false },
+        { "product_name": "FOCUS : MODELLING PRO", "bundle_or_category": false },
+        { "product_name": "FOCUS : MODELLING MAX", "bundle_or_category": false },
+        { "product_name": "EOFY AMD CREATOR", "bundle_or_category": false },
+        { "product_name": "EOFY CREATOR PRO", "bundle_or_category": false },
+        { "product_name": "EOFY Graphic Design", "bundle_or_category": false },
+        { "product_name": "EOFY 3D VFX & Animation", "bundle_or_category": false },
+        { "product_name": "Focus X Slate", "bundle_or_category": false }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Specialized for Modelling, Graphics, Animation"],
+        "partners": ["AMD", "NVIDIA"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS : MODELLING PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,495.00", "$3,000.00", "Ultra 5 245K | RTX A1000"],
+          "audience_notes": "Professionals in 3D modelling and design."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS : MODELLING PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,095.00", "$4,000.00", "Ultra 7 265K | RTX 2000 ADA"],
+          "audience_notes": "Professionals needing more power for modelling."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS : MODELLING MAX PC",
+          "style_notes": "",
+          "dynamic_text": ["$5,095.00", "$5,800.00", "Ultra 9 285K | RTX 4000 ADA"],
+          "audience_notes": "High-end professionals requiring maximum modelling performance."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY AMD CREATOR PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,195.00", "$2,500.00", "R7 7700 | RTX 5060 Ti 16GB"],
+          "audience_notes": "Content creators using AMD hardware."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY CREATOR PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$4,195.00", "$4,600.00", "Ultra 7 265K | RTX 5070Ti"],
+          "audience_notes": "Professional content creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY Graphic Design PC",
+          "style_notes": "",
+          "dynamic_text": ["Starts From $2359.00", "$3,865.00", "Ultra 5 245K | RTX 5060 - 8GB"],
+          "audience_notes": "Graphic designers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY 3D VFX & Animation PC",
+          "style_notes": "",
+          "dynamic_text": ["Starts From: $4499", "$5,300.00", "Ultra 9 285K | RTX 5070Ti"],
+          "audience_notes": "Professionals in 3D VFX and animation."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Focus X Slate PC",
+          "style_notes": "",
+          "dynamic_text": ["Starts From $7435", "$7,600.00", "AMD R 7960X | NVIDIA RTX 2000 ADA"],
+          "audience_notes": "High-end workstation users."
+        }
+      ],
+      "graphics_count": 8,
+      "graphics_purpose_summary": "Showcase discounted creator and modelling PCs with key specs and prices.",
+      "reusable_elements": ["Shop now button", "Price display (original and discounted)", "Product title with specs"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Peripherals & Monitor Sale",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion for monitors and peripherals.",
+        "success_criteria": "Increase sales of featured accessories."
+      },
+      "promoted_products": [
+        { "product_name": "MSI 23.8\" PRO Monitor", "bundle_or_category": false },
+        { "product_name": "Samsung 27\" Odyssey G55C Monitor", "bundle_or_category": false },
+        { "product_name": "Samsung 34\" Odyssey G55T Monitor", "bundle_or_category": false },
+        { "product_name": "Samsung 27\" Odyssey OLED G8 G81SF Monitor", "bundle_or_category": false },
+        { "product_name": "Aftershock Business Kit", "bundle_or_category": true },
+        { "product_name": "Aftershock Gaming Kit", "bundle_or_category": true },
+        { "product_name": "Aftershock ODEN75 - White Keyboard", "bundle_or_category": false },
+        { "product_name": "Aftershock M1 Pro - White Mouse", "bundle_or_category": false },
+        { "product_name": "SteelSeries Arctis Nova 7 Wireless - WoW Edition Headset", "bundle_or_category": false },
+        { "product_name": "SteelSeries Alias Microphone", "bundle_or_category": false },
+        { "product_name": "Logitech C922 Pro Stream Webcam", "bundle_or_category": false }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Variety of gaming and business peripherals"],
+        "partners": ["MSI", "Samsung", "SteelSeries", "Logitech"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of MSI 23.8\" PRO Monitor",
+          "style_notes": "",
+          "dynamic_text": ["$99.00", "$129.00", "FHD 1080p 100Hz Flat Monitor"],
+          "audience_notes": "General users, business users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Samsung 27\" Odyssey G55C Monitor",
+          "style_notes": "",
+          "dynamic_text": ["$219.00", "$369.00", "QHD 1440p 165Hz Curved Gaming Monitor"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Samsung 34\" Odyssey G55T Monitor",
+          "style_notes": "",
+          "dynamic_text": ["$399.00", "$599.00", "WQHD 165Hz Curved Gaming Monitor"],
+          "audience_notes": "Gamers seeking immersive experience."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Samsung 27\" Odyssey OLED G8 G81SF Monitor",
+          "style_notes": "",
+          "dynamic_text": ["$1,199.00", "$1,799.00", "UHD 4K 240Hz Flat Gaming Monitor"],
+          "audience_notes": "High-end gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock Business Kit",
+          "style_notes": "",
+          "dynamic_text": ["$169.00", "$247.00"],
+          "audience_notes": "Business users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock Gaming Kit",
+          "style_notes": "",
+          "dynamic_text": ["$339.00", "$639.00"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock ODEN75 - White Keyboard",
+          "style_notes": "",
+          "dynamic_text": ["$99.00", "$200.00", "Wireless Keyboard - Linear Switches"],
+          "audience_notes": "Users seeking wireless mechanical keyboard."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock M1 Pro - White Mouse",
+          "style_notes": "",
+          "dynamic_text": ["$69.00", "$120.00", "Wireless Gaming Mouse with RGB Charging Dock"],
+          "audience_notes": "Gamers seeking wireless RGB mouse."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SteelSeries Arctis Nova 7 Wireless - WoW Edition Headset",
+          "style_notes": "",
+          "dynamic_text": ["$319.00", "$399.00"],
+          "audience_notes": "World of Warcraft players, gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SteelSeries Alias Microphone",
+          "style_notes": "",
+          "dynamic_text": ["$399.00"],
+          "audience_notes": "Streamers, content creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Logitech C922 Pro Stream Webcam",
+          "style_notes": "",
+          "dynamic_text": ["$149.00", "$199.00"],
+          "audience_notes": "Streamers, video conferencing users."
+        }
+      ],
+      "graphics_count": 11,
+      "graphics_purpose_summary": "Showcase discounted monitors and peripherals with key features and prices.",
+      "reusable_elements": ["Shop now button", "Price display (original and discounted)", "Product title with brief description", "SHOP EOFY SALE button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Laptop Sale",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion for laptops.",
+        "success_criteria": "Increase sales of featured laptop models."
+      },
+      "promoted_products": [
+        { "product_name": "HP EliteBook 645 G10 14\"", "bundle_or_category": false },
+        { "product_name": "AFTERSHOCK Lunar 14R", "bundle_or_category": false },
+        { "product_name": "Gigabyte G6 KF 16\"", "bundle_or_category": false },
+        { "product_name": "Gigabyte AORUS 16X", "bundle_or_category": false },
+        { "product_name": "AFTERSHOCK X-16 PRO (ULTRA 9 275HX | RTX 5070 Ti)", "bundle_or_category": false },
+        { "product_name": "AFTERSHOCK X-16 PRO (ULTRA 9 275HX | RTX 5080)", "bundle_or_category": false },
+        { "product_name": "X-16 PRO - RTX 5070TI (Ultra 9 275HX | 32GB)", "bundle_or_category": false },
+        { "product_name": "X-16 PRO - RTX 5080 (Ultra 9 275HX | 32GB)", "bundle_or_category": false },
+        { "product_name": "X-16 PRO - RTX 5090 (Ultra 9 275HX | 32GB)", "bundle_or_category": false }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Range of laptops from business to high-end gaming"],
+        "partners": ["HP", "Gigabyte", "AFTERSHOCK"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of HP EliteBook 645 G10 14\" Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$999.00", "$1,299.00", "R5 7530U | AMD Radeon"],
+          "audience_notes": "Business users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of AFTERSHOCK Lunar 14R Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$1,349.00", "$1,800.00", "R7 8845HS | R 780M"],
+          "audience_notes": "Users seeking portable performance."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Gigabyte G6 KF 16\" Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$1,699.00", "$1,999.00", "i7-13620H | RTX 4060"],
+          "audience_notes": "Gamers, content creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Gigabyte AORUS 16X Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$2,399.00", "$2,999.00", "i7-14650HX | RTX 4070"],
+          "audience_notes": "High-performance gamers and creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of AFTERSHOCK X-16 PRO Laptop (RTX 5070 Ti)",
+          "style_notes": "",
+          "dynamic_text": ["$3,495.00", "$4,000.00", "ULTRA 9 275HX | RTX 5070 Ti"],
+          "audience_notes": "Extreme gamers and professionals."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of AFTERSHOCK X-16 PRO Laptop (RTX 5080)",
+          "style_notes": "",
+          "dynamic_text": ["$4,495.00", "$5,000.00", "ULTRA 9 275HX | RTX 5080"],
+          "audience_notes": "Top-tier gamers and professionals."
+        },
+         {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of X-16 PRO - RTX 5070TI Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$3,399.00", "$3,699.00", "Ultra 9 275HX | 32GB"],
+          "audience_notes": "Extreme gamers and professionals."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of X-16 PRO - RTX 5080 Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$4,499.00", "$4,799.00", "Ultra 9 275HX | 32GB"],
+          "audience_notes": "Top-tier gamers and professionals."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of X-16 PRO - RTX 5090 Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$5,999.00", "$6,199.00", "Ultra 9 275HX | 32GB"],
+          "audience_notes": "Ultimate performance seekers."
+        }
+      ],
+      "graphics_count": 9,
+      "graphics_purpose_summary": "Showcase discounted laptops with key specs and prices.",
+      "reusable_elements": ["Shop now button", "Price display (original and discounted)", "Product title with specs", "SHOP EOFY SALE button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Gaming PC Deals",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion for gaming PCs.",
+        "success_criteria": "Increase sales of featured gaming PC models."
+      },
+      "promoted_products": [
+        { "product_name": "BOLT : LVL 4", "bundle_or_category": false },
+        { "product_name": "ZEAL MINI : LVL 4", "bundle_or_category": false },
+        { "product_name": "FLOW : LVL 4 PRO", "bundle_or_category": false },
+        { "product_name": "NIMBUS : LVL 6 PRO", "bundle_or_category": false },
+        { "product_name": "EOFY ZEAL MINI : LVL 7", "bundle_or_category": false },
+        { "product_name": "FLOW : LVL 9 PRO", "bundle_or_category": false }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Variety of gaming PC levels"],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of BOLT : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,695.00", "R5 7600 | RTX 5060"],
+          "audience_notes": "Entry-level to mid-tier gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ZEAL MINI : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,745.00", "R5 7400F | RTX 5060"],
+          "audience_notes": "Gamers looking for compact builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FLOW : LVL 4 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,845.00", "R7 7700 | RTX 5060"],
+          "audience_notes": "Mid-tier gamers seeking more CPU power."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of NIMBUS : LVL 6 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,295.00", "$2,400.00", "R7 7700 | RTX 5060 Ti 16GB"],
+          "audience_notes": "Mid-to-high tier gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY ZEAL MINI : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,295.00", "$2,700.00", "R5 7400F | RTX 5070"],
+          "audience_notes": "Gamers wanting RTX 5070 in a compact build."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FLOW : LVL 9 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$4,295.00", "$4,700.00", "R7 7800X3D | RTX 5080"],
+          "audience_notes": "High-end gamers."
+        }
+      ],
+      "graphics_count": 6,
+      "graphics_purpose_summary": "Showcase discounted gaming PCs with key specs and prices.",
+      "reusable_elements": ["Shop now button", "Price display (original and discounted)", "Product title with specs", "SHOP EOFY SALE button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Creator & Workstation PC Sale",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion for creator and workstation PCs.",
+        "success_criteria": "Increase sales of featured creator/workstation models."
+      },
+      "promoted_products": [
+        { "product_name": "EOFY AMD CREATOR", "bundle_or_category": false },
+        { "product_name": "EOFY CREATOR PRO", "bundle_or_category": false },
+        { "product_name": "EOFY CREATOR : UNREAL ENGINE", "bundle_or_category": false },
+        { "product_name": "FOCUS : MODELLING", "bundle_or_category": false },
+        { "product_name": "FOCUS : MODELLING PRO", "bundle_or_category": false },
+        { "product_name": "Architecture & CAD", "bundle_or_category": true },
+        { "product_name": "Focus X Slate", "bundle_or_category": false },
+        { "product_name": "CREATOR MAX", "bundle_or_category": false },
+        { "product_name": "Focus X - Machine Learning / AI", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Specialized for Unreal Engine, Modelling, CAD, AI", "Starts From pricing"],
+        "partners": ["AMD", "NVIDIA"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY AMD CREATOR PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,295.00", "$2,500.00", "R7 7700 | RTX 5060 Ti 16GB"],
+          "audience_notes": "Content creators using AMD."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY CREATOR PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$4,195.00", "$4,600.00", "Ultra 7 265K | RTX 5070Ti"],
+          "audience_notes": "Professional content creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY CREATOR : UNREAL ENGINE PC",
+          "style_notes": "",
+          "dynamic_text": ["$6,295.00", "$7,000.00", "ULTRA 9 285K | RTX 5080"],
+          "audience_notes": "Unreal Engine developers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS : MODELLING PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,595.00", "$3,000.00", "Ultra 5 245K | RTX A1000"],
+          "audience_notes": "3D modelling professionals."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS : MODELLING PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,495.00", "$4,000.00", "Ultra 7 265K | RTX 2000 ADA"],
+          "audience_notes": "Advanced 3D modelling professionals."
+        },
+        {
+          "type": "category_tile",
+          "dimensions": "",
+          "content_description": "Image representing Architecture & CAD workstations",
+          "style_notes": "",
+          "dynamic_text": ["Starts From: 1,699.00", "$2,000.00", "Core Ultra5 245K | RTX A400 - 4GB"],
+          "audience_notes": "Architects and CAD users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Focus X Slate PC",
+          "style_notes": "",
+          "dynamic_text": ["Starts From: $7,435", "$7,600.00", "Ryzen 7960X | RTX 2000 ADA - 16GB"],
+          "audience_notes": "High-end workstation users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of CREATOR MAX PC",
+          "style_notes": "",
+          "dynamic_text": ["$9,395.00", "$9,800.00", "ULTRA 9 285K | RTX 5090 32GB"],
+          "audience_notes": "Top-tier content creators."
+        },
+        {
+          "type": "category_tile",
+          "dimensions": "",
+          "content_description": "Image representing Machine Learning / AI workstations",
+          "style_notes": "",
+          "dynamic_text": ["$21,799.00", "$24,000.00", "Ryzen 7960X | RTX 6000 ADA - 48GB"],
+          "audience_notes": "Machine Learning and AI professionals."
+        }
+      ],
+      "graphics_count": 9,
+      "graphics_purpose_summary": "Showcase discounted creator and workstation PCs for various professional needs.",
+      "reusable_elements": ["Shop now button", "Price display (original and discounted)", "Product title with specs", "SHOP ALL button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Mixed Deals - PCs, Laptops, Peripherals",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion with a mix of products.",
+        "success_criteria": "Increase sales across featured categories."
+      },
+      "promoted_products": [
+        { "product_name": "EOFY RAPID : LVL 4", "bundle_or_category": false },
+        { "product_name": "BLUE KOI", "bundle_or_category": false },
+        { "product_name": "EOFY Avatar", "bundle_or_category": false },
+        { "product_name": "EOFY Chamber - White", "bundle_or_category": false },
+        { "product_name": "NIMBUS : LVL 7", "bundle_or_category": false },
+        { "product_name": "SimForce PRO", "bundle_or_category": false },
+        { "product_name": "Gigabyte G6 MF 16\" - RTX4050", "bundle_or_category": false },
+        { "product_name": "X-16 PRO - RTX 5070TI", "bundle_or_category": false },
+        { "product_name": "Laptops", "bundle_or_category": true },
+        { "product_name": "Aftershock ODEN75 Black Edition Wireless Keyboard", "bundle_or_category": false },
+        { "product_name": "Aftershock Business Kit", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Price drops", "Customise Now option", "Variety of products"],
+        "partners": ["Gigabyte"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY RAPID : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,395.00", "$2,000.00", "R5 7400F | RTX 4060"],
+          "audience_notes": "Budget-conscious gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of BLUE KOI PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,689.00", "$2,200.00", "R5 7400F | RTX 4060Ti"],
+          "audience_notes": "Gamers looking for themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY Avatar PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,199.00", "$3,200.00", "R5 7600 | RTX 5070 - 12GB"],
+          "audience_notes": "Gamers wanting customizable, powerful PCs."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY Chamber - White PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,299.00", "$3,900.00", "R7 7700 | RTX 5070Ti - 16GB"],
+          "audience_notes": "Gamers wanting high-performance, customizable PCs with a white theme."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of NIMBUS : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,495.00", "$3,000.00", "R5 7600 | RX 9070"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,695.00", "$4,200.00", "R7 7800X3D | RTX 5070 Ti"],
+          "audience_notes": "Sim racing enthusiasts."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Gigabyte G6 MF 16\" - RTX4050 Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$1,399.00", "$1,799.00", "i7-13700H | RTX 4050"],
+          "audience_notes": "Laptop users needing dedicated graphics."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of X-16 PRO - RTX 5070TI Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$3,399.00", "$3,699.00", "Intel Core Ultra 9 275HX | RTX 5070TI"],
+          "audience_notes": "High-performance laptop users."
+        },
+        {
+          "type": "category_link",
+          "dimensions": "",
+          "content_description": "Link to Laptop category page",
+          "style_notes": "",
+          "dynamic_text": ["Prices Drop", "SHOP Laptops"],
+          "audience_notes": "Users interested in laptops."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock ODEN75 Black Edition Wireless Keyboard",
+          "style_notes": "",
+          "dynamic_text": ["$99.00", "$200.00"],
+          "audience_notes": "Users wanting a wireless keyboard."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock Business Kit",
+          "style_notes": "",
+          "dynamic_text": ["$169.00", "$247.00"],
+          "audience_notes": "Business users."
+        }
+      ],
+      "graphics_count": 11,
+      "graphics_purpose_summary": "Highlight a variety of discounted products including PCs, laptops, and peripherals.",
+      "reusable_elements": ["Shop Now button", "Customise Now button", "Price display (original and discounted)", "Product title with specs", "SHOP ALL button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "RTX 50 Series High-Performance PCs",
+      "campaign_purpose": {
+        "reason": "Promotion for new RTX 50 series PCs.",
+        "success_criteria": "Increase sales of high-end RTX 50 series models."
+      },
+      "promoted_products": [
+        { "product_name": "NIMBUS : LVL 7", "bundle_or_category": false },
+        { "product_name": "SimForce PRO - 1440p Sim racing Beast", "bundle_or_category": false },
+        { "product_name": "FLOW : LVL 9 PRO", "bundle_or_category": false },
+        { "product_name": "SimForce MAX - 4K Sim RIg", "bundle_or_category": false },
+        { "product_name": "HYPERGATE : LVL 10 PRO - Powered by Gigabyte", "bundle_or_category": false },
+        { "product_name": "ULTRACORE : LVL 10 PRO - Limited Stock!", "bundle_or_category": false },
+        { "product_name": "RTX 50 Series PCs", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Featuring RTX 50 Series GPUs", "Limited Stock on Ultracore", "Specialized Sim Racing builds"],
+        "partners": ["Gigabyte"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of NIMBUS : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,245.00", "R5 7500F | RTX 5070"],
+          "audience_notes": "Gamers seeking RTX 5070 performance."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,695.00", "R7 7800X3D | RTX 5070 Ti", "1440p Sim racing Beast"],
+          "audience_notes": "Sim racing enthusiasts for 1440p."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FLOW : LVL 9 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$4,295.00", "R7 7800X3D | RTX 5080"],
+          "audience_notes": "High-end gamers wanting RTX 5080."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce MAX PC",
+          "style_notes": "",
+          "dynamic_text": ["$5,195.00", "R7 9800X3D | RTX 5080", "4K Sim RIg"],
+          "audience_notes": "Sim racing enthusiasts for 4K."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of HYPERGATE : LVL 10 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$8,995.00", "R7 9800X3D | RTX 5090", "Powered by Gigabyte"],
+          "audience_notes": "Extreme gamers wanting RTX 5090."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ULTRACORE : LVL 10 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$10,495.00", "R7 9800X3D | RTX 5090", "Limited Stock!"],
+          "audience_notes": "Top-tier gamers wanting limited edition RTX 5090 builds."
+        },
+        {
+          "type": "category_link",
+          "dimensions": "",
+          "content_description": "Link to RTX 50 Series PCs category",
+          "style_notes": "",
+          "dynamic_text": ["SHOP RTX 50 Series PCs"],
+          "audience_notes": "Users interested in RTX 50 series."
+        }
+      ],
+      "graphics_count": 7,
+      "graphics_purpose_summary": "Promote high-performance PCs featuring the new RTX 50 series GPUs.",
+      "reusable_elements": ["Shop Now button", "Price display", "Product title with specs and taglines"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "Ready-to-Ship PC Deals",
+      "campaign_purpose": {
+        "reason": "Sales promotion for ready-to-ship PCs.",
+        "success_criteria": "Increase sales of in-stock PC models."
+      },
+      "promoted_products": [
+        { "product_name": "RAPID : LVL 4", "bundle_or_category": false },
+        { "product_name": "SAMURAI", "bundle_or_category": false },
+        { "product_name": "RAPID : LVL 5", "bundle_or_category": false },
+        { "product_name": "ZEAL MINI : LVL 5", "bundle_or_category": false },
+        { "product_name": "BLUE KOI", "bundle_or_category": false },
+        { "product_name": "KOI POND", "bundle_or_category": false },
+        { "product_name": "LOFI GIRL", "bundle_or_category": false },
+        { "product_name": "CHERRY BLOSSOM", "bundle_or_category": false },
+        { "product_name": "Ready-to-Ship", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Discounted prices", "Themed PC builds", "Ready-to-Ship for fast delivery"],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of RAPID : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,395.00", "$2,100.00", "R 5 7400F | RTX 4060"],
+          "audience_notes": "Budget-conscious gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SAMURAI PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,545.00", "$2,100.00", "R 5 7400F | RTX 4060"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of RAPID : LVL 5 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,645.00", "$2,200.00", "R 5 7400F | RTX 4060Ti"],
+          "audience_notes": "Gamers wanting RTX 4060Ti."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ZEAL MINI : LVL 5 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,695.00", "$2,200.00", "R 5 7500F | RTX 4060Ti"],
+          "audience_notes": "Gamers wanting compact RTX 4060Ti build."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of BLUE KOI PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,795.00", "$2,200.00", "R 5 7400F | RTX 4060Ti"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of KOI POND PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,745.00", "$2,200.00", "R 5 7500F | RTX 4060Ti"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of LOFI GIRL PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,745.00", "$2,200.00", "R 5 7500F | RTX 4060Ti"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of CHERRY BLOSSOM PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,745.00", "$2,200.00", "R 5 7500F | RTX 4060Ti"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "category_link",
+          "dimensions": "",
+          "content_description": "Link to Ready-to-Ship category",
+          "style_notes": "",
+          "dynamic_text": ["SHOP Ready-to-Ship"],
+          "audience_notes": "Users needing PCs quickly."
+        }
+      ],
+      "graphics_count": 9,
+      "graphics_purpose_summary": "Promote a variety of ready-to-ship PCs, including themed builds, with discounts.",
+      "reusable_elements": ["Shop Now button", "Price display (original and discounted)", "Product title with specs"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "AI-Enhanced Performance PCs",
+      "campaign_purpose": {
+        "reason": "Educate and promote PCs with AI hardware features.",
+        "success_criteria": "Increase awareness and sales of AI-capable systems."
+      },
+      "promoted_products": [
+        { "product_name": "NIMBUS : LVL 7", "bundle_or_category": false },
+        { "product_name": "FLOW : LVL 6", "bundle_or_category": false },
+        { "product_name": "Easter Pentagon", "bundle_or_category": false },
+        { "product_name": "50 Series Chamber", "bundle_or_category": false },
+        { "product_name": "Ready-to-Ship", "bundle_or_category": true },
+        { "product_name": "All Builds", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": [
+          "AI built into hardware", 
+          "Real-time performance tuning", 
+          "AI-powered rendering (DLSS 4, FSR 4)", 
+          "Boost FPS without sacrificing quality",
+          "Intelligent performance boost",
+          "Lower power usage",
+          "Predict and adapt to workload"
+        ],
+        "partners": ["NVIDIA", "AMD"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "informational_banner",
+          "dimensions": "",
+          "content_description": "Text explaining AI in hardware and its benefits.",
+          "style_notes": "",
+          "dynamic_text": ["AI isn’t just software—it’s built into your hardware..."],
+          "audience_notes": "Tech-savvy users, gamers, creators."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of NIMBUS : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,695.00", "$3,000.00", "R7 7500F | RX 9070"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FLOW : LVL 6 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,095.00", "R5 7500F | RTX 5060 Ti 8GB"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "informational_block",
+          "dimensions": "",
+          "content_description": "Text about AI graphics features like DLSS 4 and FSR 4.",
+          "style_notes": "",
+          "dynamic_text": ["AI graphics features like NVIDIA’s DLSS 4 and AMD’s FSR 4..."],
+          "audience_notes": "Gamers, tech enthusiasts."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Easter Pentagon PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,824.00", "$3,325.00", "R5 7500F | RX 9070 XT"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of 50 Series Chamber PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,199.00", "R7 7700 | RTX 5070Ti"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "informational_block",
+          "dimensions": "",
+          "content_description": "Text explaining benefits of AI in systems (boost performance, lower power, adapt).",
+          "style_notes": "",
+          "dynamic_text": ["Whether you’re gaming, editing videos, or just multitasking..."],
+          "audience_notes": "General PC users, gamers, creators."
+        }
+      ],
+      "graphics_count": 7, 
+      "graphics_purpose_summary": "Highlight PCs with AI capabilities and explain the benefits of AI in hardware.",
+      "reusable_elements": ["Shop Now button", "Customise NOW button", "Price display (original and discounted)", "Product title with specs", "SHOP Ready-to-Ship button", "Explore All Builds button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "General Footer Information",
+      "campaign_purpose": {
+        "reason": "Standard email footer.",
+        "success_criteria": ""
+      },
+      "promoted_products": [],
+      "unique_selling_points": {
+        "highlights": [],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [],
+      "graphics_count": 0,
+      "graphics_purpose_summary": "Provide standard company links and unsubscribe option.",
+      "reusable_elements": ["Website link", "FAQs link", "Knowledge Hub link", "Unsubscribe link", "Company address"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "General Footer Information (Empty Content)",
+      "campaign_purpose": {
+        "reason": "Standard email footer, content appears empty.",
+        "success_criteria": ""
+      },
+      "promoted_products": [],
+      "unique_selling_points": {
+        "highlights": [],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [],
+      "graphics_count": 0,
+      "graphics_purpose_summary": "Provide standard company links and unsubscribe option. Main content missing.",
+      "reusable_elements": ["Website link", "FAQs link", "Knowledge Hub link", "Unsubscribe link", "Company address"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "General Footer Information (Empty Content)",
+      "campaign_purpose": {
+        "reason": "Standard email footer, content appears empty.",
+        "success_criteria": ""
+      },
+      "promoted_products": [],
+      "unique_selling_points": {
+        "highlights": [],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [],
+      "graphics_count": 0,
+      "graphics_purpose_summary": "Provide standard company links and unsubscribe option. Main content missing.",
+      "reusable_elements": ["Website link", "FAQs link", "Knowledge Hub link", "Unsubscribe link", "Company address"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "EOFY Mixed Deals - PCs, Laptops, Peripherals (Repeat)",
+      "campaign_purpose": {
+        "reason": "End of Financial Year sales promotion with a mix of products (content identical to a previous campaign).",
+        "success_criteria": "Increase sales across featured categories."
+      },
+      "promoted_products": [
+        { "product_name": "EOFY RAPID : LVL 4", "bundle_or_category": false },
+        { "product_name": "BLUE KOI", "bundle_or_category": false },
+        { "product_name": "EOFY Avatar", "bundle_or_category": false },
+        { "product_name": "EOFY Chamber - White", "bundle_or_category": false },
+        { "product_name": "NIMBUS : LVL 7", "bundle_or_category": false },
+        { "product_name": "SimForce PRO", "bundle_or_category": false },
+        { "product_name": "Gigabyte G6 MF 16\" - RTX4050", "bundle_or_category": false },
+        { "product_name": "X-16 PRO - RTX 5070TI", "bundle_or_category": false },
+        { "product_name": "Laptops", "bundle_or_category": true },
+        { "product_name": "Aftershock ODEN75 Black Edition Wireless Keyboard", "bundle_or_category": false },
+        { "product_name": "Aftershock Business Kit", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": ["Price drops", "Customise Now option", "Variety of products"],
+        "partners": ["Gigabyte"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY RAPID : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,395.00", "$2,000.00", "R5 7400F | RTX 4060"],
+          "audience_notes": "Budget-conscious gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of BLUE KOI PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,689.00", "$2,200.00", "R5 7400F | RTX 4060Ti"],
+          "audience_notes": "Gamers looking for themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY Avatar PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,199.00", "$3,200.00", "R5 7600 | RTX 5070 - 12GB"],
+          "audience_notes": "Gamers wanting customizable, powerful PCs."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of EOFY Chamber - White PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,299.00", "$3,900.00", "R7 7700 | RTX 5070Ti - 16GB"],
+          "audience_notes": "Gamers wanting high-performance, customizable PCs with a white theme."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of NIMBUS : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,495.00", "$3,000.00", "R5 7600 | RX 9070"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,695.00", "$4,200.00", "R7 7800X3D | RTX 5070 Ti"],
+          "audience_notes": "Sim racing enthusiasts."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Gigabyte G6 MF 16\" - RTX4050 Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$1,399.00", "$1,799.00", "i7-13700H | RTX 4050"],
+          "audience_notes": "Laptop users needing dedicated graphics."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of X-16 PRO - RTX 5070TI Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$3,399.00", "$3,699.00", "Intel Core Ultra 9 275HX | RTX 5070TI"],
+          "audience_notes": "High-performance laptop users."
+        },
+        {
+          "type": "category_link",
+          "dimensions": "",
+          "content_description": "Link to Laptop category page",
+          "style_notes": "",
+          "dynamic_text": ["Prices Drop", "SHOP Laptops"],
+          "audience_notes": "Users interested in laptops."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock ODEN75 Black Edition Wireless Keyboard",
+          "style_notes": "",
+          "dynamic_text": ["$99.00", "$200.00"],
+          "audience_notes": "Users wanting a wireless keyboard."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Aftershock Business Kit",
+          "style_notes": "",
+          "dynamic_text": ["$169.00", "$247.00"],
+          "audience_notes": "Business users."
+        }
+      ],
+      "graphics_count": 11,
+      "graphics_purpose_summary": "Highlight a variety of discounted products including PCs, laptops, and peripherals.",
+      "reusable_elements": ["Shop Now button", "Customise Now button", "Price display (original and discounted)", "Product title with specs", "SHOP ALL button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "General Footer Information (Empty Content)",
+      "campaign_purpose": {
+        "reason": "Standard email footer, content appears empty.",
+        "success_criteria": ""
+      },
+      "promoted_products": [],
+      "unique_selling_points": {
+        "highlights": [],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [],
+      "graphics_count": 0,
+      "graphics_purpose_summary": "Provide standard company links and unsubscribe option. Main content missing.",
+      "reusable_elements": ["Website link", "FAQs link", "Knowledge Hub link", "Unsubscribe link", "Company address"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "High-Performance & Custom PC Deals",
+      "campaign_purpose": {
+        "reason": "Sales promotion for high-performance and customizable PCs.",
+        "success_criteria": "Increase sales of featured PC models."
+      },
+      "promoted_products": [
+        { "product_name": "CLOUD : LVL 4", "bundle_or_category": false },
+        { "product_name": "LOFI GIRL - Aftershock Original", "bundle_or_category": false },
+        { "product_name": "ZEAL MINI : LVL 7 - All New RTX 5070!", "bundle_or_category": false },
+        { "product_name": "SimForce PRO - 1440p Sim Racing Beast", "bundle_or_category": false },
+        { "product_name": "FLOW : LVL 9 PRO - All New RTX 5080!", "bundle_or_category": false },
+        { "product_name": "Zotac Gaming Zone - Carrying Case Included", "bundle_or_category": false }
+      ],
+      "unique_selling_points": {
+        "highlights": ["All New RTX 5070!", "All New RTX 5080!", "Carrying Case Included", "Themed builds"],
+        "partners": ["Zotac"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of CLOUD : LVL 4 PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,525.00", "$2,100.00", "R5 7400F | RTX 4060"],
+          "audience_notes": "Gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of LOFI GIRL - Aftershock Original PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,295.00", "$2,800.00", "R5 7500F | RTX 4070"],
+          "audience_notes": "Gamers interested in themed builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ZEAL MINI : LVL 7 PC",
+          "style_notes": "",
+          "dynamic_text": ["$2,145.00", "$2,600.00", "R5 7500F | RTX 5070", "All New RTX 5070!"],
+          "audience_notes": "Gamers wanting new RTX 5070 in compact form."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,695.00", "$4,200.00", "R7 7800X3D | RTX 5070 Ti", "1440p Sim Racing Beast"],
+          "audience_notes": "Sim racing enthusiasts for 1440p."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FLOW : LVL 9 PRO PC",
+          "style_notes": "",
+          "dynamic_text": ["$4,295.00", "$4,700.00", "R7 7800X3D | RTX 5080", "All New RTX 5080!"],
+          "audience_notes": "High-end gamers wanting new RTX 5080."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Zotac Gaming Zone",
+          "style_notes": "",
+          "dynamic_text": ["$1,116.00", "$1,395.00", "R7 8840U | RADEON 780M", "Carrying Case Included"],
+          "audience_notes": "Portable gaming users."
+        }
+      ],
+      "graphics_count": 6,
+      "graphics_purpose_summary": "Showcase high-performance PCs, including new RTX 50 series and portable gaming options.",
+      "reusable_elements": ["SHOP NOW button", "Price display (original and discounted)", "Product title with specs and taglines", "SHOP All button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "Easter & Diverse Tech Sale",
+      "campaign_purpose": {
+        "reason": "Sales promotion featuring Easter deals and a diverse range of tech products.",
+        "success_criteria": "Increase sales across PCs, laptops, and workstations."
+      },
+      "promoted_products": [
+        { "product_name": "Easter Rapid - Budget Friendly", "bundle_or_category": false },
+        { "product_name": "Zeal Mini : LVL 5 Pro - 1080P Sweet Spot", "bundle_or_category": false },
+        { "product_name": "ZEAL MINI : LVL 8 - All New RX 9070!", "bundle_or_category": false },
+        { "product_name": "SimForce MAX - 4K Sim Rig", "bundle_or_category": false },
+        { "product_name": "PENTAGON : LVL 10 MAX - Win IEM Tickets", "bundle_or_category": false },
+        { "product_name": "FISHTANK : LVL 11 - Limited Edition", "bundle_or_category": false },
+        { "product_name": "ZOTAC GAMING ZONE - Carrying Case Included", "bundle_or_category": false },
+        { "product_name": "GIGABYTE G6 KF 16\"", "bundle_or_category": false },
+        { "product_name": "Ready-to-Ship", "bundle_or_category": true },
+        { "product_name": "Laptops", "bundle_or_category": true },
+        { "product_name": "FOCUS RXW CORE", "bundle_or_category": false },
+        { "product_name": "CREATOR A3 PRO", "bundle_or_category": false },
+        { "product_name": "Workstations", "bundle_or_category": true }
+      ],
+      "unique_selling_points": {
+        "highlights": [
+          "Budget Friendly", "1080P Sweet Spot", "All New RX 9070!", "4K Sim Rig", 
+          "Win IEM Tickets", "Limited Edition", "Carrying Case Included"
+        ],
+        "partners": ["ZOTAC", "GIGABYTE"]
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Easter Rapid PC",
+          "style_notes": "",
+          "dynamic_text": ["Starts From: $1,299", "$1,600.00", "AMD R5 7500F | RTX 4060"],
+          "audience_notes": "Budget-conscious gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of Zeal Mini : LVL 5 Pro PC",
+          "style_notes": "",
+          "dynamic_text": ["$1,795.00", "$2,300.00", "R5 7500F | RTX 4060Ti", "1080P Sweet Spot"],
+          "audience_notes": "Gamers looking for 1080p performance in a compact build."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ZEAL MINI : LVL 8 PC",
+          "style_notes": "",
+          "dynamic_text": ["$3,099.00", "R7 7700 | RX 9070 XT", "All New RX 9070!"],
+          "audience_notes": "Gamers wanting new AMD GPU in compact form."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of SimForce MAX PC",
+          "style_notes": "",
+          "dynamic_text": ["$5,695.00", "$6,000.00", "R7 9800X3D | RTX 5080", "4K Sim Rig"],
+          "audience_notes": "Sim racing enthusiasts for 4K."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of PENTAGON : LVL 10 MAX PC",
+          "style_notes": "",
+          "dynamic_text": ["$7,595.00", "U9 285K | RTX 5090", "Win IEM Tickets"],
+          "audience_notes": "Extreme gamers, chance to win IEM tickets."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FISHTANK : LVL 11 PC",
+          "style_notes": "",
+          "dynamic_text": ["$8,495.00", "R7 9800X3D | RTX 5080", "Limited Edition"],
+          "audience_notes": "Collectors, high-end gamers wanting unique builds."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of ZOTAC GAMING ZONE",
+          "style_notes": "",
+          "dynamic_text": ["$1,395.00", "R7 8840U | RADEON 780M", "Carrying Case Included"],
+          "audience_notes": "Portable gaming users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of GIGABYTE G6 KF 16\" Laptop",
+          "style_notes": "",
+          "dynamic_text": ["$1,599.00", "$1,999.00", "i7-13620H | RTX 4060"],
+          "audience_notes": "Laptop gamers."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of FOCUS RXW CORE Workstation",
+          "style_notes": "",
+          "dynamic_text": ["$1,695.00", "$1,900.00", "6 CORE / 8GB VRAM | 32GB DDR5"],
+          "audience_notes": "Entry-level professional workstation users."
+        },
+        {
+          "type": "product_tile",
+          "dimensions": "",
+          "content_description": "Image of CREATOR A3 PRO Workstation",
+          "style_notes": "",
+          "dynamic_text": ["$2,745.00", "$3,000.00", "14 CORE / 12GB VRAM | 32GB DDR5"],
+          "audience_notes": "Professional content creators."
+        }
+      ],
+      "graphics_count": 10,
+      "graphics_purpose_summary": "Promote a wide range of tech including Easter specials, gaming PCs, laptops, and workstations.",
+      "reusable_elements": ["SHOP NOW button", "Customise NOW button", "Price display", "Product title with specs and taglines", "SHOP Ready-to-Ship button", "SHOP Laptops button", "SHOP Workstations button"]
+    }
+  },
+  {
+    "CAMPAIGN METADATA": {
+      "campaign_timing": { "start_date": "", "end_date": "" },
+      "campaign_name": "General Footer Information (Empty Content)",
+      "campaign_purpose": {
+        "reason": "Standard email footer, content appears empty.",
+        "success_criteria": ""
+      },
+      "promoted_products": [],
+      "unique_selling_points": {
+        "highlights": [],
+        "partners": []
+      }
+    },
+    "GRAPHICS DESIGN BRIEF": {
+      "graphics": [],
+      "graphics_count": 0,
+      "graphics_purpose_summary": "Provide standard company links and unsubscribe option. Main content missing.",
+      "reusable_elements": ["Website link", "FAQs link", "Knowledge Hub link", "Unsubscribe link", "Company address"]
+    }
+  }
+]
