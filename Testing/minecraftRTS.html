@@ -57,9 +57,8 @@ body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
-    height: auto; /* Allow height to adjust to content */
-    min-height: 650px; /* Slightly reduced min-height */
-    max-height: 90vh; /* Prevent it from becoming too tall */
+    height: 90vh; /* Restored a more fixed viewport height */
+    min-height: 650px; 
 }
 
 .checkout-header {
@@ -319,6 +318,9 @@ body {
     list-style: none;
     padding-left: 0;
     margin: 0;
+    max-height: 160px; /* Allow spec list to scroll if too long */
+    overflow-y: auto;
+    padding-right: 5px; /* Add some padding for scrollbar */
 }
 .option-card .pc-specs ul li {
     margin-bottom: 5px;
@@ -340,8 +342,8 @@ body {
     font-size: 1.3em;
     font-weight: 700;
     color: var(--primary-color);
-    margin-top: 15px; 
-    margin-bottom: 15px;
+    margin-top: 10px; /* Reduced margin */
+    margin-bottom: 10px; /* Reduced margin */
     line-height: 1.4; 
     text-align: center;
 }
@@ -360,7 +362,7 @@ body {
 
 
 .select-button, .next-step-btn, .prev-step-btn, .checkout-button {
-    padding: 12px 25px;
+    padding: 10px 20px; /* Reduced padding */
     font-size: 1em;
     font-weight: 600;
     border-radius: var(--border-radius-sm);
