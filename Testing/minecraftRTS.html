@@ -57,8 +57,9 @@ body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
-    height: 85vh; 
-    min-height: 700px; 
+    height: auto; /* Allow height to adjust to content */
+    min-height: 650px; /* Slightly reduced min-height */
+    max-height: 90vh; /* Prevent it from becoming too tall */
 }
 
 .checkout-header {
@@ -399,7 +400,7 @@ body {
     align-items: center;
     padding: 0; 
     border: 1px solid var(--border-color);
-    min-height: 300px; 
+    min-height: 250px; /* Reduced min-height */
     position: relative; 
     overflow: hidden; 
     transition: background-color var(--transition-speed) ease; 
@@ -426,7 +427,7 @@ body {
 .design-preview-area #artworkOnPcPreview { 
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: contain; /* Changed from cover to contain */
     display: none; 
     padding: 0; 
     transition: padding var(--transition-speed) ease;
@@ -445,9 +446,9 @@ body {
     flex: 1; 
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    overflow-y: auto; 
-    padding-right: 10px; 
+    gap: 15px; /* Slightly reduced gap */
+    overflow-y: hidden; /* Removed auto scrollbar */
+    padding-right: 5px; /* Reduced padding */
 }
 
 .design-option { 
@@ -465,8 +466,8 @@ body {
 
 .gallery-grid { 
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); /* Reduced minmax width */
+    gap: 8px; /* Reduced gap */
 }
 .gallery-item {
     background-color: var(--surface-light);
@@ -496,7 +497,7 @@ body {
 }
 .gallery-item img {
     width: 100%;
-    height: 80px; 
+    height: 65px; /* Reduced height */
     object-fit: cover; 
     border-radius: 0; 
     background-color: var(--surface-dark); 
@@ -507,18 +508,18 @@ body {
 }
 
 .gallery-item p { /* Design Name */
-    font-size: 0.8em;
+    font-size: 0.75em; /* Reduced font size */
     color: var(--text-secondary);
     margin: 0;
     transition: color var(--transition-speed) ease;
-    padding: 5px 8px 0; /* Removed bottom padding */
-    margin-bottom: 3px; /* Space between name and price */
+    padding: 4px 6px 0; 
+    margin-bottom: 2px; 
 }
 
 /* Fix 2: Gallery Item Price Styling */
 .gallery-item .design-item-price {
-    font-size: 0.75em;
-    line-height: 1.2;
+    font-size: 0.7em; /* Reduced font size */
+    line-height: 1.1;
 }
 .gallery-item .current-design-price {
     color: var(--success-color);
