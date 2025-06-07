@@ -790,47 +790,45 @@ United Kingdom</textarea>
             const originalMarginLeft = invoiceElement.style.marginLeft;
             const originalOverflow = invoiceElement.style.overflow;
             
-            // Define a fixed width for capture to ensure a document-like aspect ratio
-            const captureWidthPx = 1000; // Capture at 1000px width
+            const captureWidthPx = 1000; 
 
-            // Temporarily apply styles for capture
             invoiceElement.style.width = `${captureWidthPx}px`;
-            invoiceElement.style.height = 'auto'; // Let height adjust to content
+            invoiceElement.style.height = 'auto'; 
             invoiceElement.style.transform = 'none';
             invoiceElement.style.marginLeft = '0';
             invoiceElement.style.overflow = 'visible';
             
-            // Force a reflow to get the correct scrollHeight at the new width
-            // Accessing offsetHeight can trigger reflow
-            const captureHeightPx = invoiceElement.scrollHeight; 
-
-            // Ensure parent preview-panel doesn't clip
             const previewPanel = document.querySelector('.preview-panel');
             const originalPreviewPanelOverflow = previewPanel.style.overflow;
             previewPanel.style.overflow = 'visible';
 
+            // Yield to browser for rendering/reflow before measuring height and capturing
+            await new Promise(resolve => setTimeout(resolve, 0));
+
+            const captureHeightPx = invoiceElement.scrollHeight; 
+
             try {
                 const canvas = await html2canvas(invoiceElement, {
-                    scale: window.devicePixelRatio * 1.5, // Adjusted scale slightly
+                    scale: 2, // Use a fixed scale for consistent quality
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
-                    width: captureWidthPx, // Use the fixed capture width
-                    height: captureHeightPx, // Use the calculated height at that width
-                    windowWidth: captureWidthPx, // Context for rendering
+                    width: captureWidthPx, 
+                    height: captureHeightPx, 
+                    windowWidth: captureWidthPx, 
                     windowHeight: captureHeightPx,
-                    scrollX: 0, // Element is already positioned at its top-left for capture
+                    scrollX: 0, 
                     scrollY: 0
                 });
                 
                 // Restore original styles
-                invoiceElement.style.width = originalWidth;
+                invoiceElement.style.transform = originalTransform; // Corrected typo here
                 invoiceElement.style.width = originalWidth;
                 invoiceElement.style.marginLeft = originalMarginLeft;
                 invoiceElement.style.overflow = originalOverflow;
                 previewPanel.style.overflow = originalPreviewPanelOverflow;
 
-                const pdf = new jsPDF('p', 'mm', 'a4'); // Portrait, mm, A4
+                const pdf = new jsPDF('p', 'mm', 'a4'); 
                 const imgData = canvas.toDataURL('image/png', 1.0); // Use highest quality PNG
                 
                 const pdfPageWidth = pdf.internal.pageSize.getWidth();
