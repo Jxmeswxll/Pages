@@ -789,14 +789,20 @@ United Kingdom</textarea>
             const originalWidth = invoiceElement.style.width;
             const originalMarginLeft = invoiceElement.style.marginLeft;
             const originalOverflow = invoiceElement.style.overflow;
+            const companyDetailsElement = invoiceElement.querySelector('.company-details');
+            const originalCompanyDetailsFlexDirection = companyDetailsElement ? companyDetailsElement.style.flexDirection : '';
             
-            const captureWidthPx = 750; // Further reduced width to make content taller
+            const captureWidthPx = 780; // Reverted to 780px, which didn't cut off content
 
             invoiceElement.style.width = `${captureWidthPx}px`;
             invoiceElement.style.height = 'auto'; 
             invoiceElement.style.transform = 'none';
             invoiceElement.style.marginLeft = '0';
             invoiceElement.style.overflow = 'visible';
+
+            if (companyDetailsElement) {
+                companyDetailsElement.style.flexDirection = 'row'; // Force side-by-side for PDF capture
+            }
             
             const previewPanel = document.querySelector('.preview-panel');
             const originalPreviewPanelOverflow = previewPanel.style.overflow;
@@ -829,6 +835,9 @@ United Kingdom</textarea>
                 invoiceElement.style.marginLeft = originalMarginLeft;
                 invoiceElement.style.overflow = originalOverflow;
                 previewPanel.style.overflow = originalPreviewPanelOverflow;
+                if (companyDetailsElement) {
+                    companyDetailsElement.style.flexDirection = originalCompanyDetailsFlexDirection; // Restore original flex-direction
+                }
 
                 const pdf = new jsPDF('p', 'mm', 'a4'); 
                 const imgData = canvas.toDataURL('image/png', 1.0); // Use highest quality PNG
@@ -885,6 +894,9 @@ United Kingdom</textarea>
                 invoiceElement.style.marginLeft = originalMarginLeft;
                 invoiceElement.style.overflow = originalOverflow;
                 previewPanel.style.overflow = originalPreviewPanelOverflow;
+                if (companyDetailsElement) { // Also restore in catch block
+                    companyDetailsElement.style.flexDirection = originalCompanyDetailsFlexDirection;
+                }
             }
         }
     </script>
