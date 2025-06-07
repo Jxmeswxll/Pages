@@ -802,8 +802,10 @@ United Kingdom</textarea>
             const originalPreviewPanelOverflow = previewPanel.style.overflow;
             previewPanel.style.overflow = 'visible';
 
-            // Yield to browser for rendering/reflow before measuring height and capturing
-            await new Promise(resolve => setTimeout(resolve, 0));
+            // Yield to browser for rendering/reflow using requestAnimationFrame for better timing
+            await new Promise(resolve => requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            }));
 
             const captureHeightPx = invoiceElement.scrollHeight; 
 
