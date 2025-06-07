@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            min-height: calc(100vh - 40px);
+        }
+        
+        .form-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+        }
+        
+        .preview-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+        }
+        
+        .panel-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .project-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        /* Invoice Preview Styles */
+        .invoice-preview {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            transform: scale(0.8);
+            transform-origin: top left;
+            width: 125%; /* To counteract scale(0.8) and fill preview panel */
+            margin-left: -12.5%; /* To center the scaled content */
+        }
+        
+        .invoice-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .invoice-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+        
+        .invoice-body {
+            padding: 20px;
+            font-size: 12px;
+        }
+        
+        .company-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .company-block {
+            flex: 1;
+        }
+        
+        .company-block h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 5px;
+        }
+        
+        .company-block p {
+            margin-bottom: 3px;
+            color: #555;
+        }
+        
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .detail-block {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .items-table th {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .items-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .total-row {
+            background-color: #f0f0f0; /* Lighter background for totals */
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        .total-row td {
+             border-top: 2px solid #34495e;
+        }
+        
+        .currency-conversion {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 11px;
+        }
+        
+        .currency-conversion h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .exchange-rate-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 11px;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .payment-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .invoice-preview {
+                transform: scale(1);
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .company-details {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Panel -->
+        <div class="form-panel">
+            <h2 class="panel-title">Invoice Generator</h2>
+            
+            <div class="form-section">
+                <h3>Your Company Details</h3>
+                <div class="form-group">
+                    <label for="fromCompany">Company Name</label>
+                    <input type="text" id="fromCompany" placeholder="Your Company Name" value="Digital Solutions Australia Pty Ltd">
+                </div>
+                <div class="form-group">
+                    <label for="fromAddress">Address</label>
+                    <textarea id="fromAddress" rows="3" placeholder="Your company address">Level 15, 120 Collins Street
+Melbourne VIC 3000
+Australia</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fromABN">ABN/Registration</label>
+                        <input type="text" id="fromABN" placeholder="ABN: 12 345 678 901" value="ABN: 12 345 678 901">
+                    </div>
+                    <div class="form-group">
+                        <label for="fromEmail">Email</label>
+                        <input type="email" id="fromEmail" placeholder="billing@company.com" value="billing@digitalsolutions.com.au">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fromPhone">Phone</label>
+                    <input type="text" id="fromPhone" placeholder="+61 3 9876 5432" value="+61 3 9876 5432">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Bill To</h3>
+                <div class="form-group">
+                    <label for="toCompany">Client Company Name</label>
+                    <input type="text" id="toCompany" placeholder="Client Company Name" value="Tech Innovations Ltd">
+                </div>
+                <div class="form-group">
+                    <label for="toAddress">Client Address</label>
+                    <textarea id="toAddress" rows="3" placeholder="Client company address">25 Canary Wharf
+London E14 5AB
+United Kingdom</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="toVAT">VAT/Tax Number</label>
+                        <input type="text" id="toVAT" placeholder="VAT: GB123456789" value="VAT: GB123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="toEmail">Client Email</label>
+                        <input type="email" id="toEmail" placeholder="client@company.com" value="accounts@techinnovations.co.uk">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toPhone">Client Phone</label>
+                    <input type="text" id="toPhone" placeholder="+44 20 7946 0958" value="+44 20 7946 0958">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Invoice Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="invoiceNumber">Invoice Number</label>
+                        <input type="text" id="invoiceNumber" placeholder="INV-2025-001" value="INV-2025-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceDate">Invoice Date</label>
+                        <input type="date" id="invoiceDate" onchange="fetchExchangeRate()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency">Invoice Currency</label>
+                        <select id="currency" onchange="fetchExchangeRate()">
+                            <option value="GBP">GBP (£)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="NZD">NZD ($)</option>
+                            <option value="SGD">SGD ($)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exchangeRate">Exchange Rate (1 <span id="currencyCode">GBP</span> = AUD)</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="number" id="exchangeRate" step="0.0001" placeholder="1.8500" value="1.8500">
+                        <button type="button" class="btn btn-primary" onclick="fetchExchangeRate()" style="padding: 8px 16px; font-size: 12px;">
+                            Fetch Rate
+                        </button>
+                        <span id="exchangeRateStatus" style="font-size: 12px; color: #666;"></span>
+                    </div>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Rate will be automatically fetched for the invoice date. You can also enter manually.
+                    </small>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Projects & Services</h3>
+                <div id="projectsContainer">
+                    <div class="project-item">
+                        <div class="form-group">
+                            <label>Project Description</label>
+                            <input type="text" class="project-desc" placeholder="Project Alpha - Web Development" value="Project Alpha - Web Development Services">
+                        </div>
+                        <div class="form-group">
+                            <label>Project Details</label>
+                            <input type="text" class="project-details" placeholder="Additional details" value="Custom web application development and deployment">
+                        </div>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Hours</label>
+                                <input type="number" class="project-hours" placeholder="20" value="20" min="0" step="0.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Rate</label>
+                                <input type="number" class="project-rate" placeholder="20" value="20" min="0" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" class="project-amount" placeholder="400" readonly>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="removeProject(this)">Remove Project</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addProject()">Add Project</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>Payment Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bankName">Bank Name</label>
+                        <input type="text" id="bankName" placeholder="Commonwealth Bank of Australia" value="Commonwealth Bank of Australia">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountName">Account Name</label>
+                        <input type="text" id="accountName" placeholder="Your Company Name" value="Digital Solutions Australia Pty Ltd">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bsb">BSB/Sort Code</label>
+                        <input type="text" id="bsb" placeholder="062-001" value="062-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber" placeholder="1234 5678" value="1234 5678">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="swiftCode">SWIFT Code</label>
+                    <input type="text" id="swiftCode" placeholder="CTBAAU2S" value="CTBAAU2S">
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" onclick="updatePreview()">Update Preview</button>
+                <button type="button" class="btn btn-success" onclick="exportToPDF()">Export to PDF</button>
+            </div>
+        </div>
+        
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <h2 class="panel-title">Invoice Preview</h2>
+            <div id="invoicePreview" class="invoice-preview">
+                <!-- Invoice content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 30);
+            
+            document.getElementById('invoiceDate').value = today;
+            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+            
+            document.getElementById('currencyCode').textContent = document.getElementById('currency').value;
+            
+            fetchExchangeRate();
+            
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('project-hours') || 
+                    e.target.classList.contains('project-rate') ||
+                    e.target.id === 'exchangeRate') {
+                    calculateAmounts();
+                    updatePreview();
+                } else if (e.target.closest('.form-panel') && e.target.id !== 'exchangeRate') {
+                    // For other form inputs, just update preview without full recalculation unless needed
+                    updatePreview();
+                }
+            });
+            
+            // Initial calculation and preview
+            calculateAmounts();
+            updatePreview();
+        });
+        
+        function getCurrencySymbol(currency) {
+            const symbols = {
+                'GBP': '£', 'USD': '$', 'EUR': '€',
+                'AUD': '$', 'CAD': '$', 'NZD': '$', 'SGD': '$'
+            };
+            return symbols[currency] || currency;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return 'Invalid Date';
+            return date.toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            });
+        }
+
+        function calculateAmounts() {
+            const projects = document.querySelectorAll('.project-item');
+            projects.forEach(project => {
+                const hours = parseFloat(project.querySelector('.project-hours').value) || 0;
+                const rate = parseFloat(project.querySelector('.project-rate').value) || 0;
+                const amount = hours * rate;
+                project.querySelector('.project-amount').value = amount.toFixed(2);
+            });
+        }
+
+        function addProject() {
+            const container = document.getElementById('projectsContainer');
+            const projectDiv = document.createElement('div');
+            projectDiv.className = 'project-item';
+            projectDiv.innerHTML = `
+                <div class="form-group">
+                    <label>Project Description</label>
+                    <input type="text" class="project-desc" placeholder="Project Description">
+                </div>
+                <div class="form-group">
+                    <label>Project Details</label>
+                    <input type="text" class="project-details" placeholder="Additional details">
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>Hours</label>
+                        <input type="number" class="project-hours" placeholder="0" value="0" min="0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Rate</label>
+                        <input type="number" class="project-rate" placeholder="0" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" class="project-amount" placeholder="0" readonly>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeProject(this)">Remove Project</button>
+            `;
+            container.appendChild(projectDiv);
+            calculateAmounts();
+            updatePreview();
+        }
+        
+        function removeProject(button) {
+            button.parentElement.remove();
+            calculateAmounts();
+            updatePreview();
+        }
+
+        async function fetchExchangeRate() {
+            const currency = document.getElementById('currency').value;
+            const dateStr = document.getElementById('invoiceDate').value;
+            const statusElement = document.getElementById('exchangeRateStatus');
+            const exchangeRateInput = document.getElementById('exchangeRate');
+            
+            document.getElementById('currencyCode').textContent = currency;
+
+            if (currency === 'AUD') {
+                exchangeRateInput.value = '1.0000';
+                statusElement.textContent = 'Rate is 1.0000 for AUD';
+                statusElement.style.color = '#666';
+                calculateAmounts(); 
+                updatePreview();    
+                return;
+            }
+            
+            if (!dateStr) {
+                statusElement.textContent = 'Please select an invoice date.';
+                statusElement.style.color = '#e74c3c';
+                // Potentially clear exchange rate or set to a default if date is missing
+                // exchangeRateInput.value = ''; 
+                calculateAmounts();
+                updatePreview();
+                return;
+            }
+
+            statusElement.textContent = 'Fetching rate...';
+            statusElement.style.color = '#666';
+            
+            try {
+                const [year, month, day] = dateStr.split('-');
+                // Using v6 API as v4 might be deprecated or less reliable.
+                // Requires an API key, but free tier is available. For this example, I'll use a placeholder.
+                // User would need to replace 'YOUR_API_KEY'
+                // const apiKey = 'YOUR_API_KEY'; 
+                // const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/history/${currency}/${year}/${month}/${day}`;
+                
+                // Sticking to v4 as in original, assuming it works for user or they have a key for it.
+                // The v4 history endpoint: https://api.exchangerate-api.com/v4/history/BASE_CURRENCY/YYYY/MM/DD
+                // The original code had `https://api.exchangerate-api.com/v4/history/${currency}/${date}` which is not standard for YYYY/MM/DD
+                // Correcting to use YYYY/MM/DD format for the v4 history endpoint.
+                const apiUrl = `https://api.exchangerate-api.com/v4/history/${currency}/${year}/${month}/${day}`;
+
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API request failed: ${response.status} ${response.statusText}. Response: ${errorText}`);
+                }
+                const data = await response.json();
+                
+                if (data.rates && data.rates.AUD) {
+                    exchangeRateInput.value = data.rates.AUD.toFixed(4);
+                    statusElement.textContent = `✓ Rate updated (${new Date().toLocaleTimeString()})`;
+                    statusElement.style.color = '#27ae60';
+                } else {
+                    throw new Error('AUD rate not found in API response.');
+                }
+                
+            } catch (error) {
+                console.error('Error fetching exchange rate:', error);
+                statusElement.textContent = '⚠ Fetch failed - enter manually';
+                statusElement.style.color = '#e74c3c';
+                const fallbackRates = {'GBP': 1.85, 'USD': 1.52, 'EUR': 1.65, 'CAD': 1.12, 'NZD': 0.92, 'SGD': 1.13};
+                if (fallbackRates[currency]) {
+                    exchangeRateInput.value = fallbackRates[currency].toFixed(4);
+                }
+            } finally {
+                calculateAmounts();
+                updatePreview();
+            }
+        }
+        
+        function updatePreview() {
+            const currency = document.getElementById('currency').value;
+            const currencySymbol = getCurrencySymbol(currency);
+            const exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || 1;
+            
+            const data = {
+                fromCompany: document.getElementById('fromCompany').value,
+                fromAddress: document.getElementById('fromAddress').value,
+                fromABN: document.getElementById('fromABN').value,
+                fromEmail: document.getElementById('fromEmail').value,
+                fromPhone: document.getElementById('fromPhone').value,
+                toCompany: document.getElementById('toCompany').value,
+                toAddress: document.getElementById('toAddress').value,
+                toVAT: document.getElementById('toVAT').value,
+                toEmail: document.getElementById('toEmail').value,
+                toPhone: document.getElementById('toPhone').value,
+                invoiceNumber: document.getElementById('invoiceNumber').value,
+                invoiceDate: document.getElementById('invoiceDate').value,
+                dueDate: document.getElementById('dueDate').value,
+                currency: currency,
+                bankName: document.getElementById('bankName').value,
+                accountName: document.getElementById('accountName').value,
+                bsb: document.getElementById('bsb').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                swiftCode: document.getElementById('swiftCode').value
+            };
+            
+            const projects = [];
+            const projectItems = document.querySelectorAll('.project-item');
+            let subtotal = 0;
+            
+            projectItems.forEach(item => {
+                const desc = item.querySelector('.project-desc').value;
+                const details = item.querySelector('.project-details').value;
+                const hours = parseFloat(item.querySelector('.project-hours').value) || 0;
+                const rate = parseFloat(item.querySelector('.project-rate').value) || 0;
+                const amount = parseFloat(item.querySelector('.project-amount').value) || (hours * rate); // Use pre-calculated amount
+                
+                if (desc) { // Allow items even if amount is 0, for fixed price items entered as 0 hours/rate but with amount
+                    projects.push({ desc, details, hours, rate, amount });
+                    subtotal += amount;
+                }
+            });
+            
+            const audTotal = subtotal * exchangeRate;
+            
+            let projectsHTML = '';
+            projects.forEach(project => {
+                const itemAudAmount = project.amount * exchangeRate;
+                projectsHTML += `
+                    <tr>
+                        <td>
+                            <strong>${project.desc || '[Description]'}</strong><br>
+                            <small style="color: #666;">${project.details || '&nbsp;'}</small>
+                        </td>
+                        <td class="text-right">${project.hours.toFixed(2)}</td>
+                        <td class="text-right">${currencySymbol}${project.rate.toFixed(2)}</td>
+                        <td class="text-right">
+                            ${currencySymbol}${project.amount.toFixed(2)}
+                            ${currency !== 'AUD' ? `<br><small style="color: #666;">${getCurrencySymbol('AUD')}${itemAudAmount.toFixed(2)} AUD</small>` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+             if (projects.length === 0) {
+                projectsHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px;">No items added.</td></tr>`;
+            }
+            
+            const conversionHTML = currency !== 'AUD' ? `
+                <div class="currency-conversion">
+                    <h4>Currency Conversion for Australian Tax Records</h4>
+                    <div class="exchange-rate-info">
+                        <strong>Exchange Rate (${formatDate(data.invoiceDate)}):</strong> 1 ${currency} = ${exchangeRate.toFixed(4)} AUD
+                    </div>
+                    <p><strong>Invoice Amount (${currency}):</strong> ${currencySymbol}${subtotal.toFixed(2)}</p>
+                    <p><strong>AUD Equivalent:</strong> ${getCurrencySymbol('AUD')}${audTotal.toFixed(2)} AUD</p>
+                    <p><small>This AUD amount should be used for Australian tax reporting purposes.</small></p>
+                </div>
+            ` : '';
+            
+            const invoiceHTML = `
+                <div class="invoice-header">
+                    <h1 class="invoice-title">INVOICE</h1>
+                    <p>Invoice #${data.invoiceNumber || '[Invoice Number]'}</p>
+                </div>
+                <div class="invoice-body">
+                    <div class="company-details">
+                        <div class="company-block">
+                            <h4>From</h4>
+                            <p><strong>${data.fromCompany || '[Your Company]'}</strong></p>
+                            ${(data.fromAddress || '[Your Address]').split('\n').map(line => `<p>${line}</p>`).join('')}
+                            <p>${data.fromABN || '[Your ABN]'}</p>
+                            <p>Email: ${data.fromEmail || '[Your Email]'}</p>
+                            <p>Phone: ${data.fromPhone || '[Your Phone]'}</p>
+                        </div>
+                        <div class="company-block">
+                            <h4>Bill To</h4>
+                            <p><strong>${data.toCompany || '[Client Company]'}</strong></p>
+                            ${(data.toAddress || '[Client Address]').split('\n').map(line => `<p>${line}</p>`).join('')}
+                            <p>${data.toVAT || '[Client VAT/Tax ID]'}</p>
+                            <p>Email: ${data.toEmail || '[Client Email]'}</p>
+                            <p>Phone: ${data.toPhone || '[Client Phone]'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-details">
+                        <div class="detail-block">
+                            <p><strong>Invoice Date:</strong> ${formatDate(data.invoiceDate)}</p>
+                        </div>
+                        <div class="detail-block">
+                            <p><strong>Due Date:</strong> ${formatDate(data.dueDate)}</p>
+                        </div>
+                        <div class="detail-block">
+                            <p><strong>Currency:</strong> ${data.currency}</p>
+                        </div>
+                    </div>
+                    
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-right">Hours</th>
+                                <th class="text-right">Rate (${currencySymbol})</th>
+                                <th class="text-right">Amount (${currencySymbol})</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${projectsHTML}
+                            <tr class="total-row">
+                                <td colspan="3" class="text-right"><strong>SUBTOTAL</strong></td>
+                                <td class="text-right"><strong>${currencySymbol}${subtotal.toFixed(2)}</strong></td>
+                            </tr>
+                            ${currency !== 'AUD' ? `
+                            <tr class="total-row">
+                                <td colspan="3" class="text-right"><strong>TOTAL (${currency})</strong></td>
+                                <td class="text-right"><strong>${currencySymbol}${subtotal.toFixed(2)}</strong></td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="3" class="text-right"><strong>EQUIVALENT TOTAL (AUD)</strong></td>
+                                <td class="text-right"><strong>${getCurrencySymbol('AUD')}${audTotal.toFixed(2)}</strong></td>
+                            </tr>
+                            ` : `
+                            <tr class="total-row">
+                                <td colspan="3" class="text-right"><strong>TOTAL (AUD)</strong></td>
+                                <td class="text-right"><strong>${getCurrencySymbol('AUD')}${audTotal.toFixed(2)}</strong></td>
+                            </tr>
+                            `}
+                        </tbody>
+                    </table>
+                    
+                    ${conversionHTML}
+                    
+                    <div class="payment-info">
+                        <h4>Payment Information</h4>
+                        <p><strong>Bank:</strong> ${data.bankName || '[Bank Name]'}</p>
+                        <p><strong>Account Name:</strong> ${data.accountName || '[Account Name]'}</p>
+                        <p><strong>BSB/Sort Code:</strong> ${data.bsb || '[BSB/Sort Code]'}</p>
+                        <p><strong>Account Number:</strong> ${data.accountNumber || '[Account Number]'}</p>
+                        <p><strong>SWIFT Code:</strong> ${data.swiftCode || '[SWIFT Code]'}</p>
+                        <p><strong>Reference:</strong> ${data.invoiceNumber || '[Invoice Number]'}</p>
+                    </div>
+                    
+                    <div class="payment-info">
+                        <h4>Terms & Conditions</h4>
+                        <p>Payment is due within 30 days of invoice date. Late payments may incur interest charges. ${currency !== 'AUD' ? 'Exchange rate used is based on the invoice date for Australian tax compliance.' : ''}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('invoicePreview').innerHTML = invoiceHTML;
+        }
+        
+        async function exportToPDF() {
+            if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                alert('Error: jsPDF library not loaded. Cannot export to PDF.');
+                console.error('jsPDF is not defined.');
+                return;
+            }
+            if (typeof html2canvas === 'undefined') {
+                alert('Error: html2canvas library not loaded. Cannot export to PDF.');
+                console.error('html2canvas is not defined.');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const invoiceElement = document.getElementById('invoicePreview');
+            const originalScale = invoiceElement.style.transform;
+            const originalWidth = invoiceElement.style.width;
+            const originalMarginLeft = invoiceElement.style.marginLeft;
+
+            invoiceElement.style.transform = 'scale(1)';
+            invoiceElement.style.width = '100%';
+            invoiceElement.style.marginLeft = '0';
+            
+            try {
+                const canvas = await html2canvas(invoiceElement, {
+                    scale: 2, 
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false, 
+                    width: invoiceElement.scrollWidth, // Use scrollWidth for full content width
+                    height: invoiceElement.scrollHeight, // Use scrollHeight for full content height
+                    windowWidth: document.documentElement.scrollWidth,
+                    windowHeight: document.documentElement.scrollHeight
+                });
+                
+                invoiceElement.style.transform = originalScale;
+                invoiceElement.style.width = originalWidth;
+                invoiceElement.style.marginLeft = originalMarginLeft;
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                
+                const imgProps = pdf.getImageProperties(imgData);
+                const imgAspectRatio = imgProps.width / imgProps.height;
+                
+                let newImgWidth = pdfWidth - 20; // With some margin
+                let newImgHeight = newImgWidth / imgAspectRatio;
+
+                if (newImgHeight > pdfHeight - 20) { // With some margin
+                    newImgHeight = pdfHeight - 20;
+                    newImgWidth = newImgHeight * imgAspectRatio;
+                }
+                
+                const x = (pdfWidth - newImgWidth) / 2;
+                const y = 10; // Margin from top
+                
+                pdf.addImage(imgData, 'PNG', x, y, newImgWidth, newImgHeight);
+                
+                const invoiceNumber = document.getElementById('invoiceNumber').value || 'invoice';
+                pdf.save(`${invoiceNumber}.pdf`);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert(`Error generating PDF: ${error.message}. Please check console for details.`);
+                invoiceElement.style.transform = originalScale;
+                invoiceElement.style.width = originalWidth;
+                invoiceElement.style.marginLeft = originalMarginLeft;
+            }
+        }
+    </script>
+</body>
+</html>
