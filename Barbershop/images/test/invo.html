@@ -169,12 +169,12 @@
         .invoice-preview {
             border: 1px solid #ddd;
             border-radius: 8px;
-            overflow: hidden;
+            overflow: auto; /* Allow scroll if content overflows */
             background: white;
-            transform: scale(0.8);
+            transform: scale(1); /* Display at full scale */
             transform-origin: top left;
-            width: 125%; /* To counteract scale(0.8) and fill preview panel */
-            margin-left: -12.5%; /* To center the scaled content */
+            width: 100%; 
+            margin-left: 0; 
         }
         
         .invoice-header {
@@ -394,7 +394,7 @@ United Kingdom</textarea>
                     </div>
                     <div class="form-group">
                         <label for="invoiceDate">Invoice Date</label>
-                        <input type="date" id="invoiceDate" onchange="fetchExchangeRate()">
+                        <input type="date" id="invoiceDate">
                     </div>
                 </div>
                 <div class="form-row">
@@ -404,7 +404,7 @@ United Kingdom</textarea>
                     </div>
                     <div class="form-group">
                         <label for="currency">Invoice Currency</label>
-                        <select id="currency" onchange="fetchExchangeRate()">
+                        <select id="currency" onchange="document.getElementById('currencyCode').textContent = this.value; updatePreview();">
                             <option value="GBP">GBP (£)</option>
                             <option value="USD">USD ($)</option>
                             <option value="EUR">EUR (€)</option>
@@ -418,14 +418,10 @@ United Kingdom</textarea>
                 <div class="form-group">
                     <label for="exchangeRate">Exchange Rate (1 <span id="currencyCode">GBP</span> = AUD)</label>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="number" id="exchangeRate" step="0.0001" placeholder="1.8500" value="1.8500">
-                        <button type="button" class="btn btn-primary" onclick="fetchExchangeRate()" style="padding: 8px 16px; font-size: 12px;">
-                            Fetch Rate
-                        </button>
-                        <span id="exchangeRateStatus" style="font-size: 12px; color: #666;"></span>
+                        <input type="number" id="exchangeRate" step="0.0001" placeholder="Enter rate manually" value="1.8500">
                     </div>
                     <small style="color: #666; display: block; margin-top: 5px;">
-                        Rate will be automatically fetched for the invoice date. You can also enter manually.
+                        Please enter the exchange rate manually.
                     </small>
                 </div>
             </div>
@@ -516,7 +512,7 @@ United Kingdom</textarea>
             
             document.getElementById('currencyCode').textContent = document.getElementById('currency').value;
             
-            fetchExchangeRate();
+            // fetchExchangeRate(); // Removed API call
             
             document.addEventListener('input', function(e) {
                 if (e.target.classList.contains('project-hours') || 
@@ -601,79 +597,8 @@ United Kingdom</textarea>
             calculateAmounts();
             updatePreview();
         }
-
-        async function fetchExchangeRate() {
-            const currency = document.getElementById('currency').value;
-            const dateStr = document.getElementById('invoiceDate').value;
-            const statusElement = document.getElementById('exchangeRateStatus');
-            const exchangeRateInput = document.getElementById('exchangeRate');
-            
-            document.getElementById('currencyCode').textContent = currency;
-
-            if (currency === 'AUD') {
-                exchangeRateInput.value = '1.0000';
-                statusElement.textContent = 'Rate is 1.0000 for AUD';
-                statusElement.style.color = '#666';
-                calculateAmounts(); 
-                updatePreview();    
-                return;
-            }
-            
-            if (!dateStr) {
-                statusElement.textContent = 'Please select an invoice date.';
-                statusElement.style.color = '#e74c3c';
-                // Potentially clear exchange rate or set to a default if date is missing
-                // exchangeRateInput.value = ''; 
-                calculateAmounts();
-                updatePreview();
-                return;
-            }
-
-            statusElement.textContent = 'Fetching rate...';
-            statusElement.style.color = '#666';
-            
-            try {
-                const [year, month, day] = dateStr.split('-');
-                // Using v6 API as v4 might be deprecated or less reliable.
-                // Requires an API key, but free tier is available. For this example, I'll use a placeholder.
-                // User would need to replace 'YOUR_API_KEY'
-                // const apiKey = 'YOUR_API_KEY'; 
-                // const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/history/${currency}/${year}/${month}/${day}`;
-                
-                // Sticking to v4 as in original, assuming it works for user or they have a key for it.
-                // The v4 history endpoint: https://api.exchangerate-api.com/v4/history/BASE_CURRENCY/YYYY/MM/DD
-                // The original code had `https://api.exchangerate-api.com/v4/history/${currency}/${date}` which is not standard for YYYY/MM/DD
-                // Correcting to use YYYY/MM/DD format for the v4 history endpoint.
-                const apiUrl = `https://api.exchangerate-api.com/v4/history/${currency}/${year}/${month}/${day}`;
-
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`API request failed: ${response.status} ${response.statusText}. Response: ${errorText}`);
-                }
-                const data = await response.json();
-                
-                if (data.rates && data.rates.AUD) {
-                    exchangeRateInput.value = data.rates.AUD.toFixed(4);
-                    statusElement.textContent = `✓ Rate updated (${new Date().toLocaleTimeString()})`;
-                    statusElement.style.color = '#27ae60';
-                } else {
-                    throw new Error('AUD rate not found in API response.');
-                }
-                
-            } catch (error) {
-                console.error('Error fetching exchange rate:', error);
-                statusElement.textContent = '⚠ Fetch failed - enter manually';
-                statusElement.style.color = '#e74c3c';
-                const fallbackRates = {'GBP': 1.85, 'USD': 1.52, 'EUR': 1.65, 'CAD': 1.12, 'NZD': 0.92, 'SGD': 1.13};
-                if (fallbackRates[currency]) {
-                    exchangeRateInput.value = fallbackRates[currency].toFixed(4);
-                }
-            } finally {
-                calculateAmounts();
-                updatePreview();
-            }
-        }
+        
+        // Removed fetchExchangeRate function as per user request for manual entry.
         
         function updatePreview() {
             const currency = document.getElementById('currency').value;
@@ -859,51 +784,87 @@ United Kingdom</textarea>
             }
             const { jsPDF } = window.jspdf;
             const invoiceElement = document.getElementById('invoicePreview');
-            const originalScale = invoiceElement.style.transform;
+            // Temporarily reset styles for accurate full-page capture
+            const originalTransform = invoiceElement.style.transform;
             const originalWidth = invoiceElement.style.width;
             const originalMarginLeft = invoiceElement.style.marginLeft;
+            const originalOverflow = invoiceElement.style.overflow;
 
-            invoiceElement.style.transform = 'scale(1)';
-            invoiceElement.style.width = '100%';
+            invoiceElement.style.transform = 'none'; // No scaling
+            invoiceElement.style.width = 'auto';    // Let content define width
             invoiceElement.style.marginLeft = '0';
-            
+            invoiceElement.style.overflow = 'visible'; // Ensure all content is visible
+
+            // Ensure parent preview-panel doesn't clip if invoice-preview is wider
+            const previewPanel = document.querySelector('.preview-panel');
+            const originalPreviewPanelOverflow = previewPanel.style.overflow;
+            previewPanel.style.overflow = 'visible';
+
+
             try {
                 const canvas = await html2canvas(invoiceElement, {
-                    scale: 2, 
+                    scale: window.devicePixelRatio * 2, // Increase scale for better quality
                     useCORS: true,
                     backgroundColor: '#ffffff',
-                    logging: false, 
-                    width: invoiceElement.scrollWidth, // Use scrollWidth for full content width
-                    height: invoiceElement.scrollHeight, // Use scrollHeight for full content height
-                    windowWidth: document.documentElement.scrollWidth,
-                    windowHeight: document.documentElement.scrollHeight
+                    logging: false,
+                    // Ensure html2canvas captures the full dimensions of the content
+                    width: invoiceElement.offsetWidth, 
+                    height: invoiceElement.offsetHeight,
+                    scrollX: -window.scrollX, // Capture from the top-left of the element
+                    scrollY: -window.scrollY,
+                    windowWidth: invoiceElement.scrollWidth, // Provide context of the element's full scrollable width
+                    windowHeight: invoiceElement.scrollHeight // Provide context of the element's full scrollable height
                 });
                 
-                invoiceElement.style.transform = originalScale;
+                // Restore original styles
+                invoiceElement.style.transform = originalTransform;
                 invoiceElement.style.width = originalWidth;
                 invoiceElement.style.marginLeft = originalMarginLeft;
+                invoiceElement.style.overflow = originalOverflow;
+                previewPanel.style.overflow = originalPreviewPanelOverflow;
 
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png', 1.0);
+                const pdf = new jsPDF('p', 'mm', 'a4'); // Portrait, mm, A4
+                const imgData = canvas.toDataURL('image/png', 1.0); // Use highest quality PNG
                 
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const pdfPageWidth = pdf.internal.pageSize.getWidth();
+                const pdfPageHeight = pdf.internal.pageSize.getHeight();
                 
-                const imgProps = pdf.getImageProperties(imgData);
-                const imgAspectRatio = imgProps.width / imgProps.height;
-                
-                let newImgWidth = pdfWidth - 20; // With some margin
-                let newImgHeight = newImgWidth / imgAspectRatio;
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
 
-                if (newImgHeight > pdfHeight - 20) { // With some margin
-                    newImgHeight = pdfHeight - 20;
-                    newImgWidth = newImgHeight * imgAspectRatio;
+                // Calculate the aspect ratio of the image
+                const imgAspectRatio = canvasWidth / canvasHeight;
+                
+                // Define margins for the PDF
+                const margin = 10; // 10mm margin on all sides
+                const effectivePageWidth = pdfPageWidth - (2 * margin);
+                const effectivePageHeight = pdfPageHeight - (2 * margin);
+
+                let imgFinalWidth, imgFinalHeight;
+
+                // Scale image to fit within effective page dimensions while maintaining aspect ratio
+                if (effectivePageWidth / imgAspectRatio <= effectivePageHeight) {
+                    // Width is the limiting factor
+                    imgFinalWidth = effectivePageWidth;
+                    imgFinalHeight = imgFinalWidth / imgAspectRatio;
+                } else {
+                    // Height is the limiting factor
+                    imgFinalHeight = effectivePageHeight;
+                    imgFinalWidth = imgFinalHeight * imgAspectRatio;
                 }
                 
-                const x = (pdfWidth - newImgWidth) / 2;
-                const y = 10; // Margin from top
+                // Center the image on the page
+                const x = margin + (effectivePageWidth - imgFinalWidth) / 2;
+                const y = margin + (effectivePageHeight - imgFinalHeight) / 2;
                 
-                pdf.addImage(imgData, 'PNG', x, y, newImgWidth, newImgHeight);
+                // Check if content is too tall for one page (simple check, jspdf doesn't auto-paginate html2canvas images well)
+                if (imgFinalHeight > effectivePageHeight) {
+                    console.warn("PDF content might be too tall for a single A4 page and may be clipped or scaled down significantly.");
+                    // For very tall content, one might need to split the canvas image into multiple PDF pages,
+                    // which is more complex and not implemented here. This version will fit to one page.
+                }
+
+                pdf.addImage(imgData, 'PNG', x, y, imgFinalWidth, imgFinalHeight);
                 
                 const invoiceNumber = document.getElementById('invoiceNumber').value || 'invoice';
                 pdf.save(`${invoiceNumber}.pdf`);
@@ -911,9 +872,12 @@ United Kingdom</textarea>
             } catch (error) {
                 console.error('Error generating PDF:', error);
                 alert(`Error generating PDF: ${error.message}. Please check console for details.`);
-                invoiceElement.style.transform = originalScale;
+                // Restore original styles even if error occurs
+                invoiceElement.style.transform = originalTransform;
                 invoiceElement.style.width = originalWidth;
                 invoiceElement.style.marginLeft = originalMarginLeft;
+                invoiceElement.style.overflow = originalOverflow;
+                previewPanel.style.overflow = originalPreviewPanelOverflow;
             }
         }
     </script>
