@@ -789,35 +789,42 @@ United Kingdom</textarea>
             const originalWidth = invoiceElement.style.width;
             const originalMarginLeft = invoiceElement.style.marginLeft;
             const originalOverflow = invoiceElement.style.overflow;
+            
+            // Define a fixed width for capture to ensure a document-like aspect ratio
+            const captureWidthPx = 1000; // Capture at 1000px width
 
-            invoiceElement.style.transform = 'none'; // No scaling
-            invoiceElement.style.width = 'auto';    // Let content define width
+            // Temporarily apply styles for capture
+            invoiceElement.style.width = `${captureWidthPx}px`;
+            invoiceElement.style.height = 'auto'; // Let height adjust to content
+            invoiceElement.style.transform = 'none';
             invoiceElement.style.marginLeft = '0';
-            invoiceElement.style.overflow = 'visible'; // Ensure all content is visible
+            invoiceElement.style.overflow = 'visible';
+            
+            // Force a reflow to get the correct scrollHeight at the new width
+            // Accessing offsetHeight can trigger reflow
+            const captureHeightPx = invoiceElement.scrollHeight; 
 
-            // Ensure parent preview-panel doesn't clip if invoice-preview is wider
+            // Ensure parent preview-panel doesn't clip
             const previewPanel = document.querySelector('.preview-panel');
             const originalPreviewPanelOverflow = previewPanel.style.overflow;
             previewPanel.style.overflow = 'visible';
 
-
             try {
                 const canvas = await html2canvas(invoiceElement, {
-                    scale: window.devicePixelRatio * 2, // Increase scale for better quality
+                    scale: window.devicePixelRatio * 1.5, // Adjusted scale slightly
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
-                    // Ensure html2canvas captures the full dimensions of the content
-                    width: invoiceElement.offsetWidth, 
-                    height: invoiceElement.offsetHeight,
-                    scrollX: -window.scrollX, // Capture from the top-left of the element
-                    scrollY: -window.scrollY,
-                    windowWidth: invoiceElement.scrollWidth, // Provide context of the element's full scrollable width
-                    windowHeight: invoiceElement.scrollHeight // Provide context of the element's full scrollable height
+                    width: captureWidthPx, // Use the fixed capture width
+                    height: captureHeightPx, // Use the calculated height at that width
+                    windowWidth: captureWidthPx, // Context for rendering
+                    windowHeight: captureHeightPx,
+                    scrollX: 0, // Element is already positioned at its top-left for capture
+                    scrollY: 0
                 });
                 
                 // Restore original styles
-                invoiceElement.style.transform = originalTransform;
+                invoiceElement.style.width = originalWidth;
                 invoiceElement.style.width = originalWidth;
                 invoiceElement.style.marginLeft = originalMarginLeft;
                 invoiceElement.style.overflow = originalOverflow;
