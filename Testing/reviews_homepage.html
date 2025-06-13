@@ -14,7 +14,7 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       options:{
         general:{
           /*What reviews should the widget display? Available options: company, product, third_party. You can choose one type or multiple separated by comma.*/
-          review_type: 'company, product',
+          review_type: 'company, product, third_party',
           /*Minimum number of reviews required for widget to be displayed*/
           min_reviews: '1',
           /*Maximum number of reviews to include in the carousel widget.*/
@@ -26,7 +26,7 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
         header:{
           /*Show overall rating stars*/
           enable_overall_stars: true,
-          rating_decimal_places: 2,
+          rating_decimal_places: 1,
         },
         reviews: {
           /*Show customer name*/
