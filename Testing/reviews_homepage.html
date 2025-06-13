@@ -80,10 +80,10 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       '--base-font-size': '16px',
       '--base-maxwidth':'100%',
       /*Logo styles:*/
-      '--reviewsio-logo-style':'var(--logo-inverted)',
+      '--reviewsio-logo-style':'var(--logo-inverted)', /* Keep inverted for dark background */
       /*Star styles:*/
-      '--common-star-color':' #0E1311',
-      '--common-star-disabled-color':' rgba(0,0,0,0.25)',
+      '--common-star-color':'#FF0000', /* Red accent for stars */
+      '--common-star-disabled-color':'rgba(255,255,255,0.25)', /* Lighter disabled for dark bg */
       '--medium-star-size':' 22px',
       '--small-star-size':'19px', /*Modal*/
       '--x-small-star-size':'16px',
@@ -91,68 +91,68 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       /*Header styles:*/
       '--header-order':'1',
       '--header-width':'160px',
-      '--header-bg-start-color':'#00000000',
+      '--header-bg-start-color':'transparent', /* Keep transparent if page bg is dark */
       '--header-bg-end-color':'transparent',
       '--header-gradient-direction':'135deg',
       '--header-padding':'0.5em',
       '--header-border-width':'0px',
-      '--header-border-color':'rgba(0,0,0,0.1)',
+      '--header-border-color':'rgba(255,255,255,0.1)', /* Subtle white border */
       '--header-border-radius':'0px',
       '--header-shadow-size':'0px',
-      '--header-shadow-color':'rgba(0, 0, 0, 0.1)',
+      '--header-shadow-color':'rgba(255, 255, 255, 0.05)', /* Subtle white shadow */
       /*Header content styles:*/
-      '--header-star-color':'inherit',
-      '--header-disabled-star-color':'inherit',
-      '--header-heading-text-color':'inherit',
+      '--header-star-color':'#FF0000', /* Red accent */
+      '--header-disabled-star-color':'rgba(255,255,255,0.25)',
+      '--header-heading-text-color':'#FFFFFF', /* White text */
       '--header-heading-font-size':'inherit',
       '--header-heading-font-weight':'inherit',
       '--header-heading-line-height':'inherit',
       '--header-heading-text-transform':'inherit',
-      '--header-subheading-text-color':'inherit',
+      '--header-subheading-text-color':'#CCCCCC', /* Lighter gray for subheading */
       '--header-subheading-font-size':'inherit',
       '--header-subheading-font-weight':'inherit',
       '--header-subheading-line-height':'inherit',
       '--header-subheading-text-transform':'inherit',
       /*Review item styles:*/
       '--item-maximum-columns':'5',/*Must be 3 or larger*/
-      '--item-background-start-color':'#FFFFFF',
-      '--item-background-end-color':'#FFFFFF',
+      '--item-background-start-color':'#1A1A1A', /* Dark gray background */
+      '--item-background-end-color':'#1A1A1A', /* Dark gray background */
       '--item-gradient-direction':'135deg',
       '--item-padding':'1.5em',
-      '--item-border-width':'0px',
-      '--item-border-color':'rgba(0,0,0,0.1)',
-      '--item-border-radius':'0px',
-      '--item-shadow-size':'10px',
-      '--item-shadow-color':'rgba(0,0,0,0.05)',
+      '--item-border-width':'1px',
+      '--item-border-color':'rgba(255,255,255,0.1)', /* Subtle white border */
+      '--item-border-radius':'8px', /* Slightly rounded corners */
+      '--item-shadow-size':'5px',
+      '--item-shadow-color':'rgba(0,0,0,0.3)', /* Darker shadow for depth on dark bg */
       /*Heading styles:*/
-      '--heading-text-color':' #0E1311',
+      '--heading-text-color':'#FFFFFF', /* White text */
       '--heading-text-font-weight':' 600',
       '--heading-text-font-family':' inherit',
       '--heading-text-line-height':' 1.4',
       '--heading-text-letter-spacing':'0',
       '--heading-text-transform':'none',
       /*Body text styles:*/
-      '--body-text-color':' #0E1311',
+      '--body-text-color':'#E0E0E0', /* Light gray text, not pure white for less harshness */
       '--body-text-font-weight':'400',
       '--body-text-font-family':' inherit',
       '--body-text-line-height':' 1.4',
       '--body-text-letter-spacing':'0',
       '--body-text-transform':'none',
       /*Scroll button styles:*/
-      '--scroll-button-icon-color':'#000000',
+      '--scroll-button-icon-color':'#FFFFFF', /* White icon */
       '--scroll-button-icon-size':'24px',
-      '--scroll-button-bg-color':'transparent',
+      '--scroll-button-bg-color':'rgba(255,255,255,0.1)', /* Semi-transparent white bg */
       '--scroll-button-border-width':'0px',
-      '--scroll-button-border-color':'rgba(0,0,0,0.1)',
+      '--scroll-button-border-color':'rgba(255,255,255,0.1)',
       '--scroll-button-border-radius':'60px',
       '--scroll-button-shadow-size':'0px',
       '--scroll-button-shadow-color':'rgba(0,0,0,0.1)',
       '--scroll-button-horizontal-position':'0px',
       '--scroll-button-vertical-position':'0px',
       /*Badge styles:*/
-      '--badge-icon-color':'#0E1311',
+      '--badge-icon-color':'#FFFFFF', /* White icon */
       '--badge-icon-font-size':'15px',
-      '--badge-text-color':'#0E1311',
+      '--badge-text-color':'#FFFFFF', /* White text */
       '--badge-text-font-size':'inherit',
       '--badge-text-letter-spacing':'inherit',
       '--badge-text-transform':'inherit',
@@ -162,27 +162,27 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       '--author-text-transform':'inherit',
       /*Product photo or review photo styles:*/
       '--photo-video-thumbnail-size':'60px',
-      '--photo-video-thumbnail-border-radius':'0px',
+      '--photo-video-thumbnail-border-radius':'4px', /* Slightly rounded */
       /*Popup styles:*/
-      '--popup-backdrop-color':'rgba(0,0,0,0.75)',
-      '--popup-color':'#FFFFFF',
-      '--popup-star-color':'inherit',
-      '--popup-disabled-star-color':'inherit',
-      '--popup-heading-text-color':'inherit',
-      '--popup-body-text-color':'inherit',
-      '--popup-badge-icon-color':'inherit',
+      '--popup-backdrop-color':'rgba(0,0,0,0.85)', /* Darker backdrop */
+      '--popup-color':'#1A1A1A', /* Dark gray popup bg */
+      '--popup-star-color':'#FF0000', /* Red accent */
+      '--popup-disabled-star-color':'rgba(255,255,255,0.25)',
+      '--popup-heading-text-color':'#FFFFFF', /* White text */
+      '--popup-body-text-color':'#E0E0E0', /* Light gray text */
+      '--popup-badge-icon-color':'#FFFFFF', /* White icon */
       '--popup-badge-icon-font-size':'19px',
-      '--popup-badge-text-color':'inherit',
+      '--popup-badge-text-color':'#FFFFFF', /* White text */
       '--popup-badge-text-font-size':'14px',
-      '--popup-border-width':'0px',
-      '--popup-border-color':'rgba(0,0,0,0.1)',
-      '--popup-border-radius':'0px',
-      '--popup-shadow-size':'0px',
-      '--popup-shadow-color':'rgba(0,0,0,0.1)',
-      '--popup-icon-color':'#0E1311',
+      '--popup-border-width':'1px',
+      '--popup-border-color':'rgba(255,255,255,0.1)', /* Subtle white border */
+      '--popup-border-radius':'8px', /* Rounded corners */
+      '--popup-shadow-size':'10px',
+      '--popup-shadow-color':'rgba(0,0,0,0.5)', /* Stronger shadow for popup */
+      '--popup-icon-color':'#FFFFFF', /* White close icon etc. */
       /*Tooltip styles:*/
-      '--tooltip-bg-color':'#0E1311',
-      '--tooltip-text-color':'#FFFFFF',
+      '--tooltip-bg-color':'#0E1311', /* Keep dark */
+      '--tooltip-text-color':'#FFFFFF', /* White text */
     },
 });
 </script>
