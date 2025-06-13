@@ -1,6 +1,30 @@
 <script src="https://widget.reviews.io/carousel-inline-iframeless/dist.js?_t=2025052106"></script>
 <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
 <link rel="stylesheet" href="https://assets.reviews.io/iconfont/reviewsio-icons/style.css?_t=2025052106">
+<style>
+  /* Attempt to hide the Reviews.io logo */
+  .reviewsio-logo,
+  .rw-logo,
+  .CarouselWidget__Logo,
+  .Header__Logo,
+  .Footer__Logo,
+  a[href*="reviews.io"] > img,
+  div[class*="logo"][data-reviewsio],
+  .rw-widget-footer__logo,
+  .reviewsio-footer__logo,
+  .FloatingTab__Logo, /* For floating tab widgets, just in case */
+  .RatingSnippet__Logo /* For snippet widgets */
+  {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+</style>
 <div id="reviewsio-carousel-widget"></div>
 <script>
 new carouselInlineWidget('reviewsio-carousel-widget',{
