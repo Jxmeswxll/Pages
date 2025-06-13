@@ -1,30 +1,6 @@
 <script src="https://widget.reviews.io/carousel-inline-iframeless/dist.js?_t=2025052106"></script>
 <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
 <link rel="stylesheet" href="https://assets.reviews.io/iconfont/reviewsio-icons/style.css?_t=2025052106">
-<style>
-  /* Attempt to hide the Reviews.io logo */
-  .reviewsio-logo,
-  .rw-logo,
-  .CarouselWidget__Logo,
-  .Header__Logo,
-  .Footer__Logo,
-  a[href*="reviews.io"] > img,
-  div[class*="logo"][data-reviewsio],
-  .rw-widget-footer__logo,
-  .reviewsio-footer__logo,
-  .FloatingTab__Logo, /* For floating tab widgets, just in case */
-  .RatingSnippet__Logo /* For snippet widgets */
-  {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-  }
-</style>
 <div id="reviewsio-carousel-widget"></div>
 <script>
 new carouselInlineWidget('reviewsio-carousel-widget',{
@@ -104,7 +80,7 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       '--base-font-size': '16px',
       '--base-maxwidth':'100%',
       /*Logo styles:*/
-      '--reviewsio-logo-style':'var(--logo-inverted)', /* Keep inverted for dark background */
+      '--reviewsio-logo-style':'none', /* Attempt to hide logo via configuration */
       /*Star styles:*/
       '--common-star-color':'#FF0000', /* Red accent for stars */
       '--common-star-disabled-color':'rgba(255,255,255,0.25)', /* Lighter disabled for dark bg */
@@ -209,49 +185,4 @@ new carouselInlineWidget('reviewsio-carousel-widget',{
       '--tooltip-text-color':'#FFFFFF', /* White text */
     },
 });
-
-// Force hide Reviews.io logo with JavaScript after a delay
-setTimeout(function() {
-    const logoSelectors = [
-        '.reviewsio-logo', // Standard class
-        '.rw-logo', // Common alternative
-        '.CarouselWidget__Logo', // Widget specific
-        '.Header__Logo', // Widget specific
-        '.Footer__Logo', // Widget specific
-        'a[href*="reviews.io"] img', // Image inside a link to reviews.io
-        'a[href*="reviews.io"]', // Any link to reviews.io (more aggressive)
-        'div[class*="logo"][data-reviewsio]', // Div with "logo" in class and data attribute
-        '.rw-widget-footer__logo', // Footer logo
-        '.reviewsio-footer__logo', // Footer logo alternative
-        '.FloatingTab__Logo', // For floating tabs
-        '.RatingSnippet__Logo', // For snippets
-        '[class*="reviewsio-logo"]', // Contains "reviewsio-logo"
-        '[class*="rw-logo"]', // Contains "rw-logo"
-        '[id*="reviewsio-logo"]', // ID contains "reviewsio-logo"
-        '[id*="rw-logo"]', // ID contains "rw-logo"
-        '.widget__footer__logo' // Another possible footer logo class
-    ];
-    logoSelectors.forEach(function(selector) {
-        try {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(function(el) {
-                el.style.setProperty('display', 'none', 'important');
-                el.style.setProperty('visibility', 'hidden', 'important');
-                el.style.setProperty('width', '0px', 'important');
-                el.style.setProperty('height', '0px', 'important');
-                el.style.setProperty('overflow', 'hidden', 'important');
-                el.style.setProperty('margin', '0px', 'important');
-                el.style.setProperty('padding', '0px', 'important');
-                el.style.setProperty('border', '0px', 'important');
-                el.style.setProperty('opacity', '0', 'important');
-                el.style.setProperty('position', 'absolute', 'important');
-                el.style.setProperty('left', '-9999px', 'important');
-                el.style.setProperty('top', '-9999px', 'important');
-            });
-        } catch (e) {
-            // In case a selector is invalid, prevent script from breaking
-            console.warn('Error applying style for selector: ' + selector, e);
-        }
-    });
-}, 2500); // Increased delay to 2.5 seconds
 </script>
