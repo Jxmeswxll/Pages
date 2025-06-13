@@ -100,30 +100,6 @@
             border-top: 1px solid #282828;
             font-size: 0.9em;
         }
-
-        /* Reviews.io Widget Specific Styles - from your reviews_homepage.html */
-        /* Attempt to hide the Reviews.io logo */
-        .reviewsio-logo,
-        .rw-logo,
-        .CarouselWidget__Logo,
-        .Header__Logo,
-        .Footer__Logo,
-        a[href*="reviews.io"] > img,
-        div[class*="logo"][data-reviewsio],
-        .rw-widget-footer__logo,
-        .reviewsio-footer__logo,
-        .FloatingTab__Logo,
-        .RatingSnippet__Logo
-        {
-            display: none !important;
-            visibility: hidden !important;
-            width: 0 !important;
-            height: 0 !important;
-            overflow: hidden !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 0 !important;
-        }
     </style>
     <!-- Reviews.io Widget CSS -->
     <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
@@ -223,7 +199,7 @@
                 styles:{
                   '--base-font-size': '16px',
                   '--base-maxwidth':'100%',
-                  '--reviewsio-logo-style':'var(--logo-inverted)',
+                  '--reviewsio-logo-style':'none', /* Attempt to hide logo via configuration */
                   '--common-star-color':'#FF0000',
                   '--common-star-disabled-color':'rgba(255,255,255,0.25)',
                   '--medium-star-size':' 22px',
@@ -316,51 +292,6 @@
                   '--tooltip-text-color':'#FFFFFF',
                 },
             });
-
-            // Force hide Reviews.io logo with JavaScript after a delay
-            setTimeout(function() {
-                const logoSelectors = [
-                    '.reviewsio-logo', // Standard class
-                    '.rw-logo', // Common alternative
-                    '.CarouselWidget__Logo', // Widget specific
-                    '.Header__Logo', // Widget specific
-                    '.Footer__Logo', // Widget specific
-                    'a[href*="reviews.io"] img', // Image inside a link to reviews.io
-                    'a[href*="reviews.io"]', // Any link to reviews.io (more aggressive)
-                    'div[class*="logo"][data-reviewsio]', // Div with "logo" in class and data attribute
-                    '.rw-widget-footer__logo', // Footer logo
-                    '.reviewsio-footer__logo', // Footer logo alternative
-                    '.FloatingTab__Logo', // For floating tabs
-                    '.RatingSnippet__Logo', // For snippets
-                    '[class*="reviewsio-logo"]', // Contains "reviewsio-logo"
-                    '[class*="rw-logo"]', // Contains "rw-logo"
-                    '[id*="reviewsio-logo"]', // ID contains "reviewsio-logo"
-                    '[id*="rw-logo"]', // ID contains "rw-logo"
-                    '.widget__footer__logo' // Another possible footer logo class
-                ];
-                logoSelectors.forEach(function(selector) {
-                    try {
-                        const elements = document.querySelectorAll(selector);
-                        elements.forEach(function(el) {
-                            el.style.setProperty('display', 'none', 'important');
-                            el.style.setProperty('visibility', 'hidden', 'important');
-                            el.style.setProperty('width', '0px', 'important');
-                            el.style.setProperty('height', '0px', 'important');
-                            el.style.setProperty('overflow', 'hidden', 'important');
-                            el.style.setProperty('margin', '0px', 'important');
-                            el.style.setProperty('padding', '0px', 'important');
-                            el.style.setProperty('border', '0px', 'important');
-                            el.style.setProperty('opacity', '0', 'important');
-                            el.style.setProperty('position', 'absolute', 'important');
-                            el.style.setProperty('left', '-9999px', 'important');
-                            el.style.setProperty('top', '-9999px', 'important');
-                        });
-                    } catch (e) {
-                        // In case a selector is invalid, prevent script from breaking
-                        console.warn('Error applying style for selector: ' + selector, e);
-                    }
-                });
-            }, 2500); // Increased delay to 2.5 seconds
             </script>
             <!-- Reviews.io Widget Code End -->
         </section>
