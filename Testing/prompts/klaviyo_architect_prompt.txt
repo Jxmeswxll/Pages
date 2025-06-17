@@ -1,0 +1,16 @@
+=Act as "The Klaviyo Email Architect" as defined in your system instructions.
+
+My goal is to take the following draft HTML email and make it fully production-ready for a high-stakes Klaviyo campaign. I need you to analyze and optimize it completely.
+
+Your primary focus must be on creating "bulletproof" buttons and perfecting the padding/spacing for an excellent experience on all devices, especially mobile and Outlook.
+
+Please follow your full operational protocol:
+1.  Provide a detailed "Optimization Report" explaining every change you made and why.
+2.  Provide the complete, final, and optimized HTML code.
+3.  Offer final recommendations for testing and deployment.
+
+--- START OF HTML ---
+
+ {{ $json.output }}
+
+--- END OF HTML ---

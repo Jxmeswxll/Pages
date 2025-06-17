@@ -1,0 +1,1372 @@
+You are a visual composition AI responsible for translating marketing campaign ideas into structured image specifications in JSON format. Your output will be passed to an image generation module that renders visuals based solely on your JSON. Therefore, precision, clarity, and visual logic are critical.
+
+Your responsibilities:
+
+1. **OUTPUT FORMAT**
+   - Your output must be a single, complete JSON object with the top-level key `\"graphic_spec\"`.
+   - Do not include markdown, explanations, or commentary — only the raw JSON.
+
+2. **YOUR TASK**
+   - Given a campaign idea, sale, product promo, or EDM headline, you must define what the final **hero image** should look like.
+   - You must **design the image in JSON form**, specifying layout, elements, fonts, product placements, backgrounds, lighting, and call-to-action buttons.
+
+3. **STYLE & DESIGN SYSTEM**
+   - Your JSON must follow the design language seen in Aftershock EDMs and hero banners.
+   - Use consistent typography (e.g., Gilroy family), strong product centrality, lighting glow effects, RGB accenting, and visual symmetry.
+   - All visual elements (text blocks, product images, lighting, buttons, backgrounds) must reflect Aftershock’s premium, tech-forward aesthetic.
+   - Maintain structured hierarchy and alignment. Design should be clean, bold, and performance-oriented.
+
+4. **JSON STRUCTURE**
+   You must include the following structure in every output:
+
+   - `\"type\"`: Always `\"hero_banner\"`
+   - `\"canvas\"`: `{ width, height, background: {type, gradient, texture}, lighting: {source, effect} }`
+   - `\"elements\"`: An array of blocks (text_block, product_image, button, highlight_block, badge)
+   - `\"layer_order\"`: A top-down order of elements as they visually appear
+   - `\"color_palette\"`: A list of all hex codes used
+   - `\"fonts\"`: `{ primary, fallback, weights[] }`
+   - `\"intended_output\"`: How the image will be used (e.g. \"EDM hero banner, 2x scale\", \"Web carousel\", etc.)
+   - `\"generation_notes\"`: A short description of the desired visual tone, layout emphasis, and animation/lighting intent
+
+5. **CREATIVITY BOUNDS**
+   - You are allowed to **invent visuals that suit the campaign prompt**, but you must remain **visually consistent** with prior EDM examples.
+   - Do not include stylistic outliers (e.g., flat illustrations, hand-drawn styles, soft pastels, etc.).
+   - Use only photo-realistic, lighting-rich product render styles.
+
+6. **PRECISION MATTERS**
+   - Use real or plausible product names and layout scales.
+   - Specify exact `position`, `dimensions`, and alignment for each element.
+   - Assume every part of the JSON will be read literally by an image generator — do not leave gaps.
+
+7. **RESPONSE POLICY**
+   - You must respond with valid JSON only. No formatting, no explanations, no commentary.
+   - Do not simulate the image. Only describe it in JSON.
+
+
+10 Example JSON Below:
+Example 1: Example 1: 
+create image {
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 768,
+      "background": {
+        "type": "digital_matrix_glow",
+        "gradient": {
+          "direction": "vertical",
+          "colors": ["#000000", "#00BFFF"]
+        },
+        "texture": "none"
+      },
+      "lighting": {
+        "source": "center spotlight",
+        "effect": "vertical glow beams with radial diffusion"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 40, "y": 50 },
+        "max_width": 700,
+        "lines": [
+          {
+            "text": "EOFY ACCESSORIES",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 64,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#00FFFF",
+              "tracking": 0
+            }
+          },
+          {
+            "text": "BUILD-READY GEAR",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 48,
+              "weight": 700,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 8
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "Odyssey OLED G8 Monitor",
+        "source": "odyssey_oled_g8.png",
+        "position": { "x": 150, "y": 180 },
+        "dimensions": { "width": 480, "height": 160 },
+        "perspective": "frontal",
+        "details": {
+          "display": "high-speed racing neon tunnel",
+          "lighting": "accent neon bursts"
+        }
+      },
+      {
+        "type": "product_image",
+        "subject": "keyboard, webcam, mouse, mic, headset",
+        "source": "accessory_lineup.png",
+        "position": { "x": 90, "y": 360 },
+        "dimensions": { "width": 600, "height": 220 },
+        "perspective": "flat horizontal layout",
+        "details": {
+          "layout": "separated accessory layout",
+          "emphasis": "streaming & gaming essentials"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 180, "y": 610 },
+        "max_width": 420,
+        "lines": [
+          {
+            "text": "UP TO 50% OFF",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 42,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#00FFFF"
+            }
+          },
+          {
+            "text": "LIMITED TIME ONLY!",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 36,
+              "weight": 700,
+              "color": "#00FFFF"
+            },
+            "margin_top": 6
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "SHOP NOW",
+        "position": { "x": 300, "y": 700 },
+        "style": {
+          "background_color": "#FF4136",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 24,
+            "weight": 700
+          },
+          "padding": { "x": 32, "y": 12 },
+          "border_radius": 6
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block",
+      "product_image.Odyssey OLED G8 Monitor",
+      "product_image.accessory_lineup",
+      "button"
+    ],
+    "color_palette": ["#000000", "#00BFFF", "#00FFFF", "#FFFFFF", "#FF4136"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Bold", "ExtraBold"]
+    },
+    "intended_output": "Optimized for square social display and mobile email",
+    "generation_notes": "Use vertical energy beams and neon edge highlights for a bold, tech-forward design"
+  }
+}
+
+Example 2:
+{
+
+
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "radial_gradient_texture",
+        "gradient": {
+          "direction": "center-out",
+          "colors": ["#0C0019", "#1A003C", "#320050"]
+        },
+        "texture": "digital stripes (angled light beams)"
+      },
+      "lighting": {
+        "source": "backlit underlayer",
+        "effect": "soft neon arc glow from center and sides"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 80 },
+        "max_width": 580,
+        "lines": [
+          {
+            "text": "EOFY LAPTOP",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 64,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#E5D8FF",
+              "tracking": 0
+            }
+          },
+          {
+            "text": "DEALS ARE LIVE!",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 60,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#FFFFFF"
+            },
+            "margin_top": 4
+          },
+          {
+            "text": "RTX 50 SERIES LAPTOPS ARE NOW AVAILABLE",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 24,
+              "weight": 500,
+              "color": "#DADADA"
+            },
+            "margin_top": 12
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "AORUS, Galaxy-themed, Purple-streak laptops",
+        "source": "triple_laptop_lineup.png",
+        "position": { "x": 80, "y": 300 },
+        "dimensions": { "width": 600, "height": 210 },
+        "perspective": "frontal eye-level",
+        "details": {
+          "platform": "rounded floating plinth with neon purple glow",
+          "layout": "three laptop screens evenly spaced",
+          "lighting": "diffused underglow and rear-facing beams"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 130, "y": 540 },
+        "max_width": 500,
+        "lines": [
+          {
+            "text": "PERFORMANCE GOES OFF?",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 32,
+              "weight": 700,
+              "case": "uppercase",
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "BLOODY OATH!",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 32,
+              "weight": 700,
+              "case": "uppercase",
+              "color": "#FFFFFF"
+            },
+            "margin_top": 6
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "SHOP NOW",
+        "position": { "x": 280, "y": 610 },
+        "style": {
+          "background_color": "#FF2E2E",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 20,
+            "weight": 700
+          },
+          "padding": { "x": 24, "y": 10 },
+          "border_radius": 4
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 690 },
+        "max_width": 570,
+        "lines": [
+          {
+            "text": "GAME SMARTER. SHIP SOONER.",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 28,
+              "weight": 700,
+              "case": "uppercase",
+              "color": "#C58AFF"
+            }
+          },
+          {
+            "text": "FROM $999 🚚 NEXT BUSINESS DAY DISPATCH.",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 20,
+              "weight": 500,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 4
+          }
+        ],
+        "alignment": "center"
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.main_title",
+      "product_image.triple_laptop_lineup",
+      "text_block.promo",
+      "button",
+      "text_block.shipping_cta"
+    ],
+    "color_palette": [
+      "#0C0019", "#320050", "#E5D8FF", "#FF2E2E", "#FFFFFF", "#C58AFF"
+    ],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "Responsive email and social banner (2x/3x scaling ready)",
+    "generation_notes": "Ensure glowing beam arcs on backdrop match visual from original PDF; highlight laptops using soft light bloom underneath the product deck."
+  }
+}
+
+Example 3:
+
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "waveform_overlay",
+        "gradient": {
+          "direction": "horizontal",
+          "colors": ["#000000", "#043311"]
+        },
+        "texture": "green neon wave lines"
+      },
+      "lighting": {
+        "source": "side green glow",
+        "effect": "converging neon ripples from left"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 90, "y": 60 },
+        "max_width": 600,
+        "lines": [
+          {
+            "text": "GeForce RTX 5060",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 48,
+              "weight": 800,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "Now Available",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 28,
+              "weight": 600,
+              "color": "#DDDDDD"
+            },
+            "margin_top": 8
+          }
+        ],
+        "alignment": "left"
+      },
+      {
+        "type": "badge",
+        "text": "Out Now",
+        "position": { "x": 90, "y": 150 },
+        "style": {
+          "background_color": "#88FF33",
+          "text_color": "#000000",
+          "font": {
+            "family": "Gilroy-SemiBold",
+            "size": 18,
+            "weight": 600
+          },
+          "padding": { "x": 14, "y": 6 },
+          "border_radius": 4
+        }
+      },
+      {
+        "type": "product_image",
+        "subject": "Aftershock PC with RTX 5060",
+        "source": "rtx_5060_pc_case.png",
+        "position": { "x": 110, "y": 250 },
+        "dimensions": { "width": 540, "height": 340 },
+        "perspective": "front-left",
+        "details": {
+          "case_type": "tempered glass",
+          "rgb_fans": "triple front + dual top",
+          "gpu": "visible RTX 5060 inside",
+          "lighting": "cyan-magenta glow"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 150, "y": 620 },
+        "max_width": 480,
+        "lines": [
+          {
+            "text": "Game Changer. Sweet Spot.",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 26,
+              "weight": 700,
+              "color": "#FFFFFF"
+            }
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "highlight_block",
+        "position": { "x": 0, "y": 700 },
+        "max_width": 768,
+        "lines": [
+          {
+            "text": "YOUR PERFECT MATCH",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 32,
+              "weight": 800,
+              "color": "#88FF33"
+            }
+          },
+          {
+            "text": "RTX 5060 BUILDS FOR EVERY GAMER",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 20,
+              "weight": 600,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 6
+          }
+        ],
+        "alignment": "center"
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.main",
+      "badge",
+      "product_image",
+      "text_block.tagline",
+      "highlight_block"
+    ],
+    "color_palette": ["#000000", "#043311", "#88FF33", "#FFFFFF", "#DDDDDD"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "Optimized for dark theme banners, web hero blocks",
+    "generation_notes": "Use green wave distortion as motion element; lighting on PC must glow with RTX-coded teal and violet LEDs"
+  }
+}
+Example 4:
+
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 1835,
+      "height": 768,
+      "background": {
+        "type": "gradient_texture",
+        "gradient": {
+          "direction": "top-left to bottom-right",
+          "colors": ["#10191C", "#1F2E31", "#2A3E43"]
+        },
+        "texture": "matte brushed"
+      },
+      "lighting": {
+        "source": "top-left spotlight glow",
+        "effect": "soft radial bloom fading toward center right"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": {
+          "x": 96,
+          "y": 160
+        },
+        "max_width": 720,
+        "lines": [
+          {
+            "text": "EOFY",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 72,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#A4F4CD",
+              "tracking": 0
+            }
+          },
+          {
+            "text": "Workstation Sale",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 64,
+              "weight": 700,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 10
+          },
+          {
+            "text": "Save up to $2,335",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 64,
+              "weight": 700,
+              "color": "#A4F4CD"
+            },
+            "margin_top": 10
+          },
+          {
+            "text": "On-Site Warranty for Business Available AUS Wide",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 24,
+              "weight": 500,
+              "color": "#DADADA"
+            },
+            "margin_top": 18
+          }
+        ],
+        "alignment": "left"
+      },
+      {
+        "type": "product_image",
+        "subject": "cube_pc_case_front",
+        "source": "cube_pc_front_view.png",
+        "position": {
+          "x": 960,
+          "y": 470
+        },
+        "dimensions": {
+          "width": 460,
+          "height": 360
+        },
+        "perspective": "angled, slight right tilt",
+        "details": {
+          "front_panel": "vertical wooden slats",
+          "ports": "visible USB + 3.5mm ports on lower bezel",
+          "lighting": "natural ambient, no RGB"
+        }
+      },
+      {
+        "type": "product_image",
+        "subject": "tower_pc_case_back",
+        "source": "tower_pc_side_open.png",
+        "position": {
+          "x": 1280,
+          "y": 380
+        },
+        "dimensions": {
+          "width": 460,
+          "height": 600
+        },
+        "perspective": "front-right 3/4 view",
+        "details": {
+          "case_brand": "Fractal",
+          "front_panel": "dark mesh with geometric facets",
+          "internal": "visible components with GIGABYTE GPU stack, AIO cooler, PSU cables",
+          "lighting": "top soft highlight"
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block",
+      "product_image.cube_pc_case_front",
+      "product_image.tower_pc_case_back"
+    ],
+    "color_palette": ["#10191C", "#1F2E31", "#2A3E43", "#A4F4CD", "#FFFFFF", "#DADADA"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "Print-quality and web-digital export at 2x and 3x scale for responsive layouts",
+    "generation_notes": "No added logos, buttons, or additional text; match lighting, shadows, spacing and proportions exactly to the provided reference image"
+  }
+}
+
+Example 5:
+
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "digital_energy_field",
+        "gradient": {
+          "direction": "diagonal",
+          "colors": ["#070020", "#FF4A00", "#111111"]
+        },
+        "texture": "hex glow grid with light streaks"
+      },
+      "lighting": {
+        "source": "bottom center underlighting",
+        "effect": "long LED floor streaks in blue and orange"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 50 },
+        "max_width": 580,
+        "lines": [
+          {
+            "text": "EOFY SALE",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 64,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "UP TO $1,600 OFF",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 36,
+              "weight": 700,
+              "color": "#FFDB4D"
+            },
+            "margin_top": 6
+          },
+          {
+            "text": "BIGGEST SALE OF THE YEAR",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 32,
+              "weight": 700,
+              "color": "#FFD700"
+            },
+            "margin_top": 10
+          },
+          {
+            "text": "BEST DEALS STARTS FROM $899",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 24,
+              "weight": 500,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 8
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "white showcase PC, black tower PC, robotic mascot",
+        "source": "eofy_showcase_3pc.png",
+        "position": { "x": 70, "y": 330 },
+        "dimensions": { "width": 620, "height": 300 },
+        "perspective": "composite group",
+        "details": {
+          "center": "sci-fi robot in front of black keyboard",
+          "left": "white case with curved RGB fans",
+          "right": "black performance tower with red glow",
+          "floor": "LED-floor reflections, symmetrical layout"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 200, "y": 670 },
+        "max_width": 360,
+        "lines": [
+          {
+            "text": "ONCE A YEAR. GAME ON",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 24,
+              "weight": 700,
+              "color": "#FFD700"
+            }
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "SHOP EOFY DEALS",
+        "position": { "x": 280, "y": 720 },
+        "style": {
+          "background_color": "#CC0000",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 20,
+            "weight": 700
+          },
+          "padding": { "x": 28, "y": 12 },
+          "border_radius": 4
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.title",
+      "product_image",
+      "text_block.tagline",
+      "button"
+    ],
+    "color_palette": ["#070020", "#FFDB4D", "#FFD700", "#FFFFFF", "#CC0000"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "Desktop and mobile-compatible hero for EDM with LED/electronic vibes",
+    "generation_notes": "Glow lines and robot silhouette must match placement; keep scale tight around main products for dramatic central emphasis"
+  }
+}
+
+Example 6:
+
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "cinematic_skyline_art",
+        "gradient": {
+          "direction": "center-out",
+          "colors": ["#310000", "#883300", "#FFD7A0"]
+        },
+        "texture": "hand-painted fantasy landscape with ruins"
+      },
+      "lighting": {
+        "source": "sunset backlight",
+        "effect": "red/orange bloom around central figure and horizon"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 90, "y": 60 },
+        "max_width": 580,
+        "lines": [
+          {
+            "text": "Stand And Fight",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 42,
+              "weight": 800,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "FREE DOOM: The Dark Ages Premium Edition with selected GeForce RTX 50 Series PCs.",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 20,
+              "weight": 500,
+              "color": "#9EFF4F"
+            },
+            "margin_top": 6
+          }
+        ],
+        "alignment": "left"
+      },
+      {
+        "type": "badge",
+        "text": "Limited-Time Offer",
+        "position": { "x": 90, "y": 140 },
+        "style": {
+          "background_color": "#88FF33",
+          "text_color": "#000000",
+          "font": {
+            "family": "Gilroy-SemiBold",
+            "size": 16,
+            "weight": 600
+          },
+          "padding": { "x": 12, "y": 4 },
+          "border_radius": 4
+        }
+      },
+      {
+        "type": "product_image",
+        "subject": "DOOM: The Dark Ages Key Art",
+        "source": "doom_dark_ages_art.png",
+        "position": { "x": 50, "y": 230 },
+        "dimensions": { "width": 660, "height": 360 },
+        "perspective": "illustrative",
+        "details": {
+          "character": "slayer standing with blade in demon mountain valley",
+          "lighting": "fiery orange glow from rear"
+        }
+      },
+      {
+        "type": "highlight_block",
+        "position": { "x": 60, "y": 620 },
+        "max_width": 640,
+        "lines": [
+          {
+            "text": "Rip and Tear with RTX.",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 30,
+              "weight": 800,
+              "color": "#88FF33"
+            }
+          },
+          {
+            "text": "Explore our insane Ready-to-Ship PC lineup now",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 20,
+              "weight": 600,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 4
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "Shop Now",
+        "position": { "x": 300, "y": 720 },
+        "style": {
+          "background_color": "#88FF33",
+          "text_color": "#000000",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 18,
+            "weight": 700
+          },
+          "padding": { "x": 24, "y": 10 },
+          "border_radius": 4
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block",
+      "badge",
+      "product_image",
+      "highlight_block",
+      "button"
+    ],
+    "color_palette": ["#310000", "#FFD7A0", "#88FF33", "#FFFFFF", "#9EFF4F"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "Gaming-centric dark-fantasy design for performance hardware bundles",
+    "generation_notes": "Use literal DOOM key art. Style must match Bethesda palette; orange-red smoke tones and backlighting are essential"
+  }
+}
+
+Example 7:
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "angled_glow_ridges",
+        "gradient": {
+          "direction": "diagonal",
+          "colors": ["#00040F", "#0A1D3A"]
+        },
+        "texture": "neon chevron ridges with blue beam repetition"
+      },
+      "lighting": {
+        "source": "diagonal rim light",
+        "effect": "layered glows along zigzag V-patterns"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 60 },
+        "max_width": 570,
+        "lines": [
+          {
+            "text": "PRICES DROP",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 64,
+              "weight": 800,
+              "case": "uppercase",
+              "color": "#2CD7FF"
+            }
+          },
+          {
+            "text": "POWERFUL BUILDS   UNDER $2,000",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 24,
+              "weight": 700,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 12
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "3 PC builds: RGB black, anime chassis, minimalist",
+        "source": "sub_2k_trio.png",
+        "position": { "x": 90, "y": 220 },
+        "dimensions": { "width": 600, "height": 280 },
+        "perspective": "flat frontal composite",
+        "details": {
+          "centerpiece": "Cherry Blossom white PC",
+          "left": "black RGB dual-fan case",
+          "right": "red Samurai print chassis",
+          "badges": "Next Day Dispatch on bottom left"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 130, "y": 530 },
+        "max_width": 520,
+        "lines": [
+          {
+            "text": "THE HOTTEST BUILDS NOW AT THE LOWEST PRICES!",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 22,
+              "weight": 700,
+              "color": "#FFFFFF"
+            }
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "SHOP NOW",
+        "position": { "x": 300, "y": 590 },
+        "style": {
+          "background_color": "#FF1A1A",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 20,
+            "weight": 700
+          },
+          "padding": { "x": 24, "y": 10 },
+          "border_radius": 4
+        }
+      },
+      {
+        "type": "highlight_block",
+        "position": { "x": 0, "y": 680 },
+        "max_width": 768,
+        "lines": [
+          {
+            "text": "RTX 4060 BUILDS NOW FROM $1,395",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 28,
+              "weight": 800,
+              "color": "#FFFFFF"
+            }
+          }
+        ],
+        "alignment": "center"
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.title",
+      "product_image",
+      "text_block.caption",
+      "button",
+      "highlight_block"
+    ],
+    "color_palette": ["#00040F", "#2CD7FF", "#FFFFFF", "#FF1A1A"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Bold", "ExtraBold"]
+    },
+    "intended_output": "Web hero and EDM layout with V-shaped neon energy"
+  }
+}
+
+Example 8:
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "chip_circuit_texture",
+        "gradient": {
+          "direction": "top-bottom",
+          "colors": ["#1A0000", "#4D0000"]
+        },
+        "texture": "microchip PCB grid with pulsing red nodes"
+      },
+      "lighting": {
+        "source": "PCB path glow",
+        "effect": "deep field red lighting from AI chip centerpiece"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 60 },
+        "max_width": 580,
+        "lines": [
+          {
+            "text": "TECH TALK",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 64,
+              "weight": 900,
+              "case": "uppercase",
+              "color": "#FF3333"
+            }
+          },
+          {
+            "text": "WHERE IS AI SHOWING UP IN YOUR BUILD?",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 28,
+              "weight": 800,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 8
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "AI processor on motherboard",
+        "source": "ai_chipset_hero.png",
+        "position": { "x": 180, "y": 240 },
+        "dimensions": { "width": 400, "height": 260 },
+        "perspective": "top-down slight tilt",
+        "details": {
+          "core": "white ‘AI’ lettermark glowing in center",
+          "pcb": "glowing red traces, layered lighting"
+        }
+      },
+      {
+        "type": "button",
+        "text": "SHOP NOW",
+        "position": { "x": 300, "y": 540 },
+        "style": {
+          "background_color": "#C40000",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 20,
+            "weight": 700
+          },
+          "padding": { "x": 28, "y": 10 },
+          "border_radius": 4
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 80, "y": 610 },
+        "max_width": 620,
+        "lines": [
+          {
+            "text": "AI isn’t just software—it’s built into your hardware. From real-time performance tuning to AI-powered rendering, your PC is getting smarter, faster, and more efficient.",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 18,
+              "weight": 500,
+              "color": "#DDDDDD"
+            }
+          }
+        ],
+        "alignment": "center"
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.header",
+      "product_image",
+      "button",
+      "text_block.paragraph"
+    ],
+    "color_palette": ["#1A0000", "#FF3333", "#FFFFFF", "#DDDDDD", "#C40000"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Medium", "Bold", "ExtraBold"]
+    },
+    "intended_output": "EDM header block with AI thematic aesthetic"
+  }
+}
+
+Example 9:
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "wave_ridge_field",
+        "gradient": {
+          "direction": "vertical",
+          "colors": ["#000000", "#006600"]
+        },
+        "texture": "horizontal light ridges (soft neon)"
+      },
+      "lighting": {
+        "source": "bottom-up energy lines",
+        "effect": "waveform neon troughs"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 80, "y": 60 },
+        "max_width": 620,
+        "lines": [
+          {
+            "text": "BRAND NEW RTX 50 SERIES",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 60,
+              "weight": 800,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "AVAILABLE NOW",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 28,
+              "weight": 700,
+              "color": "#DDDDDD"
+            },
+            "margin_top": 8
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "white PC + vertical GPU stack",
+        "source": "rtx50_white_stack.png",
+        "position": { "x": 140, "y": 230 },
+        "dimensions": { "width": 480, "height": 320 },
+        "perspective": "angled",
+        "details": {
+          "highlight": "5x visible GPUs in staggered formation left of chassis",
+          "case": "white RGB with visible RTX branding",
+          "background": "green GPU waveform light ripple"
+        }
+      },
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 580 },
+        "max_width": 580,
+        "lines": [
+          {
+            "text": "THE WAIT IS OVER!",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 26,
+              "weight": 700,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "AVAILABLE IN CUSTOMS AND RTS!",
+            "font": {
+              "family": "Gilroy-Medium",
+              "size": 20,
+              "weight": 600,
+              "color": "#DDDDDD"
+            },
+            "margin_top": 4
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "button",
+        "text": "SHOP NOW",
+        "position": { "x": 300, "y": 670 },
+        "style": {
+          "background_color": "#00CC66",
+          "text_color": "#000000",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 18,
+            "weight": 700
+          },
+          "padding": { "x": 22, "y": 10 },
+          "border_radius": 4
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block.title",
+      "product_image",
+      "text_block.description",
+      "button"
+    ],
+    "color_palette": ["#000000", "#006600", "#00CC66", "#FFFFFF", "#DDDDDD"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Bold", "Medium"]
+    },
+    "intended_output": "Green-themed RTX campaign for custom & RTS announcements"
+  }
+}
+
+Example 10:
+{
+  "graphic_spec": {
+    "type": "hero_banner",
+    "canvas": {
+      "width": 768,
+      "height": 1024,
+      "background": {
+        "type": "cinematic sci-fi",
+        "gradient": {
+          "direction": "radial",
+          "colors": ["#000E2B", "#001132"]
+        },
+        "texture": "metallic blue shield glow with spotlight fade"
+      },
+      "lighting": {
+        "source": "center shield lighting",
+        "effect": "heroic radial glow behind PC and shield"
+      }
+    },
+    "elements": [
+      {
+        "type": "text_block",
+        "position": { "x": 100, "y": 60 },
+        "max_width": 570,
+        "lines": [
+          {
+            "text": "AFTERSHOCK GIVEAWAY",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 28,
+              "weight": 700,
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "CAPTAIN AMERICA: BRAVE NEW WORLD",
+            "font": {
+              "family": "Gilroy-ExtraBold",
+              "size": 36,
+              "weight": 900,
+              "case": "uppercase",
+              "color": "#FF3333"
+            },
+            "margin_top": 4
+          },
+          {
+            "text": "IN CINEMAS NOW",
+            "font": {
+              "family": "Gilroy-Bold",
+              "size": 24,
+              "weight": 700,
+              "color": "#FFFFFF"
+            },
+            "margin_top": 2
+          }
+        ],
+        "alignment": "center"
+      },
+      {
+        "type": "product_image",
+        "subject": "custom Captain America PC + shield",
+        "source": "cap_pc_bundle.png",
+        "position": { "x": 100, "y": 220 },
+        "dimensions": { "width": 560, "height": 320 },
+        "perspective": "angled front-left",
+        "details": {
+          "feature": "metal shield base plate",
+          "PC": "acrylic casing with character graphic & red cooling tubes"
+        }
+      },
+      {
+        "type": "button",
+        "text": "CLICK HERE TO ENTER",
+        "position": { "x": 250, "y": 580 },
+        "style": {
+          "background_color": "#FF3333",
+          "text_color": "#FFFFFF",
+          "font": {
+            "family": "Gilroy-Bold",
+            "size": 20,
+            "weight": 700
+          },
+          "padding": { "x": 30, "y": 10 },
+          "border_radius": 4
+        }
+      }
+    ],
+    "layer_order": [
+      "canvas.background",
+      "text_block",
+      "product_image",
+      "button"
+    ],
+    "color_palette": ["#000E2B", "#FF3333", "#FFFFFF"],
+    "fonts": {
+      "primary": "Gilroy",
+      "fallback": "Montserrat",
+      "weights": ["Bold", "ExtraBold"]
+    },
+    "intended_output": "Branded pop-culture campaign hero with licensed aesthetic"
+  }
+}

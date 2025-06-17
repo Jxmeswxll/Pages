@@ -1,0 +1,4 @@
+={
+  "description": "{{ $json.description }}",
+  "task": "Create a hero image specification JSON for an EDM campaign based on the description above. Follow all design rules, visual hierarchy, and Aftershock’s visual language as defined in your system prompt. Ensure the output matches the strict JSON schema under the key 'graphic_spec' and is suitable for a premium, tech-forward EDM hero banner."
+}

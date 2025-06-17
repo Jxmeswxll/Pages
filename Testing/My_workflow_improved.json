@@ -1,0 +1,997 @@
+{
+  "name": "My Improved Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Email Campaign",
+        "formDescription": "Campaign Initiation Stage ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Campaign Start Date",
+              "fieldType": "date",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Campaign End Date",
+              "fieldType": "date"
+            },
+            {
+              "fieldLabel": "Campaign Name",
+              "placeholder": "Insert Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Campaign Purpose",
+              "placeholder": "Why? [Insert brief reason for campaign e.g. seasonal sale, product launch, partnership]",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What Success Looks like?",
+              "placeholder": "[e.g. increase sales, build brand awareness, clear old stock]",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Promoted Products",
+              "placeholder": "[Product 1:SKU, Product2:SKU, Product3:SKU]",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "USP ",
+              "placeholder": "[Limited edition, new release, exclusive bundle, collab, added bonus, giveaway]",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Collaboration?",
+              "placeholder": "[Mention if any brand partners involved or cross-promotional opportunity] "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        60
+      ],
+      "id": "b7590a24-f247-4d20-aa24-15f503555a11",
+      "name": "On form submission",
+      "webhookId": "4a53ec3d-70ee-418c-b73b-21d2f01f8cf9"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "team": "9016748582",
+        "space": "90164139811",
+        "folderless": true,
+        "list": "901609121808",
+        "name": "={{ $('On form submission').item.json['Campaign Name'] }}",
+        "additionalFields": {
+          "content": "=Summary:\n\n{{ $json.output }}\n\nProducts\n{{ $('On form submission').item.json['Promoted Products'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        820,
+        60
+      ],
+      "id": "936818bf-3c5b-4dc1-a7d4-d1528bafb27e",
+      "name": "ClickUp",
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "zXExXAjMwHdYufrT",
+          "name": "ClickUp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/idea_to_img_json_prompt.txt",
+        "options": {
+          "propertyName": "ideaToImgJsonPromptText"
+        }
+      },
+      "name": "Read Idea to Img JSON Prompt",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        -340
+      ],
+      "id": "read-idea-img-prompt-001"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/idea_to_img_json_system_message.txt",
+        "options": {
+          "propertyName": "ideaToImgJsonSystemMessageText"
+        }
+      },
+      "name": "Read Idea to Img JSON System",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        -120
+      ],
+      "id": "read-idea-img-sys-msg-001"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1420,
+        -100
+      ],
+      "id": "c284731b-99bc-46a0-9dda-756500fed134",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Jgm6fg8HAYvP5uEX",
+          "name": "OpenAi account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "comment",
+        "commentOn": "task",
+        "id": "={{ $('ClickUp').item.json.id }}",
+        "commentText": "={{ $json.url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        -100
+      ],
+      "id": "ed391b66-04f3-434f-970b-dbdc01aa302d",
+      "name": "ClickUp1",
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "zXExXAjMwHdYufrT",
+          "name": "ClickUp account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-05-06",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        528,
+        270
+      ],
+      "id": "67f7152d-4ddb-4562-84da-30753f8c2a5e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5HetlSMX0HIqUe8n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-06-05",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        20
+      ],
+      "id": "511ebe3d-4d22-4015-a89e-1bba7ca81209",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5HetlSMX0HIqUe8n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// Loop through each item coming into the node\nfor (const item of $input.all()) {\n  // 1. Get the long string from the 'Promoted Products' field.\n  const promotedProductsString = item.json['Promoted Products'];\n\n  // 2. Check if the field actually exists and is a non-empty string.\n  //    If not, we'll just skip to the next item.\n  if (promotedProductsString && typeof promotedProductsString === 'string') {\n    \n    // 3. Split the string by comma, semicolon, OR colon using a Regular Expression.\n    //    Then, map over the results to trim whitespace from each code.\n    //    Finally, filter out any empty entries that might result from double delimiters (e.g., \"A,,B\").\n    const skyCodes = promotedProductsString\n      .split(/[;,:]/)\n      .map(code => code.trim())\n      .filter(code => code.length > 0);\n\n    // 4. Loop through the clean array of codes and create the new fields.\n    skyCodes.forEach((code, index) => {\n      // Create a dynamic key like \"product1\", \"product2\", etc.\n      // (index is 0-based, so we add 1)\n      item.json[`product${index + 1}`] = code;\n    });\n  }\n}\n\n// Return all the modified items.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        60
+      ],
+      "id": "9901f971-95e0-4497-85e9-d8a3a81468b9",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/form_to_idea_prompt.txt",
+        "options": {
+          "propertyName": "formToIdeaPromptText"
+        }
+      },
+      "name": "Read Form to Idea Prompt",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        330,
+        -20
+      ],
+      "id": "read-form-idea-prompt-001"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/form_to_idea_system_message.txt",
+        "options": {
+          "propertyName": "formToIdeaSystemMessageText"
+        }
+      },
+      "name": "Read Form to Idea System Message",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        330,
+        140
+      ],
+      "id": "read-form-idea-sys-msg-001"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-05-06",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        420
+      ],
+      "id": "1819bd6a-c976-4e98-aa58-3eb0c2034424",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5HetlSMX0HIqUe8n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Read Form to Idea Prompt').item.json.formToIdeaPromptText }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "{{ $('Read Form to Idea System Message').item.json.formToIdeaSystemMessageText }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        440,
+        60
+      ],
+      "id": "52e7ff8b-ad2a-4dd9-b3ea-53f40313514a",
+      "name": "Form -> Idea"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Read Idea to Img JSON Prompt').item.json.ideaToImgJsonPromptText }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "={{ $('Read Idea to Img JSON System').item.json.ideaToImgJsonSystemMessageText }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -200
+      ],
+      "id": "8a3a59ff-c04e-4f9b-8d14-b78be7b712c1",
+      "name": "Idea -> Img JSON"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/idea_to_html_prompt.txt",
+        "options": {
+          "propertyName": "ideaToHtmlPromptText"
+        }
+      },
+      "name": "Read Idea to HTML Prompt",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        80
+      ],
+      "id": "read-idea-html-prompt-001"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/idea_to_html_system_message.txt",
+        "options": {
+          "propertyName": "ideaToHtmlSystemMessageText"
+        }
+      },
+      "name": "Read Idea to HTML System",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        300
+      ],
+      "id": "read-idea-html-sys-msg-001"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Read Idea to HTML Prompt').item.json.ideaToHtmlPromptText }}",
+        "options": {
+          "systemMessage": "={{ $('Read Idea to HTML System').item.json.ideaToHtmlSystemMessageText }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        220
+      ],
+      "id": "6788be06-637e-4d9d-828e-2fea29aaf726",
+      "name": "Idea -> HTML"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/klaviyo_architect_prompt.txt",
+        "options": {
+          "propertyName": "klaviyoArchitectPromptText"
+        }
+      },
+      "name": "Read Klaviyo Architect Prompt",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        80
+      ],
+      "id": "read-klaviyo-prompt-001"
+    },
+    {
+      "parameters": {
+        "fileName": "Testing/prompts/klaviyo_architect_system_message.txt",
+        "options": {
+          "propertyName": "klaviyoArchitectSystemMessageText"
+        }
+      },
+      "name": "Read Klaviyo Architect System",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        300
+      ],
+      "id": "read-klaviyo-sys-msg-001"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NaBK1JjeaL7HESgEVqs_9t8Ok_tD_VW7-Gmr_yZOQd8",
+          "mode": "list",
+          "cachedResultName": "RTS_Live_Inventory_Template",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NaBK1JjeaL7HESgEVqs_9t8Ok_tD_VW7-Gmr_yZOQd8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 475316772,
+          "mode": "list",
+          "cachedResultName": "PCs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NaBK1JjeaL7HESgEVqs_9t8Ok_tD_VW7-Gmr_yZOQd8/edit#gid=475316772"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "SKU",
+              "lookupValue": "="
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {
+          "outputFormatting": {
+            "values": {
+              "general": "UNFORMATTED_VALUE",
+              "date": "FORMATTED_STRING"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2260,
+        -40
+      ],
+      "id": "5a040497-b6f3-4650-8084-68f3e533b83e",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "No3TyaPrr8BY2bZx",
+          "name": "Google Sheets account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "comment",
+        "commentOn": "task",
+        "id": "={{ $('ClickUp').item.json.id }}",
+        "commentText": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        220
+      ],
+      "id": "596d1ea9-6242-4d53-91db-f4f1b814dde2",
+      "name": "ClickUp2",
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "zXExXAjMwHdYufrT",
+          "name": "ClickUp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://a.klaviyo.com/api/templates",
+        "requestMethod": "POST",
+        "bodyContentType": "json",
+        "jsonParameters": {
+          "data": {
+            "type": "template",
+            "attributes": {
+              "name": "{{ $('On form submission').item.json['Campaign Name'] }} - Automated Workflow",
+              "html": "{{ $('AI Agent').item.json.output }}"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "pk_b1949450d852951c366f6b0693d08acb37"
+            },
+            {
+              "name": "accept",
+              "value": "application/vnd.api+json"
+            },
+            {
+              "name": "revision",
+              "value": "2025-04-15"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2040,
+        220
+      ],
+      "id": "e1f48203-d8a7-4d2b-a038-3f924d7d8617",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Read Klaviyo Architect Prompt').item.json.klaviyoArchitectPromptText }}",
+        "options": {
+          "systemMessage": "={{ $('Read Klaviyo Architect System').item.json.klaviyoArchitectSystemMessageText }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        220
+      ],
+      "id": "8e942d80-3cb2-421b-8405-2fdde2139e73",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-03-25",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        440
+      ],
+      "id": "e5a9e455-bff9-4efc-ba07-b9c374965286",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5HetlSMX0HIqUe8n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "ClickUp1": [
+      {
+        "json": {
+          "id": 90160115500343,
+          "hist_id": "4594323553608703369",
+          "date": 1749639163000,
+          "version": {
+            "object_type": "comment",
+            "object_id": "90160115500343",
+            "workspace_id": 9016748582,
+            "operation": "c",
+            "data": {
+              "context": {
+                "root_parent_type": 1,
+                "audit_context": {
+                  "userid": 276667720,
+                  "current_time": 1749639162864,
+                  "route": "*"
+                },
+                "originating_service": "publicapi"
+              },
+              "relationships": [
+                {
+                  "type": "comment-author",
+                  "object_type": "user",
+                  "object_id": 276667720,
+                  "workspace_id": "9016748582"
+                },
+                {
+                  "type": "comment-parent",
+                  "object_type": "task",
+                  "object_id": "86cz8k7na",
+                  "workspace_id": "9016748582"
+                }
+              ],
+              "changes": [
+                {
+                  "field": "date_created",
+                  "after": 1749639163000
+                }
+              ]
+            },
+            "master_id": 27,
+            "version": 1749639163047000,
+            "deleted": false,
+            "traceparent": "120639157775349848",
+            "date_created": 1749639163047,
+            "date_updated": 1749639163047,
+            "event_publish_time": 1749639163054
+          }
+        }
+      }
+    ],
+    "Idea -> Img JSON": [
+      {
+        "json": {
+          "output": "```json\n{\n  \"graphic_spec\": {\n    \"type\": \"hero_banner\",\n    \"canvas\": {\n      \"width\": 768,\n      \"height\": 1024,\n      \"background\": {\n        \"type\": \"digital_speed_trails\",\n        \"gradient\": {\n          \"direction\": \"vertical\",\n          \"colors\": [\n            \"#0A192F\",\n            \"#001E3C\"\n          ]\n        },\n        \"texture\": \"abstract blue and cyan light streaks moving vertically\"\n      },\n      \"lighting\": {\n        \"source\": \"center_product_backlight\",\n        \"effect\": \"strong radial cyan glow emanating from behind the PC, with soft volumetric light rays\"\n      }\n    },\n    \"elements\": [\n      {\n        \"type\": \"text_block\",\n        \"position\": {\n          \"x\": 40,\n          \"y\": 80\n        },\n        \"max_width\": 688,\n        \"lines\": [\n          {\n            \"text\": \"RTS FLASH SALE\",\n            \"font\": {\n              \"family\": \"Gilroy-ExtraBold\",\n              \"size\": 72,\n              \"weight\": 900,\n              \"case\": \"uppercase\",\n              \"color\": \"#FFFFFF\",\n              \"tracking\": 1\n            }\n          },\n          {\n            \"text\": \"GONE IN 24 HOURS\",\n            \"font\": {\n              \"family\": \"Gilroy-Bold\",\n              \"size\": 36,\n              \"weight\": 700,\n              \"case\": \"uppercase\",\n              \"color\": \"#00C4FF\"\n            },\n            \"margin_top\": 8\n          }\n        ],\n        \"alignment\": \"center\"\n      },\n      {\n        \"type\": \"product_image\",\n        \"subject\": \"Aftershock ULTRACORE PC\",\n        \"source\": \"ultracore_rts_hero.png\",\n        \"position\": {\n          \"x\": 134,\n          \"y\": 280\n        },\n        \"dimensions\": {\n          \"width\": 500,\n          \"height\": 500\n        },\n        \"perspective\": \"front-on, slight heroic low angle\",\n        \"details\": {\n          \"case_type\": \"black tower, tempered glass side panel\",\n          \"rgb_fans\": \"triple front fans with cyan lighting\",\n          \"internal_lighting\": \"soft white and cyan glow on components\",\n          \"emphasis\": \"clean, powerful, ready-to-ship aesthetic\"\n        }\n      },\n      {\n        \"type\": \"badge\",\n        \"text\": \"NEXT-DAY DISPATCH\",\n        \"position\": {\n          \"x\": 284,\n          \"y\": 750\n        },\n        \"style\": {\n          \"background_color\": \"#00C4FF\",\n          \"text_color\": \"#000000\",\n          \"font\": {\n            \"family\": \"Gilroy-Bold\",\n            \"size\": 16,\n            \"weight\": 700,\n            \"case\": \"uppercase\"\n          },\n          \"padding\": {\n            \"x\": 16,\n            \"y\": 8\n          },\n          \"border_radius\": 4\n        }\n      },\n      {\n        \"type\": \"button\",\n        \"text\": \"SHOP FLASH SALE\",\n        \"position\": {\n          \"x\": 264,\n          \"y\": 820\n        },\n        \"style\": {\n          \"background_color\": \"#FF3131\",\n          \"text_color\": \"#FFFFFF\",\n          \"font\": {\n            \"family\": \"Gilroy-Bold\",\n            \"size\": 22,\n            \"weight\": 700,\n            \"case\": \"uppercase\"\n          },\n          \"padding\": {\n            \"x\": 40,\n            \"y\": 14\n          },\n          \"border_radius\": 6\n        }\n      },\n      {\n        \"type\": \"text_block\",\n        \"position\": {\n          \"x\": 40,\n          \"y\": 910\n        },\n        \"max_width\": 688,\n        \"lines\": [\n          {\n            \"text\": \"LEVEL UP. TOMORROW.\",\n            \"font\": {\n              \"family\": \"Gilroy-Bold\",\n              \"size\": 24,\n              \"weight\": 700,\n              \"case\": \"uppercase\",\n              \"color\": \"#FFFFFF\"\n            }\n          }\n        ],\n        \"alignment\": \"center\"\n      }\n    ],\n    \"layer_order\": [\n      \"canvas.background\",\n      \"canvas.lighting\",\n      \"product_image.Aftershock ULTRACORE PC\",\n      \"text_block.headline\",\n      \"badge\",\n      \"button\",\n      \"text_block.footer\"\n    ],\n    \"color_palette\": [\n      \"#0A192F\",\n      \"#001E3C\",\n      \"#FFFFFF\",\n      \"#00C4FF\",\n      \"#FF3131\",\n      \"#000000\"\n    ],\n    \"fonts\": {\n      \"primary\": \"Gilroy\",\n      \"fallback\": \"Montserrat\",\n      \"weights\": [\n        \"Bold\",\n        \"ExtraBold\"\n      ]\n    },\n    \"intended_output\": \"EDM hero banner for time-sensitive RTS flash sale\",\n    \"generation_notes\": \"The visual theme is speed and urgency. Use motion-blurred light streaks in the background to convey swiftness. The PC should be the dominant hero element, with a strong cyan backlight creating a silhouette and emphasizing its form. The red CTA button must be a high-contrast focal point.\"\n  }\n}\n```"
+        }
+      }
+    ],
+    "Code": [
+      {
+        "json": {
+          "Campaign Start Date": "2025-05-11",
+          "Campaign End Date": "2025-06-14",
+          "Campaign Name": "EOFY Sale",
+          "Campaign Purpose": "Highligh 4 RTS builds",
+          "What Success Looks like?": "increase sale volume to those 4 products",
+          "Promoted Products": "RTS-SR-LVL-4-P2: RTS-SR-LVL-4W-P2: RTS-SR-LVL-5W-P3: RTS-SR-LVL-5-P3",
+          "USP ": "sell these 4",
+          "Collaboration?": "n/a",
+          "submittedAt": "2025-06-11T20:35:54.856+10:00",
+          "formMode": "test",
+          "product1": "RTS-SR-LVL-4-P2",
+          "product2": "RTS-SR-LVL-4W-P2",
+          "product3": "RTS-SR-LVL-5W-P3",
+          "product4": "RTS-SR-LVL-5-P3"
+        }
+      }
+    ],
+    "Form -> Idea": [
+      {
+        "json": {
+          "output": "1.  **Campaign Title**\n    EOFY Sale\n\n2.  **Email Concept Summary**\n    This email campaign is laser-focused on driving sales for four specific Ready-to-Ship (RTS) desktop categories during the End of Financial Year period. The tone is urgent and highly persuasive, emphasizing the limited-time opportunity to acquire a high-performance system and potentially claim tax benefits. The core hook is \"Beat the Clock, Boost Your Power\" – urging immediate action to secure one of these featured RTS desktops at special EOFY prices before the June 14th deadline.\n\n3.  **Target Audience**\n    *   Individuals seeking immediate performance upgrades with powerful, ready-to-ship desktop systems.\n    *   Professionals or small business owners looking to make tax-deductible technology purchases before the end of the financial year.\n    *   Value-conscious buyers aiming to capitalize on EOFY sales for high-performance computing.\n    *   Potential customers who have shown interest in RTS desktops and are motivated by time-sensitive offers.\n\n4.  **Email Tone & Layout**\n    *   **Voice:**\n        *   Urgent (e.g., \"Don't Miss Out,\" \"Ends Soon,\" \"Final Days\")\n        *   Direct and Benefit-Driven (e.g., \"Upgrade & Save,\" \"Maximize Your Tax-Time Purchase\")\n        *   Confident (highlighting the value and performance of the RTS desktops)\n    *   **Structure:**\n        *   **Headline:** Prominent EOFY Sale announcement with clear urgency (e.g., \"EOFY RUSH: Limited Stock on Powerhouse RTS Desktops!\").\n        *   **Opening Hook:** Immediately address the EOFY context and benefit – \"The financial year is ending soon! This is your prime opportunity to invest in a performance upgrade with our exclusive EOFY deals on select RTS desktops.\"\n        *   **Product Showcase:** Clearly feature the four promoted high-performance RTS desktop categories. Consider a clean, focused layout (e.g., a 2x2 grid or a clear list) that allows each category to stand out, emphasizing they are \"Ready-to-Ship.\"\n        *   **Key Selling Points:** Bullet points reinforcing EOFY benefits:\n            *   \"Significant EOFY Savings on Top-Tier RTS Builds\"\n            *   \"Potential Tax Benefits – Invest Before June 30th\"\n            *   \"Ready-to-Ship: Get Your New System Fast\"\n            *   \"Power Up Your Productivity/Gaming for the New Financial Year\"\n        *   **Urgency Reinforcement:** A clear, bold statement about the campaign end date (June 14th) and a callout like \"Stock is Limited – Secure Yours Now!\"\n        *   **Strong Call-to-Action (CTA):** A prominent, contrasting button like \"Shop EOFY RTS Deals\" or \"Claim Your EOFY Upgrade Before It's Too Late!\"\n    *   **Visual Flow:**\n        *   Image-led, showcasing dynamic (placeholder) imagery of high-performance RTS desktops.\n        *   Use of bold typography and color accents (e.g., red, orange) to emphasize urgency and EOFY branding.\n        *   Clear visual separation for each of the four featured RTS desktop categories.\n        *   A \"countdown\" element (visual or text-based) could enhance urgency if technically feasible.\n\n5.  **Subject Line**\n    ⏳ EOFY Ends Soon! Secure Your High-Performance RTS Desktop Now!"
+        }
+      }
+    ],
+    "ClickUp": [
+      {
+        "json": {
+          "id": "86cz9wxjf",
+          "custom_id": null,
+          "custom_item_id": 0,
+          "name": "EOFY Sale",
+          "text_content": "Summary:\n\n1.  **Campaign Title**\n    EOFY Sale\n\n2.  **Email Concept Summary**\n    This email campaign is laser-focused on driving sales for four specific Ready-to-Ship (RTS) desktop categories during the End of Financial Year period. The tone is urgent and highly persuasive, emphasizing the limited-time opportunity to acquire a high-performance system and potentially claim tax benefits. The core hook is \"Beat the Clock, Boost Your Power\" – urging immediate action to secure one of these featured RTS desktops at special EOFY prices before the June 14th deadline.\n\n3.  **Target Audience**\n    *   Individuals seeking immediate performance upgrades with powerful, ready-to-ship desktop systems.\n    *   Professionals or small business owners looking to make tax-deductible technology purchases before the end of the financial year.\n    *   Value-conscious buyers aiming to capitalize on EOFY sales for high-performance computing.\n    *   Potential customers who have shown interest in RTS desktops and are motivated by time-sensitive offers.\n\n4.  **Email Tone & Layout**\n    *   **Voice:**\n        *   Urgent (e.g., \"Don't Miss Out,\" \"Ends Soon,\" \"Final Days\")\n        *   Direct and Benefit-Driven (e.g., \"Upgrade & Save,\" \"Maximize Your Tax-Time Purchase\")\n        *   Confident (highlighting the value and performance of the RTS desktops)\n    *   **Structure:**\n        *   **Headline:** Prominent EOFY Sale announcement with clear urgency (e.g., \"EOFY RUSH: Limited Stock on Powerhouse RTS Desktops!\").\n        *   **Opening Hook:** Immediately address the EOFY context and benefit – \"The financial year is ending soon! This is your prime opportunity to invest in a performance upgrade with our exclusive EOFY deals on select RTS desktops.\"\n        *   **Product Showcase:** Clearly feature the four promoted high-performance RTS desktop categories. Consider a clean, focused layout (e.g., a 2x2 grid or a clear list) that allows each category to stand out, emphasizing they are \"Ready-to-Ship.\"\n        *   **Key Selling Points:** Bullet points reinforcing EOFY benefits:\n            *   \"Significant EOFY Savings on Top-Tier RTS Builds\"\n            *   \"Potential Tax Benefits – Invest Before June 30th\"\n            *   \"Ready-to-Ship: Get Your New System Fast\"\n            *   \"Power Up Your Productivity/Gaming for the New Financial Year\"\n        *   **Urgency Reinforcement:** A clear, bold statement about the campaign end date (June 14th) and a callout like \"Stock is Limited – Secure Yours Now!\"\n        *   **Strong Call-to-Action (CTA):** A prominent, contrasting button like \"Shop EOFY RTS Deals\" or \"Claim Your EOFY Upgrade Before It's Too Late!\"\n    *   **Visual Flow:**\n        *   Image-led, showcasing dynamic (placeholder) imagery of high-performance RTS desktops.\n        *   Use of bold typography and color accents (e.g., red, orange) to emphasize urgency and EOFY branding.\n        *   Clear visual separation for each of the four featured RTS desktop categories.\n        *   A \"countdown\" element (visual or text-based) could enhance urgency if technically feasible.\n\n5.  **Subject Line**\n    ⏳ EOFY Ends Soon! Secure Your High-Performance RTS Desktop Now!\n\nProducts\nRTS-SR-LVL-4-P2: RTS-SR-LVL-4W-P2: RTS-SR-LVL-5W-P3: RTS-SR-LVL-5-P3",
+          "description": "Summary:\n\n1.  **Campaign Title**\n    EOFY Sale\n\n2.  **Email Concept Summary**\n    This email campaign is laser-focused on driving sales for four specific Ready-to-Ship (RTS) desktop categories during the End of Financial Year period. The tone is urgent and highly persuasive, emphasizing the limited-time opportunity to acquire a high-performance system and potentially claim tax benefits. The core hook is \"Beat the Clock, Boost Your Power\" – urging immediate action to secure one of these featured RTS desktops at special EOFY prices before the June 14th deadline.\n\n3.  **Target Audience**\n    *   Individuals seeking immediate performance upgrades with powerful, ready-to-ship desktop systems.\n    *   Professionals or small business owners looking to make tax-deductible technology purchases before the end of the financial year.\n    *   Value-conscious buyers aiming to capitalize on EOFY sales for high-performance computing.\n    *   Potential customers who have shown interest in RTS desktops and are motivated by time-sensitive offers.\n\n4.  **Email Tone & Layout**\n    *   **Voice:**\n        *   Urgent (e.g., \"Don't Miss Out,\" \"Ends Soon,\" \"Final Days\")\n        *   Direct and Benefit-Driven (e.g., \"Upgrade & Save,\" \"Maximize Your Tax-Time Purchase\")\n        *   Confident (highlighting the value and performance of the RTS desktops)\n    *   **Structure:**\n        *   **Headline:** Prominent EOFY Sale announcement with clear urgency (e.g., \"EOFY RUSH: Limited Stock on Powerhouse RTS Desktops!\").\n        *   **Opening Hook:** Immediately address the EOFY context and benefit – \"The financial year is ending soon! This is your prime opportunity to invest in a performance upgrade with our exclusive EOFY deals on select RTS desktops.\"\n        *   **Product Showcase:** Clearly feature the four promoted high-performance RTS desktop categories. Consider a clean, focused layout (e.g., a 2x2 grid or a clear list) that allows each category to stand out, emphasizing they are \"Ready-to-Ship.\"\n        *   **Key Selling Points:** Bullet points reinforcing EOFY benefits:\n            *   \"Significant EOFY Savings on Top-Tier RTS Builds\"\n            *   \"Potential Tax Benefits – Invest Before June 30th\"\n            *   \"Ready-to-Ship: Get Your New System Fast\"\n            *   \"Power Up Your Productivity/Gaming for the New Financial Year\"\n        *   **Urgency Reinforcement:** A clear, bold statement about the campaign end date (June 14th) and a callout like \"Stock is Limited – Secure Yours Now!\"\n        *   **Strong Call-to-Action (CTA):** A prominent, contrasting button like \"Shop EOFY RTS Deals\" or \"Claim Your EOFY Upgrade Before It's Too Late!\"\n    *   **Visual Flow:**\n        *   Image-led, showcasing dynamic (placeholder) imagery of high-performance RTS desktops.\n        *   Use of bold typography and color accents (e.g., red, orange) to emphasize urgency and EOFY branding.\n        *   Clear visual separation for each of the four featured RTS desktop categories.\n        *   A \"countdown\" element (visual or text-based) could enhance urgency if technically feasible.\n\n5.  **Subject Line**\n    ⏳ EOFY Ends Soon! Secure Your High-Performance RTS Desktop Now!\n\nProducts\nRTS-SR-LVL-4-P2: RTS-SR-LVL-4W-P2: RTS-SR-LVL-5W-P3: RTS-SR-LVL-5-P3",
+          "status": {
+            "id": "p90164139811_KCt5JkCB",
+            "status": "to do",
+            "color": "#87909e",
+            "orderindex": 0,
+            "type": "open"
+          },
+          "orderindex": "39908164.00000000000000000000000000000000",
+          "date_created": "1750029811714",
+          "date_updated": "1750029811714",
+          "date_closed": null,
+          "date_done": null,
+          "archived": false,
+          "creator": {
+            "id": 276667720,
+            "username": "James Wall",
+            "color": "",
+            "email": "jxmeswxll@gmail.com",
+            "profilePicture": null
+          },
+          "assignees": [],
+          "group_assignees": [],
+          "watchers": [
+            {
+              "id": 276667720,
+              "username": "James Wall",
+              "color": "",
+              "initials": "JW",
+              "email": "jxmeswxll@gmail.com",
+              "profilePicture": null
+            }
+          ],
+          "checklists": [],
+          "tags": [],
+          "parent": null,
+          "top_level_parent": null,
+          "priority": null,
+          "due_date": null,
+          "start_date": null,
+          "points": null,
+          "time_estimate": null,
+          "time_spent": 0,
+          "custom_fields": [],
+          "dependencies": [],
+          "linked_tasks": [],
+          "locations": [],
+          "team_id": "9016748582",
+          "url": "https://app.clickup.com/t/86cz9wxjf",
+          "sharing": {
+            "public": false,
+            "public_share_expires_on": null,
+            "public_fields": [
+              "assignees",
+              "priority",
+              "due_date",
+              "content",
+              "comments",
+              "attachments",
+              "customFields",
+              "subtasks",
+              "tags",
+              "checklists",
+              "coverimage"
+            ],
+            "token": null,
+            "seo_optimized": false
+          },
+          "permission_level": "create",
+          "list": {
+            "id": "901609121808",
+            "name": "EDM Campaign ",
+            "access": true
+          },
+          "project": {
+            "id": "90165453718",
+            "name": "hidden",
+            "hidden": true,
+            "access": true
+          },
+          "folder": {
+            "id": "90165453718",
+            "name": "hidden",
+            "hidden": true,
+            "access": true
+          },
+          "space": {
+            "id": "90164139811"
+          }
+        }
+      }
+    ],
+    "On form submission": [
+      {
+        "json": {
+          "Campaign Start Date": "2025-06-16",
+          "Campaign End Date": "2025-06-16",
+          "Campaign Name": "5060 Launch",
+          "Campaign Purpose": "New 5060 Launch, promote all new 5060 builds",
+          "What Success Looks like?": "increase sales of these builds by 10%",
+          "Promoted Products": "RTS-SR-LVL-4-P2 RTS-SR-LVL-4-P3 RTS-AU-LVL-7-NIMB-AMD-V3 RTS-AU-LVL-4-FLOW",
+          "USP ": "New release",
+          "Collaboration?": "",
+          "submittedAt": "2025-06-16T10:45:11.215+10:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ClickUp": {
+      "main": [
+        [
+          {
+            "node": "Read Idea to Img JSON Prompt",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Idea to HTML Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "ClickUp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Form -> Idea",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Idea -> Img JSON",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ClickUp1": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Read Form to Idea Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Form to Idea Prompt": {
+      "main": [
+        [
+          {
+            "node": "Read Form to Idea System Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Idea to Img JSON Prompt": {
+      "main": [
+        [
+          {
+            "node": "Read Idea to Img JSON System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Idea to Img JSON System": {
+      "main": [
+        [
+          {
+            "node": "Idea -> Img JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Idea to HTML Prompt": {
+      "main": [
+        [
+          {
+            "node": "Read Idea to HTML System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Idea to HTML System": {
+      "main": [
+        [
+          {
+            "node": "Idea -> HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Idea -> HTML",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form -> Idea": {
+      "main": [
+        [
+          {
+            "node": "ClickUp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Idea -> Img JSON": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Idea -> HTML": {
+      "main": [
+        [
+          {
+            "node": "Read Klaviyo Architect Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Klaviyo Architect Prompt": {
+      "main": [
+        [
+          {
+            "node": "Read Klaviyo Architect System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Klaviyo Architect System": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        []
+      ]
+    },
+    "ClickUp2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "ClickUp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "id": "Dz2vhXO8nSXEv42J",
+  "tags": []
+}
