@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aftershock Style Preview</title>
+    <style>
+        body {
+            background-color: #121212; /* Dark background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .page-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #0a0a0a;
+            padding: 20px 0;
+            border-bottom: 2px solid #FF0000; /* Red accent */
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2em;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .logo span {
+            color: #FF0000; /* Red accent */
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 25px;
+        }
+        nav ul li a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #FF0000; /* Red accent on hover */
+        }
+        .main-content {
+            padding: 30px 0;
+        }
+        .module {
+            background-color: #1A1A1A; /* Slightly lighter dark for modules */
+            border: 1px solid #282828;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .module h2 {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #FF0000; /* Red accent for headings */
+            margin-bottom: 20px;
+        }
+        .module p {
+            color: #B0B0B0; /* Slightly dimmer text for paragraphs */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .grid-item {
+            background-color: #1E1E1E;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #252525;
+        }
+        .grid-item h3 {
+            color: #FF0000; /* Red accent */
+            margin-top: 0;
+        }
+        footer {
+            background-color: #0a0a0a;
+            color: #888888;
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid #282828;
+            font-size: 0.9em;
+        }
+    </style>
+    <!-- Reviews.io Widget CSS -->
+    <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
+    <link rel="stylesheet" href="https://assets.reviews.io/iconfont/reviewsio-icons/style.css?_t=2025052106">
+</head>
+<body>
+    <header>
+        <div class="page-wrapper container">
+            <div class="logo">AFTER<span>SHOCK</span> PC</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Gaming PCs</a></li>
+                    <li><a href="#">Laptops</a></li>
+                    <li><a href="#">Workstations</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-wrapper main-content">
+        <section class="module hero-module">
+            <h2>Welcome to the Ultimate Gaming Experience!</h2>
+            <p>Discover our latest range of high-performance custom gaming PCs and laptops, engineered for peak performance and reliability. Style meets substance.</p>
+        </section>
+
+        <section class="module product-showcase">
+            <h2>Featured Products</h2>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <h3>Hyperion X9</h3>
+                    <p>Unleash raw power with the latest Intel Core i9 and NVIDIA RTX 4090. Perfect for 4K gaming and demanding creative workloads.</p>
+                </div>
+                <div class="grid-item">
+                    <h3>StealthBook Pro</h3>
+                    <p>Ultra-portable gaming laptop with a stunning QHD display and long battery life. Game on the go without compromise.</p>
+                </div>
+                <div class="grid-item">
+                    <h3>RenderStation Z</h3>
+                    <p>The ultimate workstation for professionals. Blazing fast rendering and simulation capabilities for complex projects.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="module reviews-module">
+            <h2>What Our Customers Say</h2>
+            <!-- Reviews.io Widget Code Start -->
+            <div id="reviewsio-carousel-widget"></div>
+            <script src="https://widget.reviews.io/carousel-inline-iframeless/dist.js?_t=2025052106"></script>
+            <script>
+            new carouselInlineWidget('reviewsio-carousel-widget',{
+                  store: 'aftershockpc.com.au',
+                  sku: '',
+                  lang: 'en',
+                  carousel_type: 'topHeader',
+                  styles_carousel: 'CarouselWidget--topHeader--withcards',
+                  options:{
+                    general:{
+                      review_type: 'company, product, third_party',
+                      min_reviews: '1',
+                      max_reviews: '50',
+                      address_format: 'CITY, COUNTRY',
+                      enable_auto_scroll: 10000,
+                    },
+                    header:{
+                      enable_overall_stars: true,
+                      rating_decimal_places: 2,
+                    },
+                    reviews: {
+                      enable_customer_name: true,
+                      enable_customer_location: true,
+                      enable_verified_badge: true,
+                      enable_subscriber_badge: true,
+                      enable_recommends_badge: true,
+                      enable_photos: true,
+                      enable_videos: true,
+                      enable_review_date: true,
+                      disable_same_customer: true,
+                      min_review_percent: 4,
+                      third_party_source: true,
+                      hide_empty_reviews: true,
+                      enable_product_name: true,
+                      tags: "",
+                      branch: "",
+                      enable_branch_name: true,
+                    },
+                    popups: {
+                      enable_review_popups:  true,
+                      enable_helpful_buttons: true,
+                      enable_helpful_count: true,
+                      enable_share_buttons: true,
+                    },
+                },
+                translations: {
+                  verified_customer:  "Verified Customer",
+                },
+                styles:{
+                  '--base-font-size': '16px',
+                  '--base-maxwidth':'100%',
+                  '--reviewsio-logo-style':'none', /* Attempt to hide logo via configuration */
+                  '--common-star-color':'#FF0000',
+                  '--common-star-disabled-color':'rgba(255,255,255,0.25)',
+                  '--medium-star-size':' 22px',
+                  '--small-star-size':'19px',
+                  '--x-small-star-size':'16px',
+                  '--x-small-star-display':'inline-flex',
+                  '--header-order':'1',
+                  '--header-width':'160px',
+                  '--header-bg-start-color':'transparent',
+                  '--header-bg-end-color':'transparent',
+                  '--header-gradient-direction':'135deg',
+                  '--header-padding':'0.5em',
+                  '--header-border-width':'0px',
+                  '--header-border-color':'rgba(255,255,255,0.1)',
+                  '--header-border-radius':'0px',
+                  '--header-shadow-size':'0px',
+                  '--header-shadow-color':'rgba(255, 255, 255, 0.05)',
+                  '--header-star-color':'#FF0000',
+                  '--header-disabled-star-color':'rgba(255,255,255,0.25)',
+                  '--header-heading-text-color':'#FFFFFF',
+                  '--header-heading-font-size':'inherit',
+                  '--header-heading-font-weight':'inherit',
+                  '--header-heading-line-height':'inherit',
+                  '--header-heading-text-transform':'inherit',
+                  '--header-subheading-text-color':'#CCCCCC',
+                  '--header-subheading-font-size':'inherit',
+                  '--header-subheading-font-weight':'inherit',
+                  '--header-subheading-line-height':'inherit',
+                  '--header-subheading-text-transform':'inherit',
+                  '--item-maximum-columns':'5',
+                  '--item-background-start-color':'#1A1A1A',
+                  '--item-background-end-color':'#1A1A1A',
+                  '--item-gradient-direction':'135deg',
+                  '--item-padding':'1.5em',
+                  '--item-border-width':'1px',
+                  '--item-border-color':'rgba(255,255,255,0.1)',
+                  '--item-border-radius':'8px',
+                  '--item-shadow-size':'5px',
+                  '--item-shadow-color':'rgba(0,0,0,0.3)',
+                  '--heading-text-color':'#FFFFFF',
+                  '--heading-text-font-weight':' 600',
+                  '--heading-text-font-family':' inherit',
+                  '--heading-text-line-height':' 1.4',
+                  '--heading-text-letter-spacing':'0',
+                  '--heading-text-transform':'none',
+                  '--body-text-color':'#E0E0E0',
+                  '--body-text-font-weight':'400',
+                  '--body-text-font-family':' inherit',
+                  '--body-text-line-height':' 1.4',
+                  '--body-text-letter-spacing':'0',
+                  '--body-text-transform':'none',
+                  '--scroll-button-icon-color':'#FFFFFF',
+                  '--scroll-button-icon-size':'24px',
+                  '--scroll-button-bg-color':'rgba(255,255,255,0.1)',
+                  '--scroll-button-border-width':'0px',
+                  '--scroll-button-border-color':'rgba(255,255,255,0.1)',
+                  '--scroll-button-border-radius':'60px',
+                  '--scroll-button-shadow-size':'0px',
+                  '--scroll-button-shadow-color':'rgba(0,0,0,0.1)',
+                  '--scroll-button-horizontal-position':'0px',
+                  '--scroll-button-vertical-position':'0px',
+                  '--badge-icon-color':'#FFFFFF',
+                  '--badge-icon-font-size':'15px',
+                  '--badge-text-color':'#FFFFFF',
+                  '--badge-text-font-size':'inherit',
+                  '--badge-text-letter-spacing':'inherit',
+                  '--badge-text-transform':'inherit',
+                  '--author-font-size':'inherit',
+                  '--author-font-weight':'inherit',
+                  '--author-text-transform':'inherit',
+                  '--photo-video-thumbnail-size':'60px',
+                  '--photo-video-thumbnail-border-radius':'4px',
+                  '--popup-backdrop-color':'rgba(0,0,0,0.85)',
+                  '--popup-color':'#1A1A1A',
+                  '--popup-star-color':'#FF0000',
+                  '--popup-disabled-star-color':'rgba(255,255,255,0.25)',
+                  '--popup-heading-text-color':'#FFFFFF',
+                  '--popup-body-text-color':'#E0E0E0',
+                  '--popup-badge-icon-color':'#FFFFFF',
+                  '--popup-badge-icon-font-size':'19px',
+                  '--popup-badge-text-color':'#FFFFFF',
+                  '--popup-badge-text-font-size':'14px',
+                  '--popup-border-width':'1px',
+                  '--popup-border-color':'rgba(255,255,255,0.1)',
+                  '--popup-border-radius':'8px',
+                  '--popup-shadow-size':'10px',
+                  '--popup-shadow-color':'rgba(0,0,0,0.5)',
+                  '--popup-icon-color':'#FFFFFF',
+                  '--tooltip-bg-color':'#0E1311',
+                  '--tooltip-text-color':'#FFFFFF',
+                },
+            });
+            </script>
+            <!-- Reviews.io Widget Code End -->
+        </section>
+
+        <section class="module cta-module">
+            <h2>Ready to Elevate Your Game?</h2>
+            <p>Explore our full range of products or contact our specialists to build your dream PC today!</p>
+            <a href="#" style="display: inline-block; background-color: #FF0000; color: #FFFFFF; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px;">Shop Now</a>
+        </section>
+    </div>
+
+    <footer>
+        <div class="page-wrapper">
+            <p>&copy; 2025 Aftershock PC Clone. All rights reserved. For demonstration purposes only.</p>
+        </div>
+    </footer>
+</body>
+</html>
