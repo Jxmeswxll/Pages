@@ -8,11 +8,15 @@
     display: none !important;
   }
 
-  /* Attempt to append " 4.95 stars" to the textual rating (e.g., "Excellent") */
+  /* Attempt to append " 4.95 stars" to the textual rating (e.g., "Excellent") - TEST VISIBILITY */
   #reviewsio-carousel-widget .cssVar-header__heading::after { /* Updated selector based on user feedback */
-    content: " 4.95 stars";
-    /* Ensure it uses the header's text color, if not inherited */
-    /* color: var(--header-heading-text-color); */ 
+    content: " --- TEST 4.95 stars ---"; /* Add markers for visibility */
+    padding-left: 0.5em; /* Add some space */
+    font-size: 18px !important; /* Force a large, absolute font size */
+    color: red !important; /* Force a bright color */
+    font-weight: bold !important; /* Force bold */
+    background-color: yellow !important; /* Force background for max visibility */
+    display: inline !important; /* Ensure it's displayed as an inline element */
   }
 </style>
 <div id="reviewsio-carousel-widget"></div>
