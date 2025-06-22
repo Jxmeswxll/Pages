@@ -9,8 +9,7 @@
   }
 
   /* Attempt to append " 4.95 stars" to the textual rating (e.g., "Excellent") */
-  #reviewsio-carousel-widget .ri-header__textual-rating::after, /* Common Reviews.io class for the text part */
-  #reviewsio-carousel-widget .rating-text::after { /* A more generic fallback */
+  #reviewsio-carousel-widget .cssVar-header__heading::after { /* Updated selector based on user feedback */
     content: " 4.95 stars";
     /* Ensure it uses the header's text color, if not inherited */
     /* color: var(--header-heading-text-color); */ 
