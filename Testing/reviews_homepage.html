@@ -1,6 +1,21 @@
 <script src="https://widget.reviews.io/carousel-inline-iframeless/dist.js?_t=2025052106"></script>
 <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
 <link rel="stylesheet" href="https://assets.reviews.io/iconfont/reviewsio-icons/style.css?_t=2025052106">
+<style>
+  /* Attempt to hide the original numerical score (e.g., 4.97) */
+  #reviewsio-carousel-widget .ri-header__score, /* Common Reviews.io class for the score part */
+  #reviewsio-carousel-widget .rating-score { /* A more generic fallback */
+    display: none !important;
+  }
+
+  /* Attempt to append " 4.95 stars" to the textual rating (e.g., "Excellent") */
+  #reviewsio-carousel-widget .ri-header__textual-rating::after, /* Common Reviews.io class for the text part */
+  #reviewsio-carousel-widget .rating-text::after { /* A more generic fallback */
+    content: " 4.95 stars";
+    /* Ensure it uses the header's text color, if not inherited */
+    /* color: var(--header-heading-text-color); */ 
+  }
+</style>
 <div id="reviewsio-carousel-widget"></div>
 <script>
 new carouselInlineWidget('reviewsio-carousel-widget',{
