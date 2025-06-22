@@ -8,15 +8,22 @@
     display: none !important;
   }
 
-  /* Attempt to append " 4.95 stars" to the textual rating (e.g., "Excellent") - TEST VISIBILITY */
-  #reviewsio-carousel-widget .cssVar-header__heading::after { /* Updated selector based on user feedback */
-    content: " --- TEST 4.95 stars ---"; /* Add markers for visibility */
-    padding-left: 0.5em; /* Add some space */
-    font-size: 18px !important; /* Force a large, absolute font size */
-    color: red !important; /* Force a bright color */
-    font-weight: bold !important; /* Force bold */
-    background-color: yellow !important; /* Force background for max visibility */
-    display: inline !important; /* Ensure it's displayed as an inline element */
+  /* Remove ::before rule as it wasn't working as intended */
+  #reviewsio-carousel-widget .cssVar-header__heading::before {
+    content: "" !important; /* Clear content */
+    display: none !important; /* Hide it */
+  }
+
+  /* Append " 4.95 stars" to the existing "Excellent" text using ::after */
+  #reviewsio-carousel-widget .cssVar-header__heading::after {
+    content: " 4.95 stars" !important;
+    padding-left: 0.25em; /* Add a small space */
+    /* Explicitly set font properties, trying to use widget's CSS variables or fallbacks */
+    color: var(--header-heading-text-color, #FFFFFF) !important;
+    font-size: var(--header-heading-font-size, inherit) !important;
+    font-weight: var(--header-heading-font-weight, inherit) !important;
+    background-color: transparent !important; /* Ensure no leftover test background */
+    display: inline !important; /* Ensure it flows with the text */
   }
 </style>
 <div id="reviewsio-carousel-widget"></div>
