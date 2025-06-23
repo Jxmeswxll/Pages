@@ -33,6 +33,7 @@
             height: 450px;
             border: 1px solid #ccc;
             overflow: hidden; /* Clip the image */
+            cursor: grab; /* Indicate draggable */
         }
         .panel-outline-container {
             position: absolute;
@@ -87,13 +88,6 @@
                 <div class="panel-outline-container"></div>
                 <img id="uploadedImage" src="#" alt="Uploaded Image">
             </div>
-
-            <div class="controls">
-                <label for="zoomRange">Zoom:</label>
-                <input type="range" id="zoomRange" min="0.1" max="2" value="1" step="0.01">
-                <label for="rotateRange">Rotate:</label>
-                <input type="range" id="rotateRange" min="0" max="360" value="0" step="1">
-            </div>
         </div>
 
         <div class="preview-section">
@@ -113,13 +107,18 @@
     <script>
         const imageUpload = document.getElementById('imageUpload');
         const uploadedImage = document.getElementById('uploadedImage');
-        const zoomRange = document.getElementById('zoomRange');
-        const rotateRange = document.getElementById('rotateRange');
         const previewImage = document.getElementById('previewImage');
         const previewPlaceholder = document.getElementById('previewPlaceholder');
         const cropBtn = document.getElementById('cropBtn');
+        const imageEditor = document.querySelector('.image-editor'); // Get the editor div
         const panelWidth = 300;
         const panelHeight = 450;
+
+        let scale = 1;
+        let rotation = 0;
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
 
         imageUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -133,22 +132,52 @@
                         uploadedImage.style.height = 'auto';
                         uploadedImage.style.top = '0';
                         uploadedImage.style.left = '0';
+                        updateTransform();
                     }
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        zoomRange.addEventListener('input', function() {
-            uploadedImage.style.transform = `scale(${this.value}) rotate(${rotateRange.value}deg)`;
+        function updateTransform() {
+            uploadedImage.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+        }
+
+        // Zoom with mouse wheel
+        imageEditor.addEventListener('wheel', function(e) {
+            e.preventDefault(); // Prevent page scroll
+            const delta = e.deltaY > 0 ? -0.1 : 0.1; // Adjust zoom speed
+            scale = Math.max(0.1, Math.min(2, scale + delta)); // Limit zoom
+            updateTransform();
         });
 
-        rotateRange.addEventListener('input', function() {
-            uploadedImage.style.transform = `scale(${zoomRange.value}) rotate(${this.value}deg)`;
+        // Rotate with mouse drag
+        imageEditor.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            imageEditor.style.cursor = 'grabbing'; // Change cursor
+        });
+
+        imageEditor.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            const deltaX = e.clientX - startX;
+            rotation += deltaX * 0.2; // Adjust rotation speed
+            updateTransform();
+            startX = e.clientX; // Update start position
+        });
+
+        imageEditor.addEventListener('mouseup', function() {
+            isDragging = false;
+            imageEditor.style.cursor = 'grab'; // Restore cursor
+        });
+
+        imageEditor.addEventListener('mouseleave', function() {
+            isDragging = false;
+            imageEditor.style.cursor = 'grab'; // Restore cursor
         });
 
         cropBtn.addEventListener('click', function() {
-            // Get image data
             const img = new Image();
             img.src = uploadedImage.src;
             img.onload = function() {
@@ -178,6 +207,18 @@
                 // Set the preview image source
                 previewImage.src = canvas.toDataURL('image/png');
                 previewPlaceholder.style.display = 'none';
+            }
+        });
+
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        addToCartBtn.addEventListener('click', () => {
+            if (previewImage.src && previewImage.src !== '#') {
+                const base64ImageData = previewImage.src;
+                alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
+                console.log("Base64 Image data for Shopify:", base64ImageData);
+                // Shopify integration logic would go here
+            } else {
+                alert("Please crop an image first.");
             }
         });
     </script>
