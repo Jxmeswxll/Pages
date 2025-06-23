@@ -2,29 +2,15 @@
 <link rel="stylesheet" href="https://assets.reviews.io/css/widgets/carousel-widget.css?_t=2025052106">
 <link rel="stylesheet" href="https://assets.reviews.io/iconfont/reviewsio-icons/style.css?_t=2025052106">
 <style>
-  /* Attempt to hide the original numerical score (e.g., 4.97) */
-  #reviewsio-carousel-widget .ri-header__score, /* Common Reviews.io class for the score part */
-  #reviewsio-carousel-widget .rating-score { /* A more generic fallback */
+  /* TEMPORARILY REMOVING rule to hide numerical score for diagnostics */
+  /*
+  #reviewsio-carousel-widget .ri-header__score,
+  #reviewsio-carousel-widget .rating-score {
     display: none !important;
   }
+  */
 
-  /* Remove ::before rule as it wasn't working as intended */
-  #reviewsio-carousel-widget .cssVar-header__heading::before {
-    content: "" !important; /* Clear content */
-    display: none !important; /* Hide it */
-  }
-
-  /* Append " 4.95 stars" to the existing "Excellent" text using ::after */
-  #reviewsio-carousel-widget .cssVar-header__heading::after {
-    content: " 4.95 stars" !important;
-    padding-left: 0.25em; /* Add a small space */
-    /* Explicitly set font properties, trying to use widget's CSS variables or fallbacks */
-    color: var(--header-heading-text-color, #FFFFFF) !important;
-    font-size: var(--header-heading-font-size, inherit) !important;
-    font-weight: var(--header-heading-font-weight, inherit) !important;
-    background-color: transparent !important; /* Ensure no leftover test background */
-    display: inline !important; /* Ensure it flows with the text */
-  }
+  /* REMOVING all ::before and ::after rules for .cssVar-header__heading to establish a stable base */
 </style>
 <div id="reviewsio-carousel-widget"></div>
 <script>

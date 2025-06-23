@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom PC Panel Designer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 700px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .upload-section, .editor-section, .preview-section {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="file"] {
+            display: block;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: calc(100% - 22px); /* Account for padding and border */
+        }
+        .image-editor {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .panel-outline-container {
+            width: 300px; /* Adjust as needed */
+            height: 450px; /* Adjust as needed */
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #aaa;
+            position: relative; /* For overlaying Cropper.js */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .image-to-crop-container {
+            width: 300px; /* Should match panel-outline-container or be flexible */
+            height: 450px; /* Should match panel-outline-container */
+            max-width: 100%;
+            display: none; /* Hidden until image is uploaded */
+        }
+        .image-to-crop-container img {
+            max-width: 100%;
+            display: block; /* Cropper.js requirement */
+        }
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        .controls button#addToCartBtn {
+            background-color: #28a745;
+        }
+        .controls button#addToCartBtn:hover {
+            background-color: #1e7e34;
+        }
+        .preview-area img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .instructions {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Design Your Custom PC Panel</h1>
+
+        <div class="upload-section">
+            <label for="imageUpload">1. Upload Your Image:</label>
+            <input type="file" id="imageUpload" accept="image/*">
+            <p class="instructions">
+                This image will be placed over the panel outline. You can then position and crop it.
+            </p>
+        </div>
+
+        <div class="editor-section">
+            <label>2. Position and Crop Your Image:</label>
+            <div class="image-editor">
+                <div class="panel-outline-container" id="panelOutline">
+                    <!-- This will serve as the visual guide and cropping boundary -->
+                    PC Panel Outline
+                    (e.g., 300x450px)
+                </div>
+                <div class="image-to-crop-container" id="imageCropContainer">
+                    <img id="imageToCrop" src="#" alt="Uploaded Image">
+                </div>
+            </div>
+             <p class="instructions" id="cropInstructions" style="display:none;">
+                Drag to move, use handles to resize. The dashed area represents the panel.
+            </p>
+        </div>
+
+        <div class="controls">
+            <button id="cropBtn" style="display:none;">Crop & Preview</button>
+            <!--
+                Shopify Integration Point:
+                This button would ideally trigger a function to:
+                1. Get the cropped image data (e.g., base64).
+                2. Add the custom panel product to the Shopify cart,
+                   possibly using Shopify's AJAX API or by passing data to a Liquid form.
+                3. The 'product_id' or 'variant_id' for the specific panel type
+                   (e.g., "Ultra Labs Side Panel") would be needed here.
+                   This might be pre-defined or fetched if this tool is embedded
+                   in a specific Shopify product page context.
+            -->
+            <button id="addToCartBtn" style="display:none;">Add to Basket (Conceptual)</button>
+        </div>
+
+        <div class="preview-section">
+            <label>3. Preview:</label>
+            <div id="previewArea" class="preview-area">
+                <p id="previewPlaceholder">Your cropped panel design will appear here.</p>
+                <!-- Cropped image will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const imageToCropContainer = document.getElementById('imageCropContainer');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const panelOutline = document.getElementById('panelOutline');
+        const cropBtn = document.getElementById('cropBtn');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const previewArea = document.getElementById('previewArea');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const cropInstructions = document.getElementById('cropInstructions');
+        let cropper;
+
+        // Set panel outline dimensions (these should match your actual panel aspect ratio)
+        const panelWidth = 300;
+        const panelHeight = 450;
+        panelOutline.style.width = panelWidth + 'px';
+        panelOutline.style.height = panelHeight + 'px';
+        // You can also set a background image for the panel outline if you have one:
+        // panelOutline.style.backgroundImage = "url('path/to/your/panel_outline.png')";
+        // panelOutline.innerText = ''; // Clear text if using background image
+
+        imageUpload.addEventListener('change', (event) => {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageToCrop.src = e.target.result;
+                    imageToCropContainer.style.display = 'block';
+                    panelOutline.style.display = 'none'; // Hide the placeholder text/guide
+                    cropInstructions.style.display = 'block';
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    // Initialize Cropper.js
+                    // We'll use the imageToCropContainer as the cropper element,
+                    // but guide the user to crop to the panelOutline's aspect ratio.
+                    imageToCropContainer.style.width = panelWidth + 'px';
+                    imageToCropContainer.style.height = panelHeight + 'px';
+
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: panelWidth / panelHeight,
+                        viewMode: 1, // Restrict crop box to canvas
+                        dragMode: 'move',
+                        autoCropArea: 1, // Crop area covers the entire image initially
+                        responsive: true,
+                        modal: true, // Dark overlay outside crop box
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                        ready: function () {
+                            // Ensure the cropper is constrained by the container dimensions
+                            // This is a bit tricky as Cropper.js works on the image itself.
+                            // The visual guide is the container.
+                        }
+                    });
+                    cropBtn.style.display = 'inline-block';
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        cropBtn.addEventListener('click', () => {
+            if (cropper) {
+                // Get the cropped image data as a base64 string
+                const croppedCanvas = cropper.getCroppedCanvas({
+                    width: panelWidth, // Desired output width
+                    height: panelHeight // Desired output height
+                });
+
+                if (croppedCanvas) {
+                    previewPlaceholder.style.display = 'none';
+                    previewArea.innerHTML = ''; // Clear previous preview
+                    const croppedImage = document.createElement('img');
+                    croppedImage.src = croppedCanvas.toDataURL('image/png'); // Or 'image/jpeg'
+                    previewArea.appendChild(croppedImage);
+                    addToCartBtn.style.display = 'inline-block';
+
+                    // For Shopify integration:
+                    // const base64ImageData = croppedCanvas.toDataURL('image/png');
+                    // console.log('Cropped Image Data (Base64):', base64ImageData);
+                    // This base64ImageData would be sent to Shopify,
+                    // e.g., as a line item property or used to create a new product variant image.
+                } else {
+                    alert("Could not crop the image. Please try again.");
+                }
+            }
+        });
+
+        addToCartBtn.addEventListener('click', () => {
+            if (cropper && cropper.getCroppedCanvas()) {
+                const base64ImageData = cropper.getCroppedCanvas({width: panelWidth, height: panelHeight}).toDataURL('image/png');
+                alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
+                console.log("Base64 Image data for Shopify:", base64ImageData);
+                // Here you would implement the logic to add the item to Shopify's cart.
+                // This typically involves:
+                // 1. Identifying the Shopify product/variant ID for this custom panel.
+                // 2. Using Shopify's AJAX Cart API (POST to /cart/add.js)
+                //    with quantity, id, and properties (like the base64ImageData).
+                // Example:
+                // fetch('/cart/add.js', {
+                //   method: 'POST',
+                //   headers: {
+                //     'Content-Type': 'application/json'
+                //   },
+                //   body: JSON.stringify({
+                //     items: [{
+                //       id: YOUR_SHOPIFY_VARIANT_ID, // Replace with actual variant ID
+                //       quantity: 1,
+                //       properties: {
+                //         _customPanelImage: base64ImageData
+                //       }
+                //     }]
+                //   })
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //   console.log('Added to cart:', data);
+                //   alert('Panel added to your basket!');
+                //   // Optionally redirect to cart or update cart display
+                // })
+                // .catch((error) => {
+                //   console.error('Error adding to cart:', error);
+                //   alert('Error adding panel to basket.');
+                // });
+            } else {
+                alert("Please crop an image first.");
+            }
+        });
+    </script>
+</body>
+</html>
