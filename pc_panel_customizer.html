@@ -59,6 +59,7 @@
             text-align: center;
             color: #aaa;
             position: relative; /* For overlaying Cropper.js */
+            background-image: url('Testing/Zeal Pastel/zeal print preview.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -180,9 +181,7 @@
         const panelHeight = 450;
         panelOutline.style.width = panelWidth + 'px';
         panelOutline.style.height = panelHeight + 'px';
-        // You can also set a background image for the panel outline if you have one:
-        // panelOutline.style.backgroundImage = "url('path/to/your/panel_outline.png')";
-        // panelOutline.innerText = ''; // Clear text if using background image
+        panelOutline.innerText = ''; // Clear placeholder text as SVG is background
 
         imageUpload.addEventListener('change', (event) => {
             const files = event.target.files;
