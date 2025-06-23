@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom PC Panel Designer</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,33 +23,18 @@
         }
         h1 {
             text-align: center;
-            color: #333;
         }
         .upload-section, .editor-section, .preview-section {
-            margin-bottom: 30px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-        input[type="file"] {
-            display: block;
             margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: calc(100% - 22px); /* Account for padding and border */
         }
         .image-editor {
-            position: relative; /* For absolute positioning of children */
-            width: 300px; /* Should match panelWidth */
-            height: 450px; /* Should match panelHeight */
-            margin: 0 auto 20px; /* Center it and add some margin */
-            border: 1px solid #eee; /* Optional: border for the editor area */
+            position: relative;
+            width: 300px;
+            height: 450px;
+            border: 1px solid #ccc;
+            overflow: hidden; /* Clip the image */
         }
-        .panel-outline-container { /* This holds the SVG background */
+        .panel-outline-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -61,181 +44,140 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            z-index: 1; /* Behind the cropper image container */
+            z-index: 1;
         }
-        .image-to-crop-container { /* This holds the img Cropper.js will attach to */
+        #uploadedImage {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            display: none; /* Hidden until image is uploaded */
-            z-index: 2; /* On top of the panel outline SVG */
+            width: auto;
+            height: auto;
+            max-width: none;
+            max-height: none;
+            opacity: 0.7;
+            transform-origin: center center; /* For rotation and scaling */
+            z-index: 2;
         }
-        /* Style the image Cropper.js uses, and the canvas it creates */
-        .image-to-crop-container img, .cropper-canvas img {
-            opacity: 0.7; /* Make uploaded image semi-transparent to see SVG behind */
-            max-width: 100%;
-            display: block; /* Cropper.js requirement */
-        }
-        .controls button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 20px;
+        .controls {
+            margin-top: 10px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
         }
-        .controls button:hover {
-            background-color: #0056b3;
-        }
-        .controls button#addToCartBtn {
-            background-color: #28a745;
-        }
-        .controls button#addToCartBtn:hover {
-            background-color: #1e7e34;
+        .controls input[type="range"] {
+            width: 150px;
         }
         .preview-area img {
             max-width: 100%;
             border: 1px solid #ddd;
             margin-top: 10px;
-            border-radius: 4px;
-            background-color: #fff; /* Ensure preview has solid background if image has transparency */
-        }
-        .instructions {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Design Your Custom PC Panel</h1>
+        <h1>Custom PC Panel Designer</h1>
 
         <div class="upload-section">
             <label for="imageUpload">1. Upload Your Image:</label>
             <input type="file" id="imageUpload" accept="image/*">
-            <p class="instructions">
-                This image will be placed over the panel outline. You can then position and crop it.
-            </p>
         </div>
 
         <div class="editor-section">
-            <label>2. Position and Crop Your Image:</label>
+            <label>2. Adjust Image & Preview:</label>
             <div class="image-editor">
-                <div class="panel-outline-container" id="panelOutline">
-                    {/* SVG background is applied via CSS to this div */}
-                </div>
-                <div class="image-to-crop-container" id="imageCropContainer">
-                    <img id="imageToCrop" src="#" alt="Uploaded Image">
-                </div>
+                <div class="panel-outline-container"></div>
+                <img id="uploadedImage" src="#" alt="Uploaded Image">
             </div>
-             <p class="instructions" id="cropInstructions" style="display:none;">
-                Adjust the selection over your image. The selection is constrained to the panel's shape.
-            </p>
-        </div>
 
-        <div class="controls">
-            <button id="cropBtn" style="display:none;">Crop & Preview</button>
-            <button id="addToCartBtn" style="display:none;">Add to Basket (Conceptual)</button>
+            <div class="controls">
+                <label for="zoomRange">Zoom:</label>
+                <input type="range" id="zoomRange" min="0.1" max="2" value="1" step="0.01">
+                <label for="rotateRange">Rotate:</label>
+                <input type="range" id="rotateRange" min="0" max="360" value="0" step="1">
+            </div>
         </div>
 
         <div class="preview-section">
             <label>3. Preview:</label>
-            <div id="previewArea" class="preview-area">
+            <div class="preview-area">
                 <p id="previewPlaceholder">Your cropped panel design will appear here.</p>
+                <img id="previewImage" src="#" alt="Preview">
             </div>
+        </div>
+
+        <div class="controls">
+            <button id="cropBtn">Crop & Preview</button>
+            <button id="addToCartBtn">Add to Basket (Conceptual)</button>
         </div>
     </div>
 
     <script>
         const imageUpload = document.getElementById('imageUpload');
-        const imageToCropContainer = document.getElementById('imageCropContainer');
-        const imageToCrop = document.getElementById('imageToCrop');
-        // panelOutline div is now just for the SVG background, not directly used by JS logic here
-        const cropBtn = document.getElementById('cropBtn');
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const previewArea = document.getElementById('previewArea');
+        const uploadedImage = document.getElementById('uploadedImage');
+        const zoomRange = document.getElementById('zoomRange');
+        const rotateRange = document.getElementById('rotateRange');
+        const previewImage = document.getElementById('previewImage');
         const previewPlaceholder = document.getElementById('previewPlaceholder');
-        const cropInstructions = document.getElementById('cropInstructions');
-        let cropper;
+        const cropBtn = document.getElementById('cropBtn');
+        const panelWidth = 300;
+        const panelHeight = 450;
 
-        const panelWidth = 300; // Target width for the final cropped image
-        const panelHeight = 450; // Target height for the final cropped image
-
-        imageUpload.addEventListener('change', (event) => {
-            const files = event.target.files;
-            if (files && files.length > 0) {
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    imageToCrop.src = e.target.result;
-                    imageToCropContainer.style.display = 'block';
-                    cropInstructions.style.display = 'block';
-
-                    if (cropper) {
-                        cropper.destroy();
+                reader.onload = function(event) {
+                    uploadedImage.src = event.target.result;
+                    uploadedImage.onload = function() {
+                        // Set initial image position and scale
+                        uploadedImage.style.width = '100%';
+                        uploadedImage.style.height = 'auto';
+                        uploadedImage.style.top = '0';
+                        uploadedImage.style.left = '0';
                     }
-
-                    cropper = new Cropper(imageToCrop, {
-                        aspectRatio: panelWidth / panelHeight, // Constrain crop box to panel's aspect ratio
-                        viewMode: 1, // Restrict crop box to be within the image bounds.
-                                     // Use 0 if you want the crop box to be able to go outside image bounds,
-                                     // but then parts of the crop box might be empty.
-                        dragMode: 'crop', // Allows creating a new crop box or moving/resizing existing one
-                        autoCropArea: 0.8, // Initial size of crop box (e.g., 80% of image)
-                        responsive: true,
-                        modal: true, // Dark overlay outside crop box
-                        guides: true,
-                        center: true,
-                        highlight: true,
-                        background: true, // Shows grid background in cropper, helps with transparency
-                        cropBoxMovable: true,
-                        cropBoxResizable: true,
-                        toggleDragModeOnDblclick: false
-                    });
-                    cropBtn.style.display = 'inline-block';
-                };
-                reader.readAsDataURL(files[0]);
-            }
-        });
-
-        cropBtn.addEventListener('click', () => {
-            if (cropper) {
-                const croppedCanvas = cropper.getCroppedCanvas({
-                    width: panelWidth,    // Output width for the preview
-                    height: panelHeight,  // Output height for the preview
-                    imageSmoothingEnabled: true,
-                    imageSmoothingQuality: 'high'
-                });
-
-                if (croppedCanvas) {
-                    previewPlaceholder.style.display = 'none';
-                    previewArea.innerHTML = ''; // Clear previous preview
-                    const croppedImageEl = document.createElement('img');
-                    croppedImageEl.src = croppedCanvas.toDataURL('image/png');
-                    previewArea.appendChild(croppedImageEl);
-                    addToCartBtn.style.display = 'inline-block';
-                } else {
-                    alert("Could not crop the image. Please try again.");
                 }
+                reader.readAsDataURL(file);
             }
         });
 
-        addToCartBtn.addEventListener('click', () => {
-            if (cropper && cropper.getCroppedCanvas()) {
-                const base64ImageData = cropper.getCroppedCanvas({width: panelWidth, height: panelHeight}).toDataURL('image/png');
-                alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
-                console.log("Base64 Image data for Shopify:", base64ImageData);
-                // Shopify integration logic would go here
-            } else {
-                alert("Please crop an image first.");
+        zoomRange.addEventListener('input', function() {
+            uploadedImage.style.transform = `scale(${this.value}) rotate(${rotateRange.value}deg)`;
+        });
+
+        rotateRange.addEventListener('input', function() {
+            uploadedImage.style.transform = `scale(${zoomRange.value}) rotate(${this.value}deg)`;
+        });
+
+        cropBtn.addEventListener('click', function() {
+            // Get image data
+            const img = new Image();
+            img.src = uploadedImage.src;
+            img.onload = function() {
+                const scale = parseFloat(zoomRange.value);
+                const rotation = parseInt(rotateRange.value);
+
+                // Create a canvas with the panel dimensions
+                const canvas = document.createElement('canvas');
+                canvas.width = panelWidth;
+                canvas.height = panelHeight;
+                const ctx = canvas.getContext('2d');
+
+                // Calculate image position and size within the panel
+                const imgWidth = img.width * scale;
+                const imgHeight = img.height * scale;
+                const imgX = (panelWidth - imgWidth) / 2;
+                const imgY = (panelHeight - imgHeight) / 2;
+
+                // Rotate the canvas
+                ctx.translate(panelWidth / 2, panelHeight / 2);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.translate(-panelWidth / 2, -panelHeight / 2);
+
+                // Draw the image onto the canvas
+                ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
+
+                // Set the preview image source
+                previewImage.src = canvas.toDataURL('image/png');
+                previewPlaceholder.style.display = 'none';
             }
         });
     </script>
