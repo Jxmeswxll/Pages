@@ -49,37 +49,32 @@
             width: 300px; /* Should match panelWidth */
             height: 450px; /* Should match panelHeight */
             margin: 0 auto 20px; /* Center it and add some margin */
+            border: 1px solid #eee; /* Optional: border for the editor area */
         }
-        .panel-outline-container, .image-to-crop-container {
+        .panel-outline-container { /* This holds the SVG background */
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%; /* Take full width of parent .image-editor */
-            height: 100%; /* Take full height of parent .image-editor */
-        }
-        .panel-outline-container {
-            z-index: 1; /* Ensure it's behind the cropper container */
-            width: 300px; /* Adjust as needed */
-            height: 450px; /* Adjust as needed */
-            border: 2px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #aaa;
-            position: relative; /* For overlaying Cropper.js */
+            width: 100%;
+            height: 100%;
             background-image: url('Testing/Zeal Pastel/zeal print preview.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            z-index: 1; /* Behind the cropper image container */
         }
-        .image-to-crop-container {
-            /* width, height, max-width are now handled by absolute positioning */
+        .image-to-crop-container { /* This holds the img Cropper.js will attach to */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: none; /* Hidden until image is uploaded */
-            z-index: 2; /* Ensure it's on top of the panel outline */
+            z-index: 2; /* On top of the panel outline SVG */
         }
-        .image-to-crop-container img, .cropper-canvas img { /* Apply opacity to the image being cropped */
-            opacity: 0.7;
+        /* Style the image Cropper.js uses, and the canvas it creates */
+        .image-to-crop-container img, .cropper-canvas img {
+            opacity: 0.7; /* Make uploaded image semi-transparent to see SVG behind */
             max-width: 100%;
             display: block; /* Cropper.js requirement */
         }
@@ -111,6 +106,7 @@
             border: 1px solid #ddd;
             margin-top: 10px;
             border-radius: 4px;
+            background-color: #fff; /* Ensure preview has solid background if image has transparency */
         }
         .instructions {
             font-size: 0.9em;
@@ -135,32 +131,19 @@
             <label>2. Position and Crop Your Image:</label>
             <div class="image-editor">
                 <div class="panel-outline-container" id="panelOutline">
-                    <!-- This will serve as the visual guide and cropping boundary -->
-                    PC Panel Outline
-                    (e.g., 300x450px)
+                    {/* SVG background is applied via CSS to this div */}
                 </div>
                 <div class="image-to-crop-container" id="imageCropContainer">
                     <img id="imageToCrop" src="#" alt="Uploaded Image">
                 </div>
             </div>
              <p class="instructions" id="cropInstructions" style="display:none;">
-                Drag to move, use handles to resize. The dashed area represents the panel.
+                Adjust the selection over your image. The selection is constrained to the panel's shape.
             </p>
         </div>
 
         <div class="controls">
             <button id="cropBtn" style="display:none;">Crop & Preview</button>
-            <!--
-                Shopify Integration Point:
-                This button would ideally trigger a function to:
-                1. Get the cropped image data (e.g., base64).
-                2. Add the custom panel product to the Shopify cart,
-                   possibly using Shopify's AJAX API or by passing data to a Liquid form.
-                3. The 'product_id' or 'variant_id' for the specific panel type
-                   (e.g., "Ultra Labs Side Panel") would be needed here.
-                   This might be pre-defined or fetched if this tool is embedded
-                   in a specific Shopify product page context.
-            -->
             <button id="addToCartBtn" style="display:none;">Add to Basket (Conceptual)</button>
         </div>
 
@@ -168,7 +151,6 @@
             <label>3. Preview:</label>
             <div id="previewArea" class="preview-area">
                 <p id="previewPlaceholder">Your cropped panel design will appear here.</p>
-                <!-- Cropped image will be displayed here -->
             </div>
         </div>
     </div>
@@ -177,7 +159,7 @@
         const imageUpload = document.getElementById('imageUpload');
         const imageToCropContainer = document.getElementById('imageCropContainer');
         const imageToCrop = document.getElementById('imageToCrop');
-        const panelOutline = document.getElementById('panelOutline');
+        // panelOutline div is now just for the SVG background, not directly used by JS logic here
         const cropBtn = document.getElementById('cropBtn');
         const addToCartBtn = document.getElementById('addToCartBtn');
         const previewArea = document.getElementById('previewArea');
@@ -185,12 +167,8 @@
         const cropInstructions = document.getElementById('cropInstructions');
         let cropper;
 
-        // Set panel outline dimensions (these should match your actual panel aspect ratio)
-        const panelWidth = 300;
-        const panelHeight = 450;
-        panelOutline.style.width = panelWidth + 'px';
-        panelOutline.style.height = panelHeight + 'px';
-        panelOutline.innerText = ''; // Clear placeholder text as SVG is background
+        const panelWidth = 300; // Target width for the final cropped image
+        const panelHeight = 450; // Target height for the final cropped image
 
         imageUpload.addEventListener('change', (event) => {
             const files = event.target.files;
@@ -199,65 +177,28 @@
                 reader.onload = (e) => {
                     imageToCrop.src = e.target.result;
                     imageToCropContainer.style.display = 'block';
-                    // panelOutline remains visible
                     cropInstructions.style.display = 'block';
 
                     if (cropper) {
                         cropper.destroy();
                     }
 
-                    // Initialize Cropper.js
-                    // We'll use the imageToCropContainer as the cropper element,
-                    // but guide the user to crop to the panelOutline's aspect ratio.
-                    imageToCropContainer.style.width = panelWidth + 'px';
-                    imageToCropContainer.style.height = panelHeight + 'px';
-
                     cropper = new Cropper(imageToCrop, {
-                        // aspectRatio is removed here: User's uploaded image maintains its own aspect ratio during manipulation.
-                        // The panel's aspect ratio is enforced by getCroppedCanvas dimensions.
-                        viewMode: 0, // Allow image to be moved freely
-                        dragMode: 'move',
-                        autoCropArea: 1, // Crop box is the entire uploaded image
+                        aspectRatio: panelWidth / panelHeight, // Constrain crop box to panel's aspect ratio
+                        viewMode: 1, // Restrict crop box to be within the image bounds.
+                                     // Use 0 if you want the crop box to be able to go outside image bounds,
+                                     // but then parts of the crop box might be empty.
+                        dragMode: 'crop', // Allows creating a new crop box or moving/resizing existing one
+                        autoCropArea: 0.8, // Initial size of crop box (e.g., 80% of image)
                         responsive: true,
-                        modal: false, // No modal overlay, to see SVG below
-                        guides: false, // Guides not really needed if cropbox is the image
-                        center: false, // Allow image to go off-center relative to container
-                        highlight: false, // No specific highlight for crop box
-                        background: false, // Ensure cropper background is transparent to see SVG
-                        cropBoxMovable: true, 
-                        cropBoxResizable: true, 
-                        toggleDragModeOnDblclick: false,
-                        crop: function(event) {
-                            const panelRect = panelOutline.getBoundingClientRect();
-                            const cropperCanvasData = cropper.getCanvasData(); // Gets position and size of the image canvas
-                            const cropperContainerData = cropper.getContainerData();
-
-                            // Calculate the visible part of the image in screen coordinates
-                            // This needs to account for the cropper's own container offsets if any
-                            const imageRect = {
-                                left: cropperCanvasData.left + panelOutline.offsetParent.getBoundingClientRect().left,
-                                top: cropperCanvasData.top + panelOutline.offsetParent.getBoundingClientRect().top,
-                                width: cropperCanvasData.width,
-                                height: cropperCanvasData.height
-                            };
-                            
-                            // More precise: get crop box data which represents the user's view of their image
-                            const cropBoxRect = cropper.getCropBoxData();
-                            const visibleImagePartRect = {
-                                left: cropBoxRect.left + imageToCropContainer.getBoundingClientRect().left,
-                                top: cropBoxRect.top + imageToCropContainer.getBoundingClientRect().top,
-                                width: cropBoxRect.width,
-                                height: cropBoxRect.height
-                            };
-
-                            isCurrentlyOverlapping = checkOverlap(visibleImagePartRect, panelRect);
-                            
-                            if (isCurrentlyOverlapping) {
-                                imageToCrop.style.opacity = '0.7';
-                            } else {
-                                imageToCrop.style.opacity = '0.5';
-                            }
-                        }
+                        modal: true, // Dark overlay outside crop box
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        background: true, // Shows grid background in cropper, helps with transparency
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false
                     });
                     cropBtn.style.display = 'inline-block';
                 };
@@ -267,26 +208,20 @@
 
         cropBtn.addEventListener('click', () => {
             if (cropper) {
-                // Get the cropped image data as a base64 string
                 const croppedCanvas = cropper.getCroppedCanvas({
-                    width: panelWidth, // Desired output width
-                    height: panelHeight // Desired output height
+                    width: panelWidth,    // Output width for the preview
+                    height: panelHeight,  // Output height for the preview
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high'
                 });
 
-                if (croppedCanvas && isCurrentlyOverlapping) { // Only proceed if overlapping
+                if (croppedCanvas) {
                     previewPlaceholder.style.display = 'none';
                     previewArea.innerHTML = ''; // Clear previous preview
-                    const croppedImage = document.createElement('img');
-                    croppedImage.src = croppedCanvas.toDataURL('image/png'); // Or 'image/jpeg'
-                    // The previewed image should be at 100% opacity by default
-                    previewArea.appendChild(croppedImage);
+                    const croppedImageEl = document.createElement('img');
+                    croppedImageEl.src = croppedCanvas.toDataURL('image/png');
+                    previewArea.appendChild(croppedImageEl);
                     addToCartBtn.style.display = 'inline-block';
-
-                    // For Shopify integration:
-                    // const base64ImageData = croppedCanvas.toDataURL('image/png');
-                    // console.log('Cropped Image Data (Base64):', base64ImageData);
-                    // This base64ImageData would be sent to Shopify,
-                    // e.g., as a line item property or used to create a new product variant image.
                 } else {
                     alert("Could not crop the image. Please try again.");
                 }
@@ -294,42 +229,11 @@
         });
 
         addToCartBtn.addEventListener('click', () => {
->>>>>>> REPLACE
             if (cropper && cropper.getCroppedCanvas()) {
                 const base64ImageData = cropper.getCroppedCanvas({width: panelWidth, height: panelHeight}).toDataURL('image/png');
                 alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
                 console.log("Base64 Image data for Shopify:", base64ImageData);
-                // Here you would implement the logic to add the item to Shopify's cart.
-                // This typically involves:
-                // 1. Identifying the Shopify product/variant ID for this custom panel.
-                // 2. Using Shopify's AJAX Cart API (POST to /cart/add.js)
-                //    with quantity, id, and properties (like the base64ImageData).
-                // Example:
-                // fetch('/cart/add.js', {
-                //   method: 'POST',
-                //   headers: {
-                //     'Content-Type': 'application/json'
-                //   },
-                //   body: JSON.stringify({
-                //     items: [{
-                //       id: YOUR_SHOPIFY_VARIANT_ID, // Replace with actual variant ID
-                //       quantity: 1,
-                //       properties: {
-                //         _customPanelImage: base64ImageData
-                //       }
-                //     }]
-                //   })
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //   console.log('Added to cart:', data);
-                //   alert('Panel added to your basket!');
-                //   // Optionally redirect to cart or update cart display
-                // })
-                // .catch((error) => {
-                //   console.error('Error adding to cart:', error);
-                //   alert('Error adding panel to basket.');
-                // });
+                // Shopify integration logic would go here
             } else {
                 alert("Please crop an image first.");
             }
