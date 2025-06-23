@@ -184,19 +184,6 @@
         const previewPlaceholder = document.getElementById('previewPlaceholder');
         const cropInstructions = document.getElementById('cropInstructions');
         let cropper;
-        let isCurrentlyOverlapping = false; // To track overlap status
-
-        function checkOverlap(rect1, rect2) {
-            // Check if one rectangle is on the left side of the other
-            if (rect1.left + rect1.width < rect2.left || rect2.left + rect2.width < rect1.left) {
-                return false;
-            }
-            // Check if one rectangle is above the other
-            if (rect1.top + rect1.height < rect2.top || rect2.top + rect2.height < rect1.top) {
-                return false;
-            }
-            return true;
-        }
 
         // Set panel outline dimensions (these should match your actual panel aspect ratio)
         const panelWidth = 300;
@@ -300,19 +287,14 @@
                     // console.log('Cropped Image Data (Base64):', base64ImageData);
                     // This base64ImageData would be sent to Shopify,
                     // e.g., as a line item property or used to create a new product variant image.
-                } else if (croppedCanvas && !isCurrentlyOverlapping) {
-                    previewPlaceholder.style.display = 'block'; // Show placeholder
-                    previewPlaceholder.innerText = "Image is outside the panel area. This part will not be printed.";
-                    previewArea.innerHTML = ''; // Clear previous preview image if any
-                    previewArea.appendChild(previewPlaceholder);
-                    addToCartBtn.style.display = 'none'; // Hide add to cart if not printable
                 } else {
-                    alert("Could not process the image. Please ensure an image is uploaded and positioned.");
+                    alert("Could not crop the image. Please try again.");
                 }
             }
         });
 
         addToCartBtn.addEventListener('click', () => {
+>>>>>>> REPLACE
             if (cropper && cropper.getCroppedCanvas()) {
                 const base64ImageData = cropper.getCroppedCanvas({width: panelWidth, height: panelHeight}).toDataURL('image/png');
                 alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
