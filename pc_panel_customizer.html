@@ -222,19 +222,11 @@
                         guides: true,
                         center: true,
                         highlight: true,
-                        cropBoxMovable: false, // Crop box is fixed
-                        cropBoxResizable: false, // Crop box is fixed
-                        toggleDragModeOnDblclick: false,
-                        ready: function () {
-                            const containerData = this.cropper.getContainerData();
-                            // Set the crop box to cover the entire container, making it fixed
-                            this.cropper.setCropBoxData({
-                                left: 0,
-                                top: 0,
-                                width: containerData.width,
-                                height: containerData.height
-                            });
-                        }
+                        cropBoxMovable: true, // User can move the crop box
+                        cropBoxResizable: true, // User can resize the crop box
+                        toggleDragModeOnDblclick: false
+                        // The 'ready' function for fixed crop box is removed.
+                        // autoCropArea: 1 ensures the crop box initially covers the image.
                     });
                     cropBtn.style.display = 'inline-block';
                 };
