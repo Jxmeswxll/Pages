@@ -226,10 +226,11 @@
                     imageToCropContainer.style.height = panelHeight + 'px';
 
                     cropper = new Cropper(imageToCrop, {
-                        aspectRatio: panelWidth / panelHeight,
+                        // aspectRatio is removed here: User's uploaded image maintains its own aspect ratio during manipulation.
+                        // The panel's aspect ratio is enforced by getCroppedCanvas dimensions.
                         viewMode: 0, // Allow image to be moved freely
                         dragMode: 'move',
-                        autoCropArea: 1, // Crop area covers the entire image initially
+                        autoCropArea: 1, // Crop box is the entire uploaded image
                         responsive: true,
                         modal: false, // No modal overlay, to see SVG below
                         guides: false, // Guides not really needed if cropbox is the image
