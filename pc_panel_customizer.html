@@ -45,11 +45,20 @@
             width: calc(100% - 22px); /* Account for padding and border */
         }
         .image-editor {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
+            position: relative; /* For absolute positioning of children */
+            width: 300px; /* Should match panelWidth */
+            height: 450px; /* Should match panelHeight */
+            margin: 0 auto 20px; /* Center it and add some margin */
+        }
+        .panel-outline-container, .image-to-crop-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Take full width of parent .image-editor */
+            height: 100%; /* Take full height of parent .image-editor */
         }
         .panel-outline-container {
+            z-index: 1; /* Ensure it's behind the cropper container */
             width: 300px; /* Adjust as needed */
             height: 450px; /* Adjust as needed */
             border: 2px dashed #ccc;
@@ -65,12 +74,12 @@
             background-position: center;
         }
         .image-to-crop-container {
-            width: 300px; /* Should match panel-outline-container or be flexible */
-            height: 450px; /* Should match panel-outline-container */
-            max-width: 100%;
+            /* width, height, max-width are now handled by absolute positioning */
             display: none; /* Hidden until image is uploaded */
+            z-index: 2; /* Ensure it's on top of the panel outline */
         }
-        .image-to-crop-container img {
+        .image-to-crop-container img, .cropper-canvas img { /* Apply opacity to the image being cropped */
+            opacity: 0.7;
             max-width: 100%;
             display: block; /* Cropper.js requirement */
         }
@@ -190,7 +199,7 @@
                 reader.onload = (e) => {
                     imageToCrop.src = e.target.result;
                     imageToCropContainer.style.display = 'block';
-                    panelOutline.style.display = 'none'; // Hide the placeholder text/guide
+                    // panelOutline remains visible
                     cropInstructions.style.display = 'block';
 
                     if (cropper) {
@@ -213,13 +222,18 @@
                         guides: true,
                         center: true,
                         highlight: true,
-                        cropBoxMovable: true,
-                        cropBoxResizable: true,
+                        cropBoxMovable: false, // Crop box is fixed
+                        cropBoxResizable: false, // Crop box is fixed
                         toggleDragModeOnDblclick: false,
                         ready: function () {
-                            // Ensure the cropper is constrained by the container dimensions
-                            // This is a bit tricky as Cropper.js works on the image itself.
-                            // The visual guide is the container.
+                            const containerData = this.cropper.getContainerData();
+                            // Set the crop box to cover the entire container, making it fixed
+                            this.cropper.setCropBoxData({
+                                left: 0,
+                                top: 0,
+                                width: containerData.width,
+                                height: containerData.height
+                            });
                         }
                     });
                     cropBtn.style.display = 'inline-block';
