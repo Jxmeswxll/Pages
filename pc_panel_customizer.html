@@ -6,34 +6,65 @@
     <title>Custom PC Panel Designer</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            align-items: flex-start;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            gap: 20px;
         }
         .container {
             background-color: #fff;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             width: 100%;
-            max-width: 700px;
+            max-width: 1000px; /* Constrain width for larger screens */
+        }
+        .main-content {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 30px;
+        }
+        .editor-column {
+            flex: 1;
+            min-width: 350px; /* Prevent it from getting too small */
+        }
+        .preview-column {
+            flex-basis: 300px;
+            flex-grow: 1;
         }
         h1 {
             text-align: center;
+            color: #333;
+            margin-bottom: 30px;
         }
-        .upload-section, .editor-section, .preview-section {
-            margin-bottom: 20px;
+        .upload-section, .editor-section, .preview-section, .controls-section {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
         .image-editor {
             position: relative;
             width: 300px;
             height: 450px;
-            border: 1px solid #ccc;
-            overflow: hidden; /* Clip the image */
-            cursor: grab; /* Indicate draggable */
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: grab;
+            background-color: #f9f9f9;
         }
         .panel-outline-container {
             position: absolute;
@@ -45,181 +76,282 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            z-index: 1;
+            z-index: 2;
+            pointer-events: none; /* Allows clicks to go through to the image */
         }
         #uploadedImage {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: auto;
-            height: auto;
-            max-width: none;
-            max-height: none;
-            opacity: 0.7;
-            transform-origin: center center; /* For rotation and scaling */
-            z-index: 2;
+            opacity: 0.75;
+            transform-origin: center center;
+            z-index: 1;
+            cursor: grab;
         }
         .controls {
-            margin-top: 10px;
-            text-align: center;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: center;
         }
         .controls input[type="range"] {
-            width: 150px;
+            width: 100%;
+        }
+        .preview-area {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
         }
         .preview-area img {
             max-width: 100%;
-            border: 1px solid #ddd;
-            margin-top: 10px;
+            display: none; /* Hide initially */
+        }
+        #previewPlaceholder {
+            color: #888;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #cropBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        #cropBtn:hover {
+            background-color: #0056b3;
+        }
+        #resetBtn {
+            background-color: #6c757d;
+            color: white;
+        }
+        #resetBtn:hover {
+            background-color: #5a6268;
+        }
+        #addToCartBtn {
+            background-color: #28a745;
+            color: white;
+        }
+        #addToCartBtn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Custom PC Panel Designer</h1>
+        <div class="main-content">
+            <div class="editor-column">
+                <div class="upload-section">
+                    <label for="imageUpload">1. Upload Your Image</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
 
-        <div class="upload-section">
-            <label for="imageUpload">1. Upload Your Image:</label>
-            <input type="file" id="imageUpload" accept="image/*">
-        </div>
+                <div class="editor-section">
+                    <label>2. Position Your Image</label>
+                    <div class="image-editor" id="imageEditor">
+                        <div class="panel-outline-container"></div>
+                        <img id="uploadedImage" src="#" alt="Upload an image to begin">
+                    </div>
+                </div>
 
-        <div class="editor-section">
-            <label>2. Adjust Image & Preview:</label>
-            <div class="image-editor">
-                <div class="panel-outline-container"></div>
-                <img id="uploadedImage" src="#" alt="Uploaded Image">
+                <div class="controls-section">
+                     <label>3. Adjust & Preview</label>
+                    <div class="controls">
+                        <label for="zoomRange">Zoom</label>
+                        <input type="range" id="zoomRange" min="0.1" max="3" step="0.05" value="1">
+                        
+                        <label for="rotateRange">Rotate</label>
+                        <input type="range" id="rotateRange" min="-180" max="180" step="1" value="0">
+                    </div>
+                    <div class="action-buttons">
+                        <button id="resetBtn">Reset</button>
+                        <button id="cropBtn">Crop & Preview</button>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="preview-section">
-            <label>3. Preview:</label>
-            <div class="preview-area">
-                <p id="previewPlaceholder">Your cropped panel design will appear here.</p>
-                <img id="previewImage" src="#" alt="Preview">
+            <div class="preview-column">
+                <div class="preview-section">
+                    <label>4. Final Design</label>
+                    <div class="preview-area">
+                        <p id="previewPlaceholder">Your design will appear here.</p>
+                        <img id="previewImage" src="#" alt="Preview">
+                    </div>
+                </div>
+                <button id="addToCartBtn" style="width: 100%;">Add to Basket (Conceptual)</button>
             </div>
-        </div>
-
-        <div class="controls">
-            <button id="cropBtn">Crop & Preview</button>
-            <button id="addToCartBtn">Add to Basket (Conceptual)</button>
         </div>
     </div>
 
     <script>
-        const imageUpload = document.getElementById('imageUpload');
-        const uploadedImage = document.getElementById('uploadedImage');
-        const previewImage = document.getElementById('previewImage');
-        const previewPlaceholder = document.getElementById('previewPlaceholder');
-        const cropBtn = document.getElementById('cropBtn');
-        const imageEditor = document.querySelector('.image-editor'); // Get the editor div
-        const panelWidth = 300;
-        const panelHeight = 450;
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUpload = document.getElementById('imageUpload');
+            const uploadedImage = document.getElementById('uploadedImage');
+            const previewImage = document.getElementById('previewImage');
+            const previewPlaceholder = document.getElementById('previewPlaceholder');
+            const cropBtn = document.getElementById('cropBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const imageEditor = document.getElementById('imageEditor');
+            const zoomRange = document.getElementById('zoomRange');
+            const rotateRange = document.getElementById('rotateRange');
+            const addToCartBtn = document.getElementById('addToCartBtn');
 
-        let scale = 1;
-        let rotation = 0;
-        let startX = 0;
-        let startY = 0;
-        let isDragging = false;
+            let panelWidth, panelHeight;
 
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    uploadedImage.src = event.target.result;
-                    uploadedImage.onload = function() {
-                        // Set initial image position and scale
-                        uploadedImage.style.width = '100%';
-                        uploadedImage.style.height = 'auto';
-                        uploadedImage.style.top = '0';
-                        uploadedImage.style.left = '0';
-                        updateTransform();
+            // Defer panel size calculation until the DOM is fully loaded
+            panelWidth = imageEditor.clientWidth;
+            panelHeight = imageEditor.clientHeight;
+
+            let scale = 1, rotation = 0, posX = 0, posY = 0;
+            let startX, startY, isDragging = false;
+            let initialImageWidth, initialImageHeight;
+
+            function updateTransform() {
+                uploadedImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale}) rotate(${rotation}deg)`;
+            }
+
+            function resetToDefault() {
+                scale = 1;
+                rotation = 0;
+                
+                if (initialImageWidth && initialImageHeight) {
+                    const editorAspect = panelWidth / panelHeight;
+                    const imageAspect = initialImageWidth / initialImageHeight;
+                    let newWidth, newHeight;
+
+                    if (imageAspect > editorAspect) {
+                        newWidth = panelWidth;
+                        newHeight = panelWidth / imageAspect;
+                    } else {
+                        newHeight = panelHeight;
+                        newWidth = panelHeight * imageAspect;
                     }
+                    
+                    uploadedImage.style.width = `${newWidth}px`;
+                    uploadedImage.style.height = `${newHeight}px`;
+                    posX = (panelWidth - newWidth) / 2;
+                    posY = (panelHeight - newHeight) / 2;
+                } else {
+                     posX = 0;
+                     posY = 0;
                 }
-                reader.readAsDataURL(file);
+
+                zoomRange.value = scale;
+                rotateRange.value = rotation;
+                updateTransform();
             }
-        });
 
-        function updateTransform() {
-            uploadedImage.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
-        }
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedImage.src = event.target.result;
+                        uploadedImage.style.display = 'block';
+                        uploadedImage.onload = function() {
+                            initialImageWidth = uploadedImage.naturalWidth;
+                            initialImageHeight = uploadedImage.naturalHeight;
+                            resetToDefault();
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
 
-        // Zoom with mouse wheel
-        imageEditor.addEventListener('wheel', function(e) {
-            e.preventDefault(); // Prevent page scroll
-            const delta = e.deltaY > 0 ? -0.1 : 0.1; // Adjust zoom speed
-            scale = Math.max(0.1, Math.min(2, scale + delta)); // Limit zoom
-            updateTransform();
-        });
+            zoomRange.addEventListener('input', (e) => {
+                scale = parseFloat(e.target.value);
+                updateTransform();
+            });
 
-        // Rotate with mouse drag
-        imageEditor.addEventListener('mousedown', function(e) {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            imageEditor.style.cursor = 'grabbing'; // Change cursor
-        });
+            rotateRange.addEventListener('input', (e) => {
+                rotation = parseInt(e.target.value);
+                updateTransform();
+            });
 
-        imageEditor.addEventListener('mousemove', function(e) {
-            if (!isDragging) return;
-            const deltaX = e.clientX - startX;
-            rotation += deltaX * 0.2; // Adjust rotation speed
-            updateTransform();
-            startX = e.clientX; // Update start position
-        });
+            resetBtn.addEventListener('click', resetToDefault);
 
-        imageEditor.addEventListener('mouseup', function() {
-            isDragging = false;
-            imageEditor.style.cursor = 'grab'; // Restore cursor
-        });
+            imageEditor.addEventListener('mousedown', (e) => {
+                if (!uploadedImage.src || uploadedImage.src.endsWith('#')) return;
+                e.preventDefault();
+                isDragging = true;
+                startX = e.clientX - posX;
+                startY = e.clientY - posY;
+                imageEditor.style.cursor = 'grabbing';
+                uploadedImage.style.cursor = 'grabbing';
+            });
 
-        imageEditor.addEventListener('mouseleave', function() {
-            isDragging = false;
-            imageEditor.style.cursor = 'grab'; // Restore cursor
-        });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                posX = e.clientX - startX;
+                posY = e.clientY - startY;
+                updateTransform();
+            });
 
-        cropBtn.addEventListener('click', function() {
-            const img = new Image();
-            img.src = uploadedImage.src;
-            img.onload = function() {
-                const scale = parseFloat(zoomRange.value);
-                const rotation = parseInt(rotateRange.value);
+            window.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    imageEditor.style.cursor = 'grab';
+                    uploadedImage.style.cursor = 'grab';
+                }
+            });
 
-                // Create a canvas with the panel dimensions
-                const canvas = document.createElement('canvas');
-                canvas.width = panelWidth;
-                canvas.height = panelHeight;
-                const ctx = canvas.getContext('2d');
+            cropBtn.addEventListener('click', function() {
+                if (!uploadedImage.src || uploadedImage.src.endsWith('#')) {
+                    alert("Please upload an image first.");
+                    return;
+                }
 
-                // Calculate image position and size within the panel
-                const imgWidth = img.width * scale;
-                const imgHeight = img.height * scale;
-                const imgX = (panelWidth - imgWidth) / 2;
-                const imgY = (panelHeight - imgHeight) / 2;
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.src = uploadedImage.src;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = panelWidth;
+                    canvas.height = panelHeight;
+                    const ctx = canvas.getContext('2d');
 
-                // Rotate the canvas
-                ctx.translate(panelWidth / 2, panelHeight / 2);
-                ctx.rotate(rotation * Math.PI / 180);
-                ctx.translate(-panelWidth / 2, -panelHeight / 2);
+                    const scaledWidth = uploadedImage.width * scale;
+                    const scaledHeight = uploadedImage.height * scale;
+                    
+                    const imgX = posX + (scaledWidth - uploadedImage.width) / 2;
+                    const imgY = posY + (scaledHeight - uploadedImage.height) / 2;
 
-                // Draw the image onto the canvas
-                ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
+                    ctx.save();
+                    ctx.translate(posX + scaledWidth / 2, posY + scaledHeight / 2);
+                    ctx.rotate(rotation * Math.PI / 180);
+                    ctx.translate(-(posX + scaledWidth / 2), -(posY + scaledHeight / 2));
+                    ctx.drawImage(img, posX, posY, scaledWidth, scaledHeight);
+                    ctx.restore();
 
-                // Set the preview image source
-                previewImage.src = canvas.toDataURL('image/png');
-                previewPlaceholder.style.display = 'none';
-            }
-        });
+                    previewImage.src = canvas.toDataURL('image/png');
+                    previewImage.style.display = 'block';
+                    previewPlaceholder.style.display = 'none';
+                }
+            });
 
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        addToCartBtn.addEventListener('click', () => {
-            if (previewImage.src && previewImage.src !== '#') {
-                const base64ImageData = previewImage.src;
-                alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
-                console.log("Base64 Image data for Shopify:", base64ImageData);
-                // Shopify integration logic would go here
-            } else {
-                alert("Please crop an image first.");
-            }
+            addToCartBtn.addEventListener('click', () => {
+                if (previewImage.src && !previewImage.src.endsWith('#')) {
+                    const base64ImageData = previewImage.src;
+                    alert('Conceptual: "Add to Basket" clicked. Image data (see console) would be sent to Shopify here.');
+                    console.log("Base64 Image data for Shopify:", base64ImageData);
+                } else {
+                    alert("Please create a preview first.");
+                }
+            });
         });
     </script>
 </body>
