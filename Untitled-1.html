@@ -328,6 +328,7 @@
             }
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -500,5 +501,12 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        createChat({
+            webhookUrl: 'https://wxlls.app.n8n.cloud/webhook/28fe11fd-7164-4fcd-a8b2-5007c8c8e6bf/chat'
+        });
+    </script>
 </body>
 </html>
