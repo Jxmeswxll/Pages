@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="quiz">
+            <!-- Step 1: Primary Use -->
+            <div class="step" id="step1">
+                <h2>Step 1: Pick Your Battle</h2>
+                <p>What will you use this PC for primarily?</p>
+                <div class="options">
+                    <div class="option" data-value="Gaming">Gaming</div>
+                    <div class="option" data-value="Mostly Gaming, Some Work">Mostly Gaming, Some Work</div>
+                    <div class="option" data-value="Both">Both</div>
+                    <div class="option" data-value="Mostly Work, Some Gaming">Mostly Work, Some Gaming</div>
+                    <div class="option" data-value="Work">Work</div>
+                </div>
+            </div>
+            <!-- Step 2: Game Preferences -->
+            <div class="step" id="step2" style="display: none;">
+                <h2>Step 2: Game Preferences</h2>
+                <p>What resolution do you want to play at?</p>
+                <div class="options">
+                    <div class="option" data-value="1080p">1080p</div>
+                    <div class="option" data-value="1440p">1440p</div>
+                    <div class="option" data-value="4K">4K</div>
+                </div>
+                <p>Which of these games do you play or plan to play?</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="Fortnite">Fortnite</div>
+                    <div class="option-card" data-value="GTA V">GTA V</div>
+                    <div class="option-card" data-value="Call of Duty Warzone">Call of Duty Warzone</div>
+                    <div class="option-card" data-value="Diablo IV">Diablo IV</div>
+                    <div class="option-card" data-value="Starfield">Starfield</div>
+                    <div class="option-card" data-value="League of Legends">League of Legends</div>
+                    <div class="option-card" data-value="iRacing">iRacing</div>
+                    <div class="option-card" data-value="Microsoft Flight Simulator">Microsoft Flight Simulator</div>
+                    <div class="option-card" data-value="Rust">Rust</div>
+                    <div class="option-card" data-value="Darktide">Darktide</div>
+                    <div class="option-card" data-value="Minecraft">Minecraft</div>
+                    <div class="option-card" data-value="Cyberpunk 2077">Cyberpunk 2077</div>
+                    <div class="option-card" data-value="Apex Legends">Apex Legends</div>
+                    <div class="option-card" data-value="Valorant">Valorant</div>
+                    <div class="option-card" data-value="Baldur's Gate 3">Baldur's Gate 3</div>
+                    <div class="option-card" data-value="World of Warcraft">World of Warcraft</div>
+                    <div class="option-card" data-value="Forza Horizon 5">Forza Horizon 5</div>
+                </div>
+            </div>
+            <!-- Step 3: Side Hustle -->
+            <div class="step" id="step3" style="display: none;">
+                <h2>Step 3: Side Hustle?</h2>
+                <p>Will you be using this PC for anything else (e.g. content creation, 3D modeling, video editing)?</p>
+                <div class="options">
+                    <div class="option" data-value="Yes">Yes</div>
+                    <div class="option" data-value="No">No</div>
+                </div>
+            </div>
+            <!-- Step 4: Case Size -->
+            <div class="step" id="step4" style="display: none;">
+                <h2>Step 4: Case Size & Type</h2>
+                <p>What case size do you prefer?</p>
+                <div class="options">
+                    <div class="option" data-value="Small">Small</div>
+                    <div class="option" data-value="Medium">Medium</div>
+                    <div class="option" data-value="Large">Large</div>
+                </div>
+            </div>
+            <!-- Step 5: Style -->
+            <div class="step" id="step5" style="display: none;">
+                <h2>Step 5: Style</h2>
+                <p>Which style do you prefer for your PC build?</p>
+                <div class="options">
+                    <div class="option" data-value="All of the lights (RGB heavy)">All of the lights (RGB heavy)</div>
+                    <div class="option" data-value="Something in between">Something in between</div>
+                    <div class="option" data-value="Stealth (minimalist and dark)">Stealth (minimalist and dark)</div>
+                </div>
+            </div>
+            <!-- Final Step -->
+            <div class="step" id="step6" style="display: none;">
+                <h2>Thank you!</h2>
+                <p>Your preferences have been submitted.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button id="prevBtn" style="display: none;">Back</button>
+            <button id="nextBtn">Next</button>
+            <button id="submitBtn" style="display: none;">Submit</button>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-container" style="display: none;">
+        <div id="loader" class="loader"></div>
+        <div id="results" class="results-grid"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
