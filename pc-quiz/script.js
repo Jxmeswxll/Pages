@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         step2: { resolution: null, games: [] }
     };
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/b4adc638-4917-420d-866d-cb67af8b5cd9';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/b4adc638-4917-420d-866d-cb67af8b5cd9';
 
     function showStep(stepIndex) {
         steps.forEach((step, index) => {
