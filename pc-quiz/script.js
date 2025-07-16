@@ -112,7 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             console.log('Successfully parsed JSON data:', data);
             loader.style.display = 'none';
-            displayResults(data);
+
+            // The response is a string containing JSON, so we need to parse it.
+            const jsonString = data.output.replace(/```json\n|```/g, '');
+            const parsedData = JSON.parse(jsonString);
+
+            displayResults(parsedData.recommendations);
         })
         .catch((error) => {
             console.error('Fetch Error:', error);
