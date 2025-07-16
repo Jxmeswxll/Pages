@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             console.log('Successfully parsed JSON data:', data);
             loader.style.display = 'none';
-            displayResults(data.recommendations);
+            displayResults(data);
         })
         .catch((error) => {
             console.error('Fetch Error:', error);
