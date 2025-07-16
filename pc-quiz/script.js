@@ -85,9 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     submitBtn.addEventListener('click', () => {
+        console.log('Submit button clicked.');
         quizContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
+
+        console.log('Sending data to webhook:', webhookUrl);
+        console.log('Data being sent:', JSON.stringify(answers, null, 2));
 
         fetch(webhookUrl, {
             method: 'POST',
@@ -96,15 +100,24 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(answers),
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Received response from server.');
+            console.log('Response Status:', response.status);
+            console.log('Response Status Text:', response.statusText);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Successfully parsed JSON data:', data);
             loader.style.display = 'none';
             displayResults(data.recommendations);
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('Fetch Error:', error);
             loader.style.display = 'none';
-            resultsGrid.innerHTML = '<p style="text-align: center; color: white;">Sorry, something went wrong. Please try again later.</p>';
+            resultsGrid.innerHTML = `<p style="text-align: center; color: white;">Sorry, something went wrong. Please check the console for details.</p>`;
         });
     });
 
