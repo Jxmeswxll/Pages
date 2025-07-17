@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function determineStepOrder() {
         const primaryUse = answers.primaryUse || [];
-        const conditionalSteps = [];
+        let conditionalSteps = [];
         
         if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming', 'style');
         if (primaryUse.includes('Work')) conditionalSteps.push('work');
@@ -29,7 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const commonSteps = ['caseSize', 'peripherals', 'budget'];
         
-        currentStepOrder = ['primaryUse', ...new Set(conditionalSteps), ...commonSteps];
+        // Use a Set to ensure unique steps, then convert back to an array
+        const uniqueConditionalSteps = [...new Set(conditionalSteps)];
+        
+        currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps];
     }
 
     function showStep(stepId) {
@@ -41,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProgress() {
-        const totalSteps = currentStepOrder.length || 1;
-        const progressPercentage = totalSteps > 1 ? ((currentStepIndex) / (totalSteps - 1)) * 100 : 0;
+        const totalSteps = currentStepOrder.length;
+        const progressPercentage = totalSteps > 1 ? (currentStepIndex / (totalSteps - 1)) * 100 : 0;
         progress.style.width = `${progressPercentage}%`;
     }
 
@@ -83,25 +86,26 @@ document.addEventListener('DOMContentLoaded', () => {
             answers[questionId] = [];
         }
 
-        // Handle "Not Sure" logic
         if (value === 'Not Sure') {
-            // If "Not Sure" is selected, deselect everything else and select it
-            answers[questionId] = ['Not Sure'];
+            const isAlreadySelected = card.classList.contains('selected');
             optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
+            answers[questionId] = [];
+            
+            if (!isAlreadySelected) {
+                card.classList.add('selected');
+                answers[questionId].push('Not Sure');
+            }
         } else {
-            // If another option is selected, deselect "Not Sure"
             const notSureCard = optionsGrid.querySelector('.option-card[data-value="Not Sure"]');
-            if (notSureCard) {
+            if (notSureCard && notSureCard.classList.contains('selected')) {
                 notSureCard.classList.remove('selected');
-                const index = answers[questionId].indexOf('Not Sure');
-                if (index > -1) answers[questionId].splice(index, 1);
+                answers[questionId] = [];
             }
 
             if (selectType === 'single') {
-                answers[questionId] = [value];
                 optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
+                answers[questionId] = [value];
             } else { // multiple
                 const index = answers[questionId].indexOf(value);
                 if (index > -1) {
