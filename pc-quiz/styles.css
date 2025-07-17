@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 body {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,21 +13,22 @@ body {
 }
 
 .quiz-container {
-    background-color: #2b2b2b;
+    background-color: #1d1d1f;
     padding: 50px;
     border-radius: 20px;
     width: 100%;
-    max-width: 800px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    max-width: 700px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     text-align: center;
-    border: 1px solid #e53935;
+    border: 1px solid #333;
+    position: relative;
 }
 
 .progress-bar {
     width: 100%;
-    background-color: #444;
+    background-color: #333;
     border-radius: 5px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     overflow: hidden;
 }
 
@@ -34,13 +37,14 @@ body {
     height: 8px;
     background-color: #e53935;
     border-radius: 5px;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .step h2 {
-    font-size: 2.8em;
-    font-weight: 600;
+    font-size: 2.5em;
+    font-weight: 700;
     margin-bottom: 40px;
+    line-height: 1.2;
 }
 
 .options-grid {
@@ -51,12 +55,12 @@ body {
 }
 
 .option-card {
-    background-color: #333;
+    background-color: #2c2c2e;
     padding: 20px;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid #555;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.2s;
+    border: 2px solid #444;
     display: flex;
     align-items: center;
     text-align: left;
@@ -65,24 +69,24 @@ body {
 
 .option-card:hover {
     border-color: #e53935;
-    transform: translateY(-3px);
+    transform: scale(1.02);
 }
 
 .option-card.selected {
     border-color: #e53935;
-    background-color: #444;
     box-shadow: 0 0 0 2px #e53935;
 }
 
 .option-card i {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #e53935;
     width: 30px;
     text-align: center;
+    transition: color 0.2s;
 }
 
 .option-card.selected i {
-    color: #fff;
+    color: #f5f5f7;
 }
 
 .option-card div {
@@ -93,20 +97,13 @@ body {
 .option-card span {
     font-size: 1.1em;
     font-weight: 600;
-    color: #fff;
+    color: #f5f5f7;
 }
 
 .option-card p {
     font-size: 0.9em;
-    color: #aaa;
-    margin: 0;
-}
-
-.or-separator {
-    text-align: center;
-    margin: 10px 0;
     color: #8a8a8e;
-    font-weight: 500;
+    margin: 2px 0 0;
 }
 
 .navigation {
@@ -124,35 +121,43 @@ button {
     cursor: pointer;
     font-size: 1.1em;
     font-weight: 600;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
 
 button:hover {
-    background-color: #c62828;
+    background-color: #ff4545;
+    transform: scale(1.05);
 }
 
 button:disabled {
-    background-color: #555;
+    background-color: #333;
+    color: #555;
     cursor: not-allowed;
+    transform: scale(1);
 }
 
 #prevBtn {
     background-color: transparent;
-    color: #e53935;
+    color: #8a8a8e;
     padding: 0;
     position: absolute;
-    top: 60px;
-    left: 60px;
+    top: 40px;
+    left: 40px;
     font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-#submitBtn {
-    background-color: #e53935;
+#prevBtn:hover {
+    color: #fff;
+    background-color: transparent;
 }
 
 /* Loader and Results styling */
 .loader {
-    border: 8px solid #444;
+    border: 8px solid #333;
     border-radius: 50%;
     border-top: 8px solid #e53935;
     width: 60px;
@@ -180,10 +185,10 @@ button:disabled {
 }
 
 .result-card {
-    background-color: #2b2b2b;
+    background-color: #2c2c2e;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     border: 1px solid #444;
@@ -193,7 +198,7 @@ button:disabled {
     width: 100%;
     height: auto;
     padding: 40px;
-    background-color: #333;
+    background-color: #1d1d1f;
 }
 
 .result-card-content {
@@ -209,14 +214,14 @@ button:disabled {
 
 .result-card-content .price {
     font-size: 1.2em;
-    color: #fff;
+    color: #f5f5f7;
     margin-bottom: 20px;
 }
 
 .result-card-content .details {
     font-size: 0.9em;
     line-height: 1.5;
-    color: #ccc;
+    color: #8a8a8e;
 }
 
 .buy-button {

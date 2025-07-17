@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStepIndex = 0;
     let stepHistory = [];
     let answers = {};
-    let currentStepOrder = [];
+    let currentStepOrder = ['primaryUse']; // Start with the first step
 
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
@@ -29,7 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const commonSteps = ['resolution', 'style', 'budget'];
         
-        currentStepOrder = ['primaryUse', ...conditionalSteps, ...commonSteps];
+        // Reset the order and add conditional steps only if a primary use is selected
+        currentStepOrder = ['primaryUse'];
+        if(primaryUse.length > 0) {
+            currentStepOrder.push(...conditionalSteps, ...commonSteps);
+        }
     }
 
     function showStep(stepId) {
@@ -41,8 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProgress() {
-        const totalSteps = currentStepOrder.length;
-        progress.style.width = `${((currentStepIndex + 1) / totalSteps) * 100}%`;
+        const totalSteps = currentStepOrder.length || 1;
+        const progressPercentage = totalSteps > 1 ? ((currentStepIndex) / (totalSteps - 1)) * 100 : 0;
+        progress.style.width = `${progressPercentage}%`;
     }
 
     function updateButtons() {
@@ -53,8 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionId = currentStepElement.querySelector('.options-grid').dataset.questionId;
         const selectedOptions = answers[questionId] && answers[questionId].length > 0;
 
-        nextBtn.style.display = currentStepIndex < currentStepOrder.length - 1 ? 'inline-block' : 'none';
-        submitBtn.style.display = currentStepIndex === currentStepOrder.length - 1 ? 'inline-block' : 'none';
+        const isLastStep = currentStepIndex === currentStepOrder.length - 1;
+
+        nextBtn.style.display = !isLastStep ? 'inline-block' : 'none';
+        submitBtn.style.display = isLastStep ? 'inline-block' : 'none';
         prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
         
         nextBtn.disabled = !selectedOptions;
@@ -97,16 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     nextBtn.addEventListener('click', () => {
-        stepHistory.push(currentStepIndex);
-        currentStepIndex++;
-        const nextStepId = currentStepOrder[currentStepIndex];
-        showStep(nextStepId);
+        if (currentStepIndex < currentStepOrder.length - 1) {
+            stepHistory.push(currentStepIndex);
+            currentStepIndex++;
+            const nextStepId = currentStepOrder[currentStepIndex];
+            showStep(nextStepId);
+        }
     });
 
     prevBtn.addEventListener('click', () => {
-        currentStepIndex = stepHistory.pop();
-        const prevStepId = currentStepOrder[currentStepIndex];
-        showStep(prevStepId);
+        if (stepHistory.length > 0) {
+            currentStepIndex = stepHistory.pop();
+            const prevStepId = currentStepOrder[currentStepIndex];
+            showStep(prevStepId);
+        }
     });
 
     submitBtn.addEventListener('click', () => {
@@ -161,6 +172,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setup
-    determineStepOrder();
     showStep(currentStepOrder[0]);
 });
