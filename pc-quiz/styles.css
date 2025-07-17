@@ -289,11 +289,15 @@ button:disabled {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     border-color: #555;
+    z-index: 20;
+    position: relative;
 }
 
 .result-card.top-choice {
     border-color: var(--accent-color);
-    box-shadow: 0 0 25px -5px var(--accent-color);
+    box-shadow: 0 0 35px -10px var(--accent-color);
+    transform: scale(1.05);
+    z-index: 10;
 }
 
 .result-card img {
