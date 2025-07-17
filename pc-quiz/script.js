@@ -1,135 +1,140 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const quizContainer = document.querySelector('.quiz-container');
+    const quiz = document.getElementById('quiz');
     const resultsContainer = document.getElementById('results-container');
-    const resultsGrid = document.getElementById('results');
     const loader = document.getElementById('loader');
-    const steps = document.querySelectorAll('.step');
+    const resultsGrid = document.getElementById('results');
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
 
-    let currentStep = 0;
-    const answers = {
-        step2: { resolution: null, games: [] }
-    };
-
     const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/b4adc638-4917-420d-866d-cb67af8b5cd9';
 
-    function showStep(stepIndex) {
-        steps.forEach((step, index) => {
-            step.style.display = index === stepIndex ? 'block' : 'none';
+    let currentStepIndex = 0;
+    let stepHistory = [];
+    let answers = {};
+
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const stepOrder = ['primaryUse'];
+
+    function getNextSteps() {
+        const primaryUseAnswers = answers.primaryUse || [];
+        const conditionalSteps = [];
+        if (primaryUseAnswers.includes('Essentials')) conditionalSteps.push('essentials');
+        if (primaryUseAnswers.includes('Work')) conditionalSteps.push('work');
+        if (primaryUseAnswers.includes('Education')) conditionalSteps.push('education');
+        if (primaryUseAnswers.includes('Creative')) conditionalSteps.push('creative');
+
+        const commonSteps = ['usageLocation', 'peripherals', 'budget'];
+
+        // If no primary use is selected, just show common steps after the first question
+        if(conditionalSteps.length === 0 && primaryUseAnswers.length > 0) {
+             return ['primaryUse', ...commonSteps];
+        }
+        
+        return ['primaryUse', ...conditionalSteps, ...commonSteps];
+    }
+
+    function showStep(stepId) {
+        steps.forEach(step => {
+            step.style.display = step.dataset.stepId === stepId ? 'block' : 'none';
         });
         updateProgress();
         updateButtons();
     }
 
     function updateProgress() {
-        progress.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+        const totalSteps = getNextSteps().length;
+        progress.style.width = `${((currentStepIndex + 1) / totalSteps) * 100}%`;
     }
 
     function updateButtons() {
-        prevBtn.style.display = currentStep > 0 ? 'inline-block' : 'none';
-        nextBtn.style.display = currentStep < steps.length - 2 ? 'inline-block' : 'none';
-        submitBtn.style.display = currentStep === steps.length - 2 ? 'inline-block' : 'none';
+        const currentStepId = getNextSteps()[currentStepIndex];
+        const currentStepElement = document.querySelector(`.step[data-step-id="${currentStepId}"]`);
+        const questionId = currentStepElement.querySelector('.options-grid').dataset.questionId;
+        const selectedOptions = answers[questionId] && answers[questionId].length > 0;
+
+        nextBtn.style.display = currentStepIndex < getNextSteps().length - 1 ? 'inline-block' : 'none';
+        submitBtn.style.display = currentStepIndex === getNextSteps().length - 1 ? 'inline-block' : 'none';
+        prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
+        
+        nextBtn.disabled = !selectedOptions;
+        submitBtn.disabled = !selectedOptions;
     }
 
-    function handleOptionClick(e) {
-        const selectedCard = e.target.closest('.option-card');
-        if (!selectedCard) return;
+    quiz.addEventListener('click', (e) => {
+        const card = e.target.closest('.option-card');
+        if (!card) return;
 
-        const stepId = steps[currentStep].id;
-        const value = selectedCard.dataset.value;
+        const optionsGrid = card.parentElement;
+        const questionId = optionsGrid.dataset.questionId;
+        const selectType = optionsGrid.dataset.selectType;
+        const value = card.dataset.value;
 
-        if (stepId === 'step2' && selectedCard.closest('.game-cards')) {
-            // Handle multi-select for game cards
-            selectedCard.classList.toggle('selected');
-            const index = answers.step2.games.indexOf(value);
+        if (!answers[questionId]) {
+            answers[questionId] = [];
+        }
+
+        if (selectType === 'single') {
+            answers[questionId] = [value];
+            optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        } else { // multiple
+            const index = answers[questionId].indexOf(value);
             if (index > -1) {
-                answers.step2.games.splice(index, 1);
+                answers[questionId].splice(index, 1);
+                card.classList.remove('selected');
             } else {
-                answers.step2.games.push(value);
-            }
-        } else {
-            // Handle single-select for all other card options
-            const options = steps[currentStep].querySelectorAll('.option-card');
-            options.forEach(opt => {
-                if (opt.closest('.game-cards') === selectedCard.closest('.game-cards')) {
-                    opt.classList.remove('selected');
-                }
-            });
-            selectedCard.classList.add('selected');
-
-            if (stepId === 'step2') {
-                answers.step2.resolution = value;
-            } else {
-                answers[stepId] = value;
+                answers[questionId].push(value);
+                card.classList.add('selected');
             }
         }
-    }
-
-    steps.forEach(step => {
-        step.addEventListener('click', handleOptionClick);
+        updateButtons();
     });
 
     nextBtn.addEventListener('click', () => {
-        if (currentStep < steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
-        }
+        stepHistory.push(currentStepIndex);
+        currentStepIndex++;
+        const nextStepId = getNextSteps()[currentStepIndex];
+        showStep(nextStepId);
     });
 
     prevBtn.addEventListener('click', () => {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
+        currentStepIndex = stepHistory.pop();
+        const prevStepId = getNextSteps()[currentStepIndex];
+        showStep(prevStepId);
     });
 
     submitBtn.addEventListener('click', () => {
-        console.log('Submit button clicked.');
-        quizContainer.style.display = 'none';
+        document.querySelector('.quiz-container').style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
 
-        console.log('Sending data to webhook:', webhookUrl);
-        console.log('Data being sent:', JSON.stringify(answers, null, 2));
-
         fetch(webhookUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(answers),
         })
-        .then(response => {
-            console.log('Received response from server.');
-            console.log('Response Status:', response.status);
-            console.log('Response Status Text:', response.statusText);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Successfully parsed JSON data:', data);
             loader.style.display = 'none';
-
-            // The response is a string containing JSON, so we need to parse it.
             const jsonString = data.output.replace(/```json\n|```/g, '');
             const parsedData = JSON.parse(jsonString);
-
             displayResults(parsedData.recommendations);
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Fetch Error:', error);
             loader.style.display = 'none';
-            resultsGrid.innerHTML = `<p style="text-align: center; color: white;">Sorry, something went wrong. Please check the console for details.</p>`;
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #1d1d1f;">Sorry, something went wrong. Please try again later.</p>`;
         });
     });
 
     function displayResults(recommendations) {
         resultsGrid.innerHTML = '';
+        if (!recommendations || recommendations.length === 0) {
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #1d1d1f;">No recommendations match your criteria.</p>`;
+            return;
+        }
         recommendations.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
@@ -139,12 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>${pc.name}</h3>
                     <p class="price">${pc.price}</p>
                     <div class="details">
-                        <p><strong>Graphics:</strong> ${pc.details.graphics}</p>
-                        <p><strong>Processor:</strong> ${pc.details.processor}</p>
-                        <p><strong>RAM:</strong> ${pc.details.ram}</p>
-                        <p><strong>Storage:</strong> ${pc.details.storage}</p>
-                        <p><strong>Style:</strong> ${pc.details.style}</p>
-                        <p><strong>Key Specs:</strong> ${pc.details.keySpecs}</p>
+                        <p>${pc.details.graphics}</p>
+                        <p>${pc.details.processor}</p>
+                        <p>${pc.details.ram}</p>
+                        <p>${pc.details.storage}</p>
                     </div>
                     <a href="${pc.productUrl}" target="_blank" class="buy-button">View Product</a>
                 </div>
@@ -153,5 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    showStep(currentStep);
+    // Initial setup
+    showStep(stepOrder[0]);
 });
