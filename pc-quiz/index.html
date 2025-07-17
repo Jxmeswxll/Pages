@@ -155,10 +155,13 @@
     <!-- Results Section -->
     <div id="results-container" style="display: none;">
         <div class="loader-container" id="loader">
-            <h2>Finding your perfect match...</h2>
-            <div class="loader"></div>
+            <h2 id="loader-title">Finding your perfect match...</h2>
+            <div class="loader-bar">
+                <div class="loader-progress" id="loader-progress"></div>
+            </div>
+            <p id="loader-message">Analyzing your choices...</p>
         </div>
-        <div id="results" class="results-grid"></div>
+        <div id="results" class="results-grid" style="display: none;"></div>
     </div>
 
     <script src="script.js"></script>

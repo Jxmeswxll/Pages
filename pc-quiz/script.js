@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         questions.forEach(q => {
             const questionId = q.dataset.questionId;
-            // The 'games' question is optional, so we don't check it for button enablement
             if (questionId !== 'games') {
                 if (!answers[questionId] || answers[questionId].length === 0) {
                     allRequiredAnswered = false;
@@ -151,24 +150,75 @@ document.addEventListener('DOMContentLoaded', () => {
         quizContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
+        resultsGrid.style.display = 'none';
 
-        fetch(webhookUrl, {
+        let fetchCompleted = false;
+        let animationCompleted = false;
+        let recommendationData;
+
+        const loadingMessages = [
+            "Analyzing your choices...",
+            "Comparing components...",
+            "Calculating performance metrics...",
+            "Cross-referencing our database...",
+            "Finding the perfect match...",
+            "Almost there..."
+        ];
+        const loaderMessage = document.getElementById('loader-message');
+        const loaderProgress = document.getElementById('loader-progress');
+        let messageIndex = 0;
+
+        const messageInterval = setInterval(() => {
+            messageIndex++;
+            if (messageIndex < loadingMessages.length) {
+                loaderMessage.textContent = loadingMessages[messageIndex];
+            }
+        }, 8000);
+
+        loaderProgress.style.transition = 'width 48s linear';
+        setTimeout(() => {
+            loaderProgress.style.width = '95%';
+        }, 100);
+
+        const fetchPromise = fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(answers),
         })
         .then(response => response.json())
         .then(data => {
-            loader.style.display = 'none';
-            const jsonString = data.output.replace(/```json\n|```/g, '');
-            const parsedData = JSON.parse(jsonString);
-            displayResults(parsedData.recommendations);
+            fetchCompleted = true;
+            recommendationData = data;
+            if (animationCompleted) {
+                showFinalResults();
+            }
         })
         .catch(error => {
             console.error('Fetch Error:', error);
-            loader.style.display = 'none';
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, something went wrong. Please try again later.</p>`;
+            loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
+            clearInterval(messageInterval);
         });
+
+        setTimeout(() => {
+            animationCompleted = true;
+            if (fetchCompleted) {
+                showFinalResults();
+            }
+        }, 49000);
+
+        function showFinalResults() {
+            clearInterval(messageInterval);
+            loaderProgress.style.transition = 'width 0.5s ease-out';
+            loaderProgress.style.width = '100%';
+            
+            setTimeout(() => {
+                loader.style.display = 'none';
+                resultsGrid.style.display = 'grid';
+                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
+                const parsedData = JSON.parse(jsonString);
+                displayResults(parsedData.recommendations);
+            }, 500);
+        }
     });
 
     function displayResults(recommendations) {
@@ -178,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Sort by price to determine level down, top choice, and level up
         const sortedPcs = recommendations.sort((a, b) => {
             const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g,""));
             const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g,""));

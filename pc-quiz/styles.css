@@ -211,47 +211,32 @@ button:disabled {
 }
 
 .loader-container h2 {
-    font-size: 2em;
-    margin-bottom: 30px;
+    font-size: 2.2em;
+    margin-bottom: 25px;
     color: #f5f5f7;
 }
 
-.loader {
-    position: relative;
+.loader-bar {
     width: 80%;
-    max-width: 400px;
+    max-width: 450px;
     height: 10px;
     background-color: #333;
     border-radius: 5px;
-    overflow: hidden;
-    margin: 0 auto;
+    margin: 0 auto 25px;
 }
 
-.loader::after {
-    content: '';
-    position: absolute;
-    left: -50%;
-    top: 0;
-    width: 50%;
+.loader-progress {
+    width: 0%;
     height: 100%;
     background-color: #e53935;
     border-radius: 5px;
-    animation: indeterminate-progress 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes indeterminate-progress {
-    0% {
-        left: -50%;
-        width: 50%;
-    }
-    70% {
-        left: 100%;
-        width: 100%;
-    }
-    100% {
-        left: 100%;
-        width: 100%;
-    }
+#loader-message {
+    font-size: 1.1em;
+    color: #8a8a8e;
+    min-height: 20px;
 }
 
 #results-container {
