@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const quiz = document.getElementById('quiz');
+    const quizWrapper = document.querySelector('.quiz-wrapper');
     const quizContainer = document.querySelector('.quiz-container');
     const resultsContainer = document.getElementById('results-container');
     const loader = document.getElementById('loader');
@@ -35,36 +36,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showStep(stepId, isGoingBack = false) {
-        const currentStepElement = allSteps.find(step => step.style.display === 'block');
+        const currentStepElement = allSteps.find(step => step.style.display !== 'none');
         const nextStepElement = allSteps.find(step => step.dataset.stepId === stepId);
 
         if (currentStepElement && nextStepElement && currentStepElement !== nextStepElement) {
-            // Set up animations
             const exitAnimation = isGoingBack ? 'slideOutReverse' : 'slideOut';
             const enterAnimation = isGoingBack ? 'slideInReverse' : 'slideIn';
-            
+
+            currentStepElement.classList.add('is-exiting');
             currentStepElement.style.animation = `${exitAnimation} 0.35s forwards cubic-bezier(0.4, 0, 0.2, 1)`;
             
             currentStepElement.addEventListener('animationend', () => {
                 currentStepElement.style.display = 'none';
-                currentStepElement.style.animation = ''; // Clear animation
+                currentStepElement.classList.remove('is-exiting');
+                currentStepElement.style.animation = '';
             }, { once: true });
 
             nextStepElement.style.display = 'block';
             nextStepElement.style.animation = `${enterAnimation} 0.35s forwards cubic-bezier(0.4, 0, 0.2, 1)`;
             nextStepElement.addEventListener('animationend', () => {
-                nextStepElement.style.animation = ''; // Clear animation
+                nextStepElement.style.animation = '';
             }, { once: true });
-
         } else if (nextStepElement) {
             nextStepElement.style.display = 'block';
         }
 
-        const newStepIndex = currentStepOrder.indexOf(stepId);
-        if (newStepIndex !== -1) {
-            currentStepIndex = newStepIndex;
-        }
-
+        currentStepIndex = currentStepOrder.indexOf(stepId);
         updateProgress();
         updateButtons();
     }
@@ -190,9 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
         
-        // Hide quiz and nav, show results container
-        document.querySelector('.navigation').style.display = 'none';
-        quizContainer.style.display = 'none';
+        quizWrapper.style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
         resultsGrid.style.display = 'none';
