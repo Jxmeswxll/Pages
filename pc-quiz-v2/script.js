@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = document.getElementById('progress');
     const emailInput = document.getElementById('email-input');
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/b4adc638-4917-420d-866d-cb67af8b5cd9';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/4f551d35-2a2b-4b5b-98ae-9e351052d1e2';
 
     let currentStepIndex = 0;
     let stepHistory = [];
@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (primaryUse.includes('Study')) conditionalSteps.push('study');
         if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
         
-        const commonSteps = ['caseSize', 'peripherals', 'budget', 'email'];
+        const commonSteps = ['caseSize', 'peripherals', 'budget'];
         
         const uniqueConditionalSteps = [...new Set(conditionalSteps)];
         
-        currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps];
+        currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps, 'email'];
     }
 
     function showStep(stepId) {
@@ -151,25 +151,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     submitBtn.addEventListener('click', () => {
-        answers.email = emailInput.value;
-        
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(answers),
-        })
-        .then(response => {
-            if(response.ok) {
-                quizContent.style.display = 'none';
-                thankYouMessage.style.display = 'block';
-            } else {
+        if (emailInput.checkValidity()) {
+            answers.email = emailInput.value;
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(answers),
+            })
+            .then(response => {
+                if(response.ok) {
+                    quizContent.style.display = 'none';
+                    thankYouMessage.style.display = 'block';
+                } else {
+                    alert('Sorry, there was an error submitting your request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
                 alert('Sorry, there was an error submitting your request. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            alert('Sorry, there was an error submitting your request. Please try again.');
-        });
+            });
+        } else {
+            alert('Please enter a valid email address.');
+        }
     });
 
     // Initial setup
