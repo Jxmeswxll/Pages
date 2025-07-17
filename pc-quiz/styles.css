@@ -110,6 +110,7 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 40px;
+    position: relative;
 }
 
 button {
@@ -139,20 +140,24 @@ button:disabled {
 #prevBtn {
     background-color: transparent;
     color: #8a8a8e;
+    border: none;
     padding: 0;
     position: absolute;
-    top: 40px;
-    left: 40px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 1.5em;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
 }
 #prevBtn:hover {
     color: #fff;
-    background-color: transparent;
+    background-color: #333;
+    transform: translateY(-50%) scale(1.1);
 }
 
 /* Loader and Results styling */
