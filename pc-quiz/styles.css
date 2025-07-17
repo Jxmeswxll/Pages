@@ -210,23 +210,18 @@ button:disabled {
 /* Mobile Optimizations */
 @media (max-width: 768px) {
     body {
-        height: 100vh;
-        overflow: hidden;
+        height: auto;
+        padding-bottom: 100px; /* Safe area for nav */
     }
     .quiz-wrapper {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+        height: auto;
     }
     .quiz-container {
-        flex-grow: 1;
         border-radius: 0;
         border: none;
         box-shadow: none;
         padding: 20px;
-        overflow-y: auto;
-        -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 80px), transparent 100%);
-        mask-image: linear-gradient(to bottom, black calc(100% - 80px), transparent 100%);
+        overflow: visible;
     }
     .navigation {
         position: fixed;
