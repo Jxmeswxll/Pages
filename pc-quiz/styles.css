@@ -134,7 +134,7 @@ body {
     margin: 2px 0 0;
 }
 
-.game-cards {
+.options-grid.game-cards {
     grid-template-columns: repeat(2, 1fr);
 }
 
