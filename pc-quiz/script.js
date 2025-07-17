@@ -19,19 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
     function determineStepOrder() {
-        const primaryGoal = answers.primaryGoal ? answers.primaryGoal[0] : null;
+        const primaryUse = answers.primaryUse || [];
         const conditionalSteps = [];
-
-        if (primaryGoal === 'Gaming' || primaryGoal === 'Streaming' || primaryGoal === 'Workstation') {
-            conditionalSteps.push('games');
-        }
-        if (primaryGoal === 'Workstation') {
-            conditionalSteps.push('workType');
-        }
+        
+        if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming');
+        if (primaryUse.includes('Work')) conditionalSteps.push('work');
+        if (primaryUse.includes('Study')) conditionalSteps.push('study');
+        if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
         
         const commonSteps = ['resolution', 'style', 'budget'];
         
-        currentStepOrder = ['primaryGoal', ...conditionalSteps, ...commonSteps];
+        currentStepOrder = ['primaryUse', ...conditionalSteps, ...commonSteps];
     }
 
     function showStep(stepId) {
@@ -91,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (questionId === 'primaryGoal') {
+        if (questionId === 'primaryUse') {
             determineStepOrder();
         }
         
