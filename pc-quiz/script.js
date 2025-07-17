@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStepIndex = 0;
     let stepHistory = [];
     let answers = {};
-    let currentStepOrder = ['primaryUse']; // Start with the first step
+    let currentStepOrder = ['primaryUse'];
 
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
@@ -22,18 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const primaryUse = answers.primaryUse || [];
         const conditionalSteps = [];
         
+        // Add user-specific paths
         if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming');
         if (primaryUse.includes('Work')) conditionalSteps.push('work');
         if (primaryUse.includes('Study')) conditionalSteps.push('study');
         if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
-        
-        const commonSteps = ['resolution', 'style', 'budget'];
-        
-        // Reset the order and add conditional steps only if a primary use is selected
-        currentStepOrder = ['primaryUse'];
-        if(primaryUse.length > 0) {
-            currentStepOrder.push(...conditionalSteps, ...commonSteps);
+
+        // Add gaming-specific questions only if "Gaming" is selected
+        if (primaryUse.includes('Gaming')) {
+            conditionalSteps.push('resolution', 'style');
         }
+        
+        const commonSteps = ['caseSize', 'peripherals', 'budget'];
+        
+        currentStepOrder = ['primaryUse', ...new Set(conditionalSteps), ...commonSteps];
     }
 
     function showStep(stepId) {
@@ -172,5 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setup
+    determineStepOrder();
     showStep(currentStepOrder[0]);
 });
