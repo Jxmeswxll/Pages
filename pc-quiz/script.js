@@ -171,9 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
         
-        // Hide quiz and nav, show results container
-        quizContainer.style.display = 'none';
-        document.querySelector('.navigation').style.display = 'none';
+        quizWrapper.style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
         resultsGrid.style.display = 'none';
@@ -239,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             setTimeout(() => {
                 loader.style.display = 'none';
-                resultsGrid.style.display = 'flex';
+                resultsGrid.style.display = 'grid';
                 const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
                 const parsedData = JSON.parse(jsonString);
                 displayResults(parsedData.recommendations);
