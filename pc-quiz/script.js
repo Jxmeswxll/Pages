@@ -183,21 +183,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const loadingMessages = [
             "Analyzing your choices...",
+            "Consulting the tech gurus...",
             "Comparing components...",
             "Calculating performance metrics...",
+            "Assembling virtual parts...",
             "Cross-referencing our database...",
+            "Running benchmarks...",
             "Finding the perfect match...",
+            "Polishing the recommendations...",
             "Almost there..."
         ];
         const loaderMessage = document.getElementById('loader-message');
         let messageIndex = 0;
 
         const messageInterval = setInterval(() => {
-            messageIndex++;
-            if (messageIndex < loadingMessages.length) {
-                loaderMessage.textContent = loadingMessages[messageIndex];
-            }
-        }, 2000);
+            messageIndex = (messageIndex + 1) % loadingMessages.length;
+            loaderMessage.textContent = loadingMessages[messageIndex];
+        }, 1500);
 
         fetch(webhookUrl, {
             method: 'POST',

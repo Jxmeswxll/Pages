@@ -221,10 +221,15 @@ button:disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(29, 29, 31, 0.9);
+    z-index: 999;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .loader-spinner {
@@ -250,12 +255,20 @@ button:disabled {
 #loader-message {
     color: var(--subtle-text-color);
     font-size: 1.1em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
 }
 
 .results-grid {
     display: grid;
     gap: 30px;
     align-items: stretch;
+    justify-content: center;
 }
 
 .result-card {
