@@ -330,23 +330,21 @@ button:disabled {
 }
 
 .buy-button {
-    background-color: #950810;
-    color: #e4e4e4;
+    background-color: #e53935;
+    color: #fff;
     border: none;
-    padding: 16px 35px;
-    border-radius: 2px;
+    padding: 15px 50px;
+    border-radius: 50px;
     cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 20px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    transition: all 0.3s ease-in-out;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s;
     display: inline-block;
     text-align: center;
     text-decoration: none;
 }
 
 .buy-button:hover {
-    background-color: rgba(149, 8, 16, 0.7);
+    background-color: #ff4545;
+    transform: scale(1.05);
 }
