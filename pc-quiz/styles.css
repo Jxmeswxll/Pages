@@ -258,12 +258,20 @@ button:disabled {
 .result-card-content .recommendation-badge {
     background-color: #e53935;
     color: #fff;
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-weight: 700;
-    padding: 5px 12px;
+    padding: 8px 15px;
     border-radius: 50px;
     display: inline-block;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.result-card.top-choice {
+    border-color: #e53935;
+    transform: scale(1.05);
+    z-index: 10;
 }
 
 .result-card-content h3 {
@@ -280,7 +288,7 @@ button:disabled {
 }
 
 .result-card-content .price {
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: 700;
     color: #e53935;
 }
@@ -293,8 +301,13 @@ button:disabled {
 
 .result-card-content .details {
     font-size: 0.9em;
-    line-height: 1.5;
-    color: #8a8a8e;
+    line-height: 1.6;
+    color: #ccc;
+    margin-top: 20px;
+}
+
+.result-card-content .details p {
+    margin-bottom: 15px;
 }
 
 .buy-button {

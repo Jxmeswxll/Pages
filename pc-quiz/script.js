@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const primaryUse = answers.primaryUse || [];
         let conditionalSteps = [];
         
-        if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming', 'style');
+        if (primaryUse.includes('Gaming')) conditionalSteps.push('games', 'resolution', 'style');
         if (primaryUse.includes('Work')) conditionalSteps.push('work');
         if (primaryUse.includes('Study')) conditionalSteps.push('study');
         if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
@@ -173,24 +173,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayResults(recommendations) {
         resultsGrid.innerHTML = '';
-        if (!recommendations || recommendations.length === 0) {
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">No recommendations match your criteria.</p>`;
+        if (!recommendations || recommendations.length < 3) {
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find enough matches. Please try again.</p>`;
             return;
         }
 
-        const recommendationLevels = {
-            'Top Choice': 'Our Top Recommendation',
-            'Level Up': 'The Next Level Up',
-            'Level Down': 'The Best Value'
-        };
+        // Sort by price to determine level down, top choice, and level up
+        const sortedPcs = recommendations.sort((a, b) => {
+            const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g,""));
+            const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g,""));
+            return priceA - priceB;
+        });
 
-        recommendations.forEach(pc => {
+        const [levelDown, topChoice, levelUp] = sortedPcs;
+
+        const pcsToDisplay = [
+            { ...levelDown, recommendationLevel: 'The Best Value' },
+            { ...topChoice, recommendationLevel: 'Our Top Recommendation' },
+            { ...levelUp, recommendationLevel: 'The Next Level Up' }
+        ];
+
+        pcsToDisplay.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
+            if (pc.recommendationLevel === 'Our Top Recommendation') {
+                card.classList.add('top-choice');
+            }
 
-            const badgeText = recommendationLevels[pc.recommendationLevel] || '';
-            const badgeHTML = badgeText ? `<div class="recommendation-badge">${badgeText}</div>` : '';
-
+            const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
             const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
 

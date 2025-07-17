@@ -24,10 +24,10 @@
                 </div>
             </div>
 
-            <!-- Conditional Step: Gaming -->
-            <div class="step" data-step-id="gaming" style="display: none;">
-                <h2>Describe your gaming setup.</h2>
-                <p>Which games do you play? (Optional)</p>
+            <!-- Conditional Step: Games -->
+            <div class="step" data-step-id="games" style="display: none;">
+                <h2>Which games do you play?</h2>
+                <p>(Optional, helps us tailor your build)</p>
                 <div class="options-grid card-options game-cards" data-question-id="games" data-select-type="multiple">
                     <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
                     <div class="option-card" data-value="GTA V"><span>GTA V</span></div>
@@ -42,7 +42,11 @@
                     <div class="option-card" data-value="Valorant"><span>Valorant</span></div>
                     <div class="option-card" data-value="Baldur's Gate 3"><span>Baldur's Gate 3</span></div>
                 </div>
-                <p style="margin-top: 40px;">And what's your target resolution?</p>
+            </div>
+
+            <!-- Conditional Step: Resolution -->
+            <div class="step" data-step-id="resolution" style="display: none;">
+                <h2>What's your target resolution?</h2>
                 <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
                     <div class="option-card" data-value="1080p"><i class="fas fa-tv"></i><div><span>1080p Full HD</span><p>The competitive edge.</p></div></div>
                     <div class="option-card" data-value="1440p"><i class="fas fa-desktop"></i><div><span>1440p QHD</span><p>The immersive sweet spot.</p></div></div>
@@ -108,6 +112,10 @@
                     <div class="option-card" data-value="Small"><i class="fas fa-box"></i><div><span>Compact</span><p>For small desks and tight spaces.</p></div></div>
                     <div class="option-card" data-value="Medium"><i class="fas fa-box-open"></i><div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div></div>
                     <div class="option-card" data-value="Large"><i class="fas fa-archive"></i><div><span>Full-Tower</span><p>For maximum hardware and cooling.</p></div></div>
+                </div>
+                <div class="or-separator"><span>Or</span></div>
+                <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single-exclusive">
+                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
                 </div>
             </div>
 
