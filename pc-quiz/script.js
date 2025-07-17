@@ -22,16 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const primaryUse = answers.primaryUse || [];
         const conditionalSteps = [];
         
-        // Add user-specific paths
-        if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming');
+        if (primaryUse.includes('Gaming')) conditionalSteps.push('gaming', 'style');
         if (primaryUse.includes('Work')) conditionalSteps.push('work');
         if (primaryUse.includes('Study')) conditionalSteps.push('study');
         if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
-
-        // Add gaming-specific questions only if "Gaming" is selected
-        if (primaryUse.includes('Gaming')) {
-            conditionalSteps.push('resolution', 'style');
-        }
         
         const commonSteps = ['caseSize', 'peripherals', 'budget'];
         
@@ -57,8 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentStepElement = document.querySelector(`.step[data-step-id="${currentStepId}"]`);
         if (!currentStepElement) return;
 
-        const questionId = currentStepElement.querySelector('.options-grid').dataset.questionId;
-        const selectedOptions = answers[questionId] && answers[questionId].length > 0;
+        const questions = currentStepElement.querySelectorAll('.options-grid');
+        let allQuestionsAnswered = true;
+        questions.forEach(q => {
+            const questionId = q.dataset.questionId;
+            if (!answers[questionId] || answers[questionId].length === 0) {
+                allQuestionsAnswered = false;
+            }
+        });
 
         const isLastStep = currentStepIndex === currentStepOrder.length - 1;
 
@@ -66,15 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.style.display = isLastStep ? 'inline-block' : 'none';
         prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
         
-        nextBtn.disabled = !selectedOptions;
-        submitBtn.disabled = !selectedOptions;
+        nextBtn.disabled = !allQuestionsAnswered;
+        submitBtn.disabled = !allQuestionsAnswered;
     }
 
     quiz.addEventListener('click', (e) => {
         const card = e.target.closest('.option-card');
         if (!card) return;
 
-        const optionsGrid = card.parentElement;
+        const optionsGrid = card.closest('.options-grid');
         const questionId = optionsGrid.dataset.questionId;
         const selectType = optionsGrid.dataset.selectType;
         const value = card.dataset.value;
@@ -83,18 +83,34 @@ document.addEventListener('DOMContentLoaded', () => {
             answers[questionId] = [];
         }
 
-        if (selectType === 'single') {
-            answers[questionId] = [value];
+        // Handle "Not Sure" logic
+        if (value === 'Not Sure') {
+            // If "Not Sure" is selected, deselect everything else and select it
+            answers[questionId] = ['Not Sure'];
             optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-        } else { // multiple
-            const index = answers[questionId].indexOf(value);
-            if (index > -1) {
-                answers[questionId].splice(index, 1);
-                card.classList.remove('selected');
-            } else {
-                answers[questionId].push(value);
+        } else {
+            // If another option is selected, deselect "Not Sure"
+            const notSureCard = optionsGrid.querySelector('.option-card[data-value="Not Sure"]');
+            if (notSureCard) {
+                notSureCard.classList.remove('selected');
+                const index = answers[questionId].indexOf('Not Sure');
+                if (index > -1) answers[questionId].splice(index, 1);
+            }
+
+            if (selectType === 'single') {
+                answers[questionId] = [value];
+                optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
+            } else { // multiple
+                const index = answers[questionId].indexOf(value);
+                if (index > -1) {
+                    answers[questionId].splice(index, 1);
+                    card.classList.remove('selected');
+                } else {
+                    answers[questionId].push(value);
+                    card.classList.add('selected');
+                }
             }
         }
         
