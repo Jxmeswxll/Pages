@@ -34,10 +34,37 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps];
     }
 
-    function showStep(stepId) {
-        allSteps.forEach(step => {
-            step.style.display = step.dataset.stepId === stepId ? 'block' : 'none';
-        });
+    function showStep(stepId, isGoingBack = false) {
+        const currentStepElement = allSteps.find(step => step.style.display === 'block');
+        const nextStepElement = allSteps.find(step => step.dataset.stepId === stepId);
+
+        if (currentStepElement && nextStepElement && currentStepElement !== nextStepElement) {
+            // Set up animations
+            const exitAnimation = isGoingBack ? 'slideOutReverse' : 'slideOut';
+            const enterAnimation = isGoingBack ? 'slideInReverse' : 'slideIn';
+            
+            currentStepElement.style.animation = `${exitAnimation} 0.35s forwards cubic-bezier(0.4, 0, 0.2, 1)`;
+            
+            currentStepElement.addEventListener('animationend', () => {
+                currentStepElement.style.display = 'none';
+                currentStepElement.style.animation = ''; // Clear animation
+            }, { once: true });
+
+            nextStepElement.style.display = 'block';
+            nextStepElement.style.animation = `${enterAnimation} 0.35s forwards cubic-bezier(0.4, 0, 0.2, 1)`;
+            nextStepElement.addEventListener('animationend', () => {
+                nextStepElement.style.animation = ''; // Clear animation
+            }, { once: true });
+
+        } else if (nextStepElement) {
+            nextStepElement.style.display = 'block';
+        }
+
+        const newStepIndex = currentStepOrder.indexOf(stepId);
+        if (newStepIndex !== -1) {
+            currentStepIndex = newStepIndex;
+        }
+
         updateProgress();
         updateButtons();
     }
@@ -98,25 +125,30 @@ document.addEventListener('DOMContentLoaded', () => {
             answers[questionId] = [];
         }
 
-        if (selectType === 'single-exclusive') {
-            const isAlreadySelected = card.classList.contains('selected');
-            const stepGrids = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
-            stepGrids.forEach(grid => {
+        const isExclusive = selectType === 'single-exclusive';
+        const isSingle = selectType === 'single';
+
+        if (isExclusive) {
+            const isSelected = card.classList.contains('selected');
+            // Deselect all cards in the same question group across grids
+            const allGridsForQuestion = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
+            allGridsForQuestion.forEach(grid => {
                 grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
             });
-            answers[questionId] = [];
-
-            if (!isAlreadySelected) {
-                card.classList.add('selected');
-                answers[questionId].push(value);
-            }
+            answers[questionId] = isSelected ? [] : [value];
+            if (!isSelected) card.classList.add('selected');
         } else {
+            // Deselect any exclusive options if a regular one is picked
             const exclusiveGrid = card.closest('.step').querySelector(`.options-grid[data-question-id="${questionId}"][data-select-type="single-exclusive"]`);
             if (exclusiveGrid) {
                 exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                // Also clear the exclusive answer from the answers object
+                if (answers[questionId].includes(exclusiveGrid.querySelector('.option-card').dataset.value)) {
+                    answers[questionId] = [];
+                }
             }
 
-            if (selectType === 'single') {
+            if (isSingle) {
                 optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
                 answers[questionId] = [value];
@@ -139,114 +171,99 @@ document.addEventListener('DOMContentLoaded', () => {
         updateButtons();
     });
 
-    function animateButton(button, callback) {
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i>';
-        button.classList.add('confirm');
-
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.classList.remove('confirm');
-            callback();
-        }, 600);
-    }
-
     nextBtn.addEventListener('click', () => {
         if (nextBtn.disabled) return;
-        animateButton(nextBtn, () => {
-            if (currentStepIndex < currentStepOrder.length - 1) {
-                stepHistory.push(currentStepIndex);
-                currentStepIndex++;
-                const nextStepId = currentStepOrder[currentStepIndex];
-                showStep(nextStepId);
-            }
-        });
+        stepHistory.push(currentStepIndex);
+        const nextStepIndex = currentStepIndex + 1;
+        if (nextStepIndex < currentStepOrder.length) {
+            showStep(currentStepOrder[nextStepIndex]);
+        }
     });
 
     prevBtn.addEventListener('click', () => {
         if (stepHistory.length > 0) {
-            currentStepIndex = stepHistory.pop();
-            const prevStepId = currentStepOrder[currentStepIndex];
-            showStep(prevStepId);
+            const prevStepIndex = stepHistory.pop();
+            showStep(currentStepOrder[prevStepIndex], true);
         }
     });
 
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
-        animateButton(submitBtn, () => {
-            quizContainer.style.display = 'none';
-            resultsContainer.style.display = 'block';
-            loader.style.display = 'block';
-            resultsGrid.style.display = 'none';
-    
-            let fetchCompleted = false;
-            let animationCompleted = false;
-            let recommendationData;
-    
-            const loadingMessages = [
-                "Analyzing your choices...",
-                "Comparing components...",
-                "Calculating performance metrics...",
-                "Cross-referencing our database...",
-                "Finding the perfect match...",
-                "Almost there..."
-            ];
-            const loaderMessage = document.getElementById('loader-message');
-            const loaderProgress = document.getElementById('loader-progress');
-            let messageIndex = 0;
-    
-            const messageInterval = setInterval(() => {
-                messageIndex++;
-                if (messageIndex < loadingMessages.length) {
-                    loaderMessage.textContent = loadingMessages[messageIndex];
-                }
-            }, 8000);
-    
-            loaderProgress.style.transition = 'width 48s linear';
-            setTimeout(() => {
-                loaderProgress.style.width = '95%';
-            }, 100);
-    
-            const fetchPromise = fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(answers),
-            })
-            .then(response => response.json())
-            .then(data => {
-                fetchCompleted = true;
-                recommendationData = data;
-                if (animationCompleted) {
-                    showFinalResults();
-                }
-            })
-            .catch(error => {
-                console.error('Fetch Error:', error);
-                loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
-                clearInterval(messageInterval);
-            });
-    
-            setTimeout(() => {
-                animationCompleted = true;
-                if (fetchCompleted) {
-                    showFinalResults();
-                }
-            }, 49000);
-    
-            function showFinalResults() {
-                clearInterval(messageInterval);
-                loaderProgress.style.transition = 'width 0.5s ease-out';
-                loaderProgress.style.width = '100%';
-                
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    resultsGrid.style.display = 'flex';
-                    const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
-                    const parsedData = JSON.parse(jsonString);
-                    displayResults(parsedData.recommendations);
-                }, 500);
+        
+        // Hide quiz and nav, show results container
+        document.querySelector('.navigation').style.display = 'none';
+        quizContainer.style.display = 'none';
+        resultsContainer.style.display = 'block';
+        loader.style.display = 'block';
+        resultsGrid.style.display = 'none';
+
+        let fetchCompleted = false;
+        let animationCompleted = false;
+        let recommendationData;
+
+        const loadingMessages = [
+            "Analyzing your choices...",
+            "Comparing components...",
+            "Calculating performance metrics...",
+            "Cross-referencing our database...",
+            "Finding the perfect match...",
+            "Almost there..."
+        ];
+        const loaderMessage = document.getElementById('loader-message');
+        const loaderProgress = document.getElementById('loader-progress');
+        let messageIndex = 0;
+
+        const messageInterval = setInterval(() => {
+            messageIndex++;
+            if (messageIndex < loadingMessages.length) {
+                loaderMessage.textContent = loadingMessages[messageIndex];
             }
+        }, 8000);
+
+        loaderProgress.style.transition = 'width 48s linear';
+        setTimeout(() => {
+            loaderProgress.style.width = '95%';
+        }, 100);
+
+        const fetchPromise = fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(answers),
+        })
+        .then(response => response.json())
+        .then(data => {
+            fetchCompleted = true;
+            recommendationData = data;
+            if (animationCompleted) {
+                showFinalResults();
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
+            clearInterval(messageInterval);
         });
+
+        setTimeout(() => {
+            animationCompleted = true;
+            if (fetchCompleted) {
+                showFinalResults();
+            }
+        }, 49000);
+
+        function showFinalResults() {
+            clearInterval(messageInterval);
+            loaderProgress.style.transition = 'width 0.5s ease-out';
+            loaderProgress.style.width = '100%';
+            
+            setTimeout(() => {
+                loader.style.display = 'none';
+                resultsGrid.style.display = 'flex';
+                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
+                const parsedData = JSON.parse(jsonString);
+                displayResults(parsedData.recommendations);
+            }, 500);
+        }
     });
 
     function displayResults(recommendations) {
@@ -304,6 +321,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setup
+    allSteps.forEach((step, index) => {
+        if (index > 0) step.style.display = 'none';
+    });
     determineStepOrder();
-    showStep(currentStepOrder[0]);
+    updateButtons();
 });
