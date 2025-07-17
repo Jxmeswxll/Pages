@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             setTimeout(() => {
                 loader.style.display = 'none';
-                resultsGrid.style.display = 'grid';
+                resultsGrid.style.display = 'flex'; // Changed from 'grid' to 'flex' to match CSS
                 const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
                 const parsedData = JSON.parse(jsonString);
                 displayResults(parsedData.recommendations);

@@ -247,9 +247,10 @@ button:disabled {
 }
 
 .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 30px;
+    align-items: stretch;
 }
 
 .result-card {
@@ -260,6 +261,9 @@ button:disabled {
     display: flex;
     flex-direction: column;
     border: 1px solid #444;
+    flex-basis: calc(33.333% - 20px);
+    flex-grow: 1;
+    min-width: 350px;
 }
 
 .result-card img {
