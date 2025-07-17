@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const commonSteps = ['caseSize', 'peripherals', 'budget'];
         
-        // Use a Set to ensure unique steps, then convert back to an array
         const uniqueConditionalSteps = [...new Set(conditionalSteps)];
         
         currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps];
@@ -86,20 +85,26 @@ document.addEventListener('DOMContentLoaded', () => {
             answers[questionId] = [];
         }
 
-        if (value === 'Not Sure') {
+        if (selectType === 'single-exclusive') {
             const isAlreadySelected = card.classList.contains('selected');
-            optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            // Deselect all cards in this step's grids
+            const stepGrids = card.closest('.step').querySelectorAll('.options-grid');
+            stepGrids.forEach(grid => {
+                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            });
             answers[questionId] = [];
-            
+
             if (!isAlreadySelected) {
                 card.classList.add('selected');
-                answers[questionId].push('Not Sure');
+                answers[questionId].push(value);
             }
         } else {
-            const notSureCard = optionsGrid.querySelector('.option-card[data-value="Not Sure"]');
-            if (notSureCard && notSureCard.classList.contains('selected')) {
-                notSureCard.classList.remove('selected');
-                answers[questionId] = [];
+            // Deselect the exclusive 'Not Sure' option if it exists in this step
+            const exclusiveGrid = card.closest('.step').querySelector('.options-grid[data-select-type="single-exclusive"]');
+            if (exclusiveGrid) {
+                exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                const exclusiveQuestionId = exclusiveGrid.dataset.questionId;
+                answers[exclusiveQuestionId] = [];
             }
 
             if (selectType === 'single') {
