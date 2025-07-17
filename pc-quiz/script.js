@@ -190,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             "Almost there..."
         ];
         const loaderMessage = document.getElementById('loader-message');
-        const loaderProgress = document.getElementById('loader-progress');
         let messageIndex = 0;
 
         const messageInterval = setInterval(() => {
@@ -198,12 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (messageIndex < loadingMessages.length) {
                 loaderMessage.textContent = loadingMessages[messageIndex];
             }
-        }, 2000); 
-
-        loaderProgress.style.transition = 'width 12s linear';
-        setTimeout(() => {
-            loaderProgress.style.width = '95%';
-        }, 100);
+        }, 2000);
 
         fetch(webhookUrl, {
             method: 'POST',
@@ -227,8 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function showFinalResults(recommendationData) {
             clearInterval(messageInterval);
-            loaderProgress.style.transition = 'width 0.5s ease-out';
-            loaderProgress.style.width = '100%';
         
             setTimeout(() => {
                 loader.style.display = 'none';
@@ -301,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
-            const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+            const productUrl = pc.productUrl;
 
             card.innerHTML = `
                 <img src="${pc.imageUrl}" alt="${pc.name}">
