@@ -65,15 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let allRequiredAnswered = true;
         let isMultipleSelect = false;
 
+        // The 'games' step is optional. For all other steps, an answer is required.
+        if (currentStepId !== 'games') {
+            let answered = false;
+            questions.forEach(q => {
+                const questionId = q.dataset.questionId;
+                if (answers[questionId] && answers[questionId].length > 0) {
+                    answered = true;
+                }
+            });
+            allRequiredAnswered = answered;
+        }
+
         questions.forEach(q => {
             const questionId = q.dataset.questionId;
             if (q.dataset.selectType === 'multiple' && answers[questionId] && answers[questionId].length > 0) {
                 isMultipleSelect = true;
-            }
-            if (questionId !== 'games') {
-                if (!answers[questionId] || answers[questionId].length === 0) {
-                    allRequiredAnswered = false;
-                }
             }
         });
 
@@ -111,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isExclusive) {
             const isSelected = card.classList.contains('selected');
-            // Deselect all cards in the same question group across grids
             const allGridsForQuestion = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
             allGridsForQuestion.forEach(grid => {
                 grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
@@ -119,11 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
             answers[questionId] = isSelected ? [] : [value];
             if (!isSelected) card.classList.add('selected');
         } else {
-            // Deselect any exclusive options if a regular one is picked
             const exclusiveGrid = card.closest('.step').querySelector(`.options-grid[data-question-id="${questionId}"][data-select-type="single-exclusive"]`);
             if (exclusiveGrid) {
                 exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-                // Also clear the exclusive answer from the answers object
                 if (answers[questionId].includes(exclusiveGrid.querySelector('.option-card').dataset.value)) {
                     answers[questionId] = [];
                 }
@@ -164,21 +168,18 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
         if (stepHistory.length > 0) {
             const prevStepIndex = stepHistory.pop();
-            showStep(currentStepOrder[prevStepIndex], true);
+            showStep(currentStepOrder[prevStepIndex]);
         }
     });
 
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
         
-        quizWrapper.style.display = 'none';
+        quizContainer.style.display = 'none';
+        document.querySelector('.navigation').style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
         resultsGrid.style.display = 'none';
-
-        let fetchCompleted = false;
-        let animationCompleted = false;
-        let recommendationData;
 
         const loadingMessages = [
             "Analyzing your choices...",
@@ -197,25 +198,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (messageIndex < loadingMessages.length) {
                 loaderMessage.textContent = loadingMessages[messageIndex];
             }
-        }, 8000);
+        }, 2000); 
 
-        loaderProgress.style.transition = 'width 48s linear';
+        loaderProgress.style.transition = 'width 12s linear';
         setTimeout(() => {
             loaderProgress.style.width = '95%';
         }, 100);
 
-        const fetchPromise = fetch(webhookUrl, {
+        fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(answers),
         })
-        .then(response => response.json())
-        .then(data => {
-            fetchCompleted = true;
-            recommendationData = data;
-            if (animationCompleted) {
-                showFinalResults();
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            showFinalResults(data);
         })
         .catch(error => {
             console.error('Fetch Error:', error);
@@ -223,24 +225,48 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(messageInterval);
         });
 
-        setTimeout(() => {
-            animationCompleted = true;
-            if (fetchCompleted) {
-                showFinalResults();
-            }
-        }, 49000);
-
-        function showFinalResults() {
+        function showFinalResults(recommendationData) {
             clearInterval(messageInterval);
             loaderProgress.style.transition = 'width 0.5s ease-out';
             loaderProgress.style.width = '100%';
-            
+        
             setTimeout(() => {
                 loader.style.display = 'none';
                 resultsGrid.style.display = 'grid';
-                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
-                const parsedData = JSON.parse(jsonString);
-                displayResults(parsedData.recommendations);
+                try {
+                    let parsedData;
+                    // Check if recommendationData is an object and has an 'output' property
+                    if (typeof recommendationData === 'object' && recommendationData !== null && 'output' in recommendationData) {
+                        // If output is a string, try to parse it. It might be stringified JSON.
+                        if (typeof recommendationData.output === 'string') {
+                            try {
+                                // First, try to parse it as-is
+                                parsedData = JSON.parse(recommendationData.output);
+                            } catch (e) {
+                                // If that fails, it might be the old format with backticks
+                                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
+                                parsedData = JSON.parse(jsonString);
+                            }
+                        } else {
+                            // If output is not a string, assume it's already a valid object
+                            parsedData = recommendationData.output;
+                        }
+                    } else {
+                        // If it's not the expected object structure, assume the whole thing is the data
+                        parsedData = recommendationData;
+                    }
+        
+                    // After parsing, we expect parsedData to have a 'recommendations' property
+                    if (parsedData && parsedData.recommendations) {
+                        displayResults(parsedData.recommendations);
+                    } else {
+                        throw new Error("Parsed data does not contain 'recommendations' array.");
+                    }
+        
+                } catch (e) {
+                    console.error("Error processing recommendation data:", e, recommendationData);
+                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
+                }
             }, 500);
         }
     });
