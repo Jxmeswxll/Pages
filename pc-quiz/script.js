@@ -177,21 +177,39 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">No recommendations match your criteria.</p>`;
             return;
         }
+
+        const recommendationLevels = {
+            'Top Choice': 'Our Top Recommendation',
+            'Level Up': 'The Next Level Up',
+            'Level Down': 'The Best Value'
+        };
+
         recommendations.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
+
+            const badgeText = recommendationLevels[pc.recommendationLevel] || '';
+            const badgeHTML = badgeText ? `<div class="recommendation-badge">${badgeText}</div>` : '';
+
+            const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
+            const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+
             card.innerHTML = `
                 <img src="${pc.imageUrl}" alt="${pc.name}">
                 <div class="result-card-content">
+                    ${badgeHTML}
                     <h3>${pc.name}</h3>
-                    <p class="price">${pc.price}</p>
-                    <div class="details">
-                        <p>${pc.details.graphics}</p>
-                        <p>${pc.details.processor}</p>
-                        <p>${pc.details.ram}</p>
-                        <p>${pc.details.storage}</p>
+                    <div class="price-container">
+                        <p class="price">${pc.price}</p>
+                        ${strikethroughHTML}
                     </div>
-                    <a href="${pc.productUrl}" target="_blank" class="buy-button">View Product</a>
+                    <div class="details">
+                        <p><strong>Graphics:</strong> ${pc.details.graphics}</p>
+                        <p><strong>Processor:</strong> ${pc.details.processor}</p>
+                        <p><strong>RAM:</strong> ${pc.details.ram}</p>
+                        <p><strong>Storage:</strong> ${pc.details.storage}</p>
+                    </div>
+                    <a href="${productUrl}" target="_blank" class="buy-button">View Product</a>
                 </div>
             `;
             resultsGrid.appendChild(card);
