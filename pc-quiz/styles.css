@@ -30,6 +30,7 @@ body {
     border-radius: 5px;
     margin-bottom: 50px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .progress {
@@ -362,7 +363,9 @@ button:active {
 @media (max-width: 768px) {
     body {
         padding: 0;
-        padding-bottom: 120px; /* Space for sticky nav */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     .quiz-container {
@@ -370,12 +373,11 @@ button:active {
         border-radius: 0;
         border: none;
         box-shadow: none;
-        height: 100%;
-        width: 100%;
-        max-width: 100%;
-        overflow-y: scroll;
-        -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
-        mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-bottom: 120px; /* Space for sticky nav */
+        -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent 100%);
+        mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent 100%);
     }
 
     .step h2 {
