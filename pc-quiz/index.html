@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Builder Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,73 +15,117 @@
         <div id="quiz">
             <!-- Step 1: Primary Use -->
             <div class="step" id="step1">
-                <h2>Step 1: Pick Your Battle</h2>
-                <p>What will you use this PC for primarily?</p>
-                <div class="options">
-                    <div class="option" data-value="Gaming">Gaming</div>
-                    <div class="option" data-value="Mostly Gaming, Some Work">Mostly Gaming, Some Work</div>
-                    <div class="option" data-value="Both">Both</div>
-                    <div class="option" data-value="Mostly Work, Some Gaming">Mostly Work, Some Gaming</div>
-                    <div class="option" data-value="Work">Work</div>
+                <h2>What will you use this PC for primarily?</h2>
+                <div class="options-grid card-options">
+                    <div class="option-card" data-value="Gaming">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Gaming</span>
+                    </div>
+                    <div class="option-card" data-value="Mostly Gaming, Some Work">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Mostly Gaming, Some Work</span>
+                    </div>
+                    <div class="option-card" data-value="Both">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Both</span>
+                    </div>
+                    <div class="option-card" data-value="Mostly Work, Some Gaming">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Mostly Work, Some Gaming</span>
+                    </div>
+                    <div class="option-card" data-value="Work">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Work</span>
+                    </div>
                 </div>
             </div>
             <!-- Step 2: Game Preferences -->
             <div class="step" id="step2" style="display: none;">
-                <h2>Step 2: Game Preferences</h2>
+                <h2>Game Preferences</h2>
                 <p>What resolution do you want to play at?</p>
-                <div class="options">
-                    <div class="option" data-value="1080p">1080p</div>
-                    <div class="option" data-value="1440p">1440p</div>
-                    <div class="option" data-value="4K">4K</div>
+                <div class="options-grid card-options">
+                    <div class="option-card" data-value="1080p">
+                        <span>1080p</span>
+                    </div>
+                    <div class="option-card" data-value="1440p">
+                        <span>1440p</span>
+                    </div>
+                    <div class="option-card" data-value="4K">
+                        <span>4K</span>
+                    </div>
                 </div>
                 <p>Which of these games do you play or plan to play?</p>
-                <div class="options-grid">
-                    <div class="option-card" data-value="Fortnite">Fortnite</div>
-                    <div class="option-card" data-value="GTA V">GTA V</div>
-                    <div class="option-card" data-value="Call of Duty Warzone">Call of Duty Warzone</div>
-                    <div class="option-card" data-value="Diablo IV">Diablo IV</div>
-                    <div class="option-card" data-value="Starfield">Starfield</div>
-                    <div class="option-card" data-value="League of Legends">League of Legends</div>
-                    <div class="option-card" data-value="iRacing">iRacing</div>
-                    <div class="option-card" data-value="Microsoft Flight Simulator">Microsoft Flight Simulator</div>
-                    <div class="option-card" data-value="Rust">Rust</div>
-                    <div class="option-card" data-value="Darktide">Darktide</div>
-                    <div class="option-card" data-value="Minecraft">Minecraft</div>
-                    <div class="option-card" data-value="Cyberpunk 2077">Cyberpunk 2077</div>
-                    <div class="option-card" data-value="Apex Legends">Apex Legends</div>
-                    <div class="option-card" data-value="Valorant">Valorant</div>
-                    <div class="option-card" data-value="Baldur's Gate 3">Baldur's Gate 3</div>
-                    <div class="option-card" data-value="World of Warcraft">World of Warcraft</div>
-                    <div class="option-card" data-value="Forza Horizon 5">Forza Horizon 5</div>
+                <div class="options-grid card-options game-cards">
+                    <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
+                    <div class="option-card" data-value="GTA V"><span>GTA V</span></div>
+                    <div class="option-card" data-value="Call of Duty Warzone"><span>Call of Duty Warzone</span></div>
+                    <div class="option-card" data-value="Diablo IV"><span>Diablo IV</span></div>
+                    <div class="option-card" data-value="Starfield"><span>Starfield</span></div>
+                    <div class="option-card" data-value="League of Legends"><span>League of Legends</span></div>
+                    <div class="option-card" data-value="iRacing"><span>iRacing</span></div>
+                    <div class="option-card" data-value="Microsoft Flight Simulator"><span>Microsoft Flight Simulator</span></div>
+                    <div class="option-card" data-value="Rust"><span>Rust</span></div>
+                    <div class="option-card" data-value="Darktide"><span>Darktide</span></div>
+                    <div class="option-card" data-value="Minecraft"><span>Minecraft</span></div>
+                    <div class="option-card" data-value="Cyberpunk 2077"><span>Cyberpunk 2077</span></div>
+                    <div class="option-card" data-value="Apex Legends"><span>Apex Legends</span></div>
+                    <div class="option-card" data-value="Valorant"><span>Valorant</span></div>
+                    <div class="option-card" data-value="Baldur's Gate 3"><span>Baldur's Gate 3</span></div>
+                    <div class="option-card" data-value="World of Warcraft"><span>World of Warcraft</span></div>
+                    <div class="option-card" data-value="Forza Horizon 5"><span>Forza Horizon 5</span></div>
                 </div>
             </div>
             <!-- Step 3: Side Hustle -->
             <div class="step" id="step3" style="display: none;">
-                <h2>Step 3: Side Hustle?</h2>
+                <h2>Side Hustle?</h2>
                 <p>Will you be using this PC for anything else (e.g. content creation, 3D modeling, video editing)?</p>
-                <div class="options">
-                    <div class="option" data-value="Yes">Yes</div>
-                    <div class="option" data-value="No">No</div>
+                <div class="options-grid card-options">
+                    <div class="option-card" data-value="Yes">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Yes</span>
+                    </div>
+                    <div class="option-card" data-value="No">
+                        <i class="fas fa-times-circle"></i>
+                        <span>No</span>
+                    </div>
                 </div>
             </div>
             <!-- Step 4: Case Size -->
             <div class="step" id="step4" style="display: none;">
-                <h2>Step 4: Case Size & Type</h2>
+                <h2>Case Size & Type</h2>
                 <p>What case size do you prefer?</p>
-                <div class="options">
-                    <div class="option" data-value="Small">Small</div>
-                    <div class="option" data-value="Medium">Medium</div>
-                    <div class="option" data-value="Large">Large</div>
+                <div class="options-grid card-options">
+                    <div class="option-card" data-value="Small">
+                        <i class="fas fa-box"></i>
+                        <span>Small</span>
+                    </div>
+                    <div class="option-card" data-value="Medium">
+                        <i class="fas fa-box-open"></i>
+                        <span>Medium</span>
+                    </div>
+                    <div class="option-card" data-value="Large">
+                        <i class="fas fa-archive"></i>
+                        <span>Large</span>
+                    </div>
                 </div>
             </div>
             <!-- Step 5: Style -->
             <div class="step" id="step5" style="display: none;">
-                <h2>Step 5: Style</h2>
+                <h2>Style</h2>
                 <p>Which style do you prefer for your PC build?</p>
-                <div class="options">
-                    <div class="option" data-value="All of the lights (RGB heavy)">All of the lights (RGB heavy)</div>
-                    <div class="option" data-value="Something in between">Something in between</div>
-                    <div class="option" data-value="Stealth (minimalist and dark)">Stealth (minimalist and dark)</div>
+                <div class="options-grid card-options">
+                    <div class="option-card" data-value="All of the lights (RGB heavy)">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>All of the lights (RGB heavy)</span>
+                    </div>
+                    <div class="option-card" data-value="Something in between">
+                        <i class="fas fa-adjust"></i>
+                        <span>Something in between</span>
+                    </div>
+                    <div class="option-card" data-value="Stealth (minimalist and dark)">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Stealth (minimalist and dark)</span>
+                    </div>
                 </div>
             </div>
             <!-- Final Step -->

@@ -35,39 +35,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleOptionClick(e) {
-        const stepId = steps[currentStep].id;
-        const value = e.target.dataset.value;
+        const selectedCard = e.target.closest('.option-card');
+        if (!selectedCard) return;
 
-        if (stepId === 'step2') {
-            const isGameCard = e.target.classList.contains('option-card');
-            if (isGameCard) {
-                e.target.classList.toggle('selected');
-                const index = answers.step2.games.indexOf(value);
-                if (index > -1) {
-                    answers.step2.games.splice(index, 1);
-                } else {
-                    answers.step2.games.push(value);
-                }
+        const stepId = steps[currentStep].id;
+        const value = selectedCard.dataset.value;
+
+        if (stepId === 'step2' && selectedCard.closest('.game-cards')) {
+            // Handle multi-select for game cards
+            selectedCard.classList.toggle('selected');
+            const index = answers.step2.games.indexOf(value);
+            if (index > -1) {
+                answers.step2.games.splice(index, 1);
             } else {
-                // It's a resolution option
-                const options = steps[currentStep].querySelectorAll('.option');
-                options.forEach(opt => opt.classList.remove('selected'));
-                e.target.classList.add('selected');
-                answers.step2.resolution = value;
+                answers.step2.games.push(value);
             }
         } else {
-            const options = steps[currentStep].querySelectorAll('.option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            e.target.classList.add('selected');
-            answers[stepId] = value;
+            // Handle single-select for all other card options
+            const options = steps[currentStep].querySelectorAll('.option-card');
+            options.forEach(opt => {
+                if (opt.closest('.game-cards') === selectedCard.closest('.game-cards')) {
+                    opt.classList.remove('selected');
+                }
+            });
+            selectedCard.classList.add('selected');
+
+            if (stepId === 'step2') {
+                answers.step2.resolution = value;
+            } else {
+                answers[stepId] = value;
+            }
         }
     }
 
     steps.forEach(step => {
-        const options = step.querySelectorAll('.option, .option-card');
-        options.forEach(option => {
-            option.addEventListener('click', handleOptionClick);
-        });
+        step.addEventListener('click', handleOptionClick);
     });
 
     nextBtn.addEventListener('click', () => {
