@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const quiz = document.getElementById('quiz');
+    const quizContainer = document.querySelector('.quiz-container');
     const resultsContainer = document.getElementById('results-container');
     const loader = document.getElementById('loader');
     const resultsGrid = document.getElementById('results');
@@ -13,30 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStepIndex = 0;
     let stepHistory = [];
     let answers = {};
+    let currentStepOrder = [];
 
-    const steps = Array.from(document.querySelectorAll('.step'));
-    const stepOrder = ['primaryUse'];
+    const allSteps = Array.from(document.querySelectorAll('.step'));
 
-    function getNextSteps() {
-        const primaryUseAnswers = answers.primaryUse || [];
+    function determineStepOrder() {
+        const primaryUse = answers.primaryUse || [];
         const conditionalSteps = [];
-        if (primaryUseAnswers.includes('Essentials')) conditionalSteps.push('essentials');
-        if (primaryUseAnswers.includes('Work')) conditionalSteps.push('work');
-        if (primaryUseAnswers.includes('Education')) conditionalSteps.push('education');
-        if (primaryUseAnswers.includes('Creative')) conditionalSteps.push('creative');
-
-        const commonSteps = ['usageLocation', 'peripherals', 'budget'];
-
-        // If no primary use is selected, just show common steps after the first question
-        if(conditionalSteps.length === 0 && primaryUseAnswers.length > 0) {
-             return ['primaryUse', ...commonSteps];
-        }
+        if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
+        if (primaryUse.includes('Work')) conditionalSteps.push('work');
+        if (primaryUse.includes('Education')) conditionalSteps.push('education');
+        if (primaryUse.includes('Creative')) conditionalSteps.push('creative');
         
-        return ['primaryUse', ...conditionalSteps, ...commonSteps];
+        const commonSteps = ['usageLocation', 'peripherals', 'budget'];
+        
+        currentStepOrder = ['primaryUse', ...conditionalSteps, ...commonSteps];
     }
 
     function showStep(stepId) {
-        steps.forEach(step => {
+        allSteps.forEach(step => {
             step.style.display = step.dataset.stepId === stepId ? 'block' : 'none';
         });
         updateProgress();
@@ -44,18 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProgress() {
-        const totalSteps = getNextSteps().length;
+        const totalSteps = currentStepOrder.length;
         progress.style.width = `${((currentStepIndex + 1) / totalSteps) * 100}%`;
     }
 
     function updateButtons() {
-        const currentStepId = getNextSteps()[currentStepIndex];
+        const currentStepId = currentStepOrder[currentStepIndex];
         const currentStepElement = document.querySelector(`.step[data-step-id="${currentStepId}"]`);
+        if (!currentStepElement) return;
+
         const questionId = currentStepElement.querySelector('.options-grid').dataset.questionId;
         const selectedOptions = answers[questionId] && answers[questionId].length > 0;
 
-        nextBtn.style.display = currentStepIndex < getNextSteps().length - 1 ? 'inline-block' : 'none';
-        submitBtn.style.display = currentStepIndex === getNextSteps().length - 1 ? 'inline-block' : 'none';
+        nextBtn.style.display = currentStepIndex < currentStepOrder.length - 1 ? 'inline-block' : 'none';
+        submitBtn.style.display = currentStepIndex === currentStepOrder.length - 1 ? 'inline-block' : 'none';
         prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
         
         nextBtn.disabled = !selectedOptions;
@@ -89,24 +87,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('selected');
             }
         }
+        
+        if (questionId === 'primaryUse') {
+            determineStepOrder();
+        }
+        
         updateButtons();
     });
 
     nextBtn.addEventListener('click', () => {
         stepHistory.push(currentStepIndex);
         currentStepIndex++;
-        const nextStepId = getNextSteps()[currentStepIndex];
+        const nextStepId = currentStepOrder[currentStepIndex];
         showStep(nextStepId);
     });
 
     prevBtn.addEventListener('click', () => {
         currentStepIndex = stepHistory.pop();
-        const prevStepId = getNextSteps()[currentStepIndex];
+        const prevStepId = currentStepOrder[currentStepIndex];
         showStep(prevStepId);
     });
 
     submitBtn.addEventListener('click', () => {
-        document.querySelector('.quiz-container').style.display = 'none';
+        quizContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
         loader.style.display = 'block';
 
@@ -157,5 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setup
-    showStep(stepOrder[0]);
+    determineStepOrder();
+    showStep(currentStepOrder[0]);
 });
