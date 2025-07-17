@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Builder Quiz</title>
+    <title>Aftershock PC Builder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,114 +13,73 @@
             <div class="progress" id="progress"></div>
         </div>
         <div id="quiz">
-            <!-- Step 1: Primary Use -->
-            <div class="step" data-step-id="primaryUse">
-                <h2>Tell us, what will you use your PC for?</h2>
-                <div class="options-grid card-options" data-question-id="primaryUse" data-select-type="multiple">
-                    <div class="option-card" data-value="Essentials"><i class="fas fa-star"></i><div><span>Essentials</span><p>Everyday stuff and entertainment</p></div></div>
-                    <div class="option-card" data-value="Work"><i class="fas fa-briefcase"></i><div><span>Work</span><p>Powering my profession</p></div></div>
-                    <div class="option-card" data-value="Education"><i class="fas fa-graduation-cap"></i><div><span>Education</span><p>Taking my studies further</p></div></div>
-                    <div class="option-card" data-value="Creative"><i class="fas fa-paint-brush"></i><div><span>Creative Hobbies</span><p>Making and creating, away from work</p></div></div>
+            <!-- Step 1: Primary Goal -->
+            <div class="step" data-step-id="primaryGoal">
+                <h2>What is your primary goal?</h2>
+                <div class="options-grid card-options" data-question-id="primaryGoal" data-select-type="single">
+                    <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Purely Gaming</span><p>For the dedicated gamer.</p></div></div>
+                    <div class="option-card" data-value="Streaming"><i class="fas fa-video"></i><div><span>Gaming & Streaming</span><p>For the aspiring content creator.</p></div></div>
+                    <div class="option-card" data-value="Workstation"><i class="fas fa-briefcase"></i><div><span>Gaming, Work & Study</span><p>For the ultimate all-rounder.</p></div></div>
                 </div>
             </div>
 
-            <!-- Conditional Step: Essentials -->
-            <div class="step" data-step-id="essentials" style="display: none;">
-                <h2>What are your day-to-day essentials?</h2>
-                <div class="options-grid card-options" data-question-id="essentials" data-select-type="multiple">
-                    <div class="option-card" data-value="Browsing"><i class="fas fa-globe"></i><div><span>Browsing online</span></div></div>
-                    <div class="option-card" data-value="Social Media"><i class="fas fa-heart"></i><div><span>Social media</span></div></div>
-                    <div class="option-card" data-value="Emails"><i class="fas fa-envelope"></i><div><span>Emails</span></div></div>
-                    <div class="option-card" data-value="Video Chatting"><i class="fas fa-video"></i><div><span>Video chatting</span></div></div>
-                    <div class="option-card" data-value="Streaming"><i class="fas fa-film"></i><div><span>Streaming movies and music</span></div></div>
-                    <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Gaming</span></div></div>
-                    <div class="option-card" data-value="Multitasking"><i class="fas fa-clone"></i><div><span>Multitasking across apps</span></div></div>
-                    <div class="option-card" data-value="Other"><i class="fas fa-question-circle"></i><div><span>Other</span></div></div>
+            <!-- Conditional Step: Games -->
+            <div class="step" data-step-id="games" style="display: none;">
+                <h2>What kind of games do you play?</h2>
+                <div class="options-grid card-options" data-question-id="games" data-select-type="multiple">
+                    <div class="option-card" data-value="Shooters"><i class="fas fa-crosshairs"></i><div><span>Fast-Paced Shooters</span><p>e.g., Valorant, CoD, Apex</p></div></div>
+                    <div class="option-card" data-value="AAA"><i class="fas fa-dragon"></i><div><span>AAA Story Games</span><p>e.g., Cyberpunk, Baldur's Gate 3</p></div></div>
+                    <div class="option-card" data-value="Esports"><i class="fas fa-trophy"></i><div><span>Esports Titles</span><p>e.g., League of Legends, Dota 2</p></div></div>
+                    <div class="option-card" data-value="Sims"><i class="fas fa-plane"></i><div><span>Simulators</span><p>e.g., MS Flight Sim, iRacing</p></div></div>
                 </div>
             </div>
 
-            <!-- Conditional Step: Work -->
-            <div class="step" data-step-id="work" style="display: none;">
-                <h2>What sort of things do you do at work?</h2>
-                <div class="options-grid card-options" data-question-id="work" data-select-type="multiple">
-                    <div class="option-card" data-value="Documents"><i class="fas fa-file-alt"></i><div><span>Creating documents</span></div></div>
-                    <div class="option-card" data-value="Organizing"><i class="fas fa-calendar-alt"></i><div><span>Planning, organizing</span></div></div>
-                    <div class="option-card" data-value="Design"><i class="fas fa-palette"></i><div><span>Design</span></div></div>
-                    <div class="option-card" data-value="Photography"><i class="fas fa-camera"></i><div><span>Photography, image editing</span></div></div>
-                    <div class="option-card" data-value="Audio"><i class="fas fa-microphone"></i><div><span>Audio production</span></div></div>
-                    <div class="option-card" data-value="Video"><i class="fas fa-video"></i><div><span>Video production</span></div></div>
-                    <div class="option-card" data-value="Coding"><i class="fas fa-code"></i><div><span>Coding, computing</span></div></div>
-                    <div class="option-card" data-value="3D Design"><i class="fas fa-cube"></i><div><span>3D design</span></div></div>
-                    <div class="option-card" data-value="Other"><i class="fas fa-question-circle"></i><div><span>Other</span></div></div>
+            <!-- Conditional Step: Work Type -->
+            <div class="step" data-step-id="workType" style="display: none;">
+                <h2>What kind of work or study?</h2>
+                <div class="options-grid card-options" data-question-id="workType" data-select-type="multiple">
+                    <div class="option-card" data-value="Office"><i class="fas fa-file-word"></i><div><span>General Office Tasks</span></div></div>
+                    <div class="option-card" data-value="Creative"><i class="fas fa-palette"></i><div><span>Creative Work (Video/Photo)</span></div></div>
+                    <div class="option-card" data-value="Code"><i class="fas fa-code"></i><div><span>Programming & Development</span></div></div>
+                    <div class="option-card" data-value="3D"><i class="fas fa-cube"></i><div><span>3D Modeling or CAD</span></div></div>
                 </div>
             </div>
 
-            <!-- Conditional Step: Education -->
-            <div class="step" data-step-id="education" style="display: none;">
-                <h2>So, what do your studies involve?</h2>
-                <div class="options-grid card-options" data-question-id="education" data-select-type="multiple">
-                    <div class="option-card" data-value="Assignments"><i class="fas fa-book"></i><div><span>Assignments, research</span></div></div>
-                    <div class="option-card" data-value="Online Classes"><i class="fas fa-laptop"></i><div><span>Online classes</span></div></div>
-                    <div class="option-card" data-value="Collaboration"><i class="fas fa-users"></i><div><span>Classmate collaboration</span></div></div>
-                    <div class="option-card" data-value="Creative Software"><i class="fas fa-pen-nib"></i><div><span>Working with creative software</span></div></div>
-                    <div class="option-card" data-value="STEM"><i class="fas fa-atom"></i><div><span>STEM projects</span></div></div>
-                    <div class="option-card" data-value="Other"><i class="fas fa-question-circle"></i><div><span>Other</span></div></div>
+            <!-- Common Step 1: Resolution -->
+            <div class="step" data-step-id="resolution" style="display: none;">
+                <h2>What's your target resolution?</h2>
+                <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
+                    <div class="option-card" data-value="1080p"><i class="fas fa-tv"></i><div><span>1080p</span><p>The Esports Standard</p></div></div>
+                    <div class="option-card" data-value="1440p"><i class="fas fa-desktop"></i><div><span>1440p</span><p>The Sweet Spot</p></div></div>
+                    <div class="option-card" data-value="4K"><i class="fas fa-film"></i><div><span>4K</span><p>Ultimate Immersion</p></div></div>
                 </div>
             </div>
 
-            <!-- Conditional Step: Creative -->
-            <div class="step" data-step-id="creative" style="display: none;">
-                <h2>How do you get creative outside of work?</h2>
-                <div class="options-grid card-options" data-question-id="creative" data-select-type="multiple">
-                    <div class="option-card" data-value="Photos"><i class="fas fa-camera-retro"></i><div><span>Editing photos</span></div></div>
-                    <div class="option-card" data-value="Content"><i class="fas fa-share-alt"></i><div><span>Creating content</span></div></div>
-                    <div class="option-card" data-value="Sketching"><i class="fas fa-pencil-ruler"></i><div><span>Designing, sketching</span></div></div>
-                    <div class="option-card" data-value="Coding"><i class="fas fa-code"></i><div><span>Coding</span></div></div>
-                    <div class="option-card" data-value="Music"><i class="fas fa-music"></i><div><span>Making music</span></div></div>
+            <!-- Common Step 2: Style -->
+            <div class="step" data-step-id="style" style="display: none;">
+                <h2>Choose your aesthetic.</h2>
+                <div class="options-grid card-options" data-question-id="style" data-select-type="single">
+                    <div class="option-card" data-value="RGB"><i class="fas fa-lightbulb"></i><div><span>Maximum RGB</span><p>Light up the room.</p></div></div>
+                    <div class="option-card" data-value="Subtle"><i class="fas fa-adjust"></i><div><span>Sleek & Subtle</span><p>A touch of class.</p></div></div>
+                    <div class="option-card" data-value="Stealth"><i class="fas fa-user-secret"></i><div><span>Stealth Black</span><p>Minimalist and dark.</p></div></div>
                 </div>
             </div>
 
-            <!-- Common Step 1 -->
-            <div class="step" data-step-id="usageLocation" style="display: none;">
-                <h2>And where will you use your PC?</h2>
-                <div class="options-grid card-options" data-question-id="usageLocation" data-select-type="single">
-                    <div class="option-card" data-value="Desk"><i class="fas fa-desktop"></i><div><span>Always in a fixed place, like my desk</span></div></div>
-                    <div class="or-separator"><span>Or</span></div>
-                    <div class="option-card" data-value="Home"><i class="fas fa-couch"></i><div><span>Around my home</span></div></div>
-                    <div class="option-card" data-value="Out"><i class="fas fa-coffee"></i><div><span>Out and about</span></div></div>
-                    <div class="option-card" data-value="Journeys"><i class="fas fa-plane"></i><div><span>On long journeys</span></div></div>
-                </div>
-            </div>
-
-            <!-- Common Step 2 -->
-            <div class="step" data-step-id="peripherals" style="display: none;">
-                <h2>Will you plug in any of the following?</h2>
-                <div class="options-grid card-options" data-question-id="peripherals" data-select-type="single">
-                    <div class="option-card" data-value="Displays"><i class="fas fa-tv"></i><div><span>Displays</span></div></div>
-                    <div class="option-card" data-value="Storage"><i class="fas fa-hdd"></i><div><span>External storage</span></div></div>
-                    <div class="option-card" data-value="Media"><i class="fas fa-camera-retro"></i><div><span>Media equipment</span></div></div>
-                    <div class="option-card" data-value="Other Accessories"><i class="fas fa-keyboard"></i><div><span>Other accessories</span></div></div>
-                    <div class="or-separator"><span>Or</span></div>
-                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question"></i><div><span>I'm not sure yet</span></div></div>
-                </div>
-            </div>
-
-            <!-- Common Step 3 -->
+            <!-- Common Step 3: Budget -->
             <div class="step" data-step-id="budget" style="display: none;">
-                <h2>Lastly, do you have a budget in mind?</h2>
+                <h2>What's your budget?</h2>
                 <div class="options-grid card-options" data-question-id="budget" data-select-type="single">
-                    <div class="option-card" data-value="1000"><div><span>Up to $1000</span></div></div>
                     <div class="option-card" data-value="1500"><div><span>Up to $1500</span></div></div>
-                    <div class="option-card" data-value="2000"><div><span>Up to $2000</span></div></div>
                     <div class="option-card" data-value="2500"><div><span>Up to $2500</span></div></div>
-                    <div class="option-card" data-value="3000"><div><span>Up to $3000+</span></div></div>
+                    <div class="option-card" data-value="3500"><div><span>Up to $3500</span></div></div>
+                    <div class="option-card" data-value="9999"><div><span>Money is no object</span></div></div>
                 </div>
             </div>
         </div>
         <div class="navigation">
             <button id="prevBtn" style="display: none;">Back</button>
-            <button id="nextBtn">OK</button>
-            <button id="submitBtn" style="display: none;">Find your perfect PC</button>
+            <button id="nextBtn">Next</button>
+            <button id="submitBtn" style="display: none;">Find My PC</button>
         </div>
     </div>
 

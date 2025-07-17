@@ -1,6 +1,6 @@
 body {
-    background-color: #f5f5f7;
-    color: #1d1d1f;
+    background-color: #1a1a1a;
+    color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -11,18 +11,19 @@ body {
 }
 
 .quiz-container {
-    background-color: #fff;
+    background-color: #2b2b2b;
     padding: 50px;
     border-radius: 20px;
     width: 100%;
     max-width: 800px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     text-align: center;
+    border: 1px solid #e53935;
 }
 
 .progress-bar {
     width: 100%;
-    background-color: #e5e5e5;
+    background-color: #444;
     border-radius: 5px;
     margin-bottom: 40px;
     overflow: hidden;
@@ -31,7 +32,7 @@ body {
 .progress {
     width: 0;
     height: 8px;
-    background-color: #007aff;
+    background-color: #e53935;
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
 }
@@ -50,12 +51,12 @@ body {
 }
 
 .option-card {
-    background-color: #fff;
+    background-color: #333;
     padding: 20px;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
-    border: 2px solid #d2d2d7;
+    border: 2px solid #555;
     display: flex;
     align-items: center;
     text-align: left;
@@ -63,19 +64,25 @@ body {
 }
 
 .option-card:hover {
-    border-color: #007aff;
+    border-color: #e53935;
+    transform: translateY(-3px);
 }
 
 .option-card.selected {
-    border-color: #007aff;
-    box-shadow: 0 0 0 2px #007aff;
+    border-color: #e53935;
+    background-color: #444;
+    box-shadow: 0 0 0 2px #e53935;
 }
 
 .option-card i {
     font-size: 1.8em;
-    color: #007aff;
+    color: #e53935;
     width: 30px;
     text-align: center;
+}
+
+.option-card.selected i {
+    color: #fff;
 }
 
 .option-card div {
@@ -86,11 +93,12 @@ body {
 .option-card span {
     font-size: 1.1em;
     font-weight: 600;
+    color: #fff;
 }
 
 .option-card p {
     font-size: 0.9em;
-    color: #6e6e73;
+    color: #aaa;
     margin: 0;
 }
 
@@ -108,7 +116,7 @@ body {
 }
 
 button {
-    background-color: #007aff;
+    background-color: #e53935;
     color: #fff;
     border: none;
     padding: 15px 50px;
@@ -120,12 +128,17 @@ button {
 }
 
 button:hover {
-    background-color: #005ecb;
+    background-color: #c62828;
+}
+
+button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
 }
 
 #prevBtn {
     background-color: transparent;
-    color: #007aff;
+    color: #e53935;
     padding: 0;
     position: absolute;
     top: 60px;
@@ -134,14 +147,14 @@ button:hover {
 }
 
 #submitBtn {
-    background-color: #007aff;
+    background-color: #e53935;
 }
 
-/* Loader and Results styling remains similar, can be adjusted if needed */
+/* Loader and Results styling */
 .loader {
-    border: 8px solid #f3f3f3;
+    border: 8px solid #444;
     border-radius: 50%;
-    border-top: 8px solid #007aff;
+    border-top: 8px solid #e53935;
     width: 60px;
     height: 60px;
     animation: spin 2s linear infinite;
@@ -167,44 +180,48 @@ button:hover {
 }
 
 .result-card {
-    background-color: #fff;
+    background-color: #2b2b2b;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
+    border: 1px solid #444;
 }
 
 .result-card img {
     width: 100%;
     height: auto;
     padding: 40px;
+    background-color: #333;
 }
 
 .result-card-content {
-    padding: 0 30px 30px;
+    padding: 30px;
     flex-grow: 1;
 }
 
 .result-card-content h3 {
     font-size: 1.8em;
     margin-bottom: 10px;
+    color: #e53935;
 }
 
 .result-card-content .price {
     font-size: 1.2em;
-    color: #6e6e73;
+    color: #fff;
     margin-bottom: 20px;
 }
 
 .result-card-content .details {
     font-size: 0.9em;
     line-height: 1.5;
+    color: #ccc;
 }
 
 .buy-button {
     margin-top: 20px;
-    background-color: #007aff;
+    background-color: #e53935;
     color: #fff;
     text-align: center;
     padding: 12px;
@@ -215,5 +232,5 @@ button:hover {
 }
 
 .buy-button:hover {
-    background-color: #005ecb;
+    background-color: #c62828;
 }

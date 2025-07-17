@@ -19,16 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
     function determineStepOrder() {
-        const primaryUse = answers.primaryUse || [];
+        const primaryGoal = answers.primaryGoal ? answers.primaryGoal[0] : null;
         const conditionalSteps = [];
-        if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
-        if (primaryUse.includes('Work')) conditionalSteps.push('work');
-        if (primaryUse.includes('Education')) conditionalSteps.push('education');
-        if (primaryUse.includes('Creative')) conditionalSteps.push('creative');
+
+        if (primaryGoal === 'Gaming' || primaryGoal === 'Streaming' || primaryGoal === 'Workstation') {
+            conditionalSteps.push('games');
+        }
+        if (primaryGoal === 'Workstation') {
+            conditionalSteps.push('workType');
+        }
         
-        const commonSteps = ['usageLocation', 'peripherals', 'budget'];
+        const commonSteps = ['resolution', 'style', 'budget'];
         
-        currentStepOrder = ['primaryUse', ...conditionalSteps, ...commonSteps];
+        currentStepOrder = ['primaryGoal', ...conditionalSteps, ...commonSteps];
     }
 
     function showStep(stepId) {
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (questionId === 'primaryUse') {
+        if (questionId === 'primaryGoal') {
             determineStepOrder();
         }
         
@@ -128,14 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Fetch Error:', error);
             loader.style.display = 'none';
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #1d1d1f;">Sorry, something went wrong. Please try again later.</p>`;
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, something went wrong. Please try again later.</p>`;
         });
     });
 
     function displayResults(recommendations) {
         resultsGrid.innerHTML = '';
         if (!recommendations || recommendations.length === 0) {
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #1d1d1f;">No recommendations match your criteria.</p>`;
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">No recommendations match your criteria.</p>`;
             return;
         }
         recommendations.forEach(pc => {
