@@ -55,9 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const questions = currentStepElement.querySelectorAll('.options-grid');
         let allRequiredAnswered = true;
-        
+        let isMultipleSelect = false;
+
         questions.forEach(q => {
             const questionId = q.dataset.questionId;
+            if (q.dataset.selectType === 'multiple' && answers[questionId] && answers[questionId].length > 0) {
+                isMultipleSelect = true;
+            }
             if (questionId !== 'games') {
                 if (!answers[questionId] || answers[questionId].length === 0) {
                     allRequiredAnswered = false;
@@ -73,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         nextBtn.disabled = !allRequiredAnswered;
         submitBtn.disabled = !allRequiredAnswered;
+
+        if (isMultipleSelect && allRequiredAnswered) {
+            nextBtn.innerHTML = 'OK';
+        } else {
+            nextBtn.innerHTML = 'Next';
+        }
     }
 
     quiz.addEventListener('click', (e) => {
@@ -129,13 +139,28 @@ document.addEventListener('DOMContentLoaded', () => {
         updateButtons();
     });
 
+    function animateButton(button, callback) {
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.classList.add('confirm');
+
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('confirm');
+            callback();
+        }, 600);
+    }
+
     nextBtn.addEventListener('click', () => {
-        if (currentStepIndex < currentStepOrder.length - 1) {
-            stepHistory.push(currentStepIndex);
-            currentStepIndex++;
-            const nextStepId = currentStepOrder[currentStepIndex];
-            showStep(nextStepId);
-        }
+        if (nextBtn.disabled) return;
+        animateButton(nextBtn, () => {
+            if (currentStepIndex < currentStepOrder.length - 1) {
+                stepHistory.push(currentStepIndex);
+                currentStepIndex++;
+                const nextStepId = currentStepOrder[currentStepIndex];
+                showStep(nextStepId);
+            }
+        });
     });
 
     prevBtn.addEventListener('click', () => {
@@ -147,78 +172,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     submitBtn.addEventListener('click', () => {
-        quizContainer.style.display = 'none';
-        resultsContainer.style.display = 'block';
-        loader.style.display = 'block';
-        resultsGrid.style.display = 'none';
-
-        let fetchCompleted = false;
-        let animationCompleted = false;
-        let recommendationData;
-
-        const loadingMessages = [
-            "Analyzing your choices...",
-            "Comparing components...",
-            "Calculating performance metrics...",
-            "Cross-referencing our database...",
-            "Finding the perfect match...",
-            "Almost there..."
-        ];
-        const loaderMessage = document.getElementById('loader-message');
-        const loaderProgress = document.getElementById('loader-progress');
-        let messageIndex = 0;
-
-        const messageInterval = setInterval(() => {
-            messageIndex++;
-            if (messageIndex < loadingMessages.length) {
-                loaderMessage.textContent = loadingMessages[messageIndex];
-            }
-        }, 8000);
-
-        loaderProgress.style.transition = 'width 48s linear';
-        setTimeout(() => {
-            loaderProgress.style.width = '95%';
-        }, 100);
-
-        const fetchPromise = fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(answers),
-        })
-        .then(response => response.json())
-        .then(data => {
-            fetchCompleted = true;
-            recommendationData = data;
-            if (animationCompleted) {
-                showFinalResults();
-            }
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
-            clearInterval(messageInterval);
-        });
-
-        setTimeout(() => {
-            animationCompleted = true;
-            if (fetchCompleted) {
-                showFinalResults();
-            }
-        }, 49000);
-
-        function showFinalResults() {
-            clearInterval(messageInterval);
-            loaderProgress.style.transition = 'width 0.5s ease-out';
-            loaderProgress.style.width = '100%';
-            
+        if (submitBtn.disabled) return;
+        animateButton(submitBtn, () => {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            loader.style.display = 'block';
+            resultsGrid.style.display = 'none';
+    
+            let fetchCompleted = false;
+            let animationCompleted = false;
+            let recommendationData;
+    
+            const loadingMessages = [
+                "Analyzing your choices...",
+                "Comparing components...",
+                "Calculating performance metrics...",
+                "Cross-referencing our database...",
+                "Finding the perfect match...",
+                "Almost there..."
+            ];
+            const loaderMessage = document.getElementById('loader-message');
+            const loaderProgress = document.getElementById('loader-progress');
+            let messageIndex = 0;
+    
+            const messageInterval = setInterval(() => {
+                messageIndex++;
+                if (messageIndex < loadingMessages.length) {
+                    loaderMessage.textContent = loadingMessages[messageIndex];
+                }
+            }, 8000);
+    
+            loaderProgress.style.transition = 'width 48s linear';
             setTimeout(() => {
-                loader.style.display = 'none';
-                resultsGrid.style.display = 'flex'; // Changed from 'grid' to 'flex' to match CSS
-                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
-                const parsedData = JSON.parse(jsonString);
-                displayResults(parsedData.recommendations);
-            }, 500);
-        }
+                loaderProgress.style.width = '95%';
+            }, 100);
+    
+            const fetchPromise = fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(answers),
+            })
+            .then(response => response.json())
+            .then(data => {
+                fetchCompleted = true;
+                recommendationData = data;
+                if (animationCompleted) {
+                    showFinalResults();
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
+                clearInterval(messageInterval);
+            });
+    
+            setTimeout(() => {
+                animationCompleted = true;
+                if (fetchCompleted) {
+                    showFinalResults();
+                }
+            }, 49000);
+    
+            function showFinalResults() {
+                clearInterval(messageInterval);
+                loaderProgress.style.transition = 'width 0.5s ease-out';
+                loaderProgress.style.width = '100%';
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    resultsGrid.style.display = 'flex';
+                    const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
+                    const parsedData = JSON.parse(jsonString);
+                    displayResults(parsedData.recommendations);
+                }, 500);
+            }
+        });
     });
 
     function displayResults(recommendations) {

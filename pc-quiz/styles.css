@@ -261,9 +261,7 @@ button:disabled {
     display: flex;
     flex-direction: column;
     border: 1px solid #444;
-    flex-basis: calc(33.333% - 20px);
-    flex-grow: 1;
-    min-width: 350px;
+    flex: 1 1 350px;
 }
 
 .result-card img {
@@ -354,4 +352,81 @@ button:disabled {
 .buy-button:hover {
     background-color: #ff4545;
     transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.96);
+    transition: transform 0.1s;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        padding-bottom: 120px; /* Space for sticky nav */
+    }
+
+    .quiz-container {
+        padding: 20px;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        height: 100%;
+        width: 100%;
+        max-width: 100%;
+        overflow-y: scroll;
+        -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+    }
+
+    .step h2 {
+        font-size: 2em;
+        margin: 20px 0 30px;
+    }
+
+    .navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background: rgba(29, 29, 31, 0.75);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-top: 1px solid #333;
+        z-index: 100;
+        margin-top: 0;
+        justify-content: space-between;
+    }
+
+    #nextBtn, #submitBtn {
+        width: 100%;
+    }
+
+    #prevBtn {
+        position: static;
+        transform: none;
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+        margin-right: 15px;
+    }
+    
+    #prevBtn:hover {
+        transform: none;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    #results-container {
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .result-card.top-choice {
+        transform: none;
+    }
 }
