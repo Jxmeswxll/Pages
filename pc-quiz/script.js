@@ -54,11 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentStepElement) return;
 
         const questions = currentStepElement.querySelectorAll('.options-grid');
-        let allQuestionsAnswered = true;
+        let allRequiredAnswered = true;
+        
         questions.forEach(q => {
             const questionId = q.dataset.questionId;
-            if (!answers[questionId] || answers[questionId].length === 0) {
-                allQuestionsAnswered = false;
+            // The 'games' question is optional, so we don't check it for button enablement
+            if (questionId !== 'games') {
+                if (!answers[questionId] || answers[questionId].length === 0) {
+                    allRequiredAnswered = false;
+                }
             }
         });
 
@@ -68,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.style.display = isLastStep ? 'inline-block' : 'none';
         prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
         
-        nextBtn.disabled = !allQuestionsAnswered;
-        submitBtn.disabled = !allQuestionsAnswered;
+        nextBtn.disabled = !allRequiredAnswered;
+        submitBtn.disabled = !allRequiredAnswered;
     }
 
     quiz.addEventListener('click', (e) => {
@@ -87,8 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (selectType === 'single-exclusive') {
             const isAlreadySelected = card.classList.contains('selected');
-            // Deselect all cards in this step's grids
-            const stepGrids = card.closest('.step').querySelectorAll('.options-grid');
+            const stepGrids = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
             stepGrids.forEach(grid => {
                 grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
             });
@@ -99,12 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 answers[questionId].push(value);
             }
         } else {
-            // Deselect the exclusive 'Not Sure' option if it exists in this step
-            const exclusiveGrid = card.closest('.step').querySelector('.options-grid[data-select-type="single-exclusive"]');
+            const exclusiveGrid = card.closest('.step').querySelector(`.options-grid[data-question-id="${questionId}"][data-select-type="single-exclusive"]`);
             if (exclusiveGrid) {
                 exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-                const exclusiveQuestionId = exclusiveGrid.dataset.questionId;
-                answers[exclusiveQuestionId] = [];
             }
 
             if (selectType === 'single') {
