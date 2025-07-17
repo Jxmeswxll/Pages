@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
-            const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+            const productUrl = pc.productUrl;
 
             card.innerHTML = `
                 <img src="${pc.imageUrl}" alt="${pc.name}">
