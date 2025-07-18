@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
             nextStepElement.style.display = 'block';
         }
 
+        if (stepId === 'budget') {
+            updateBudgetOptions();
+        }
+
         currentStepIndex = currentStepOrder.indexOf(stepId);
         updateProgress();
         updateButtons();
@@ -120,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     quiz.addEventListener('click', (e) => {
         const card = e.target.closest('.option-card');
-        if (!card) return;
+        if (!card || card.classList.contains('disabled')) return;
 
         const optionsGrid = card.closest('.options-grid');
         const questionId = optionsGrid.dataset.questionId;
@@ -167,12 +171,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (questionId === 'primaryUse' || questionId === 'pcType') {
+        if (questionId === 'primaryUse' || questionId === 'pcType' || questionId === 'resolution') {
             determineStepOrder();
         }
         
         updateButtons();
     });
+
+    function updateBudgetOptions() {
+        const resolution = answers.resolution ? answers.resolution[0] : null;
+        const budgetStep = document.querySelector('.step[data-step-id="budget"]');
+        const budgetCards = budgetStep.querySelectorAll('.option-card');
+
+        budgetCards.forEach(card => {
+            const value = card.dataset.value;
+            const note = card.querySelector('.recommendation-note');
+            
+            card.classList.remove('disabled');
+            if (note) note.textContent = '';
+
+            if (resolution === '4K' && value === '1500-2500') {
+                card.classList.add('disabled');
+                if (note) note.textContent = 'Not recommended for 4K Gaming';
+            }
+        });
+    }
 
     nextBtn.addEventListener('click', () => {
         if (nextBtn.disabled) return;
