@@ -142,22 +142,58 @@ body {
     margin: 2px 0 0;
 }
 
-.option-card.disabled {
-    background-color: var(--disabled-bg-color);
-    cursor: not-allowed;
+.option-card.greyed-out {
     opacity: 0.6;
 }
 
-.option-card.disabled:hover {
-    transform: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+.option-card .expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transition: max-height 0.4s ease-in-out, margin-top 0.4s ease-in-out, padding-top 0.4s ease-in-out;
+    box-sizing: border-box;
 }
 
-.recommendation-note {
-    font-size: 0.8em !important;
-    color: var(--accent-color) !important;
-    font-weight: 500;
-    margin-top: 5px !important;
+.option-card.expanded {
+    flex-wrap: wrap;
+}
+
+.option-card.expanded .expandable-content {
+    max-height: 200px; /* Adjust if content is taller */
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.expandable-content p {
+    font-size: 1em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.modal-button {
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.modal-button:hover {
+    filter: brightness(1.15);
 }
 
 .options-grid.game-cards {

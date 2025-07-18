@@ -124,8 +124,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     quiz.addEventListener('click', (e) => {
         const card = e.target.closest('.option-card');
-        if (!card || card.classList.contains('disabled')) return;
+        if (!card) return;
 
+        // Handle resolution switch buttons
+        if (e.target.classList.contains('switch-res-button')) {
+            e.stopPropagation(); // prevent card selection
+            const newResolution = e.target.dataset.res;
+            switchResolution(newResolution);
+            // After switching, we should also select the budget card that was clicked
+            selectCard(card);
+            return;
+        }
+
+        if (card.classList.contains('greyed-out')) {
+            card.classList.toggle('expanded');
+            return;
+        }
+
+        selectCard(card);
+    });
+
+    function selectCard(card) {
         const optionsGrid = card.closest('.options-grid');
         const questionId = optionsGrid.dataset.questionId;
         const selectType = optionsGrid.dataset.selectType;
@@ -176,25 +195,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         updateButtons();
-    });
+    }
 
     function updateBudgetOptions() {
         const resolution = answers.resolution ? answers.resolution[0] : null;
         const budgetStep = document.querySelector('.step[data-step-id="budget"]');
-        const budgetCards = budgetStep.querySelectorAll('.option-card');
+        const budgetCardToModify = budgetStep.querySelector('.option-card[data-value="1500-2500"]');
 
-        budgetCards.forEach(card => {
-            const value = card.dataset.value;
-            const note = card.querySelector('.recommendation-note');
-            
-            card.classList.remove('disabled');
-            if (note) note.textContent = '';
-
-            if (resolution === '4K' && value === '1500-2500') {
-                card.classList.add('disabled');
-                if (note) note.textContent = 'Not recommended for 4K Gaming';
+        if (budgetCardToModify) {
+            if (resolution === '4K') {
+                budgetCardToModify.classList.add('greyed-out');
+            } else {
+                budgetCardToModify.classList.remove('greyed-out');
+                budgetCardToModify.classList.remove('expanded'); 
             }
-        });
+        }
+    }
+
+    function switchResolution(newResolution) {
+        // Update the answer
+        answers.resolution = [newResolution];
+
+        // Update the visual selection on the resolution step
+        const resolutionStep = document.querySelector('.step[data-step-id="resolution"]');
+        const allResolutionCards = resolutionStep.querySelectorAll('.option-card');
+        allResolutionCards.forEach(c => c.classList.remove('selected'));
+        
+        const newCard = resolutionStep.querySelector(`.option-card[data-value="${newResolution}"]`);
+        if (newCard) {
+            newCard.classList.add('selected');
+        }
+
+        // Update the budget options
+        updateBudgetOptions();
+        updateButtons(); // Re-check button states
     }
 
     nextBtn.addEventListener('click', () => {
