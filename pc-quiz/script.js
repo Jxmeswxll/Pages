@@ -22,17 +22,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function determineStepOrder() {
         const primaryUse = answers.primaryUse || [];
         let conditionalSteps = [];
-        
-        if (primaryUse.includes('Gaming')) conditionalSteps.push('games', 'resolution', 'style');
-        if (primaryUse.includes('Work')) conditionalSteps.push('work');
-        if (primaryUse.includes('Study')) conditionalSteps.push('study');
-        if (primaryUse.includes('Essentials')) conditionalSteps.push('essentials');
-        
-        const commonSteps = ['caseSize', 'peripherals', 'budget'];
-        
+
+        if (primaryUse.includes('Gaming')) {
+            conditionalSteps.push('games', 'resolution');
+        }
+        if (primaryUse.includes('Work')) {
+            conditionalSteps.push('work');
+        }
+        if (primaryUse.includes('Study')) {
+            conditionalSteps.push('study');
+        }
+        if (primaryUse.includes('Essentials')) {
+            conditionalSteps.push('essentials');
+        }
+
+        // Use a Set to automatically handle duplicates
         const uniqueConditionalSteps = [...new Set(conditionalSteps)];
         
-        currentStepOrder = ['primaryUse', ...uniqueConditionalSteps, ...commonSteps];
+        const commonSteps = ['caseSize', 'budget'];
+        
+        // The new pcType question should come after primaryUse
+        let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
+
+        // If user selects "Desktop", then ask about case size.
+        if (answers.pcType && answers.pcType[0] === 'Desktop') {
+            baseOrder.push('caseSize');
+        }
+        
+        baseOrder.push('budget');
+        currentStepOrder = baseOrder;
     }
 
     function showStep(stepId) {
@@ -149,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (questionId === 'primaryUse') {
+        if (questionId === 'primaryUse' || questionId === 'pcType') {
             determineStepOrder();
         }
         

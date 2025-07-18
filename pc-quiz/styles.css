@@ -118,6 +118,14 @@ body {
     text-align: center;
 }
 
+.option-card svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent-color);
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
 .option-card div {
     display: flex;
     flex-direction: column;
