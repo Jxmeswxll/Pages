@@ -22,6 +22,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -31,6 +32,7 @@ body {
     width: 100%;
     max-width: var(--container-width);
     position: relative;
+    flex-shrink: 0;
 }
 
 .quiz-container {
@@ -288,10 +290,24 @@ button:disabled {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(29, 29, 31, 0.9);
+    background: linear-gradient(-45deg, #1d1d1f, #2c2c2e, #1d1d1f, #2c2c2e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     z-index: 999;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .loader-spinner {
@@ -331,6 +347,8 @@ button:disabled {
     gap: 30px;
     align-items: stretch;
     justify-content: center;
+    grid-auto-rows: 1fr;
+    width: 100%;
 }
 
 .result-card {
@@ -343,8 +361,10 @@ button:disabled {
     padding: 25px;
     text-align: left;
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    flex-basis: 100%;
-    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box; /* Prevents padding and border from adding to the width */
+    position: relative; /* Add this to enable z-index */
+    /* max-width: 400px; --- This can be removed or adjusted as grid handles width */
 }
 
 .result-card:hover {
@@ -352,14 +372,21 @@ button:disabled {
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     border-color: #555;
     z-index: 20;
-    position: relative;
+}
+
+.result-card.best-value {
+    order: 1;
 }
 
 .result-card.top-choice {
+    order: 2;
     border-color: var(--accent-color);
     box-shadow: 0 0 35px -10px var(--accent-color);
-    transform: scale(1.05);
     z-index: 10;
+}
+
+.result-card.level-up {
+    order: 3;
 }
 
 .result-card img {
@@ -392,7 +419,6 @@ button:disabled {
     font-weight: 600;
     margin-bottom: 15px;
     line-height: 1.4;
-    min-height: 60px; /* Adjust as needed */
 }
 
 .price-container {
@@ -437,7 +463,7 @@ button:disabled {
     font-weight: 600;
 }
 
-.buy-button {
+.view-product-button {
     background-color: var(--accent-color);
     color: var(--accent-text-color);
     border: none;
@@ -453,7 +479,7 @@ button:disabled {
     margin-top: auto;
 }
 
-.buy-button:hover {
+.view-product-button:hover {
     filter: brightness(1.15);
 }
 
@@ -566,5 +592,4 @@ button:disabled {
         padding: 18px;
         font-size: 1.2em;
     }
-
 }

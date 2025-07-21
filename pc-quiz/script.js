@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         quizContainer.style.display = 'none';
         document.querySelector('.navigation').style.display = 'none';
         resultsContainer.style.display = 'block';
-        loader.style.display = 'block';
+        loader.style.display = 'flex';
         resultsGrid.style.display = 'none';
 
         const loadingMessages = [
@@ -266,7 +266,17 @@ document.addEventListener('DOMContentLoaded', () => {
             "Running benchmarks...",
             "Finding the perfect match...",
             "Polishing the recommendations...",
-            "Almost there..."
+            "Almost there...",
+            "Debating whether pineapple belongs on pizza...",
+            "Teaching the hamsters to code faster...",
+            "Reticulating splines...",
+            "Asking the magic 8-ball for advice...",
+            "Warming up the AI...",
+            "Don't worry, the loading bar is moving... probably.",
+            "Generating witty loading messages...",
+            "I'm not slow, I'm just enjoying the moment.",
+            "Are we there yet?",
+            "Just a few more moments of suspense..."
         ];
         const loaderMessage = document.getElementById('loader-message');
         let messageIndex = 0;
@@ -342,35 +352,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayResults(recommendations) {
         resultsGrid.innerHTML = '';
-        if (!recommendations || recommendations.length < 3) {
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find enough matches. Please try again.</p>`;
+
+        // Filter out invalid recommendations (null, or missing essential properties)
+        const validRecommendations = recommendations.filter(rec => rec && rec.price && rec.name);
+
+        if (!validRecommendations || validRecommendations.length === 0) {
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches. Please try again.</p>`;
             return;
         }
 
-        const sortedPcs = recommendations.sort((a, b) => {
+        const sortedPcs = validRecommendations.sort((a, b) => {
             const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g,""));
             const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g,""));
             return priceA - priceB;
         });
 
-        const [levelDown, topChoice, levelUp] = sortedPcs;
+        let pcsToDisplay = [];
 
-        const pcsToDisplay = [
-            { ...levelDown, recommendationLevel: 'The Best Value' },
-            { ...topChoice, recommendationLevel: 'Our Top Recommendation' },
-            { ...levelUp, recommendationLevel: 'The Next Level Up' }
-        ];
+        if (sortedPcs.length === 1) {
+            const [topChoice] = sortedPcs;
+            pcsToDisplay = [
+                { ...topChoice, recommendationLevel: 'Our Top Recommendation' }
+            ];
+        } else if (sortedPcs.length === 2) {
+            const [levelDown, topChoice] = sortedPcs;
+            pcsToDisplay = [
+                { ...levelDown, recommendationLevel: 'The Best Value' },
+                { ...topChoice, recommendationLevel: 'Our Top Recommendation' }
+            ];
+        } else { // 3 or more
+            const [levelDown, topChoice, levelUp] = sortedPcs;
+            pcsToDisplay = [
+                { ...levelDown, recommendationLevel: 'The Best Value' },
+                { ...topChoice, recommendationLevel: 'Our Top Recommendation' },
+                { ...levelUp, recommendationLevel: 'The Next Level Up' }
+            ];
+        }
+
+        if (window.innerWidth <= 767) {
+            const topChoiceIndex = pcsToDisplay.findIndex(pc => pc.recommendationLevel === 'Our Top Recommendation');
+            if (topChoiceIndex > 0) {
+                const [topChoicePc] = pcsToDisplay.splice(topChoiceIndex, 1);
+                pcsToDisplay.unshift(topChoicePc);
+            }
+        }
 
         pcsToDisplay.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
             if (pc.recommendationLevel === 'Our Top Recommendation') {
                 card.classList.add('top-choice');
+            } else if (pc.recommendationLevel === 'The Best Value') {
+                card.classList.add('best-value');
+            } else if (pc.recommendationLevel === 'The Next Level Up') {
+                card.classList.add('level-up');
             }
 
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
             const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+
+            const detailsHTML = Object.entries(pc.details).map(([key, value]) => {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                return `<p><strong>${formattedKey}:</strong> ${value}</p>`;
+            }).join('');
 
             card.innerHTML = `
                 <img src="${pc.imageUrl}" alt="${pc.name}">
@@ -382,12 +427,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${strikethroughHTML}
                     </div>
                     <div class="details">
-                        <p><strong>Graphics:</strong> ${pc.details.graphics}</p>
-                        <p><strong>Processor:</strong> ${pc.details.processor}</p>
-                        <p><strong>RAM:</strong> ${pc.details.ram}</p>
-                        <p><strong>Storage:</strong> ${pc.details.storage}</p>
+                        ${detailsHTML}
                     </div>
-                    <a href="${productUrl}" target="_blank" class="buy-button">View Product</a>
+                    <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
                 </div>
             `;
             resultsGrid.appendChild(card);
