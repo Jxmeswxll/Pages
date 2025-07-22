@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/b4adc638-4917-420d-866d-cb67af8b5cd9';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/b4adc638-4917-420d-866d-cb67af8b5cd9';
 
     let currentStepIndex = 0;
     let stepHistory = [];
