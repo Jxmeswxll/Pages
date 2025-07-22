@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
+    const refreshGamesBtn = document.getElementById('refreshGamesBtn');
 
     // New elements for email modal and new results sections
     const emailModal = document.getElementById('emailModal');
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const readyToShipContainer = document.querySelector('.ready-to-ship-content');
 
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/e1ca7516-d833-4faa-9aeb-85f3b7deaf93';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/e1ca7516-d833-4faa-9aeb-85f3b7deaf93';
 
     let currentStepIndex = 0;
     let stepHistory = [];
@@ -239,6 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    if(refreshGamesBtn) {
+        refreshGamesBtn.addEventListener('click', () => {
+            const gameCards = document.querySelectorAll('.game-cards .option-card');
+            gameCards.forEach(card => card.classList.remove('selected'));
+            answers.games = [];
+            updateButtons();
+        });
+    }
+
     function switchResolution(newResolution) {
         // Update the answer
         answers.resolution = [newResolution];
@@ -276,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
+        answers.budget = answers.budget.map(b => b === '2501-4500' ? '2500-4500' : b);
         emailModal.style.display = 'block';
     });
 
@@ -443,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             readyToShipContainer.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, no Ready to Ship models match your criteria.</p>`;
         }
+        lazyLoadImages();
     }
 
     function createResultCard(pc) {
@@ -473,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         card.innerHTML = `
             <a href="${productUrl}" target="_blank" class="result-image-link">
-                <img src="${pc.imageUrl}" alt="${pc.name}">
+                <img data-src="${pc.imageUrl}" alt="${pc.name}" class="lazy-load">
             </a>
             <div class="result-card-content">
                 ${badgeHTML}
@@ -495,6 +507,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     resultsGrid.addEventListener('click', e => {
+        const card = e.target.closest('.result-card');
+
+        if (window.innerWidth <= 767) {
+            if (card && !card.classList.contains('expanded')) {
+                // Prevent link navigation when expanding
+                if (e.target.tagName !== 'A' && !e.target.closest('a')) {
+                     e.preventDefault();
+                }
+                card.classList.add('expanded');
+            } else if (card && card.classList.contains('expanded') && !e.target.closest('a, button, .reason-icon')) {
+                card.classList.remove('expanded');
+            }
+        }
+
         if (e.target.classList.contains('reason-icon')) {
             const modal = e.target.nextElementSibling;
             modal.style.display = 'block';
@@ -504,6 +530,24 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = 'none';
         }
     });
+
+    function lazyLoadImages() {
+        const lazyImages = document.querySelectorAll('img.lazy-load');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const image = entry.target;
+                    image.src = image.dataset.src;
+                    image.classList.remove('lazy-load');
+                    imageObserver.unobserve(image);
+                }
+            });
+        });
+
+        lazyImages.forEach(image => {
+            imageObserver.observe(image);
+        });
+    }
 
     // Initial setup
     allSteps.forEach((step, index) => {
