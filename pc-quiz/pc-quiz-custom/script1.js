@@ -380,26 +380,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 loader.style.display = 'none';
                 resultsGrid.style.display = 'block'; // Changed to block
                 try {
+                    let dataToParse = recommendationData;
+                    // Handle the case where the data is wrapped in an array
+                    if (Array.isArray(recommendationData) && recommendationData.length > 0) {
+                        dataToParse = recommendationData[0];
+                    }
+
                     let parsedData;
-                    // Check if recommendationData is an object and has an 'output' property
-                    if (typeof recommendationData === 'object' && recommendationData !== null && 'output' in recommendationData) {
+                    // Check if dataToParse is an object and has an 'output' property
+                    if (typeof dataToParse === 'object' && dataToParse !== null && 'output' in dataToParse) {
                         // If output is a string, try to parse it. It might be stringified JSON.
-                        if (typeof recommendationData.output === 'string') {
+                        if (typeof dataToParse.output === 'string') {
                             try {
-                                // First, try to parse it as-is
-                                parsedData = JSON.parse(recommendationData.output);
-                            } catch (e) {
-                                // If that fails, it might be the old format with backticks
-                                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
+                                // It might be the format with backticks
+                                const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
                                 parsedData = JSON.parse(jsonString);
+                            } catch (e) {
+                                // If that fails, try to parse it as-is
+                                parsedData = JSON.parse(dataToParse.output);
                             }
                         } else {
                             // If output is not a string, assume it's already a valid object
-                            parsedData = recommendationData.output;
+                            parsedData = dataToParse.output;
                         }
                     } else {
                         // If it's not the expected object structure, assume the whole thing is the data
-                        parsedData = recommendationData;
+                        parsedData = dataToParse;
                     }
         
                     // After parsing, we expect parsedData to have a 'recommendations' property
@@ -411,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
                 } catch (e) {
                     console.error("Error processing recommendation data:", e, recommendationData);
-                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
+                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches for your request. Please try adjusting your selections.</p>`;
                 }
             }, 500);
         }
@@ -424,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const validRecommendations = recommendations.filter(rec => rec && rec.price && rec.name && rec.type);
 
         if (!validRecommendations || validRecommendations.length === 0) {
-            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches. Please try again.</p>`;
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches for your request. Please try adjusting your selections.</p>`;
             return;
         }
 
