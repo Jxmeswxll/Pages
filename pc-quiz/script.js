@@ -136,8 +136,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (card.classList.contains('greyed-out')) {
-            card.classList.toggle('expanded');
+        // Handle the new "change budget" button
+        if (e.target.classList.contains('change-budget-button')) {
+            e.stopPropagation();
+            card.classList.remove('expanded');
+            // Also deselect the card if it was selected
+            const questionId = card.closest('.options-grid').dataset.questionId;
+            const value = card.dataset.value;
+            if (answers[questionId]) {
+                const index = answers[questionId].indexOf(value);
+                if (index > -1) {
+                    answers[questionId].splice(index, 1);
+                }
+            }
+            card.classList.remove('selected');
+            updateButtons();
+            return;
+        }
+
+        if (card.classList.contains('requires-attention') && !card.classList.contains('expanded')) {
+            card.classList.add('expanded');
             return;
         }
 
@@ -204,10 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (budgetCardToModify) {
             if (resolution === '4K') {
-                budgetCardToModify.classList.add('greyed-out');
+                budgetCardToModify.classList.add('requires-attention');
             } else {
-                budgetCardToModify.classList.remove('greyed-out');
-                budgetCardToModify.classList.remove('expanded'); 
+                budgetCardToModify.classList.remove('requires-attention');
+                budgetCardToModify.classList.remove('expanded');
             }
         }
     }
@@ -417,11 +435,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 return `<p><strong>${formattedKey}:</strong> ${value}</p>`;
             }).join('');
 
+            const reasonHTML = pc.reason ? `
+                <div class="reason-container">
+                    <i class="fas fa-question-circle reason-icon"></i>
+                    <div class="reason-modal">
+                        <div class="reason-modal-content">
+                            <span class="close-reason">&times;</span>
+                            <h4>Why this PC?</h4>
+                            <p>${pc.reason}</p>
+                        </div>
+                    </div>
+                </div>
+            ` : '';
+
             card.innerHTML = `
-                <img src="${pc.imageUrl}" alt="${pc.name}">
+                <a href="${productUrl}" target="_blank" class="result-image-link">
+                    <img src="${pc.imageUrl}" alt="${pc.name}">
+                </a>
                 <div class="result-card-content">
                     ${badgeHTML}
-                    <h3>${pc.name}</h3>
+                    <div class="title-container">
+                        <h3>${pc.name}</h3>
+                        ${reasonHTML}
+                    </div>
                     <div class="price-container">
                         <p class="price">${pc.price}</p>
                         ${strikethroughHTML}
@@ -433,6 +469,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             resultsGrid.appendChild(card);
+        });
+
+        resultsGrid.addEventListener('click', e => {
+            if (e.target.classList.contains('reason-icon')) {
+                const modal = e.target.nextElementSibling;
+                modal.style.display = 'block';
+            }
+            if (e.target.classList.contains('close-reason')) {
+                const modal = e.target.closest('.reason-modal');
+                modal.style.display = 'none';
+            }
         });
     }
 
