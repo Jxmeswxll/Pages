@@ -202,14 +202,24 @@
             <h2 id="loader-title">Finding your perfect match...</h2>
             <p id="loader-message">Analyzing your choices...</p>
         </div>
-        <div id="results" class="results-grid" style="display: none;">
-            <div id="custom-build">
-                <h2>Your Custom Build</h2>
-                <div class="custom-build-content"></div>
+        <div id="results" style="display: none;">
+            <div class="product-header">
+                <h2 id="product-title"></h2>
+                <div class="recommendation-pills" id="recommendation-pills">
+                    <!-- Pills will be inserted here by JS -->
+                </div>
+                <div class="price-container-main">
+                    <p id="product-price"></p>
+                    <p id="product-strikethrough-price"></p>
+                </div>
+                <a href="#" id="buy-button" class="view-product-button" target="_blank">View Product</a>
             </div>
-            <div id="ready-to-ship">
-                <h2>Ready to Ship</h2>
-                <div class="ready-to-ship-content results-grid"></div>
+            <div class="product-gallery">
+                <img id="product-image" src="" alt="Product Image">
+                <!-- Gallery dots if needed -->
+            </div>
+            <div class="product-specs" id="product-specs">
+                <!-- Specs will be inserted here by JS -->
             </div>
         </div>
     </div>

@@ -700,42 +700,86 @@ button:disabled {
     }
 }
 
+.product-header {
+    padding: 20px;
+    text-align: center;
+}
+
+#product-title {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.recommendation-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.recommendation-pill {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.recommendation-pill.active {
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
+    border-color: var(--accent-color);
+}
+
+.price-container-main {
+    margin-bottom: 20px;
+}
+
+#product-price {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+#product-strikethrough-price {
+    color: var(--subtle-text-color);
+    text-decoration: line-through;
+}
+
+.product-gallery {
+    padding: 0 20px;
+}
+
+#product-image {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+}
+
+.product-specs {
+    padding: 20px;
+}
+
+.spec-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.spec-item i {
+    font-size: 1.5em;
+    color: var(--accent-color);
+}
+
 @media (max-width: 767px) {
     .step h2 {
         font-size: 1.8em;
     }
 
-    .results-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .result-card {
-        width: calc(33.333% - 10px);
-        min-width: 100px;
-        cursor: pointer;
-        transition: transform 0.3s ease, z-index 0s 0.3s;
-    }
-
-    .result-card.expanded {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 90vw;
-        height: 80vh;
-        transform: translate(-50%, -50%) scale(1);
-        z-index: 1000;
-        overflow-y: auto;
-    }
-    .result-card {
-        flex-direction: column;
-        border: 1px solid var(--border-color);
-        border-radius: 15px;
-        overflow: hidden;
-        width: 100%;
-        box-sizing: border-box;
+    #results {
+        padding-bottom: 100px;
     }
     .result-image-link {
         display: block;

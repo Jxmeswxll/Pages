@@ -16,16 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const waitBtn = document.getElementById('waitBtn');
     const emailInput = document.getElementById('emailInput');
     const emailBtn = document.getElementById('emailBtn');
-    const customBuildContainer = document.querySelector('.custom-build-content');
-    const readyToShipContainer = document.querySelector('.ready-to-ship-content');
-
-
+    
     const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/e1ca7516-d833-4faa-9aeb-85f3b7deaf93';
 
     let currentStepIndex = 0;
     let stepHistory = [];
     let answers = {};
     let currentStepOrder = ['primaryUse'];
+    let recommendations = [];
 
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
@@ -46,15 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             conditionalSteps.push('essentials');
         }
 
-        // Use a Set to automatically handle duplicates
         const uniqueConditionalSteps = [...new Set(conditionalSteps)];
         
         const commonSteps = ['caseSize', 'budget'];
         
-        // The new pcType question should come after primaryUse
         let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
 
-        // If user selects "Desktop", then ask about case size.
         if (answers.pcType && answers.pcType[0] === 'Desktop') {
             baseOrder.push('caseSize');
         }
@@ -97,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let allRequiredAnswered = true;
         let isMultipleSelect = false;
 
-        // The 'games' step is optional. For all other steps, an answer is required.
         if (currentStepId !== 'games') {
             let answered = false;
             questions.forEach(q => {
@@ -136,21 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = e.target.closest('.option-card');
         if (!card) return;
 
-        // Handle resolution switch buttons
         if (e.target.classList.contains('switch-res-button')) {
-            e.stopPropagation(); // prevent card selection
+            e.stopPropagation();
             const newResolution = e.target.dataset.res;
             switchResolution(newResolution);
-            // After switching, we should also select the budget card that was clicked
             selectCard(card);
             return;
         }
 
-        // Handle the new "change budget" button
         if (e.target.classList.contains('change-budget-button')) {
             e.stopPropagation();
             card.classList.remove('expanded');
-            // Also deselect the card if it was selected
             const questionId = card.closest('.options-grid').dataset.questionId;
             const value = card.dataset.value;
             if (answers[questionId]) {
@@ -250,10 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchResolution(newResolution) {
-        // Update the answer
         answers.resolution = [newResolution];
-
-        // Update the visual selection on the resolution step
         const resolutionStep = document.querySelector('.step[data-step-id="resolution"]');
         const allResolutionCards = resolutionStep.querySelectorAll('.option-card');
         allResolutionCards.forEach(c => c.classList.remove('selected'));
@@ -262,10 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (newCard) {
             newCard.classList.add('selected');
         }
-
-        // Update the budget options
         updateBudgetOptions();
-        updateButtons(); // Re-check button states
+        updateButtons();
     }
 
     nextBtn.addEventListener('click', () => {
@@ -308,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function initiateSubmission(email = null) {
         if (email) {
             answers.email = email;
-            // Here you would typically send the email. For now, we'll just log it.
             console.log(`Emailing results to: ${email}`, answers);
             quizContainer.style.display = 'none';
             document.querySelector('.navigation').style.display = 'none';
@@ -333,17 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "Running benchmarks...",
             "Finding the perfect match...",
             "Polishing the recommendations...",
-            "Almost there...",
-            "Debating whether pineapple belongs on pizza...",
-            "Teaching the hamsters to code faster...",
-            "Reticulating splines...",
-            "Asking the magic 8-ball for advice...",
-            "Warming up the AI...",
-            "Don't worry, the loading bar is moving... probably.",
-            "Generating witty loading messages...",
-            "I'm not slow, I'm just enjoying the moment.",
-            "Are we there yet?",
-            "Just a few more moments of suspense..."
+            "Almost there..."
         ];
         const loaderMessage = document.getElementById('loader-message');
         let messageIndex = 0;
@@ -378,182 +352,112 @@ document.addEventListener('DOMContentLoaded', () => {
         
             setTimeout(() => {
                 loader.style.display = 'none';
-                resultsGrid.style.display = 'block'; // Changed to block
+                resultsGrid.style.display = 'block';
                 try {
                     let dataToParse = recommendationData;
-                    // Handle the case where the data is wrapped in an array
                     if (Array.isArray(recommendationData) && recommendationData.length > 0) {
                         dataToParse = recommendationData[0];
                     }
-
+        
                     let parsedData;
-                    // Check if dataToParse is an object and has an 'output' property
                     if (typeof dataToParse === 'object' && dataToParse !== null && 'output' in dataToParse) {
-                        // If output is a string, try to parse it. It might be stringified JSON.
                         if (typeof dataToParse.output === 'string') {
-                            try {
-                                // It might be the format with backticks
-                                const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
-                                parsedData = JSON.parse(jsonString);
-                            } catch (e) {
-                                // If that fails, try to parse it as-is
-                                parsedData = JSON.parse(dataToParse.output);
-                            }
+                            const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
+                            parsedData = JSON.parse(jsonString);
                         } else {
-                            // If output is not a string, assume it's already a valid object
                             parsedData = dataToParse.output;
                         }
                     } else {
-                        // If it's not the expected object structure, assume the whole thing is the data
                         parsedData = dataToParse;
                     }
         
-                    // After parsing, we expect parsedData to have a 'recommendations' property
                     if (parsedData && parsedData.recommendations) {
-                        displayResults(parsedData.recommendations);
+                        recommendations = parsedData.recommendations;
+                        displayResults();
                     } else {
                         throw new Error("Parsed data does not contain 'recommendations' array.");
                     }
         
                 } catch (e) {
                     console.error("Error processing recommendation data:", e, recommendationData);
-                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches for your request. Please try adjusting your selections.</p>`;
+                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
                 }
             }, 500);
         }
     }
 
-    function displayResults(recommendations) {
-        customBuildContainer.innerHTML = '';
-        readyToShipContainer.innerHTML = '';
+    function displayResults() {
+        const pillsContainer = document.getElementById('recommendation-pills');
+        pillsContainer.innerHTML = '';
 
-        const validRecommendations = recommendations.filter(rec => rec && rec.price && rec.name && rec.type);
-
-        if (!validRecommendations || validRecommendations.length === 0) {
+        if (!recommendations || recommendations.length === 0) {
             resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches for your request. Please try adjusting your selections.</p>`;
             return;
         }
 
-        const customPcs = validRecommendations.filter(pc => pc.type === 'Custom');
-        const rtsPcs = validRecommendations.filter(pc => pc.type === 'RTS');
-
-        if (customPcs.length > 0) {
-            customPcs.forEach(pc => {
-                const card = createResultCard(pc);
-                if (pc.recommendationLevel === 'Our Top Recommendation') {
-                    card.classList.add('top-choice');
-                }
-                customBuildContainer.appendChild(card);
-            });
-        } else {
-            customBuildContainer.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't generate a custom build for your needs.</p>`;
-        }
-
-        if (rtsPcs.length > 0) {
-            rtsPcs.forEach(pc => {
-                const card = createResultCard(pc);
-                 if (pc.recommendationLevel === 'Better') { // Assuming 'Better' is the top choice for RTS
-                    card.classList.add('top-choice');
-                }
-                readyToShipContainer.appendChild(card);
-            });
-        } else {
-            readyToShipContainer.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, no Ready to Ship models match your criteria.</p>`;
-        }
-        lazyLoadImages();
-    }
-
-    function createResultCard(pc) {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-
-        const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
-        const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
-        const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
-
-        const detailsHTML = Object.entries(pc.details).map(([key, value]) => {
-            const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-            return `<p><strong>${formattedKey}:</strong> ${value}</p>`;
-        }).join('');
-
-        const reasonHTML = pc.reason ? `
-            <div class="reason-container">
-                <i class="fas fa-question-circle reason-icon"></i>
-                <div class="reason-modal">
-                    <div class="reason-modal-content">
-                        <span class="close-reason">&times;</span>
-                        <h4>Why this PC?</h4>
-                        <p>${pc.reason}</p>
-                    </div>
-                </div>
-            </div>
-        ` : '';
-
-        card.innerHTML = `
-            <a href="${productUrl}" target="_blank" class="result-image-link">
-                <img data-src="${pc.imageUrl}" alt="${pc.name}" class="lazy-load">
-            </a>
-            <div class="result-card-content">
-                ${badgeHTML}
-                <div class="title-container">
-                    <h3>${pc.name}</h3>
-                    ${reasonHTML}
-                </div>
-                <div class="price-container">
-                    <p class="price">${pc.price}</p>
-                    ${strikethroughHTML}
-                </div>
-                <div class="details">
-                    ${detailsHTML}
-                </div>
-                <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
-            </div>
-        `;
-        return card;
-    }
-
-    resultsGrid.addEventListener('click', e => {
-        const card = e.target.closest('.result-card');
-
-        if (window.innerWidth <= 767) {
-            if (card && !card.classList.contains('expanded')) {
-                // Prevent link navigation when expanding
-                if (e.target.tagName !== 'A' && !e.target.closest('a')) {
-                     e.preventDefault();
-                }
-                card.classList.add('expanded');
-            } else if (card && card.classList.contains('expanded') && !e.target.closest('a, button, .reason-icon')) {
-                card.classList.remove('expanded');
+        recommendations.forEach((rec, index) => {
+            const pill = document.createElement('div');
+            pill.className = 'recommendation-pill';
+            pill.textContent = rec.recommendationLevel;
+            pill.dataset.index = index;
+            if (index === 0) {
+                pill.classList.add('active');
             }
-        }
+            pillsContainer.appendChild(pill);
+        });
 
-        if (e.target.classList.contains('reason-icon')) {
-            const modal = e.target.nextElementSibling;
-            modal.style.display = 'block';
+        updateProductView(0);
+    }
+
+    function updateProductView(index) {
+        const pc = recommendations[index];
+
+        document.getElementById('product-title').textContent = pc.name;
+        document.getElementById('product-price').textContent = pc.price;
+        const strikethroughPrice = document.getElementById('product-strikethrough-price');
+        if (pc.strikethroughPrice) {
+            strikethroughPrice.textContent = pc.strikethroughPrice;
+            strikethroughPrice.style.display = 'block';
+        } else {
+            strikethroughPrice.style.display = 'none';
         }
-        if (e.target.classList.contains('close-reason')) {
-            const modal = e.target.closest('.reason-modal');
-            modal.style.display = 'none';
+        document.getElementById('buy-button').href = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+        document.getElementById('product-image').src = pc.imageUrl;
+
+        const specsContainer = document.getElementById('product-specs');
+        specsContainer.innerHTML = '';
+        if (pc.details) {
+            Object.entries(pc.details).forEach(([key, value]) => {
+                const specItem = document.createElement('div');
+                specItem.className = 'spec-item';
+                
+                let iconClass = 'fa-microchip'; // default icon
+                if (key.toLowerCase().includes('graphic')) iconClass = 'fa-gamepad';
+                if (key.toLowerCase().includes('processor')) iconClass = 'fa-microchip';
+                if (key.toLowerCase().includes('ram')) iconClass = 'fa-memory';
+                if (key.toLowerCase().includes('storage')) iconClass = 'fa-hdd';
+                if (key.toLowerCase().includes('style')) iconClass = 'fa-palette';
+
+                specItem.innerHTML = `
+                    <i class="fas ${iconClass}"></i>
+                    <div>
+                        <strong>${key.charAt(0).toUpperCase() + key.slice(1)}</strong>
+                        <p>${value}</p>
+                    </div>
+                `;
+                specsContainer.appendChild(specItem);
+            });
+        }
+    }
+
+    document.getElementById('recommendation-pills').addEventListener('click', (e) => {
+        if (e.target.classList.contains('recommendation-pill')) {
+            const index = e.target.dataset.index;
+            document.querySelectorAll('.recommendation-pill').forEach(pill => pill.classList.remove('active'));
+            e.target.classList.add('active');
+            updateProductView(index);
         }
     });
-
-    function lazyLoadImages() {
-        const lazyImages = document.querySelectorAll('img.lazy-load');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const image = entry.target;
-                    image.src = image.dataset.src;
-                    image.classList.remove('lazy-load');
-                    imageObserver.unobserve(image);
-                }
-            });
-        });
-
-        lazyImages.forEach(image => {
-            imageObserver.observe(image);
-        });
-    }
 
     // Initial setup
     allSteps.forEach((step, index) => {
