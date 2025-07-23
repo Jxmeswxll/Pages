@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook-test/e9308373-ef43-4ced-89e3-330dd4a6c25d';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/e9308373-ef43-4ced-89e3-330dd4a6c25d';
 
     let currentStepIndex = 0;
     let stepHistory = [];
@@ -277,20 +277,19 @@ document.addEventListener('DOMContentLoaded', () => {
 const loadingMessages = [
   // Phase 1: Serious Tech Vibes (0–10s)
   "Analyzing your choices...",
-  "Cross-referencing performance metrics...",
-  "Consulting build compatibility matrix...",
-  "Checking thermal thresholds...",
-  "Optimizing part synergy...",
-  "Calculating power requirements...",
-  "Fetching real-time inventory...",
-  "Balancing performance vs. value...",
-  "Assembling your ideal configuration...",
-  "Ensuring zero bottlenecks...",
+  "Consulting the tech gurus...",
+  "Comparing components...",
+  "Calculating performance metrics...",
+  "Assembling virtual parts...",
+  "Cross-referencing our database...",
+  "Running benchmarks...",
+  "Finding the perfect match...",
+  "Polishing the recommendations...",
+  "Almost there...",
   "Generating witty responses...",
   "Taking a quick break from logic...",
-  "Press F to benchmark...",
+  "Press F to doubt...",
   "Looking for dedicated WAM...",
-  "Upgrading your potato...",
   "Whispering sweet specs to your future rig...",
   "Trying to beat our own benchmark scores...",
   "Downloading more frames...",
