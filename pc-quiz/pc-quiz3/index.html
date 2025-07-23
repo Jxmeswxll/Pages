@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Aftershock PC Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="quiz-wrapper">
@@ -45,10 +42,7 @@
 
             <!-- Conditional Step: Games -->
             <div class="step" data-step-id="games" style="display: none;">
-                <div class="step-header">
-                    <h2>Which games do you play?</h2>
-                    <button id="refreshGamesBtn" class="icon-button" aria-label="Refresh Games"><i class="fas fa-sync-alt"></i></button>
-                </div>
+                <h2>Which games do you play?</h2>
                 <p>(Optional, helps us tailor your build)</p>
                 <div class="options-grid card-options game-cards" data-question-id="games" data-select-type="multiple">
                     <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
@@ -63,7 +57,6 @@
                     <div class="option-card" data-value="Apex Legends"><span>Apex Legends</span></div>
                     <div class="option-card" data-value="Valorant"><span>Valorant</span></div>
                     <div class="option-card" data-value="Baldur's Gate 3"><span>Baldur's Gate 3</span></div>
-                    <div class="option-card" data-value="The Sims 4"><span>The Sims 4</span></div>
                 </div>
             </div>
 
@@ -131,18 +124,9 @@
             <div class="step" data-step-id="caseSize" style="display: none;">
                 <h2>What size PC are you looking for?</h2>
                 <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single">
-                    <div class="option-card" data-value="Small">
-                        <svg class="case-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2H17C18.1046 2 19 2.89543 19 4V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V4C5 2.89543 5.89543 2 7 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <div><span>Compact</span><p>For small desks and tight spaces.</p></div>
-                    </div>
-                    <div class="option-card" data-value="Medium">
-                        <svg class="case-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2H18C19.6569 2 21 3.34315 21 5V19C21 20.6569 19.6569 22 18 22H6C4.34315 22 3 20.6569 3 19V5C3 3.34315 4.34315 2 6 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 7H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div>
-                    </div>
-                    <div class="option-card" data-value="Large">
-                        <svg class="case-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 2H19C20.1046 2 21 2.89543 21 4V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <div><span>Large</span><p>For maximum hardware and cooling.</p></div>
-                    </div>
+                    <div class="option-card" data-value="Small"><i class="fas fa-compress-arrows-alt"></i><div><span>Compact</span><p>For small desks and tight spaces.</p></div></div>
+                    <div class="option-card" data-value="Medium"><i class="fas fa-expand-arrows-alt"></i><div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div></div>
+                    <div class="option-card" data-value="Large"><i class="fas fa-arrows-alt"></i><div><span>Large</span><p>For maximum hardware and cooling.</p></div></div>
                 </div>
                 <div class="or-separator"><span>Or</span></div>
                 <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single-exclusive">
@@ -166,8 +150,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="option-card" data-value="2500-4500">
-                        <div><span>$2500 - $4500</span></div>
+                    <div class="option-card" data-value="2501-4500">
+                        <div><span>$2501 - $4500</span></div>
                     </div>
                     <div class="option-card" data-value="4501-7000">
                         <div><span>$4501 - $7000</span></div>
@@ -185,16 +169,6 @@
         <button id="submitBtn" style="display: none;">Find My PC</button>
     </div>
 
-    <!-- Email Modal -->
-    <div id="emailModal" style="display: none;">
-        <h2>Get Your Results</h2>
-        <p>It may take 30-60 seconds to generate your custom PC recommendation.</p>
-        <button id="waitBtn">Wait Here</button>
-        <p>Or</p>
-        <input type="email" id="emailInput" placeholder="Enter your email">
-        <button id="emailBtn">Email My Results</button>
-    </div>
-
     <!-- Results Section -->
     <div id="results-container" style="display: none;">
         <div class="loader-container" id="loader">
@@ -202,31 +176,19 @@
             <h2 id="loader-title">Finding your perfect match...</h2>
             <p id="loader-message">Analyzing your choices...</p>
         </div>
-        <div id="results" style="display: none;">
-            <div class="product-header">
-                <h2 id="product-title"></h2>
-                <div class="recommendation-pills" id="recommendation-pills">
-                    <!-- Pills will be inserted here by JS -->
-                </div>
-                <div class="price-container-main">
-                    <p id="product-price"></p>
-                    <p id="product-strikethrough-price"></p>
-                </div>
-                <a href="#" id="buy-button-main" class="view-product-button" target="_blank">Buy</a>
-            </div>
-            <div class="product-gallery">
-                <img id="product-image" src="" alt="Product Image">
-                <!-- Gallery dots if needed -->
-            </div>
-            <div class="product-specs" id="product-specs">
-                <!-- Specs will be inserted here by JS -->
-            </div>
-            <div class="product-footer">
-                 <a href="#" id="view-product-button-bottom" class="view-product-button" target="_blank">View Product</a>
+        <div id="results" class="results-grid" style="display: none;"></div>
+        <div id="mobile-results-container" style="display: none;">
+            <h2 id="mobile-product-title"></h2>
+            <div id="mobile-recommendation-pills"></div>
+            <div class="mobile-product-view">
+                <p class="mobile-price-tag"></p>
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
+                <img src="" id="mobile-product-image" alt="Recommended PC">
+                <div id="mobile-product-specs" class="mobile-specs-block"></div>
             </div>
         </div>
     </div>
 
-    <script src="script1.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

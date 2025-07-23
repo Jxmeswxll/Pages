@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
     --background-color: #1d1d1f;
     --card-background: #2c2c2e;
@@ -81,32 +83,6 @@ body {
     font-size: 1.1em;
 }
 
-.step-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-bottom: 15px;
-}
-
-.icon-button {
-    background: transparent;
-    border: none;
-    color: var(--subtle-text-color);
-    cursor: pointer;
-    font-size: 1.2em;
-    padding: 5px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: color 0.2s;
-}
-
-.icon-button:hover {
-    color: var(--accent-color);
-}
-
 .options-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -151,11 +127,6 @@ body {
     stroke: var(--accent-color);
     stroke-width: 2;
     flex-shrink: 0;
-}
-
-.option-card .case-icon {
-    width: 32px;
-    height: 32px;
 }
 
 .option-card div {
@@ -289,47 +260,6 @@ button:disabled {
     filter: brightness(1.2);
 }
 
-/* Email Modal Styling */
-#emailModal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--card-background);
-    padding: 40px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    z-index: 1000;
-    text-align: center;
-    border: 1px solid var(--border-color);
-}
-
-#emailModal h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-}
-
-#emailModal p {
-    color: var(--subtle-text-color);
-    margin-bottom: 25px;
-}
-
-#emailModal input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-size: 1em;
-    margin-bottom: 15px;
-}
-
-#emailModal button {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
 /* Results Page Styling */
 #results-container {
     width: 100%;
@@ -423,10 +353,6 @@ button:disabled {
     justify-content: center;
     grid-auto-rows: 1fr;
     width: 100%;
-}
-
-#custom-build, #ready-to-ship {
-    margin-bottom: 50px;
 }
 
 .result-card {
@@ -700,136 +626,16 @@ button:disabled {
     }
 }
 
-.product-header {
-    padding: 20px;
-    text-align: center;
-}
-
-#product-title {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-}
-
-.recommendation-pills {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.recommendation-pill {
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 50px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.recommendation-pill.active {
-    background-color: var(--accent-color);
-    color: var(--accent-text-color);
-    border-color: var(--accent-color);
-    transform: scale(1.05);
-    box-shadow: 0 0 15px var(--accent-color);
-}
-
-.price-container-main {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-#product-price {
-    font-size: 1.5em;
-    font-weight: 600;
-}
-
-#product-strikethrough-price {
-    color: var(--subtle-text-color);
-    text-decoration: line-through;
-}
-
-.product-gallery {
-    padding: 0 20px;
-}
-
-#product-image {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    display: block;
-}
-
-.product-specs {
-    padding: 20px;
-}
-
-.spec-item {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.spec-item i {
-    font-size: 1.5em;
-    color: var(--accent-color);
-}
-
-.product-footer {
-    padding: 20px;
-}
-
-.mobile-results-view {
-    display: none;
-}
-
 @media (max-width: 767px) {
-    html, body {
-        overflow-x: hidden;
-    }
-
-    .step h2 {
-        font-size: 1.8em;
-    }
-
-    #product-title {
-        font-size: 1.1em;
-    }
-
-    #buy-button-main {
-        padding: 10px 20px;
-        font-size: 1em;
-    }
-
-    #emailModal {
-        width: 90%;
-        padding: 20px;
-    }
-
-    #results {
-        padding-bottom: 100px;
-    }
-    .result-image-link {
-        display: block;
-    }
-    .result-card img {
-        border-radius: 0;
-        margin-bottom: 0;
-    }
-    .result-card-content {
-        padding: 20px;
-    }
     body {
         height: auto;
         padding-bottom: 100px; /* Safe area for nav */
     }
+
     .quiz-wrapper {
         height: auto;
     }
+
     .quiz-container {
         border-radius: 0;
         border: none;
@@ -837,38 +643,170 @@ button:disabled {
         padding: 20px;
         overflow: visible;
     }
+
     .navigation {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 20px;
+        padding: 20px 20px 30px;
         background: rgba(29, 29, 31, 0.75);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-top: 1px solid #3a3a3c;
         z-index: 100;
         margin-top: 0;
-        justify-content: space-between;
-        gap: 10px;
+        justify-content: center;
     }
+
     #prevBtn {
-        background-color: var(--card-background);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 15px;
+        background: transparent;
         color: var(--subtle-text-color);
-        flex-grow: 1;
-        max-width: 100px;
+        padding: 10px;
+        font-size: 1.5em;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        z-index: 101;
     }
+
     #nextBtn, #submitBtn {
-        flex-grow: 2;
+        width: 100%;
         padding: 18px;
         font-size: 1.2em;
     }
 
-    .desktop-results-view {
+    /* Hide desktop results, show mobile results */
+    .results-grid {
         display: none;
     }
 
-    .mobile-results-view {
+    #mobile-results-container {
         display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #mobile-product-title {
+        font-size: 1.8em;
+        font-weight: 600;
+        text-align: center;
+        padding: 30px 20px 10px;
+    }
+
+    #mobile-recommendation-pills {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .mobile-pill {
+        padding: 10px 20px;
+        font-size: 1em;
+        font-weight: 600;
+        background-color: var(--card-background);
+        color: var(--text-color);
+        border: 2px solid var(--card-background);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .mobile-pill.active {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--accent-text-color);
+        box-shadow: 0 0 15px -5px var(--accent-color);
+    }
+
+    .mobile-product-view {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .mobile-price-tag {
+        font-size: 1.1em;
+        color: var(--subtle-text-color);
+        margin: 10px 0 20px;
+    }
+
+    #mobile-buy-button {
+        background-color: var(--accent-color);
+        color: var(--accent-text-color);
+        border: none;
+        padding: 12px 40px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: filter 0.2s;
+        margin-bottom: 30px;
+    }
+
+    .buy-button:hover {
+        filter: brightness(1.15);
+    }
+
+    #mobile-product-image {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px;
+    }
+
+    #mobile-product-specs {
+        padding: 20px;
+        margin-top: 20px;
+        background-color: var(--card-background);
+        border-radius: var(--border-radius);
+        text-align: left;
+    }
+
+    .mobile-specs-block .details {
+        font-size: 1em;
+        line-height: 1.8;
+        color: var(--subtle-text-color);
+        border-top: 1px solid var(--border-color);
+        padding-top: 20px;
+    }
+    
+    .mobile-specs-block .details p {
+        margin: 0 0 14px;
+    }
+
+    .mobile-specs-block .details strong {
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .mobile-view-product-bottom {
+        padding: 0 20px 40px;
+    }
+
+    .view-product-button {
+        background-color: var(--card-background);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Mobile Modal Redesign */
+    .reason-modal-content {
+        margin: auto;
+        width: 90%;
+        max-width: 500px;
+        bottom: 20px;
+        top: auto;
+        left: 5%;
+        transform: none;
+        position: fixed;
     }
 }
