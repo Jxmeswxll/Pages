@@ -9,13 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
+    const rtsBtn = document.getElementById('rtsBtn');
+    const customBtn = document.getElementById('customBtn');
 
-    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/e9308373-ef43-4ced-89e3-330dd4a6c25d';
+    const webhookUrl = 'https://wxlls.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
 
     let currentStepIndex = 0;
     let stepHistory = [];
     let answers = {};
     let currentStepOrder = ['primaryUse'];
+    let allRecommendations = {};
+    let currentView = 'RTS';
+    let messageInterval;
 
     const allSteps = Array.from(document.querySelectorAll('.step'));
 
@@ -36,15 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
             conditionalSteps.push('essentials');
         }
 
-        // Use a Set to automatically handle duplicates
         const uniqueConditionalSteps = [...new Set(conditionalSteps)];
         
-        const commonSteps = ['caseSize', 'budget'];
-        
-        // The new pcType question should come after primaryUse
         let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
 
-        // If user selects "Desktop", then ask about case size.
         if (answers.pcType && answers.pcType[0] === 'Desktop') {
             baseOrder.push('caseSize');
         }
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let allRequiredAnswered = true;
         let isMultipleSelect = false;
 
-        // The 'games' step is optional. For all other steps, an answer is required.
         if (currentStepId !== 'games') {
             let answered = false;
             questions.forEach(q => {
@@ -126,21 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = e.target.closest('.option-card');
         if (!card) return;
 
-        // Handle resolution switch buttons
         if (e.target.classList.contains('switch-res-button')) {
-            e.stopPropagation(); // prevent card selection
+            e.stopPropagation();
             const newResolution = e.target.dataset.res;
             switchResolution(newResolution);
-            // After switching, we should also select the budget card that was clicked
             selectCard(card);
             return;
         }
 
-        // Handle the new "change budget" button
         if (e.target.classList.contains('change-budget-button')) {
             e.stopPropagation();
             card.classList.remove('expanded');
-            // Also deselect the card if it was selected
             const questionId = card.closest('.options-grid').dataset.questionId;
             const value = card.dataset.value;
             if (answers[questionId]) {
@@ -196,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
                 answers[questionId] = [value];
-            } else { // multiple
+            } else {
                 const index = answers[questionId].indexOf(value);
                 if (index > -1) {
                     answers[questionId].splice(index, 1);
@@ -231,10 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchResolution(newResolution) {
-        // Update the answer
         answers.resolution = [newResolution];
-
-        // Update the visual selection on the resolution step
         const resolutionStep = document.querySelector('.step[data-step-id="resolution"]');
         const allResolutionCards = resolutionStep.querySelectorAll('.option-card');
         allResolutionCards.forEach(c => c.classList.remove('selected'));
@@ -244,9 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
             newCard.classList.add('selected');
         }
 
-        // Update the budget options
         updateBudgetOptions();
-        updateButtons(); // Re-check button states
+        updateButtons();
     }
 
     nextBtn.addEventListener('click', () => {
@@ -274,56 +265,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.style.display = 'flex';
         resultsGrid.style.display = 'none';
 
-const loadingMessages = [
-  // Phase 1: Serious Tech Vibes (0–10s)
-  "Analyzing your choices...",
-  "Consulting the tech gurus...",
-  "Comparing components...",
-  "Calculating performance metrics...",
-  "Assembling virtual parts...",
-  "Cross-referencing our database...",
-  "Running benchmarks...",
-  "Finding the perfect match...",
-  "Polishing the recommendations...",
-  "Generating witty responses...",
-  "Taking a quick break from logic...",
-  "Whispering sweet specs to your future rig...",
-  "Downloading more frames...",
-  "Checking if RGB adds FPS... (it does)",
-  "Clearing BIOS cobwebs...",
-  "Waiting for textures to load like it’s Skyrim...",
-  "Checking if your PC can run Crysis...",
-  "Overclocking our enthusiasm...",
-  "Installing more RAM… through sheer willpower.",
-  "Ctrl+Z-ing any bad decisions...",
-  "Running on gamer fuel and broken promises...",
-  "Teaching the PSU not to panic...",
-  "No scopes detected — adding one...",
-  "Casting Detect Bottleneck...",
-  "Buffing your FPS stats...",
-  "Applying duct tape for extra FPS...",
-  "Rendering your dream rig in 4D...",
-  "Fetching RGB from the cloud...",
-  "Consulting with the cable management gods...",
-  "Unleashing the GPU gremlins...",
-  "Spinning up extra fans for speed...",
-  "Debugging reality...",
-  "Sweeping dust out of the digital case...",
-  "Calibrating gamer senses...",
-  "Convincing the CPU to cooperate...",
-  "Petting our emotional support SSD...",
-  "Checking stock... emotionally.",
-  "Building your setup pixel by pixel...",
-  "Assembling the perfect thermal paste swirl...",
-  "Installing RGB... everywhere...",
-  "Tuning frame rates to perfection...",
-  "Applying thermal paste with ancient rituals..."
-];
+        const loadingMessages = [
+            "Analyzing your choices...", "Consulting the tech gurus...", "Comparing components...",
+            "Calculating performance metrics...", "Assembling virtual parts...", "Cross-referencing our database...",
+            "Running benchmarks...", "Finding the perfect match...", "Polishing the recommendations..."
+        ];
 
         const loaderMessage = document.getElementById('loader-message');
         let messageIndex = 0;
 
-        const messageInterval = setInterval(() => {
+        messageInterval = setInterval(() => {
             messageIndex = (messageIndex + 1) % loadingMessages.length;
             loaderMessage.textContent = loadingMessages[messageIndex];
         }, 1500);
@@ -347,96 +298,106 @@ const loadingMessages = [
             loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
             clearInterval(messageInterval);
         });
-
-        function showFinalResults(recommendationData) {
-            clearInterval(messageInterval);
-        
-            setTimeout(() => {
-                loader.style.display = 'none';
-                resultsGrid.style.display = 'grid';
-                try {
-                    let parsedData;
-                    // Check if recommendationData is an object and has an 'output' property
-                    if (typeof recommendationData === 'object' && recommendationData !== null && 'output' in recommendationData) {
-                        // If output is a string, try to parse it. It might be stringified JSON.
-                        if (typeof recommendationData.output === 'string') {
-                            try {
-                                // First, try to parse it as-is
-                                parsedData = JSON.parse(recommendationData.output);
-                            } catch (e) {
-                                // If that fails, it might be the old format with backticks
-                                const jsonString = recommendationData.output.replace(/```json\n|```/g, '');
-                                parsedData = JSON.parse(jsonString);
-                            }
-                        } else {
-                            // If output is not a string, assume it's already a valid object
-                            parsedData = recommendationData.output;
-                        }
-                    } else {
-                        // If it's not the expected object structure, assume the whole thing is the data
-                        parsedData = recommendationData;
-                    }
-        
-                    // After parsing, we expect parsedData to have a 'recommendations' property
-                    if (parsedData && parsedData.recommendations) {
-                        displayResults(parsedData.recommendations);
-                    } else {
-                        throw new Error("Parsed data does not contain 'recommendations' array.");
-                    }
-        
-                } catch (e) {
-                    console.error("Error processing recommendation data:", e, recommendationData);
-                    resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
-                }
-            }, 500);
-        }
     });
 
-    let recommendations = []; // Global store for recommendations
+    function showFinalResults(recommendationData) {
+        clearInterval(messageInterval);
+    
+        setTimeout(() => {
+            loader.style.display = 'none';
+            document.querySelector('.results-toggle-buttons').style.display = 'inline-flex';
+            resultsGrid.style.display = 'grid';
+            try {
+                let parsedData;
+                let dataToParse = recommendationData;
 
-    function displayResults(recs) {
-        recommendations = recs.filter(rec => rec && rec.price && rec.name);
-        const mobileResultsContainer = document.getElementById('mobile-results-container');
+                // Handle the case where the data is wrapped in an array
+                if (Array.isArray(dataToParse) && dataToParse.length > 0) {
+                    dataToParse = dataToParse[0];
+                }
 
-        if (!recommendations || recommendations.length === 0) {
-            resultsContainer.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't find any matches. Please try again.</p>`;
+                if (typeof dataToParse === 'object' && dataToParse !== null && 'output' in dataToParse) {
+                    if (typeof dataToParse.output === 'string') {
+                        try {
+                            // First, clean up the string by removing backticks and "json" identifier
+                            const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
+                            parsedData = JSON.parse(jsonString);
+                        } catch (e) {
+                            // If parsing fails, log the error and the problematic string
+                            console.error("Failed to parse JSON string:", e);
+                            console.error("Problematic JSON string:", dataToParse.output);
+                            throw new Error("Invalid JSON format in 'output' string.");
+                        }
+                    } else {
+                        parsedData = dataToParse.output;
+                    }
+                } else {
+                    parsedData = dataToParse;
+                }
+    
+                if (parsedData && parsedData.RTS && parsedData.Custom) {
+                    allRecommendations = parsedData;
+                    displayResults();
+                } else {
+                    throw new Error("Parsed data does not contain 'RTS' and 'Custom' arrays.");
+                }
+    
+            } catch (e) {
+                console.error("Error processing recommendation data:", e);
+                console.error("Received data:", JSON.stringify(recommendationData, null, 2));
+                resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
+            }
+        }, 500);
+    }
+
+    function displayResults() {
+        const recs = allRecommendations[currentView];
+        if (!recs || recs.length === 0) {
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, no ${currentView} builds match your criteria. Try the other category!</p>`;
+            document.getElementById('mobile-results-container').innerHTML = '';
             return;
         }
 
         if (window.innerWidth <= 767) {
             resultsGrid.style.display = 'none';
-            mobileResultsContainer.style.display = 'block';
-            displayMobileSingleView();
+            document.getElementById('mobile-results-container').style.display = 'block';
+            displayMobileSingleView(recs);
         } else {
-            mobileResultsContainer.style.display = 'none';
+            document.getElementById('mobile-results-container').style.display = 'none';
             resultsGrid.style.display = 'grid';
-            displayDesktopGrid();
+            displayDesktopGrid(recs);
         }
     }
 
-    function displayDesktopGrid() {
+    function displayDesktopGrid(recs) {
         resultsGrid.innerHTML = '';
-        const pcsToDisplay = getPcsToDisplay();
-
-        pcsToDisplay.forEach(pc => {
+        recs.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
-            if (pc.recommendationLevel === 'Our Top Recommendation') card.classList.add('top-choice');
-            else if (pc.recommendationLevel === 'The Best Value') card.classList.add('best-value');
-            else if (pc.recommendationLevel === 'The Next Level Up') card.classList.add('level-up');
+            if (pc.recommendationLevel === 'Our Recommendation') card.classList.add('top-choice');
+            else if (pc.recommendationLevel === 'Best Value') card.classList.add('best-value');
+            else if (pc.recommendationLevel === 'Level Up') card.classList.add('level-up');
 
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
-            const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+            const productUrl = pc.productUrl;
             const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
             
+            const priceHTML = currentView === 'RTS' 
+                ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
+                : `<p class="price">${pc.price}</p>`;
+
+            const buttonHTML = currentView === 'RTS'
+                ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
+                : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
+
             card.innerHTML = `
                 <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}"></a>
                 <div class="result-card-content">
                     ${badgeHTML}
                     <div class="title-container"><h3>${pc.name}</h3></div>
-                    <div class="price-container"><p class="price">${pc.price}</p>${strikethroughHTML}</div>
-                    <a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>
+                    <div class="price-container">${priceHTML}${strikethroughHTML}</div>
+                    ${buttonHTML}
                     <div class="details">${detailsHTML}</div>
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
                 </div>`;
@@ -444,14 +405,26 @@ const loadingMessages = [
         });
     }
 
-    function displayMobileSingleView() {
-        const pillsContainer = document.getElementById('mobile-recommendation-pills');
-        pillsContainer.innerHTML = ''; // Clear previous pills
+    function displayMobileSingleView(recs) {
+        const mobileResultsContainer = document.getElementById('mobile-results-container');
+        mobileResultsContainer.innerHTML = `
+            <h2 id="mobile-product-title"></h2>
+            <div id="mobile-recommendation-pills"></div>
+            <div class="mobile-product-view">
+                <p class="mobile-price-tag"></p>
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
+                <img src="" id="mobile-product-image" alt="Recommended PC">
+                <div id="mobile-product-specs" class="mobile-specs-block"></div>
+            </div>
+        `;
 
-        const order = ['The Best Value', 'Our Top Recommendation', 'The Next Level Up'];
-        const sortedPcs = recommendations.sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
+        const pillsContainer = document.getElementById('mobile-recommendation-pills');
+        pillsContainer.innerHTML = '';
+
+        const order = ['Best Value', 'Our Recommendation', 'Level Up'];
+        const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
         
-        let initialIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Top Recommendation');
+        let initialIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
         if (initialIndex === -1) initialIndex = 0;
 
         sortedPcs.forEach((pc, index) => {
@@ -480,13 +453,19 @@ const loadingMessages = [
 
     function updateMobileView(pc) {
         if (!pc) return;
-        const productUrl = `https://aftershockpc.com.au/products/${pc.productUrl}`;
+        const productUrl = pc.productUrl;
         document.getElementById('mobile-product-title').textContent = pc.name;
         const priceTag = document.querySelector('.mobile-price-tag');
+        
+        const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
         priceTag.innerHTML = pc.strikethroughPrice
-            ? `From ${pc.price} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
-            : `From ${pc.price}`;
-        document.getElementById('mobile-buy-button').href = productUrl;
+            ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
+            : `${priceText}`;
+
+        const buyButton = document.getElementById('mobile-buy-button');
+        buyButton.href = productUrl;
+        buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
+
         document.getElementById('mobile-product-image').src = pc.imageUrl;
         
         const specsContainer = document.getElementById('mobile-product-specs');
@@ -495,32 +474,36 @@ const loadingMessages = [
         ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
     }
 
-    function getPcsToDisplay() {
-        const sortedPcs = recommendations.sort((a, b) => parseFloat(a.price.replace(/[^0-9.-]+/g,"")) - parseFloat(b.price.replace(/[^0-9.-]+/g,"")));
-        
-        let pcs = [];
-        if (sortedPcs.length > 0) pcs.push({ ...sortedPcs[0], recommendationLevel: 'The Best Value' });
-        if (sortedPcs.length > 1) pcs.push({ ...sortedPcs[1], recommendationLevel: 'Our Top Recommendation' });
-        if (sortedPcs.length > 2) pcs.push({ ...sortedPcs[2], recommendationLevel: 'The Next Level Up' });
-        
-        return pcs;
-    }
+    rtsBtn.addEventListener('click', () => {
+        if (currentView === 'RTS') return;
+        currentView = 'RTS';
+        rtsBtn.classList.add('active');
+        customBtn.classList.remove('active');
+        displayResults();
+    });
+
+    customBtn.addEventListener('click', () => {
+        if (currentView === 'Custom') return;
+        currentView = 'Custom';
+        customBtn.classList.add('active');
+        rtsBtn.classList.remove('active');
+        displayResults();
+    });
 
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            // Only redraw if recommendations have been loaded
-            if (recommendations.length > 0) {
-                displayResults(recommendations);
+            if (Object.keys(allRecommendations).length > 0) {
+                displayResults();
             }
         }, 250);
     });
 
-    // Initial setup
     allSteps.forEach((step, index) => {
         if (index > 0) step.style.display = 'none';
     });
     determineStepOrder();
     updateButtons();
+    document.querySelector('.results-toggle-buttons').style.display = 'none';
 });
