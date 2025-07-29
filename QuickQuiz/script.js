@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
-    const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook-test/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
+    const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook-test/be7676ac-5428-42c5-90e3-de14c5d0e708';
 
     let currentStepIndex = 0;
     let stepHistory = [];
@@ -265,11 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.style.display = 'flex';
         resultsGrid.style.display = 'none';
 
-        // Start the PC Rush game
-        if (pcRushGame) {
-            pcRushGame.start();
-        }
-
         const loadingMessages = [
             "Analyzing your choices...", "Consulting the tech gurus...", "Comparing components...",
             "Calculating performance metrics...", "Assembling virtual parts...", "Cross-referencing our database...",
@@ -296,69 +291,101 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Stop the PC Rush game
-            if (pcRushGame) {
-                pcRushGame.stop();
-            }
             showFinalResults(data);
         })
         .catch(error => {
             console.error('Fetch Error:', error);
             loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
             clearInterval(messageInterval);
-            // Stop the game on error
-            if (pcRushGame) {
-                pcRushGame.stop();
-            }
         });
     });
 
     function showFinalResults(recommendationData) {
         clearInterval(messageInterval);
-    
+
         setTimeout(() => {
             loader.style.display = 'none';
             document.querySelector('.results-toggle-buttons').style.display = 'inline-flex';
             resultsGrid.style.display = 'grid';
+            
             try {
-                let parsedData;
-                let dataToParse = recommendationData;
+                let dataToProcess = recommendationData;
+                
+                console.log("Raw data received:", JSON.stringify(dataToProcess, null, 2));
 
-                // Handle the case where the data is wrapped in an array
-                if (Array.isArray(dataToParse) && dataToParse.length > 0) {
-                    dataToParse = dataToParse[0];
+                // Handle n8n-style wrapping: [ { "json": ... } ]
+                if (Array.isArray(dataToProcess) && dataToProcess.length > 0 && dataToProcess[0].json) {
+                    dataToProcess = dataToProcess[0].json;
+                    console.log("After unwrapping n8n format:", JSON.stringify(dataToProcess, null, 2));
                 }
 
-                if (typeof dataToParse === 'object' && dataToParse !== null && 'output' in dataToParse) {
-                    if (typeof dataToParse.output === 'string') {
-                        try {
-                            // First, clean up the string by removing backticks and "json" identifier
-                            const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
-                            parsedData = JSON.parse(jsonString);
-                        } catch (e) {
-                            // If parsing fails, log the error and the problematic string
-                            console.error("Failed to parse JSON string:", e);
-                            console.error("Problematic JSON string:", dataToParse.output);
-                            throw new Error("Invalid JSON format in 'output' string.");
+                // Check if the actual data is nested in a 'body' property
+                if (dataToProcess && dataToProcess.body) {
+                    dataToProcess = dataToProcess.body;
+                    console.log("After extracting body:", JSON.stringify(dataToProcess, null, 2));
+                }
+
+                // Handle if the data is a stringified JSON
+                if (typeof dataToProcess === 'string') {
+                    try {
+                        dataToProcess = JSON.parse(dataToProcess);
+                        console.log("After parsing string:", JSON.stringify(dataToProcess, null, 2));
+                    } catch (e) {
+                        console.error("Error parsing stringified JSON:", e);
+                        throw new Error("Data received was a string but could not be parsed as JSON.");
+                    }
+                }
+                
+                // Handle if data is wrapped in another array e.g. [ { RTS: [], Custom: [] } ]
+                if (Array.isArray(dataToProcess) && dataToProcess.length > 0 && dataToProcess[0].RTS) {
+                    dataToProcess = dataToProcess[0];
+                    console.log("After unwrapping nested array:", JSON.stringify(dataToProcess, null, 2));
+                }
+
+                // Initialize recommendations object
+                allRecommendations = { RTS: [], Custom: [] };
+
+                if (dataToProcess && dataToProcess.RTS && dataToProcess.Custom) {
+                    // Format: { RTS: [], Custom: [] }
+                    console.log("Processing categorized object format");
+                    allRecommendations = dataToProcess;
+                } else if (Array.isArray(dataToProcess)) {
+                    // Format: flat array with category property - THIS IS YOUR CASE
+                    console.log("Processing flat array format");
+                    dataToProcess.forEach(pc => {
+                        if (pc.category === 'RTS') {
+                            allRecommendations.RTS.push(pc);
+                        } else if (pc.category === 'Custom') {
+                            allRecommendations.Custom.push(pc);
                         }
-                    } else {
-                        parsedData = dataToParse.output;
+                    });
+                } else if (dataToProcess && typeof dataToProcess === 'object') {
+                    // Handle single object case - treat as array with one item
+                    console.log("Processing single object format");
+                    if (dataToProcess.category === 'RTS') {
+                        allRecommendations.RTS.push(dataToProcess);
+                    } else if (dataToProcess.category === 'Custom') {
+                        allRecommendations.Custom.push(dataToProcess);
                     }
                 } else {
-                    parsedData = dataToParse;
+                    throw new Error("Unsupported recommendation data format. Expected array of PC objects with category property.");
                 }
-    
-                if (parsedData && parsedData.RTS && parsedData.Custom) {
-                    allRecommendations = parsedData;
-                    displayResults();
-                } else {
-                    throw new Error("Parsed data does not contain 'RTS' and 'Custom' arrays.");
-                }
-    
+
+                console.log("Final processed recommendations:", JSON.stringify(allRecommendations, null, 2));
+                console.log("RTS count:", allRecommendations.RTS.length);
+                console.log("Custom count:", allRecommendations.Custom.length);
+
+                displayResults();
+
             } catch (e) {
                 console.error("Error processing recommendation data:", e);
                 console.error("Received data:", JSON.stringify(recommendationData, null, 2));
-                resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
+                resultsGrid.innerHTML = `
+                    <div style="text-align: center; color: #fff; padding: 20px;">
+                        <p>Sorry, we couldn't process the recommendations.</p>
+                        <p>Error: ${e.message}</p>
+                        <p>Please check the console for more details and try again later.</p>
+                    </div>`;
             }
         }, 500);
     }
@@ -396,13 +423,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const productUrl = pc.productUrl;
             const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
             
-            const priceHTML = currentView === 'RTS' 
-                ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
-                : `<p class="price">${pc.price}</p>`;
+            const priceHTML = `<p class="price">${pc.price.replace('Starting From ', '')}</p>`;
 
             const buttonHTML = currentView === 'RTS'
                 ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
                 : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
+
+            const personaHTML = pc.persona ? `<p class="persona">${pc.persona}</p>` : '';
+            const scoresHTML = pc.scores ? `
+                <div class="scores">
+                    <h4>Scores:</h4>
+                    <ul>
+                        ${Object.entries(pc.scores).map(([key, value]) => `<li>${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
+            const extraInfoHTML = `
+              <div class="extra-info">
+                ${pc.description ? `<p>${pc.description}</p>` : ''}
+                ${personaHTML}
+                ${pc.performanceNote ? `<p><strong>${pc.performanceNote}</strong></p>` : ''}
+                ${pc.gpuNote ? `<p><em>GPU:</em> ${pc.gpuNote}</p>` : ''}
+                ${pc.cpuNote ? `<p><em>CPU:</em> ${pc.cpuNote}</p>` : ''}
+                ${pc.fpsSummary ? `<p><em>FPS:</em> ${pc.fpsSummary}</p>` : ''}
+                ${scoresHTML}
+              </div>
+            `;
 
             card.innerHTML = `
                 <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}"></a>
@@ -412,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="price-container">${priceHTML}${strikethroughHTML}</div>
                     ${buttonHTML}
                     <div class="details">${detailsHTML}</div>
+                    ${extraInfoHTML}
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
                 </div>`;
             resultsGrid.appendChild(card);
@@ -470,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mobile-product-title').textContent = pc.name;
         const priceTag = document.querySelector('.mobile-price-tag');
         
-        const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+        const priceText = pc.price.replace('Starting From ', '');
         priceTag.innerHTML = pc.strikethroughPrice
             ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
             : `${priceText}`;
@@ -482,9 +530,36 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mobile-product-image').src = pc.imageUrl;
         
         const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = `<h3>Specifications</h3>` + Object.entries(pc.details).map(([key, value]) => 
+        const personaHTML = pc.persona ? `<p class="persona">${pc.persona}</p>` : '';
+        const scoresHTML = pc.scores ? `
+            <div class="scores">
+                <h4>Scores:</h4>
+                <ul>
+                    ${Object.entries(pc.scores).map(([key, value]) => `<li>${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}</li>`).join('')}
+                </ul>
+            </div>
+        ` : '';
+
+        const extraInfoHTML = `
+          <div class="extra-info-mobile">
+            ${pc.description ? `<p>${pc.description}</p>` : ''}
+            ${personaHTML}
+            ${pc.performanceNote ? `<p><strong>${pc.performanceNote}</strong></p>` : ''}
+            ${pc.gpuNote ? `<p><em>GPU:</em> ${pc.gpuNote}</p>` : ''}
+            ${pc.cpuNote ? `<p><em>CPU:</em> ${pc.cpuNote}</p>` : ''}
+            ${pc.fpsSummary ? `<p><em>FPS:</em> ${pc.fpsSummary}</p>` : ''}
+            ${scoresHTML}
+          </div>
+        `;
+
+        specsContainer.innerHTML = `
+          <h3>Specifications</h3>
+          ${Object.entries(pc.details).map(([key, value]) =>
             `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
-        ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
+          ).join('')}
+          ${extraInfoHTML}
+          <a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>
+        `;
     }
 
     rtsBtn.addEventListener('click', () => {
@@ -520,304 +595,4 @@ document.addEventListener('DOMContentLoaded', () => {
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
 
-    // Initialize PC Rush Game
-    if (document.getElementById('loadingGame')) {
-        pcRushGame = new PCRushGame();
-    }
 });
-
-// PC Rush Game Class
-class PCRushGame {
-    constructor() {
-        this.gameArea = document.getElementById('gameArea');
-        this.player = document.getElementById('gamePlayer');
-        this.scoreElement = document.getElementById('gameScore');
-        this.distanceElement = document.getElementById('gameDistance');
-        this.gemsElement = document.getElementById('gameGems');
-        this.successFeedback = document.getElementById('successFeedback');
-        
-        this.isPlaying = false;
-        this.isJumping = false;
-        this.score = 0;
-        this.distance = 0;
-        this.gems = 0;
-        this.gameSpeed = 1;
-        this.obstacleCount = 0;
-        
-        this.obstacles = [];
-        this.collectibles = [];
-        
-        this.gameLoop = null;
-        this.obstacleTimer = null;
-        this.gemTimer = null;
-        this.distanceTimer = null;
-        
-        this.init();
-    }
-
-    init() {
-        this.setupEventListeners();
-        this.updateDisplay();
-    }
-
-    setupEventListeners() {
-        // Jump controls
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && this.isPlaying) {
-                e.preventDefault();
-                this.jump();
-            }
-        });
-        
-        if (this.gameArea) {
-            this.gameArea.addEventListener('click', () => {
-                if (this.isPlaying) {
-                    this.jump();
-                }
-            });
-            
-            this.gameArea.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                if (this.isPlaying) {
-                    this.jump();
-                }
-            });
-        }
-    }
-
-    start() {
-        this.isPlaying = true;
-        this.score = 0;
-        this.distance = 0;
-        this.gems = 0;
-        this.gameSpeed = 1;
-        this.obstacleCount = 0;
-        
-        this.clearGameObjects();
-        this.updateDisplay();
-        this.startGameLoop();
-        this.startSpawning();
-    }
-
-    stop() {
-        this.isPlaying = false;
-        
-        // Clear all timers
-        clearInterval(this.gameLoop);
-        clearInterval(this.distanceTimer);
-        clearInterval(this.obstacleTimer);
-        clearInterval(this.gemTimer);
-        
-        this.clearGameObjects();
-    }
-
-    jump() {
-        if (!this.isJumping) {
-            this.isJumping = true;
-            this.player.classList.add('jumping');
-            
-            // Show success feedback for first few jumps
-            if (this.obstacleCount < 3) {
-                this.showSuccessFeedback();
-            }
-            
-            setTimeout(() => {
-                this.isJumping = false;
-                this.player.classList.remove('jumping');
-            }, 800);
-        }
-    }
-
-    showSuccessFeedback() {
-        const messages = ['Great jump! 🎉', 'Perfect! ⭐', 'Awesome! 🚀', 'Nice! 💫'];
-        this.successFeedback.textContent = messages[Math.floor(Math.random() * messages.length)];
-        this.successFeedback.classList.add('show');
-        
-        setTimeout(() => {
-            this.successFeedback.classList.remove('show');
-        }, 1500);
-    }
-
-    startGameLoop() {
-        this.gameLoop = setInterval(() => {
-            this.updateGame();
-        }, 16); // 60 FPS
-        
-        // Distance counter
-        this.distanceTimer = setInterval(() => {
-            this.distance += 1;
-            this.score += 1;
-            this.updateDisplay();
-            
-            // Very gradual speed increase - only after 30 seconds
-            if (this.distance > 300 && this.distance % 100 === 0) {
-                this.gameSpeed = Math.min(this.gameSpeed + 0.1, 2);
-                this.updateSpawnRates();
-            }
-        }, 100);
-    }
-
-    startSpawning() {
-        // Start with very easy obstacles
-        setTimeout(() => {
-            this.spawnObstacle();
-        }, 5000); // First obstacle after 5 seconds
-        
-        // Spawn gems more frequently
-        this.gemTimer = setInterval(() => {
-            this.spawnGem();
-        }, 2000);
-        
-        this.updateSpawnRates();
-    }
-
-    updateSpawnRates() {
-        if (this.obstacleTimer) clearInterval(this.obstacleTimer);
-        
-        // Much easier obstacle spawning - extremely generous spacing
-        const baseInterval = this.obstacleCount < 3 ? 6000 : 
-                           this.obstacleCount < 6 ? 5000 : 4000;
-        this.obstacleTimer = setInterval(() => {
-            this.spawnObstacle();
-        }, Math.max(4000, baseInterval / this.gameSpeed));
-    }
-
-    spawnObstacle() {
-        const obstacle = document.createElement('div');
-        obstacle.className = 'obstacle';
-        
-        // Make obstacles slower and more predictable
-        const duration = Math.max(3, 4 / this.gameSpeed);
-        obstacle.style.animationDuration = `${duration}s`;
-        
-        this.gameArea.appendChild(obstacle);
-        this.obstacles.push(obstacle);
-        this.obstacleCount++;
-        
-        setTimeout(() => {
-            if (obstacle.parentNode) {
-                obstacle.remove();
-                this.obstacles = this.obstacles.filter(o => o !== obstacle);
-            }
-        }, duration * 1000);
-    }
-
-    spawnGem() {
-        const gem = document.createElement('div');
-        gem.className = 'gem';
-        
-        const duration = Math.max(4, 5 / this.gameSpeed);
-        gem.style.animationDuration = `${duration}s`;
-        
-        this.gameArea.appendChild(gem);
-        this.collectibles.push(gem);
-        
-        setTimeout(() => {
-            if (gem.parentNode) {
-                gem.remove();
-                this.collectibles = this.collectibles.filter(g => g !== gem);
-            }
-        }, duration * 1000);
-    }
-
-    updateGame() {
-        this.checkCollisions();
-    }
-
-    checkCollisions() {
-        const playerRect = this.player.getBoundingClientRect();
-        
-        // More forgiving collision detection
-        this.obstacles.forEach(obstacle => {
-            const obstacleRect = obstacle.getBoundingClientRect();
-            if (this.isColliding(playerRect, obstacleRect, 15)) { // Larger margin
-                this.endGame();
-            }
-        });
-        
-        // Gem collection
-        this.collectibles.forEach((gem, index) => {
-            const gemRect = gem.getBoundingClientRect();
-            if (this.isColliding(playerRect, gemRect, 5)) {
-                this.collectGem(gem);
-                this.collectibles.splice(index, 1);
-            }
-        });
-    }
-
-    isColliding(rect1, rect2, margin = 10) {
-        return !(rect1.right - margin < rect2.left + margin || 
-                rect1.left + margin > rect2.right - margin || 
-                rect1.bottom - margin < rect2.top + margin || 
-                rect1.top + margin > rect2.bottom - margin);
-    }
-
-    collectGem(gem) {
-        this.gems += 1;
-        this.score += 15;
-        this.createParticles(gem);
-        gem.remove();
-        this.updateDisplay();
-    }
-
-    createParticles(element) {
-        const rect = element.getBoundingClientRect();
-        const gameRect = this.gameArea.getBoundingClientRect();
-        
-        for (let i = 0; i < 8; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = (rect.left - gameRect.left + rect.width/2) + 'px';
-            particle.style.top = (rect.top - gameRect.top + rect.height/2) + 'px';
-            particle.style.animationDelay = (i * 0.1) + 's';
-            
-            this.gameArea.appendChild(particle);
-            
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.remove();
-                }
-            }, 1500);
-        }
-    }
-
-    endGame() {
-        this.isPlaying = false;
-        
-        // Clear all timers
-        clearInterval(this.gameLoop);
-        clearInterval(this.distanceTimer);
-        clearInterval(this.obstacleTimer);
-        clearInterval(this.gemTimer);
-        
-        // Auto restart after brief pause
-        setTimeout(() => {
-            this.start();
-        }, 1000);
-    }
-
-    clearGameObjects() {
-        // Remove all game objects
-        [...this.obstacles, ...this.collectibles].forEach(obj => {
-            if (obj.parentNode) {
-                obj.remove();
-            }
-        });
-        
-        this.obstacles = [];
-        this.collectibles = [];
-        
-        // Remove particles
-        const particles = this.gameArea.querySelectorAll('.particle');
-        particles.forEach(particle => particle.remove());
-    }
-
-    updateDisplay() {
-        if (this.scoreElement) this.scoreElement.textContent = this.score;
-        if (this.distanceElement) this.distanceElement.textContent = this.distance;
-        if (this.gemsElement) this.gemsElement.textContent = this.gems;
-    }
-}
-
-// Global variable to hold the game instance
-let pcRushGame;
