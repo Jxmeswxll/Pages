@@ -1,188 +1,517 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const quizForm = document.getElementById('quiz-form');
+    const quiz = document.getElementById('quiz');
+    const quizWrapper = document.querySelector('.quiz-wrapper');
+    const quizContainer = document.querySelector('.quiz-container');
     const resultsContainer = document.getElementById('results-container');
-    const resultsDiv = document.getElementById('results');
+    const loader = document.getElementById('loader');
+    const resultsGrid = document.getElementById('results');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progress = document.getElementById('progress');
+    const rtsBtn = document.getElementById('rtsBtn');
+    const customBtn = document.getElementById('customBtn');
 
-    const questions = [
-        {
-            question: "What is the primary use for your new PC?",
-            key: "primaryUse",
-            type: "checkbox",
-            options: ["Gaming", "Work", "Study", "Everyday Essentials"]
-        },
-        {
-            question: "What type of PC are you looking for?",
-            key: "pcType",
-            type: "radio",
-            options: ["Desktop", "Laptop"]
-        },
-        {
-            question: "What is your budget?",
-            key: "budget",
-            type: "radio",
-            options: ["1500-2500", "2500-3500", "3500+"]
-        },
-        {
-            question: "What resolution do you play at?",
-            key: "resolution",
-            type: "radio",
-            options: ["1080p", "1440p", "4K"],
-            condition: (answers) => answers.primaryUse && answers.primaryUse.includes('Gaming')
-        },
-        {
-            question: "What kind of games do you play?",
-            key: "games",
-            type: "checkbox",
-            options: ["Esports", "AAA Story"],
-            condition: (answers) => answers.primaryUse && answers.primaryUse.includes('Gaming')
-        },
-        {
-            question: "What kind of work do you do?",
-            key: "work",
-            type: "checkbox",
-            options: ["Creative", "3D", "Coding", "Office Docs", "Adobe", "Blender"],
-            condition: (answers) => answers.primaryUse && answers.primaryUse.includes('Work')
-        },
-        {
-            question: "What case size do you prefer?",
-            key: "caseSize",
-            type: "radio",
-            options: ["Small", "Medium", "Large", "Not Sure"],
-            condition: (answers) => answers.pcType === 'Desktop'
-        }
-    ];
+    const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook/1bfe7c01-9104-4cec-a1ec-e7f65c098d3d';
 
-    let currentQuestionIndex = 0;
+    let currentStepIndex = 0;
+    let stepHistory = [];
     let answers = {};
+    let currentStepOrder = ['primaryUse'];
+    let allRecommendations = {};
+    let currentView = 'RTS';
+    let messageInterval;
 
-    function renderQuestion() {
-        const question = questions[currentQuestionIndex];
-        if (!question) {
-            submitQuiz();
-            return;
+    const allSteps = Array.from(document.querySelectorAll('.step'));
+
+    function determineStepOrder() {
+        const primaryUse = answers.primaryUse || [];
+        let conditionalSteps = [];
+
+        if (primaryUse.includes('Gaming')) {
+            conditionalSteps.push('gameCategories', 'resolution');
+        }
+        if (primaryUse.includes('MOBA Games')) {
+            conditionalSteps.push('gameCategories', 'resolution');
+        }
+        if (primaryUse.includes('Life Simulation')) {
+            conditionalSteps.push('gameCategories', 'resolution');
+        }
+        if (primaryUse.includes('Work')) {
+            conditionalSteps.push('work');
+        }
+        if (primaryUse.includes('Study')) {
+            conditionalSteps.push('study');
+        }
+        if (primaryUse.includes('Essentials')) {
+            conditionalSteps.push('essentials');
         }
 
-        if (question.condition && !question.condition(answers)) {
-            currentQuestionIndex++;
-            renderQuestion();
-            return;
-        }
+        const uniqueConditionalSteps = [...new Set(conditionalSteps)];
+        
+        let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
 
-        let optionsHtml = '';
-        question.options.forEach(option => {
-            optionsHtml += `
-                <label>
-                    <input type="${question.type}" name="${question.key}" value="${option}">
-                    ${option}
-                </label><br>
-            `;
+        if (answers.pcType && answers.pcType[0] === 'Desktop') {
+            baseOrder.push('caseSize');
+        }
+        
+        baseOrder.push('budget');
+        currentStepOrder = baseOrder;
+    }
+
+    function showStep(stepId) {
+        allSteps.forEach(step => {
+            step.style.display = 'none';
         });
 
-        quizForm.innerHTML = `
-            <fieldset>
-                <legend>${question.question}</legend>
-                ${optionsHtml}
-                <button type="button" id="next-btn">Next</button>
-            </fieldset>
-        `;
+        const nextStepElement = allSteps.find(step => step.dataset.stepId === stepId);
+        if (nextStepElement) {
+            nextStepElement.style.display = 'block';
+        }
 
-        document.getElementById('next-btn').addEventListener('click', handleNext);
+        if (stepId === 'budget') {
+            updateBudgetOptions();
+        }
+
+        currentStepIndex = currentStepOrder.indexOf(stepId);
+        updateProgress();
+        updateButtons();
     }
 
-    function handleNext() {
-        const question = questions[currentQuestionIndex];
-        const inputs = quizForm.querySelectorAll(`input[name="${question.key}"]:checked`);
-        if (inputs.length > 0) {
-            if (question.type === 'checkbox') {
-                answers[question.key] = Array.from(inputs).map(input => input.value);
-            } else {
-                answers[question.key] = inputs[0].value;
+    function updateProgress() {
+        const totalSteps = currentStepOrder.length;
+        const progressPercentage = totalSteps > 1 ? (currentStepIndex / (totalSteps - 1)) * 100 : 0;
+        progress.style.width = `${progressPercentage}%`;
+    }
+
+    function updateButtons() {
+        const currentStepId = currentStepOrder[currentStepIndex];
+        const currentStepElement = document.querySelector(`.step[data-step-id="${currentStepId}"]`);
+        if (!currentStepElement) return;
+
+        const questions = currentStepElement.querySelectorAll('.options-grid');
+        let allRequiredAnswered = true;
+        let isMultipleSelect = false;
+
+        if (currentStepId !== 'games') {
+            let answered = false;
+            questions.forEach(q => {
+                const questionId = q.dataset.questionId;
+                if (answers[questionId] && answers[questionId].length > 0) {
+                    answered = true;
+                }
+            });
+            allRequiredAnswered = answered;
+        }
+
+        questions.forEach(q => {
+            const questionId = q.dataset.questionId;
+            if (q.dataset.selectType === 'multiple' && answers[questionId] && answers[questionId].length > 0) {
+                isMultipleSelect = true;
             }
-            currentQuestionIndex++;
-            renderQuestion();
+        });
+
+        const isLastStep = currentStepIndex === currentStepOrder.length - 1;
+
+        nextBtn.style.display = !isLastStep ? 'inline-block' : 'none';
+        submitBtn.style.display = isLastStep ? 'inline-block' : 'none';
+        prevBtn.style.display = currentStepIndex > 0 ? 'inline-block' : 'none';
+        
+        nextBtn.disabled = !allRequiredAnswered;
+        submitBtn.disabled = !allRequiredAnswered;
+
+        if (isMultipleSelect && allRequiredAnswered) {
+            nextBtn.innerHTML = 'OK';
         } else {
-            alert('Please select an option.');
+            nextBtn.innerHTML = 'Next';
         }
     }
 
-    async function submitQuiz() {
-        quizForm.style.display = 'none';
-        resultsContainer.style.display = 'block';
-        resultsDiv.innerHTML = '<p>Loading recommendations...</p>';
+    quiz.addEventListener('click', (e) => {
+        const card = e.target.closest('.option-card');
+        if (!card) return;
 
-        try {
-            const response = await fetch('https://n8n.aftershock.com.au/webhook/alpha-quiz-webhook', { // Replace with your n8n webhook URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(answers)
+        if (e.target.classList.contains('switch-res-button')) {
+            e.stopPropagation();
+            const newResolution = e.target.dataset.res;
+            switchResolution(newResolution);
+            selectCard(card);
+            return;
+        }
+
+        if (e.target.classList.contains('change-budget-button')) {
+            e.stopPropagation();
+            card.classList.remove('expanded');
+            const questionId = card.closest('.options-grid').dataset.questionId;
+            const value = card.dataset.value;
+            if (answers[questionId]) {
+                const index = answers[questionId].indexOf(value);
+                if (index > -1) {
+                    answers[questionId].splice(index, 1);
+                }
+            }
+            card.classList.remove('selected');
+            updateButtons();
+            return;
+        }
+
+        if (card.classList.contains('requires-attention') && !card.classList.contains('expanded')) {
+            card.classList.add('expanded');
+            return;
+        }
+
+        selectCard(card);
+    });
+
+    function selectCard(card) {
+        const optionsGrid = card.closest('.options-grid');
+        const questionId = optionsGrid.dataset.questionId;
+        const selectType = optionsGrid.dataset.selectType;
+        const value = card.dataset.value;
+
+        if (!answers[questionId]) {
+            answers[questionId] = [];
+        }
+
+        const isExclusive = selectType === 'single-exclusive';
+        const isSingle = selectType === 'single';
+
+        if (isExclusive) {
+            const isSelected = card.classList.contains('selected');
+            const allGridsForQuestion = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
+            allGridsForQuestion.forEach(grid => {
+                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
             });
+            answers[questionId] = isSelected ? [] : [value];
+            if (!isSelected) card.classList.add('selected');
+        } else {
+            const exclusiveGrid = card.closest('.step').querySelector(`.options-grid[data-question-id="${questionId}"][data-select-type="single-exclusive"]`);
+            if (exclusiveGrid) {
+                exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                if (answers[questionId].includes(exclusiveGrid.querySelector('.option-card').dataset.value)) {
+                    answers[questionId] = [];
+                }
+            }
 
+            if (isSingle) {
+                optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                answers[questionId] = [value];
+            } else {
+                const index = answers[questionId].indexOf(value);
+                if (index > -1) {
+                    answers[questionId].splice(index, 1);
+                    card.classList.remove('selected');
+                } else {
+                    answers[questionId].push(value);
+                    card.classList.add('selected');
+                }
+            }
+        }
+        
+        if (questionId === 'primaryUse' || questionId === 'pcType' || questionId === 'resolution') {
+            determineStepOrder();
+        }
+        
+        updateButtons();
+    }
+
+    function updateBudgetOptions() {
+        const resolution = answers.resolution ? answers.resolution[0] : null;
+        const budgetStep = document.querySelector('.step[data-step-id="budget"]');
+        const budgetCardToModify = budgetStep.querySelector('.option-card[data-value="1500-2500"]');
+
+        if (budgetCardToModify) {
+            if (resolution === '4K') {
+                budgetCardToModify.classList.add('requires-attention');
+            } else {
+                budgetCardToModify.classList.remove('requires-attention');
+                budgetCardToModify.classList.remove('expanded');
+            }
+        }
+    }
+
+    function switchResolution(newResolution) {
+        answers.resolution = [newResolution];
+        const resolutionStep = document.querySelector('.step[data-step-id="resolution"]');
+        const allResolutionCards = resolutionStep.querySelectorAll('.option-card');
+        allResolutionCards.forEach(c => c.classList.remove('selected'));
+        
+        const newCard = resolutionStep.querySelector(`.option-card[data-value="${newResolution}"]`);
+        if (newCard) {
+            newCard.classList.add('selected');
+        }
+
+        updateBudgetOptions();
+        updateButtons();
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (nextBtn.disabled) return;
+        stepHistory.push(currentStepIndex);
+        const nextStepIndex = currentStepIndex + 1;
+        if (nextStepIndex < currentStepOrder.length) {
+            showStep(currentStepOrder[nextStepIndex]);
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (stepHistory.length > 0) {
+            const prevStepIndex = stepHistory.pop();
+            showStep(currentStepOrder[prevStepIndex]);
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        if (submitBtn.disabled) return;
+        
+        quizContainer.style.display = 'none';
+        document.querySelector('.navigation').style.display = 'none';
+        resultsContainer.style.display = 'block';
+        loader.style.display = 'flex';
+        resultsGrid.style.display = 'none';
+
+
+        const loadingMessages = [
+            "Analyzing your choices...", "Consulting the tech gurus...", "Comparing components...",
+            "Calculating performance metrics...", "Assembling virtual parts...", "Cross-referencing our database...",
+            "Running benchmarks...", "Finding the perfect match...", "Polishing the recommendations..."
+        ];
+
+        const loaderMessage = document.getElementById('loader-message');
+        let messageIndex = 0;
+
+        messageInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % loadingMessages.length;
+            loaderMessage.textContent = loadingMessages[messageIndex];
+        }, 1500);
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(answers),
+        })
+        .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            showFinalResults(data);
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            loaderMessage.textContent = "Sorry, something went wrong. Please try again later.";
+            clearInterval(messageInterval);
+        });
+    });
 
-            const data = await response.json();
-            renderResults(data);
-        } catch (error) {
-            resultsDiv.innerHTML = `<p>Error fetching recommendations: ${error.message}</p>`;
+    function showFinalResults(recommendationData) {
+        clearInterval(messageInterval);
+    
+        setTimeout(() => {
+            loader.style.display = 'none';
+            document.querySelector('.results-toggle-buttons').style.display = 'inline-flex';
+            resultsGrid.style.display = 'grid';
+            try {
+                let parsedData;
+                let dataToParse = recommendationData;
+
+                // Handle the case where the data is wrapped in an array
+                if (Array.isArray(dataToParse) && dataToParse.length > 0) {
+                    dataToParse = dataToParse[0];
+                }
+
+                if (typeof dataToParse === 'object' && dataToParse !== null && 'output' in dataToParse) {
+                    if (typeof dataToParse.output === 'string') {
+                        try {
+                            // First, clean up the string by removing backticks and "json" identifier
+                            const jsonString = dataToParse.output.replace(/```json\n|```/g, '');
+                            parsedData = JSON.parse(jsonString);
+                        } catch (e) {
+                            // If parsing fails, log the error and the problematic string
+                            console.error("Failed to parse JSON string:", e);
+                            console.error("Problematic JSON string:", dataToParse.output);
+                            throw new Error("Invalid JSON format in 'output' string.");
+                        }
+                    } else {
+                        parsedData = dataToParse.output;
+                    }
+                } else {
+                    parsedData = dataToParse;
+                }
+    
+                if (parsedData && parsedData.RTS && parsedData.Custom) {
+                    allRecommendations = parsedData;
+                    displayResults();
+                } else {
+                    throw new Error("Parsed data does not contain 'RTS' and 'Custom' arrays.");
+                }
+    
+            } catch (e) {
+                console.error("Error processing recommendation data:", e);
+                console.error("Received data:", JSON.stringify(recommendationData, null, 2));
+                resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, we couldn't process the recommendations. The format of the data we received was unexpected. Please try again later.</p>`;
+            }
+        }, 500);
+    }
+
+    function displayResults() {
+        const recs = allRecommendations[currentView];
+        if (!recs || recs.length === 0) {
+            resultsGrid.innerHTML = `<p style="text-align: center; color: #fff;">Sorry, no ${currentView} builds match your criteria. Try the other category!</p>`;
+            document.getElementById('mobile-results-container').innerHTML = '';
+            return;
+        }
+
+        if (window.innerWidth <= 767) {
+            resultsGrid.style.display = 'none';
+            document.getElementById('mobile-results-container').style.display = 'block';
+            displayMobileSingleView(recs);
+        } else {
+            document.getElementById('mobile-results-container').style.display = 'none';
+            resultsGrid.style.display = 'grid';
+            displayDesktopGrid(recs);
         }
     }
 
-    function renderResults(data) {
-        let html = '';
+    function displayDesktopGrid(recs) {
+        resultsGrid.innerHTML = '';
+        recs.forEach(pc => {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            if (pc.recommendationLevel === 'Our Recommendation') card.classList.add('top-choice');
+            else if (pc.recommendationLevel === 'Best Value') card.classList.add('best-value');
+            else if (pc.recommendationLevel === 'Level Up') card.classList.add('level-up');
+
+            const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
+            const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
+            const productUrl = pc.productUrl;
+            const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
+            
+            const priceHTML = currentView === 'RTS' 
+                ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
+                : `<p class="price">${pc.price}</p>`;
+
+            const buttonHTML = currentView === 'RTS'
+                ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
+                : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
+
+            card.innerHTML = `
+                <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}"></a>
+                <div class="result-card-content">
+                    ${badgeHTML}
+                    <div class="title-container"><h3>${pc.name}</h3></div>
+                    <div class="price-container">${priceHTML}${strikethroughHTML}</div>
+                    ${buttonHTML}
+                    <div class="details">${detailsHTML}</div>
+                    <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
+                </div>`;
+            resultsGrid.appendChild(card);
+        });
+    }
+
+    function displayMobileSingleView(recs) {
+        const mobileResultsContainer = document.getElementById('mobile-results-container');
+        mobileResultsContainer.innerHTML = `
+            <h2 id="mobile-product-title"></h2>
+            <div id="mobile-recommendation-pills"></div>
+            <div class="mobile-product-view">
+                <p class="mobile-price-tag"></p>
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
+                <img src="" id="mobile-product-image" alt="Recommended PC">
+                <div id="mobile-product-specs" class="mobile-specs-block"></div>
+            </div>
+        `;
+
+        const pillsContainer = document.getElementById('mobile-recommendation-pills');
+        pillsContainer.innerHTML = '';
+
+        const order = ['Best Value', 'Our Recommendation', 'Level Up'];
+        const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
         
-        html += '<h3>Ready to Ship</h3>';
-        if (data.RTS && data.RTS.length > 0) {
-            data.RTS.forEach(pc => {
-                html += `
-                    <div class="pc-recommendation">
-                        <h4>${pc.name} - ${pc.recommendationLevel}</h4>
-                        <img src="${pc.imageUrl}" alt="${pc.name}" width="200">
-                        <p>Price: ${pc.price} ${pc.strikethroughPrice ? `<s>${pc.strikethroughPrice}</s>` : ''}</p>
-                        <a href="${pc.productUrl}" target="_blank">View Product</a>
-                        <ul>
-                            <li><strong>Graphics:</strong> ${pc.details.graphics}</li>
-                            <li><strong>Processor:</strong> ${pc.details.processor}</li>
-                            <li><strong>RAM:</strong> ${pc.details.ram}</li>
-                            <li><strong>Storage:</strong> ${pc.details.storage}</li>
-                            <li><strong>Style:</strong> ${pc.details.style}</li>
-                            <li><strong>Key Specs:</strong> ${pc.details.keySpecs}</li>
-                        </ul>
-                    </div>
-                `;
-            });
-        } else {
-            html += '<p>No Ready to Ship PCs match your criteria.</p>';
-        }
+        let initialIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
+        if (initialIndex === -1) initialIndex = 0;
 
-        html += '<h3>Custom Builds</h3>';
-        if (data.Custom && data.Custom.length > 0) {
-            data.Custom.forEach(pc => {
-                html += `
-                    <div class="pc-recommendation">
-                        <h4>${pc.name} - ${pc.recommendationLevel}</h4>
-                        <img src="${pc.imageUrl}" alt="${pc.name}" width="200">
-                        <p>Price: ${pc.price}</p>
-                        <a href="${pc.productUrl}" target="_blank">View Product</a>
-                        <ul>
-                            <li><strong>Graphics:</strong> ${pc.details.graphics}</li>
-                            <li><strong>Processor:</strong> ${pc.details.processor}</li>
-                            <li><strong>RAM:</strong> ${pc.details.ram}</li>
-                            <li><strong>Storage:</strong> ${pc.details.storage}</li>
-                            <li><strong>Style:</strong> ${pc.details.style}</li>
-                            <li><strong>Key Specs:</strong> ${pc.details.keySpecs}</li>
-                        </ul>
-                    </div>
-                `;
-            });
-        } else {
-            html += '<p>No Custom PCs match your criteria.</p>';
-        }
+        sortedPcs.forEach((pc, index) => {
+            const pill = document.createElement('button');
+            pill.className = 'mobile-pill';
+            pill.textContent = pc.recommendationLevel;
+            pill.dataset.index = index;
+            if (index === initialIndex) {
+                pill.classList.add('active');
+            }
+            pillsContainer.appendChild(pill);
+        });
 
-        resultsDiv.innerHTML = html;
+        updateMobileView(sortedPcs[initialIndex]);
+
+        pillsContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.mobile-pill')) {
+                const index = e.target.dataset.index;
+                updateMobileView(sortedPcs[index]);
+
+                pillsContainer.querySelectorAll('.mobile-pill').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
     }
 
-    renderQuestion();
+    function updateMobileView(pc) {
+        if (!pc) return;
+        const productUrl = pc.productUrl;
+        document.getElementById('mobile-product-title').textContent = pc.name;
+        const priceTag = document.querySelector('.mobile-price-tag');
+        
+        const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+        priceTag.innerHTML = pc.strikethroughPrice
+            ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
+            : `${priceText}`;
+
+        const buyButton = document.getElementById('mobile-buy-button');
+        buyButton.href = productUrl;
+        buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
+
+        document.getElementById('mobile-product-image').src = pc.imageUrl;
+        
+        const specsContainer = document.getElementById('mobile-product-specs');
+        specsContainer.innerHTML = `<h3>Specifications</h3>` + Object.entries(pc.details).map(([key, value]) => 
+            `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
+        ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
+    }
+
+    rtsBtn.addEventListener('click', () => {
+        if (currentView === 'RTS') return;
+        currentView = 'RTS';
+        rtsBtn.classList.add('active');
+        customBtn.classList.remove('active');
+        displayResults();
+    });
+
+    customBtn.addEventListener('click', () => {
+        if (currentView === 'Custom') return;
+        currentView = 'Custom';
+        customBtn.classList.add('active');
+        rtsBtn.classList.remove('active');
+        displayResults();
+    });
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (Object.keys(allRecommendations).length > 0) {
+                displayResults();
+            }
+        }, 250);
+    });
+
+    allSteps.forEach((step, index) => {
+        if (index > 0) step.style.display = 'none';
+    });
+    determineStepOrder();
+    updateButtons();
+    document.querySelector('.results-toggle-buttons').style.display = 'none';
+
 });
