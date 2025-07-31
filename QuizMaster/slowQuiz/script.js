@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
+    const gameContainer = document.getElementById('game-container');
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
+    const playGameBtn = document.getElementById('playGameBtn');
+    const emailResultsLink = document.getElementById('emailResultsLink');
+    const loaderOptions = document.getElementById('loader-options');
 
     const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
 
@@ -302,6 +306,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showFinalResults(recommendationData) {
         clearInterval(messageInterval);
+        if (gameContainer && typeof stopGame === 'function') {
+            stopGame();
+            gameContainer.style.display = 'none';
+        }
+        loaderOptions.style.display = 'none';
     
         setTimeout(() => {
             loader.style.display = 'none';
@@ -488,6 +497,31 @@ document.addEventListener('DOMContentLoaded', () => {
         customBtn.classList.add('active');
         rtsBtn.classList.remove('active');
         displayResults();
+    });
+
+    playGameBtn.addEventListener('click', () => {
+        loaderOptions.style.display = 'none';
+        gameContainer.style.display = 'block';
+        if(typeof startGame === 'function') {
+            startGame();
+        }
+    });
+
+    emailResultsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const userEmail = prompt("Please enter your email address to receive the results:");
+        if (userEmail) {
+            // Here you would typically send the answers and email to your backend
+            // For now, we'll just log it and show a confirmation.
+            console.log(`Email to send results to: ${userEmail}`);
+            alert(`Thank you! Your results will be emailed to ${userEmail}.`);
+            
+            // You might want to hide the quiz and show a "Thank you" message
+            quizContainer.innerHTML = `<h2>Thank you!</h2><p>Your results are being generated and will be sent to ${userEmail}.</p>`;
+            quizContainer.style.display = 'block';
+            document.querySelector('.navigation').style.display = 'none';
+            resultsContainer.style.display = 'none';
+        }
     });
 
     let resizeTimeout;
