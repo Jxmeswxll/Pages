@@ -117,7 +117,7 @@ document.addEventListener("keydown", e => {
 });
 
 // Touch controls for mobile
-document.addEventListener("touchstart", e => {
+canvas.addEventListener("touchstart", e => {
     e.preventDefault();
     jump();
 }, { passive: false });
