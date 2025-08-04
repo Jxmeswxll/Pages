@@ -1,9 +1,5 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const scoreBoard = document.getElementById("scoreBoard");
-const distanceBoard = document.getElementById("distanceBoard");
-const speedBoard = document.getElementById("speedBoard");
-const highScoreBoard = document.getElementById("highScoreBoard");
 const restartBtn = document.getElementById("restart");
 
 let gameSpeed = 7; // Start speed
@@ -21,7 +17,6 @@ player.y = groundY;
 
 // High Score
 let highScore = localStorage.getItem('pcRunnerHighScore') || 0;
-highScoreBoard.textContent = `High Score: ${highScore}`;
 
 // Timers
 let startTime = Date.now();
@@ -72,6 +67,17 @@ function drawGround() {
     ctx.fillRect(0, groundY + 35, canvas.width, 6);
 }
 
+function drawHUD() {
+    ctx.fillStyle = "#fff";
+    ctx.font = "20px 'Inter', sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(`Score: ${score}`, 10, 25);
+    ctx.fillText(`Distance: ${distance}m`, 10, 50);
+    ctx.textAlign = "right";
+    ctx.fillText(`Speed: ${Math.round(gameSpeed)}`, canvas.width - 10, 25);
+    ctx.fillText(`High Score: ${highScore}`, canvas.width - 10, 50);
+}
+
 
 function drawPlayer() {
     ctx.fillStyle = "#e53935";
@@ -117,27 +123,38 @@ document.addEventListener("keydown", e => {
 });
 
 // Touch controls for mobile
-canvas.addEventListener("touchstart", e => {
+document.addEventListener("touchstart", e => {
     e.preventDefault();
     jump();
 }, { passive: false });
 
 
-function createObstacle() {
-    const height = Math.random() > 0.5 ? 40 : 60;
-    obstacles.push({
-        x: canvas.width,
-        y: groundY + (40 - height),
-        width: 20 + Math.random() * 20,
-        height: height
-    });
+function createObstaclePattern() {
+    const pattern = Math.floor(Math.random() * 4);
+    let obstacleWidth = 20 + Math.random() * 20;
+
+    switch (pattern) {
+        case 0: // Single tall obstacle
+            obstacles.push({ x: canvas.width, y: groundY - 20, width: obstacleWidth, height: 60 });
+            break;
+        case 1: // Single short obstacle
+            obstacles.push({ x: canvas.width, y: groundY, width: obstacleWidth, height: 40 });
+            break;
+        case 2: // Series of two short obstacles
+            for (let i = 0; i < 2; i++) {
+                obstacles.push({ x: canvas.width + i * 200, y: groundY, width: 20, height: 40 });
+            }
+            break;
+        case 3: // A short and a tall obstacle
+            obstacles.push({ x: canvas.width, y: groundY, width: 20, height: 40 });
+            obstacles.push({ x: canvas.width + 80, y: groundY - 20, width: 20, height: 60 });
+            break;
+    }
 }
 
 function createCoinOrBoost() {
     const typeChance = Math.random();
-    let type = "coin";
-    if (typeChance > 0.7) type = "speed";
-    else if (typeChance > 0.9) type = "slow";
+    let type = typeChance > 0.5 ? "speed" : "slow";
 
     coins.push({
         x: canvas.width,
@@ -162,7 +179,6 @@ function updateObstacles() {
     obstacles = obstacles.filter(obs => {
         if (obs.x + obs.width >= 0) return true;
         score++;
-        scoreBoard.textContent = `Score: ${score}`;
         return false;
     });
 
@@ -174,10 +190,8 @@ function updateObstacles() {
             player.y < c.y + c.radius * 2 &&
             player.y + player.height > c.y
         ) {
-            if (c.type === "coin") score += 5;
             if (c.type === "speed") gameSpeed += 3;
             if (c.type === "slow") gameSpeed = Math.max(4, gameSpeed - 2);
-            scoreBoard.textContent = `Score: ${score}`;
             return false;
         }
         return c.x + c.radius * 2 >= 0;
@@ -190,7 +204,6 @@ function gameOver() {
         highScore = score;
         localStorage.setItem('pcRunnerHighScore', highScore);
     }
-    highScoreBoard.textContent = `High Score: ${highScore}`;
     restartBtn.style.display = "block";
 }
 
@@ -206,9 +219,6 @@ function resetGame() {
     startTime = Date.now();
     lastSpeedIncrease = Date.now();
     restartBtn.style.display = "none";
-    scoreBoard.textContent = "Score: 0";
-    distanceBoard.textContent = "Distance: 0m";
-    speedBoard.textContent = "Speed: 0";
     loop();
 }
 
@@ -222,10 +232,11 @@ function loop() {
     moveClouds();
     drawGround();
     drawPlayer();
+    drawHUD();
 
     obstacleTimer++;
-    if (obstacleTimer > 70) {
-        createObstacle();
+    if (obstacleTimer > 100 + Math.random() * 50) { // Randomized timer
+        createObstaclePattern();
         obstacleTimer = 0;
     }
 
@@ -242,8 +253,6 @@ function loop() {
 
     let elapsed = Date.now() - startTime;
     distance = Math.floor(elapsed / 10);
-    distanceBoard.textContent = `Distance: ${distance}m`;
-    speedBoard.textContent = `Speed: ${Math.round(gameSpeed)}`;
 
     if (Date.now() - lastSpeedIncrease > 10000) {
         gameSpeed += 1.5;

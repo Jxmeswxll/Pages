@@ -6,7 +6,6 @@
     <title>Aftershock PC Builder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="EndlessRunner.css">
 </head>
 <body>
     <div class="quiz-wrapper">
@@ -178,16 +177,14 @@
             <p id="loader-message">Analyzing your choices...</p>
             <div id="loader-options">
                 <p>This can take 30-40 seconds. While you wait, you can play a game!</p>
+                <div class="instructions">
+                    <p class="desktop-instruction">Press <i class="fas fa-space-bar"></i> to Jump</p>
+                    <p class="mobile-instruction">Tap to Jump</p>
+                </div>
                 <button id="playGameBtn">Play Game</button>
-                <p class="email-option">Or, <a href="#" id="emailResultsLink">get your results emailed to you</a>.</p>
+                <a href="https://www.aftershockpc.com.au/" target="_blank" id="viewProductsBtn" class="modal-button">View Our Products</a>
             </div>
             <div id="game-container" style="display: none;">
-                <div id="hud">
-                    <div id="scoreBoard">Score: 0</div>
-                    <div id="distanceBoard">Distance: 0m</div>
-                    <div id="speedBoard">Speed: 0</div>
-                    <div id="highScoreBoard">High Score: 0</div>
-                </div>
                 <canvas id="gameCanvas" width="800" height="250"></canvas>
                 <button id="restart">Restart</button>
             </div>
