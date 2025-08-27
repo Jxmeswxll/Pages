@@ -33,7 +33,7 @@ function determineStepOrder() {
     let conditionalSteps = [];
 
     if (primaryUse.includes('Gaming')) {
-        conditionalSteps.push('gameCategories', 'resolution');
+        conditionalSteps.push('games', 'resolution');
     }
     if (primaryUse.includes('Work')) {
         conditionalSteps.push('work');
@@ -93,7 +93,7 @@ function updateProgress() {
 }
 
 function stepIsOptional(stepId) {
-    return stepId === 'gameCategories'; // Only gameCategories is optional in current flow
+    return stepId === 'games'; // Only games is optional in current flow
 }
 
 function updateButtons() {
@@ -105,7 +105,7 @@ function updateButtons() {
     let allRequiredAnswered = true;
     let isMultipleSelect = false;
 
-    if (currentStepId !== 'gameCategories') {
+    if (currentStepId !== 'games') {
         let answered = false;
         questions.forEach(q => {
             const questionId = q.dataset.questionId;

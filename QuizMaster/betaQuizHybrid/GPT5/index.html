@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="brand">PC<span class="brand-accent">Builder</span></div>
+        <button id="resetBtn" class="reset-button">Reset Quiz</button>
+    </header>
+    <main class="main-content">
+        <div class="quiz-wrapper">
+            <div class="quiz-container">
+                <div class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                    <span id="progressLabel" class="progress-label"></span>
+                </div>
+                <div id="quiz">
+                    <div class="step" data-step-id="primaryUse">
+                        <h2>What is the primary use for this PC?</h2>
+                        <p>Select all that apply. This will help us tailor the next steps.</p>
+                <div class="options-grid" data-question-id="primaryUse" data-select-type="multiple">
+                    <div class="option-card" data-value="Gaming"><span>Gaming</span></div>
+                    <div class="option-card" data-value="Work"><span>Work</span></div>
+                    <div class="option-card" data-value="Study"><span>Study</span></div>
+                    <div class="option-card" data-value="Essentials"><span>Essentials</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="pcType" style="display:none;">
+                <h2>What type of PC are you looking for?</h2>
+                <div class="options-grid" data-question-id="pcType" data-select-type="single">
+                    <div class="option-card" data-value="Desktop"><span>Desktop</span></div>
+                    <div class="option-card" data-value="Laptop"><span>Laptop</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="games" style="display:none;">
+                <h2>What games do you play?</h2>
+                <div class="options-grid" data-question-id="games" data-select-type="multiple">
+                    <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
+                    <div class="option-card" data-value="CS:GO"><span>CS:GO</span></div>
+                    <div class="option-card" data-value="Apex Legends"><span>Apex Legends</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="resolution" style="display:none;">
+                <h2>What is your target resolution?</h2>
+                <div class="options-grid" data-question-id="resolution" data-select-type="single">
+                    <div class="option-card" data-value="1080p"><span>1080p</span></div>
+                    <div class="option-card" data-value="1440p"><span>1440p</span></div>
+                    <div class="option-card" data-value="4K"><span>4K</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="work" style="display:none;">
+                <h2>What kind of work will you be doing?</h2>
+                <div class="options-grid" data-question-id="work" data-select-type="multiple">
+                    <div class="option-card" data-value="Video Editing"><span>Video Editing</span></div>
+                    <div class="option-card" data-value="3D-Modelling"><span>3D Modelling</span></div>
+                    <div class="option-card" data-value="Programming"><span>Programming</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="study" style="display:none;">
+                <h2>What is your field of study?</h2>
+                <div class="options-grid" data-question-id="study" data-select-type="multiple">
+                    <div class="option-card" data-value="Engineering"><span>Engineering</span></div>
+                    <div class="option-card" data-value="Design"><span>Design</span></div>
+                    <div class="option-card" data-value="Arts"><span>Arts</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="essentials" style="display:none;">
+                <h2>What essentials do you need?</h2>
+                <div class="options-grid" data-question-id="essentials" data-select-type="multiple">
+                    <div class="option-card" data-value="Microsoft Office"><span>Microsoft Office</span></div>
+                    <div class="option-card" data-value="Web Browsing"><span>Web Browsing</span></div>
+                    <div class="option-card" data-value="Media Consumption"><span>Media Consumption</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="caseSize" style="display:none;">
+                <h2>What case size do you prefer?</h2>
+                <div class="options-grid" data-question-id="caseSize" data-select-type="single">
+                    <div class="option-card" data-value="Small"><span>Small</span></div>
+                    <div class="option-card" data-value="Medium"><span>Medium</span></div>
+                    <div class="option-card" data-value="Large"><span>Large</span></div>
+                </div>
+            </div>
+            <div class="step" data-step-id="budget" style="display:none;">
+                <h2>What is your budget?</h2>
+                <div class="options-grid" data-question-id="budget" data-select-type="single">
+                    <div class="option-card" data-value="1000-1500"><span>$1000 - $1500</span></div>
+                    <div class="option-card" data-value="1500-2500"><span>$1500 - $2500</span></div>
+                    <div class="option-card" data-value="2500+"><span>$2500+</span></div>
+                </div>
+            </div>
+        </div>
+            </div>
+            <div class="navigation">
+                <button id="prevBtn" class="secondary">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="skipBtn" class="secondary">Skip</button>
+                <button id="submitBtn">Submit</button>
+            </div>
+        </div>
+    </main>
+    <div id="results-container" style="display:none;">
+        <div class="results-toggle-buttons">
+            <button id="rtsBtn" class="toggle-button active" aria-selected="true">RTS Builds</button>
+            <button id="customBtn" class="toggle-button" aria-selected="false">Custom Builds</button>
+        </div>
+        <div id="results" class="results-grid"></div>
+        <div id="mobile-results-container" style="display: none;"></div>
+    </div>
+    <div id="loader" class="loader-container" style="display:none;">
+        <div class="loader-spinner"></div>
+        <h2 id="loader-title">Building Your PC</h2>
+        <p id="loader-message">Analyzing your choices...</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

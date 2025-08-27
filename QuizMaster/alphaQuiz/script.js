@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
-    const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook/1bfe7c01-9104-4cec-a1ec-e7f65c098d3d';
+    const webhookUrl = 'https://jxmes-wxll.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
 
     let currentStepIndex = 0;
     let stepHistory = [];

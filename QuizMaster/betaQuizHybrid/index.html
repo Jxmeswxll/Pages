@@ -1,214 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Aftershock PC Builder</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <!-- Allow pinch zoom for accessibility --> <meta name="viewport" content="width=device-width, initial-scale=1"> <meta name="theme-color" content="#e53935"> <title>Aftershock PC Builder</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <link rel="stylesheet" href="styles.css"> </head> <body> <header class="site-header" role="banner"> <div class="brand"> <span class="brand-accent">AFTERSHOCK</span> PC Builder </div> <button id="resetBtn" class="reset-button" aria-label="Start over">Start over</button> </header>
+
+<main id="main" role="main" class="main-content" tabindex="-1">
     <div class="quiz-wrapper">
-        <div class="quiz-container">
-            <div class="progress-bar">
+        <div class="quiz-container" aria-labelledby="quizTitle">
+            <div class="progress-bar" aria-hidden="false">
                 <div class="progress" id="progress"></div>
-            </div>
-        <div id="quiz">
-            <!-- Step 1: Primary Use -->
-            <div class="step" data-step-id="primaryUse">
-                <h2>Tell us, what will you use your PC for?</h2>
-                <div class="options-grid card-options" data-question-id="primaryUse" data-select-type="multiple">
-                    <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Gaming</span><p>From competitive shooters to epic RPGs.</p></div></div>
-                    <div class="option-card" data-value="Work"><i class="fas fa-briefcase"></i><div><span>Work</span><p>For creative, technical, or business tasks.</p></div></div>
-                    <div class="option-card" data-value="Study"><i class="fas fa-graduation-cap"></i><div><span>Study</span><p>For research, assignments, and creative projects.</p></div></div>
-                    <div class="option-card" data-value="Essentials"><i class="fas fa-star"></i><div><span>Everyday Essentials</span><p>For web browsing, email, and media streaming.</p></div></div>
-                </div>
+                <div class="progress-label" id="progressLabel" aria-live="polite">Step 1 of 1</div>
             </div>
 
-            <!-- Step 2: PC Type -->
-            <div class="step" data-step-id="pcType" style="display: none;">
-                <h2>Are you looking for a laptop or a desktop?</h2>
-                <div class="options-grid card-options" data-question-id="pcType" data-select-type="single">
-                    <div class="option-card" data-value="Desktop">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><line x1="7" y1="21" x2="17" y2="21"></line><line x1="12" y1="15" x2="12" y2="21"></line></svg>
-                        <div><span>Desktop</span><p>A powerful, stationary setup.</p></div>
-                    </div>
-                    <div class="option-card" data-value="Laptop">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v12H3z"></path><path d="M2 20h20"></path></svg>
-                        <div><span>Laptop</span><p>Portable and versatile.</p></div>
+            <div id="quiz">
+                <!-- Step 1: Primary Use -->
+                <div class="step" data-step-id="primaryUse">
+                    <h1 id="quizTitle" class="sr-only">Aftershock PC Builder Quiz</h1>
+                    <h2>Tell us, what will you use your PC for?</h2>
+                    <div class="options-grid card-options"
+                         data-question-id="primaryUse"
+                         data-select-type="multiple">
+                        <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad" aria-hidden="true"></i><div><span>Gaming</span><p>From competitive shooters to epic RPGs.</p></div></div>
+                        <div class="option-card" data-value="Work"><i class="fas fa-briefcase" aria-hidden="true"></i><div><span>Work</span><p>For creative, technical, or business tasks.</p></div></div>
+                        <div class="option-card" data-value="Study"><i class="fas fa-graduation-cap" aria-hidden="true"></i><div><span>Study</span><p>For research, assignments, and creative projects.</p></div></div>
+                        <div class="option-card" data-value="Essentials"><i class="fas fa-star" aria-hidden="true"></i><div><span>Everyday Essentials</span><p>For web browsing, email, and media streaming.</p></div></div>
                     </div>
                 </div>
-            </div>
 
-<!-- Conditional Step: Games -->
-<div class="step" data-step-id="games" style="display: none;">
-    <h2>Which games do you play?</h2>
-    <p>(Optional, helps us tailor your build)</p>
-    <div class="options-grid card-options game-cards" data-question-id="games" data-select-type="multiple">
-        <!-- Shooters -->
-        <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
-        <div class="option-card" data-value="Counter-Strike 2"><span>Counter-Strike 2</span></div>
-        <div class="option-card" data-value="Valorant"><span>Valorant</span></div>
-        <div class="option-card" data-value="Call of Duty: Warzone"><span>Call of Duty: Warzone</span></div>
-        
-        <!-- MMO / MOBA -->
-        <div class="option-card" data-value="League of Legends"><span>League of Legends</span></div>
-        <div class="option-card" data-value="Final Fantasy XIV"><span>Final Fantasy XIV</span></div>
-        
-        <!-- RPG / Open-World -->
-        <div class="option-card" data-value="Black Myth: Wukong"><span>Black Myth: Wukong</span></div>
-        <div class="option-card" data-value="Monster Hunter Wilds"><span>Monster Hunter Wilds</span></div>
-        <div class="option-card" data-value="Assassin's Creed Shadows"><span>Assassin's Creed Shadows</span></div>
-        
-        <!-- Social / Sandbox -->
-        <div class="option-card" data-value="Minecraft"><span>Minecraft</span></div>
-        <div class="option-card" data-value="Palworld"><span>Palworld</span></div>
-        
-        <!-- Simulation -->
-        <div class="option-card" data-value="Microsoft Flight Simulator"><span>Microsoft Flight Simulator</span></div>
-        <div class="option-card" data-value="Forza Horizon 5"><span>Forza Horizon 5</span></div>
-        
-        <!-- Other -->
-        <div class="option-card" data-value="Other"><span>Other (Type Your Game)</span></div>
-    </div>
-</div>
-
-
-            <!-- Conditional Step: Resolution -->
-            <div class="step" data-step-id="resolution" style="display: none;">
-                <h2>What's your target resolution?</h2>
-                <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
-                    <div class="option-card" data-value="1080p">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
-                        <div><span>1080p Full HD</span><p>The competitive edge.</p></div>
-                    </div>
-                    <div class="option-card" data-value="1440p">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
-                        <div><span>1440p QHD</span><p>The immersive sweet spot.</p></div>
-                    </div>
-                    <div class="option-card" data-value="4K">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
-                        <div><span>4K UHD</span><p>The ultimate visual fidelity.</p></div>
+                <!-- Step 2: PC Type -->
+                <div class="step" data-step-id="pcType" style="display: none;">
+                    <h2>Are you looking for a laptop or a desktop?</h2>
+                    <div class="options-grid card-options" data-question-id="pcType" data-select-type="single">
+                        <div class="option-card" data-value="Desktop"><i class="fas fa-desktop"></i><div><span>Desktop</span><p>A powerful, stationary setup.</p></div></div>
+                        <div class="option-card" data-value="Laptop"><i class="fas fa-laptop"></i><div><span>Laptop</span><p>Portable and versatile.</p></div></div>
                     </div>
                 </div>
-                <div class="or-separator"><span>Or</span></div>
-                <div class="options-grid card-options" data-question-id="resolution" data-select-type="single-exclusive">
-                     <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
-                </div>
-            </div>
 
-            <!-- Conditional Step: Work -->
-            <div class="step" data-step-id="work" style="display: none;">
-                <h2>What sort of things do you do at work?</h2>
-                <div class="options-grid card-options" data-question-id="work" data-select-type="multiple">
-                    <div class="option-card" data-value="Documents"><i class="fas fa-file-alt"></i><div><span>Documents & Spreadsheets</span><p>Microsoft Office, Google Suite</p></div></div>
-                    <div class="option-card" data-value="Creative"><i class="fas fa-palette"></i><div><span>Creative (Photo, Video, Design)</span><p>Adobe Suite, DaVinci Resolve</p></div></div>
-                    <div class="option-card" data-value="Coding"><i class="fas fa-code"></i><div><span>Software Development</span><p>VS Code, Docker, Local Servers</p></div></div>
-                    <div class="option-card" data-value="3D"><i class="fas fa-cube"></i><div><span>3D, CAD, or Scientific Modeling</span><p>Blender, AutoCAD, SolidWorks</p></div></div>
+                <!-- Step 3: Game Categories -->
+                <div class="step" data-step-id="gameCategories" style="display: none;">
+                    <h2>What type of games do you primarily play?</h2>
+                    <p>(Select one or more)</p>
+                    <div class="options-grid game-cards" data-question-id="gameCategories" data-select-type="multiple">
+                        <div class="option-card" data-value="Competitive Shooters"><span>Competitive Shooters</span><p>Counter-Strike 2, Valorant, Marvel Rivals</p></div>
+                        <div class="option-card" data-value="MOBA Games"><span>MOBA Games</span><p>League of Legends, Dota 2, Heroes of the Storm</p></div>
+                        <div class="option-card" data-value="Battle Royale"><span>Battle Royale</span><p>Fortnite, Apex Legends, Call of Duty: Warzone</p></div>
+                        <div class="option-card" data-value="Racing Simulation"><span>Racing Simulation</span><p>F1 24, Forza Horizon 5, iRacing, Assetto Corsa</p></div>
+                        <div class="option-card" data-value="Flight Simulation"><span>Flight Simulation</span><p>Microsoft Flight Simulator, DCS World, X-Plane 12</p></div>
+                        <div class="option-card" data-value="Story-Driven RPGs"><span>Story-Driven RPGs</span><p>Baldur's Gate 3, Cyberpunk 2077, Hogwarts Legacy</p></div>
+                        <div class="option-card" data-value="Open World Adventures"><span>Open World Adventures</span><p>Elden Ring, The Witcher 3, Red Dead Redemption 2</p></div>
+                        <div class="option-card" data-value="Life Simulation"><span>Life Simulation</span><p>The Sims 4, SimCity, Cities: Skylines</p></div>
+                        <div class="option-card" data-value="Sandbox/Creative"><span>Sandbox/Creative Games</span><p>Minecraft, Roblox, Terraria</p></div>
+                        <div class="option-card" data-value="Casual/Indie"><span>Casual/Indie Games</span><p>Stardew Valley, Hades, Fall Guys</p></div>
+                        <div class="option-card" data-value="Survival/Crafting"><span>Survival/Crafting</span><p>Valheim, Subnautica, The Forest</p></div>
+                        <div class="option-card" data-value="Strategy Games"><span>Strategy Games</span><p>Age of Empires IV, Civilization VI, Total War</p></div>
+                    </div>
                 </div>
-                <div class="or-separator"><span>Or</span></div>
-                <div class="options-grid card-options" data-question-id="work" data-select-type="single-exclusive">
-                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
-                </div>
-            </div>
 
-            <!-- Conditional Step: Study -->
-            <div class="step" data-step-id="study" style="display: none;">
-                <h2>So, what do your studies involve?</h2>
-                <div class="options-grid card-options" data-question-id="study" data-select-type="multiple">
-                    <div class="option-card" data-value="Assignments"><i class="fas fa-book"></i><div><span>Assignments & Research</span><p>Word, Chrome, Zotero</p></div></div>
-                    <div class="option-card" data-value="Online Classes"><i class="fas fa-laptop"></i><div><span>Online Classes & Collaboration</span><p>Zoom, Microsoft Teams</p></div></div>
-                    <div class="option-card" data-value="Creative Software"><i class="fas fa-pen-nib"></i><div><span>Creative Software</span><p>Photoshop for design, Ableton for music</p></div></div>
-                    <div class="option-card" data-value="STEM"><i class="fas fa-atom"></i><div><span>STEM Projects</span><p>MATLAB, simulations</p></div></div>
+                <!-- Conditional Step: Resolution -->
+                <div class="step" data-step-id="resolution" style="display: none;">
+                    <h2>What's your target resolution?</h2>
+                    <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
+                        <div class="option-card" data-value="1080p">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
+                            <div><span>1080p Full HD</span><p>The competitive edge.</p></div>
+                        </div>
+                        <div class="option-card" data-value="1440p">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
+                            <div><span>1440p QHD</span><p>The immersive sweet spot.</p></div>
+                        </div>
+                        <div class="option-card" data-value="4K">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><path d="M7 15v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"></path><path d="M12 15V9"></path><path d="m15 12-3-3-3 3"></path></svg>
+                            <div><span>4K UHD</span><p>The ultimate visual fidelity.</p></div>
+                        </div>
+                    </div>
+                    <div class="or-separator"><span>Or</span></div>
+                    <div class="options-grid card-options" data-question-id="resolution" data-select-type="single-exclusive">
+                        <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle" aria-hidden="true"></i><div><span>I'm not sure</span></div></div>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Conditional Step: Essentials -->
-            <div class="step" data-step-id="essentials" style="display: none;">
-                <h2>What are your day-to-day essentials?</h2>
-                <div class="options-grid card-options" data-question-id="essentials" data-select-type="multiple">
-                    <div class="option-card" data-value="Browsing"><i class="fas fa-globe"></i><div><span>Browsing & Email</span><p>Chrome, Outlook</p></div></div>
-                    <div class="option-card" data-value="Streaming"><i class="fas fa-film"></i><div><span>Streaming Movies & Music</span><p>Netflix, Spotify</p></div></div>
-                    <div class="option-card" data-value="Office Apps"><i class="fas fa-file-word"></i><div><span>Office Applications</span><p>Word, Excel, PowerPoint</p></div></div>
-                    <div class="option-card" data-value="Light Gaming"><i class="fas fa-ghost"></i><div><span>Light Gaming</span><p>Minecraft, Stardew Valley</p></div></div>
-                </div>
-            </div>
 
-            <!-- Common Step 1: Case Size -->
-            <div class="step" data-step-id="caseSize" style="display: none;">
-                <h2>What size PC are you looking for?</h2>
-                <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single">
-                    <div class="option-card" data-value="Small"><i class="fas fa-compress-arrows-alt"></i><div><span>Compact</span><p>For small desks and tight spaces.</p></div></div>
-                    <div class="option-card" data-value="Medium"><i class="fas fa-expand-arrows-alt"></i><div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div></div>
-                    <div class="option-card" data-value="Large"><i class="fas fa-arrows-alt"></i><div><span>Large</span><p>For maximum hardware and cooling.</p></div></div>
+                <!-- Conditional Step: Work -->
+                <div class="step" data-step-id="work" style="display: none;">
+                    <h2>What sort of things do you do at work?</h2>
+                    <div class="options-grid card-options" data-question-id="work" data-select-type="multiple">
+                        <div class="option-card" data-value="Documents"><i class="fas fa-file-alt" aria-hidden="true"></i><div><span>Documents & Spreadsheets</span><p>Microsoft Office, Google Suite</p></div></div>
+                        <div class="option-card" data-value="Creative"><i class="fas fa-palette" aria-hidden="true"></i><div><span>Creative (Photo, Video, Design)</span><p>Adobe Suite, DaVinci Resolve</p></div></div>
+                        <div class="option-card" data-value="Coding"><i class="fas fa-code" aria-hidden="true"></i><div><span>Software Development</span><p>VS Code, Docker, Local Servers</p></div></div>
+                        <div class="option-card" data-value="3D"><i class="fas fa-cube" aria-hidden="true"></i><div><span>3D, CAD, or Scientific Modeling</span><p>Blender, AutoCAD, SolidWorks</p></div></div>
+                    </div>
+                    <div class="or-separator"><span>Or</span></div>
+                    <div class="options-grid card-options" data-question-id="work" data-select-type="single-exclusive">
+                        <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle" aria-hidden="true"></i><div><span>I'm not sure</span></div></div>
+                    </div>
                 </div>
-                <div class="or-separator"><span>Or</span></div>
-                <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single-exclusive">
-                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
-                </div>
-            </div>
 
-            <!-- Common Step 3: Budget -->
-            <div class="step" data-step-id="budget" style="display: none;">
-                <h2>And finally, your budget?</h2>
-                <div class="options-grid card-options" data-question-id="budget" data-select-type="single">
-                    <div class="option-card" data-value="1500-2500">
-                        <div>
-                            <span>$1500 - $2500</span>
-                            <div class="expandable-content">
-                                <p>For the best 4K experience, a higher budget is recommended. You can either adjust your budget or switch to a lower resolution for better performance.</p>
-                                <div class="modal-actions">
-                                    <button data-res="1440p" class="modal-button switch-res-button">Switch to 1440p</button>
-                                    <button class="modal-button change-budget-button">Choose a different budget</button>
+                <!-- Conditional Step: Study -->
+                <div class="step" data-step-id="study" style="display: none;">
+                    <h2>So, what do your studies involve?</h2>
+                    <div class="options-grid card-options" data-question-id="study" data-select-type="multiple">
+                        <div class="option-card" data-value="Assignments"><i class="fas fa-book" aria-hidden="true"></i><div><span>Assignments & Research</span><p>Word, Chrome, Zotero</p></div></div>
+                        <div class="option-card" data-value="Online Classes"><i class="fas fa-laptop" aria-hidden="true"></i><div><span>Online Classes & Collaboration</span><p>Zoom, Microsoft Teams</p></div></div>
+                        <div class="option-card" data-value="Creative Software"><i class="fas fa-pen-nib" aria-hidden="true"></i><div><span>Creative Software</span><p>Photoshop for design, Ableton for music</p></div></div>
+                        <div class="option-card" data-value="STEM"><i class="fas fa-atom" aria-hidden="true"></i><div><span>STEM Projects</span><p>MATLAB, simulations</p></div></div>
+                    </div>
+                </div>
+
+                <!-- Conditional Step: Essentials -->
+                <div class="step" data-step-id="essentials" style="display: none;">
+                    <h2>What are your day-to-day essentials?</h2>
+                    <div class="options-grid card-options" data-question-id="essentials" data-select-type="multiple">
+                        <div class="option-card" data-value="Browsing"><i class="fas fa-globe" aria-hidden="true"></i><div><span>Browsing & Email</span><p>Chrome, Outlook</p></div></div>
+                        <div class="option-card" data-value="Streaming"><i class="fas fa-film" aria-hidden="true"></i><div><span>Streaming Movies & Music</span><p>Netflix, Spotify</p></div></div>
+                        <div class="option-card" data-value="Office Apps"><i class="fas fa-file-word" aria-hidden="true"></i><div><span>Office Applications</span><p>Word, Excel, PowerPoint</p></div></div>
+                        <div class="option-card" data-value="Light Gaming"><i class="fas fa-ghost" aria-hidden="true"></i><div><span>Light Gaming</span><p>Minecraft, Stardew Valley</p></div></div>
+                    </div>
+                </div>
+
+                <!-- Common Step 1: Case Size -->
+                <div class="step" data-step-id="caseSize" style="display: none;">
+                    <h2>What size PC are you looking for?</h2>
+                    <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single">
+                        <div class="option-card" data-value="Small"><i class="fas fa-compress-arrows-alt" aria-hidden="true"></i><div><span>Compact</span><p>For small desks and tight spaces.</p></div></div>
+                        <div class="option-card" data-value="Medium"><i class="fas fa-expand-arrows-alt" aria-hidden="true"></i><div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div></div>
+                        <div class="option-card" data-value="Large"><i class="fas fa-arrows-alt" aria-hidden="true"></i><div><span>Large</span><p>For maximum hardware and cooling.</p></div></div>
+                    </div>
+                    <div class="or-separator"><span>Or</span></div>
+                    <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single-exclusive">
+                        <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle" aria-hidden="true"></i><div><span>I'm not sure</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Common Step 3: Budget -->
+                <div class="step" data-step-id="budget" style="display: none;">
+                    <h2>And finally, your budget?</h2>
+                    <div class="options-grid card-options" data-question-id="budget" data-select-type="single">
+                        <div class="option-card" data-value="1500-2500">
+                            <div>
+                                <span>$1500 - $2500</span>
+                                <div class="expandable-content">
+                                    <p>For the best 4K experience, a higher budget is recommended. You can either adjust your budget or switch to a lower resolution for better performance.</p>
+                                    <div class="modal-actions">
+                                        <button data-res="1440p" class="modal-button switch-res-button">Switch to 1440p</button>
+                                        <button class="modal-button change-budget-button">Choose a different budget</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="option-card" data-value="2500-4500">
-                        <div><span>$2500 - $4500</span></div>
-                    </div>
-                    <div class="option-card" data-value="4500-7000">
-                        <div><span>$4500 - $7000</span></div>
-                    </div>
-                    <div class="option-card" data-value="7000+">
-                        <div><span>$7000+</span></div>
+                        <div class="option-card" data-value="2500-4500">
+                            <div><span>$2500 - $4500</span></div>
+                        </div>
+                        <div class="option-card" data-value="4500-7000">
+                            <div><span>$4500 - $7000</span></div>
+                        </div>
+                        <div class="option-card" data-value="7000+">
+                            <div><span>$7000+</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="navigation">
-        <button id="prevBtn" style="display: none;"><i class="fas fa-arrow-left"></i></button>
-        <button id="nextBtn">Next</button>
-        <button id="submitBtn" style="display: none;">Find My PC</button>
+
+        <nav class="navigation" aria-label="Quiz navigation">
+            <button id="prevBtn" style="display: none;" aria-label="Go to previous step"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+            <button id="skipBtn" class="secondary" style="display: none;">Skip</button>
+            <button id="nextBtn">Next</button>
+            <button id="submitBtn" style="display: none;">Find My PC</button>
+        </nav>
     </div>
 
     <!-- Results Section -->
-    <div id="results-container" style="display: none;">
-        <div class="loader-container" id="loader">
-            <div class="loader-spinner"></div>
+    <section id="results-container" style="display: none;" aria-live="polite">
+        <div class="loader-container" id="loader" role="dialog" aria-modal="true" aria-labelledby="loader-title" aria-describedby="loader-message">
+            <div class="loader-spinner" aria-hidden="true"></div>
             <h2 id="loader-title">Finding your perfect match...</h2>
-            
-            
-            <p id="loader-message">Analyzing your choices...</p>
+            <p id="loader-message" role="status" aria-live="polite">Analyzing your choices...</p>
         </div>
-        <div class="results-toggle-buttons">
-            <button id="rtsBtn" class="toggle-button active">Ready to Ship</button>
-            <button id="customBtn" class="toggle-button">Custom Builds</button>
+
+        <div class="results-toggle-buttons" role="tablist" aria-label="Result type">
+            <button id="rtsBtn" class="toggle-button active" role="tab" aria-selected="true" aria-controls="results">Ready to Ship</button>
+            <button id="customBtn" class="toggle-button" role="tab" aria-selected="false" aria-controls="results">Custom Builds</button>
         </div>
-        <div id="results" class="results-grid" style="display: none;"></div>
-        <div id="mobile-results-container" style="display: none;">
+
+        <div id="results" class="results-grid" style="display: none;" role="region" aria-label="Recommended PCs"></div>
+
+        <div id="mobile-results-container" style="display: none;" role="region" aria-label="Recommended PC details">
             <h2 id="mobile-product-title"></h2>
             <div id="mobile-recommendation-pills"></div>
             <div class="mobile-product-view">
                 <p class="mobile-price-tag"></p>
-                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank" rel="noopener noreferrer">Buy</a>
                 <img src="" id="mobile-product-image" alt="Recommended PC">
                 <div id="mobile-product-specs" class="mobile-specs-block"></div>
             </div>
         </div>
-    </div>
+    </section>
+</main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<noscript>
+    <p style="color:#fff; text-align:center; padding:16px;">Please enable JavaScript to use the Aftershock PC Builder.</p>
+</noscript>
+
+<script src="script.js"></script>
+</body> </html>

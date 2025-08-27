@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playGameBtn = document.getElementById('playGameBtn');
     const loaderOptions = document.getElementById('loader-options');
 
-    const webhookUrl = 'https://jxmes-project.app.n8n.cloud/webhook/0d7d013b-5ae9-4864-86d6-15b668f213bb';
+    const webhookUrl = 'https://jxmes-wxll.app.n8n.cloud/webhook/0d7d013b-5ae9-4864-86d6-15b668f213bb';
 
     let currentStepIndex = 0;
     let stepHistory = [];
