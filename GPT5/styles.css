@@ -8,6 +8,7 @@
     --lighter-subtle-text-color: #6a6a6e;
     --accent-color: #e53935;
     --accent-text-color: #fff;
+    --warning-color: #f39c12;
     --border-color: #444;
     --disabled-bg-color: #333;
     --disabled-text-color: #555;
@@ -70,6 +71,80 @@ body {
     text-align: center;
 }
 
+/* Progress meta (step label above the bar) */
+.progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: var(--subtle-text-color);
+    font-weight: 600;
+    font-size: 0.9em;
+    letter-spacing: .02em;
+}
+
+/* Visually hidden (for screen readers) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 1px, 1px);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Keyboard focus visibility */
+.option-card:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.25);
+}
+button:focus-visible,
+.toggle-button:focus-visible,
+.view-product-button:focus-visible,
+.buy-now-button-desktop:focus-visible,
+.mobile-pill:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+/* Secondary button (Skip) */
+button.secondary {
+    background-color: transparent;
+    color: var(--subtle-text-color);
+    border: 1px solid var(--border-color);
+    padding: 12px 18px;
+    border-radius: 50px;
+}
+button.secondary:hover {
+    color: var(--text-color);
+    border-color: #555;
+}
+
+/* Spacing between nav buttons */
+.navigation button + button {
+    margin-left: 12px;
+}
+
+/* Improve options grid on larger screens */
+@media (min-width: 768px) {
+    .options-grid:not(.game-cards) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 .step h2 {
     font-size: 2.5em;
     font-weight: 700;
@@ -118,6 +193,30 @@ body {
 .option-card.selected svg {
     color: white;
     stroke: white;
+}
+
+/* Draw attention to selections that need review (e.g., low budget + 4K) */
+.option-card.requires-attention {
+    border-color: var(--warning-color);
+    box-shadow: 0 0 0 2px var(--warning-color), 0 8px 25px rgba(0,0,0,0.25);
+    position: relative;
+}
+.option-card.requires-attention::after {
+    content: "Heads up";
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--warning-color);
+    color: #111;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    padding: 4px 8px;
+    border-radius: 999px;
+}
+.option-card.expanded .expandable-content {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 10px;
 }
 
 .option-card i {
@@ -433,6 +532,10 @@ button:disabled {
     height: auto;
     border-radius: 15px;
     margin-bottom: 25px;
+    transition: transform 0.25s ease;
+}
+.result-image-link:hover img {
+    transform: scale(1.03);
 }
 
 .result-card-content {

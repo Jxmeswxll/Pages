@@ -10,8 +10,11 @@
 <body>
     <div class="quiz-wrapper">
         <div class="quiz-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
+            <div class="progress-meta">
+                <span id="stepLabel">Step 1 of 1</span>
+            </div>
+            <div class="progress-bar" aria-label="Quiz progress">
+                <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
             </div>
         <div id="quiz">
             <!-- Step 1: Primary Use -->
@@ -163,8 +166,9 @@
             </div>
         </div>
     </div>
-    <div class="navigation">
-        <button id="prevBtn" style="display: none;"><i class="fas fa-arrow-left"></i></button>
+    <div class="navigation" role="navigation" aria-label="Quiz navigation">
+        <button id="prevBtn" style="display: none;" aria-label="Go to previous step"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <button id="skipBtn" class="secondary" style="display: none;">Skip</button>
         <button id="nextBtn">Next</button>
         <button id="submitBtn" style="display: none;">Find My PC</button>
     </div>
@@ -193,6 +197,8 @@
         </div>
     </div>
 
+    <div id="sr-announcer" class="sr-only" aria-live="polite"></div>
+    
     <script src="script.js"></script>
 </body>
 </html>

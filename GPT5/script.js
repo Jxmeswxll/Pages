@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = document.getElementById('progress');
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
+    const stepLabel = document.getElementById('stepLabel');
+    const skipBtn = document.getElementById('skipBtn');
+    const srAnnouncer = document.getElementById('sr-announcer');
 
     const webhookUrl = 'https://jxmes123.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
 
@@ -23,6 +26,73 @@ document.addEventListener('DOMContentLoaded', () => {
     let messageInterval;
 
     const allSteps = Array.from(document.querySelectorAll('.step'));
+
+    function isOptionalStep(stepId) {
+        // Only the "games" step is optional (Next/Submit should not be gated)
+        return stepId === 'games';
+    }
+
+    function prepStepAccessibility(stepEl) {
+        if (!stepEl) return;
+
+        // Ensure heading has an id so we can link grids via aria-labelledby
+        const heading = stepEl.querySelector('h2');
+        let headingId = heading ? heading.id : '';
+        if (heading && !headingId) {
+            headingId = `step-${stepEl.dataset.stepId}-title`;
+            heading.id = headingId;
+        }
+
+        const grids = stepEl.querySelectorAll('.options-grid');
+        grids.forEach(grid => {
+            const type = grid.dataset.selectType;
+
+            if (type === 'single' || type === 'single-exclusive') {
+                grid.setAttribute('role', 'radiogroup');
+            } else {
+                grid.setAttribute('role', 'group');
+            }
+            if (headingId) {
+                grid.setAttribute('aria-labelledby', headingId);
+            }
+
+            const cards = grid.querySelectorAll('.option-card');
+            cards.forEach(card => {
+                // keyboard focus
+                if (!card.hasAttribute('tabindex')) {
+                    card.setAttribute('tabindex', '0');
+                }
+                if (!card.dataset.kbBound) {
+                    card.addEventListener('keydown', (ev) => {
+                        if (ev.key === 'Enter' || ev.key === ' ') {
+                            ev.preventDefault();
+                            card.click();
+                        }
+                    });
+                    card.dataset.kbBound = '1';
+                }
+
+                // role + state per select type
+                const isSelected = card.classList.contains('selected');
+                if (type === 'multiple') {
+                    card.setAttribute('role', 'checkbox');
+                    card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                } else {
+                    card.setAttribute('role', 'radio');
+                    card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                }
+
+                // label
+                if (!card.hasAttribute('aria-label')) {
+                    const labelEl = card.querySelector('span');
+                    const labelText = labelEl ? labelEl.textContent.trim() : (card.textContent || '').trim();
+                    if (labelText) {
+                        card.setAttribute('aria-label', labelText);
+                    }
+                }
+            });
+        });
+    }
 
     function determineStepOrder() {
         const primaryUse = answers.primaryUse || [];
@@ -61,6 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextStepElement = allSteps.find(step => step.dataset.stepId === stepId);
         if (nextStepElement) {
             nextStepElement.style.display = 'block';
+
+            // Accessibility: ensure heading is focusable and labeled
+            const heading = nextStepElement.querySelector('h2');
+            if (heading) {
+                if (!heading.id) {
+                    heading.id = `step-${nextStepElement.dataset.stepId}-title`;
+                }
+                heading.setAttribute('tabindex', '-1');
+                heading.focus();
+            }
+            // Prepare roles/aria and keyboard support for option cards
+            prepStepAccessibility(nextStepElement);
         }
 
         if (stepId === 'budget') {
@@ -68,6 +150,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         currentStepIndex = currentStepOrder.indexOf(stepId);
+
+        // Progress label + SR announcement
+        if (stepLabel) {
+            stepLabel.textContent = `Step ${currentStepIndex + 1} of ${currentStepOrder.length}`;
+        }
+        if (srAnnouncer) {
+            let titleText = '';
+            if (nextStepElement) {
+                const h2 = nextStepElement.querySelector('h2');
+                if (h2) titleText = h2.textContent || '';
+            }
+            srAnnouncer.textContent = `Step ${currentStepIndex + 1} of ${currentStepOrder.length}. ${titleText}`;
+        }
+
+        // Optional step control visibility
+        if (skipBtn) {
+            skipBtn.style.display = isOptionalStep(stepId) ? 'inline-block' : 'none';
+        }
+
         updateProgress();
         updateButtons();
     }
@@ -76,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalSteps = currentStepOrder.length;
         const progressPercentage = totalSteps > 1 ? (currentStepIndex / (totalSteps - 1)) * 100 : 0;
         progress.style.width = `${progressPercentage}%`;
+        progress.setAttribute('aria-valuenow', Math.round(progressPercentage));
     }
 
     function updateButtons() {
@@ -174,37 +276,61 @@ document.addEventListener('DOMContentLoaded', () => {
             const isSelected = card.classList.contains('selected');
             const allGridsForQuestion = card.closest('.step').querySelectorAll(`.options-grid[data-question-id="${questionId}"]`);
             allGridsForQuestion.forEach(grid => {
-                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                grid.setAttribute('role', 'radiogroup');
+                grid.querySelectorAll('.option-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.setAttribute('role', 'radio');
+                    c.setAttribute('aria-checked', 'false');
+                });
             });
             answers[questionId] = isSelected ? [] : [value];
-            if (!isSelected) card.classList.add('selected');
+            if (!isSelected) {
+                card.classList.add('selected');
+                card.setAttribute('aria-checked', 'true');
+            }
         } else {
             const exclusiveGrid = card.closest('.step').querySelector(`.options-grid[data-question-id="${questionId}"][data-select-type="single-exclusive"]`);
             if (exclusiveGrid) {
-                exclusiveGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                exclusiveGrid.querySelectorAll('.option-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.setAttribute('aria-checked', 'false');
+                });
                 if (answers[questionId].includes(exclusiveGrid.querySelector('.option-card').dataset.value)) {
                     answers[questionId] = [];
                 }
             }
 
             if (isSingle) {
-                optionsGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                optionsGrid.setAttribute('role', 'radiogroup');
+                optionsGrid.querySelectorAll('.option-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.setAttribute('role', 'radio');
+                    c.setAttribute('aria-checked', 'false');
+                });
                 card.classList.add('selected');
+                card.setAttribute('aria-checked', 'true');
                 answers[questionId] = [value];
             } else {
                 const index = answers[questionId].indexOf(value);
                 if (index > -1) {
                     answers[questionId].splice(index, 1);
                     card.classList.remove('selected');
+                    card.setAttribute('aria-checked', 'false');
                 } else {
                     answers[questionId].push(value);
                     card.classList.add('selected');
+                    card.setAttribute('aria-checked', 'true');
                 }
             }
         }
         
         if (questionId === 'primaryUse' || questionId === 'pcType' || questionId === 'resolution') {
             determineStepOrder();
+            // Reflect new total steps while staying on the same screen
+            if (stepLabel) {
+                stepLabel.textContent = `Step ${currentStepIndex + 1} of ${currentStepOrder.length}`;
+            }
+            updateProgress();
         }
         
         updateButtons();
@@ -229,11 +355,16 @@ document.addEventListener('DOMContentLoaded', () => {
         answers.resolution = [newResolution];
         const resolutionStep = document.querySelector('.step[data-step-id="resolution"]');
         const allResolutionCards = resolutionStep.querySelectorAll('.option-card');
-        allResolutionCards.forEach(c => c.classList.remove('selected'));
+        allResolutionCards.forEach(c => {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+            c.setAttribute('role', 'radio');
+        });
         
         const newCard = resolutionStep.querySelector(`.option-card[data-value="${newResolution}"]`);
         if (newCard) {
             newCard.classList.add('selected');
+            newCard.setAttribute('aria-checked', 'true');
         }
 
         updateBudgetOptions();
@@ -255,6 +386,18 @@ document.addEventListener('DOMContentLoaded', () => {
             showStep(currentStepOrder[prevStepIndex]);
         }
     });
+
+    // Skip optional steps (e.g., games)
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            if (skipBtn.style.display === 'none') return;
+            stepHistory.push(currentStepIndex);
+            const nextStepIndex = currentStepIndex + 1;
+            if (nextStepIndex < currentStepOrder.length) {
+                showStep(currentStepOrder[nextStepIndex]);
+            }
+        });
+    }
 
     submitBtn.addEventListener('click', () => {
         if (submitBtn.disabled) return;
@@ -504,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (index > 0) step.style.display = 'none';
     });
     determineStepOrder();
-    updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
+    // Initialize first step to update labels, progressbar ARIA, and skip visibility
+    showStep(currentStepOrder[0]);
 });
