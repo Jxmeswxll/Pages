@@ -2,56 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Aftershock PC Builder</title>
-<link rel="preconnect" href="https://jameswall.app.n8n.cloud" crossorigin>
+<link rel="preconnect" href="https://jxmes123.app.n8n.cloud" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-      /* Perceptual loader + skeletons (scoped) */
-      .perceptual-loader{margin:20px auto 30px;max-width:1400px}
-      .perceptual-loader .staged{margin:0 auto 18px;max-width:700px}
-      .perceptual-loader .staged-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-      .perceptual-loader .staged-text{color:var(--subtle-text-color)}
-      .perceptual-loader .staged-pct{color:var(--text-color);font-weight:700;display:none}
-      .perceptual-loader.determinate .staged-pct{display:inline}
-      .perceptual-loader .bar{height:8px;background:#2a2a2e;border-radius:999px;overflow:hidden;position:relative}
-      .perceptual-loader .fill{height:100%;width:30%;background:linear-gradient(90deg,#3b82f6,#22c55e);border-radius:inherit;transform:translateX(-100%)}
-      .perceptual-loader .staged-hint{color:var(--lighter-subtle-text-color);font-size:.9em;margin-top:8px;text-align:center}
-      
-      .skeleton-grid{display:grid;gap:20px;grid-template-columns:repeat(3,1fr)}
-      .skeleton-card{background-color:var(--card-background);border:1px solid var(--border-color);border-radius:20px;padding:20px}
-      .sk-img{height:180px;border-radius:12px;background:#2a2a2e;margin-bottom:14px}
-      .sk-badge{height:26px;width:140px;border-radius:999px;background:#2a2a2e;margin:10px 0}
-      .sk-title{height:22px;width:70%;border-radius:8px;background:#2a2a2e;margin:10px 0}
-      .sk-price{height:28px;width:40%;border-radius:8px;background:#2a2a2e;margin:10px 0 14px}
-      .sk-btn{height:40px;width:160px;border-radius:10px;background:#2a2a2e;margin:6px 0 14px}
-      .sk-specs{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-      .sk-specs li{height:14px;border-radius:6px;background:#2a2a2e}
-      .shimmer{position:relative;overflow:hidden}
-      .shimmer::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:shimmer 1.4s infinite}
-      @keyframes shimmer{100%{transform:translateX(100%)}}
-      .perceptual-loader.indeterminate .fill{animation:indeterminate-move 1.2s linear infinite}
-      @keyframes indeterminate-move{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
-      .toggle-button[disabled]{opacity:.5;pointer-events:none}
-      @media (max-width:1199px){.skeleton-grid{grid-template-columns:repeat(2,1fr)}}
-      @media (max-width:767px){.skeleton-grid{grid-template-columns:1fr}}
-      
-      /* Loader checklist + cancel */
-      .loader-extras{max-width:700px;margin:0 auto 10px}
-      .loader-checklist{list-style:none;display:grid;gap:6px;padding:0;margin:10px 0 12px}
-      .loader-checklist li{color:var(--lighter-subtle-text-color);position:relative;padding-left:22px;font-size:.95em;transition:color .25s ease}
-      .loader-checklist li::before{content:"";width:14px;height:14px;border-radius:3px;border:2px solid #3a3a3e;position:absolute;left:0;top:2px;background:transparent;transition:all .25s ease}
-      .loader-checklist li.done{color:var(--text-color)}
-      .loader-checklist li.done::before{background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 0 12px -4px var(--accent-color)}
-      .loader-cancel{background:transparent;color:var(--subtle-text-color);border:1px solid var(--border-color);border-radius:999px;padding:8px 14px;font-size:.85em;cursor:pointer;transition:all .2s;display:block;margin:4px auto 10px}
-      .loader-cancel:hover{color:var(--text-color);border-color:#555}
-    </style>
 </head>
 <body>
     <div class="quiz-wrapper">
         <div class="quiz-container">
-            <div class="progress-bar" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
         <div id="quiz">
@@ -59,10 +19,10 @@
             <div class="step" data-step-id="primaryUse">
                 <h2>Tell us, what will you use your PC for?</h2>
                 <div class="options-grid card-options" data-question-id="primaryUse" data-select-type="multiple">
-                    <div class="option-card" role="button" tabindex="0" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Gaming</span><p>From competitive shooters to epic RPGs.</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Work"><i class="fas fa-briefcase"></i><div><span>Work</span><p>For creative, technical, or business tasks.</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Study"><i class="fas fa-graduation-cap"></i><div><span>Study</span><p>For research, assignments, and creative projects.</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Essentials"><i class="fas fa-star"></i><div><span>Everyday Essentials</span><p>For web browsing, email, and media streaming.</p></div></div>
+                    <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Gaming</span><p>From competitive shooters to epic RPGs.</p></div></div>
+                    <div class="option-card" data-value="Work"><i class="fas fa-briefcase"></i><div><span>Work</span><p>For creative, technical, or business tasks.</p></div></div>
+                    <div class="option-card" data-value="Study"><i class="fas fa-graduation-cap"></i><div><span>Study</span><p>For research, assignments, and creative projects.</p></div></div>
+                    <div class="option-card" data-value="Essentials"><i class="fas fa-star"></i><div><span>Everyday Essentials</span><p>For web browsing, email, and media streaming.</p></div></div>
                 </div>
             </div>
 
@@ -70,11 +30,11 @@
             <div class="step" data-step-id="pcType" style="display: none;">
                 <h2>Are you looking for a laptop or a desktop?</h2>
                 <div class="options-grid card-options" data-question-id="pcType" data-select-type="single">
-                    <div class="option-card" role="button" tabindex="0" data-value="Desktop">
+                    <div class="option-card" data-value="Desktop">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" ry="2"></rect><line x1="7" y1="21" x2="17" y2="21"></line><line x1="12" y1="15" x2="12" y2="21"></line></svg>
                         <div><span>Desktop</span><p>A powerful, stationary setup.</p></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Laptop">
+                    <div class="option-card" data-value="Laptop">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v12H3z"></path><path d="M2 20h20"></path></svg>
                         <div><span>Laptop</span><p>Portable and versatile.</p></div>
                     </div>
@@ -83,21 +43,21 @@
 
             <!-- Conditional Step: Games -->
             <div class="step" data-step-id="games" style="display: none;">
-                <h2>Which games do you play? <span class="optional-badge">Optional</span></h2>
-                <p>This helps us tailor your build.</p>
+                <h2>Which games do you play?</h2>
+                <p>(Optional, helps us tailor your build)</p>
                 <div class="options-grid card-options game-cards" data-question-id="games" data-select-type="multiple">
-                    <div class="option-card" role="button" tabindex="0" data-value="Fortnite"><span>Fortnite</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="GTA V"><span>GTA V</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Call of Duty"><span>Call of Duty</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Diablo IV"><span>Diablo IV</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Starfield"><span>Starfield</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="League of Legends"><span>League of Legends</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Sim Racing"><span>Sim Racing</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Flight Sim"><span>Flight Sim</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Cyberpunk 2077"><span>Cyberpunk 2077</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Apex Legends"><span>Apex Legends</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Valorant"><span>Valorant</span></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Baldur's Gate 3"><span>Baldur's Gate 3</span></div>
+                    <div class="option-card" data-value="Fortnite"><span>Fortnite</span></div>
+                    <div class="option-card" data-value="GTA V"><span>GTA V</span></div>
+                    <div class="option-card" data-value="Call of Duty"><span>Call of Duty</span></div>
+                    <div class="option-card" data-value="Diablo IV"><span>Diablo IV</span></div>
+                    <div class="option-card" data-value="Starfield"><span>Starfield</span></div>
+                    <div class="option-card" data-value="League of Legends"><span>League of Legends</span></div>
+                    <div class="option-card" data-value="Sim Racing"><span>Sim Racing</span></div>
+                    <div class="option-card" data-value="Flight Sim"><span>Flight Sim</span></div>
+                    <div class="option-card" data-value="Cyberpunk 2077"><span>Cyberpunk 2077</span></div>
+                    <div class="option-card" data-value="Apex Legends"><span>Apex Legends</span></div>
+                    <div class="option-card" data-value="Valorant"><span>Valorant</span></div>
+                    <div class="option-card" data-value="Baldur's Gate 3"><span>Baldur's Gate 3</span></div>
                 </div>
             </div>
 
@@ -105,7 +65,7 @@
             <div class="step" data-step-id="resolution" style="display: none;">
                 <h2>What's your target resolution?</h2>
                 <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
-                    <div class="option-card" role="button" tabindex="0" data-value="1080p">
+                    <div class="option-card" data-value="1080p">
                         <svg viewBox="0 0 64 64" aria-label="1080p">
                             <rect x="8" y="12" width="48" height="32" rx="3"/>
                             <line x1="32" y1="44" x2="32" y2="52"/>
@@ -114,7 +74,7 @@
                         </svg>
                         <div><span>1080p Full HD</span><p>The competitive edge.</p></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="1440p">
+                    <div class="option-card" data-value="1440p">
                         <svg viewBox="0 0 64 64" aria-label="1440p">
                             <rect x="8" y="12" width="48" height="32" rx="3"/>
                             <line x1="32" y1="44" x2="32" y2="52"/>
@@ -123,7 +83,7 @@
                         </svg>
                         <div><span>1440p QHD</span><p>The immersive sweet spot.</p></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="4K">
+                    <div class="option-card" data-value="4K">
                         <svg viewBox="0 0 64 64" aria-label="4K">
                             <rect x="8" y="12" width="48" height="32" rx="3"/>
                             <line x1="32" y1="44" x2="32" y2="52"/>
@@ -135,7 +95,7 @@
                 </div>
                 <div class="or-separator"><span>Or</span></div>
                 <div class="options-grid card-options" data-question-id="resolution" data-select-type="single-exclusive">
-                     <div class="option-card" role="button" tabindex="0" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
+                     <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
                 </div>
             </div>
 
@@ -143,14 +103,14 @@
             <div class="step" data-step-id="work" style="display: none;">
                 <h2>What sort of things do you do at work?</h2>
                 <div class="options-grid card-options" data-question-id="work" data-select-type="multiple">
-                    <div class="option-card" role="button" tabindex="0" data-value="Documents"><i class="fas fa-file-alt"></i><div><span>Documents & Spreadsheets</span><p>Microsoft Office, Google Suite</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Creative"><i class="fas fa-palette"></i><div><span>Creative (Photo, Video, Design)</span><p>Adobe Suite, DaVinci Resolve</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Coding"><i class="fas fa-code"></i><div><span>Software Development</span><p>VS Code, Docker, Local Servers</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="3D"><i class="fas fa-cube"></i><div><span>3D, CAD, or Scientific Modeling</span><p>Blender, AutoCAD, SolidWorks</p></div></div>
+                    <div class="option-card" data-value="Documents"><i class="fas fa-file-alt"></i><div><span>Documents & Spreadsheets</span><p>Microsoft Office, Google Suite</p></div></div>
+                    <div class="option-card" data-value="Creative"><i class="fas fa-palette"></i><div><span>Creative (Photo, Video, Design)</span><p>Adobe Suite, DaVinci Resolve</p></div></div>
+                    <div class="option-card" data-value="Coding"><i class="fas fa-code"></i><div><span>Software Development</span><p>VS Code, Docker, Local Servers</p></div></div>
+                    <div class="option-card" data-value="3D"><i class="fas fa-cube"></i><div><span>3D, CAD, or Scientific Modeling</span><p>Blender, AutoCAD, SolidWorks</p></div></div>
                 </div>
                 <div class="or-separator"><span>Or</span></div>
                 <div class="options-grid card-options" data-question-id="work" data-select-type="single-exclusive">
-                    <div class="option-card" role="button" tabindex="0" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
+                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
                 </div>
             </div>
 
@@ -158,10 +118,10 @@
             <div class="step" data-step-id="study" style="display: none;">
                 <h2>So, what do your studies involve?</h2>
                 <div class="options-grid card-options" data-question-id="study" data-select-type="multiple">
-                    <div class="option-card" role="button" tabindex="0" data-value="Assignments"><i class="fas fa-book"></i><div><span>Assignments & Research</span><p>Word, Chrome, Zotero</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Online Classes"><i class="fas fa-laptop"></i><div><span>Online Classes & Collaboration</span><p>Zoom, Microsoft Teams</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Creative Software"><i class="fas fa-pen-nib"></i><div><span>Creative Software</span><p>Photoshop for design, Ableton for music</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="STEM"><i class="fas fa-atom"></i><div><span>STEM Projects</span><p>MATLAB, simulations</p></div></div>
+                    <div class="option-card" data-value="Assignments"><i class="fas fa-book"></i><div><span>Assignments & Research</span><p>Word, Chrome, Zotero</p></div></div>
+                    <div class="option-card" data-value="Online Classes"><i class="fas fa-laptop"></i><div><span>Online Classes & Collaboration</span><p>Zoom, Microsoft Teams</p></div></div>
+                    <div class="option-card" data-value="Creative Software"><i class="fas fa-pen-nib"></i><div><span>Creative Software</span><p>Photoshop for design, Ableton for music</p></div></div>
+                    <div class="option-card" data-value="STEM"><i class="fas fa-atom"></i><div><span>STEM Projects</span><p>MATLAB, simulations</p></div></div>
                 </div>
             </div>
             
@@ -169,10 +129,10 @@
             <div class="step" data-step-id="essentials" style="display: none;">
                 <h2>What are your day-to-day essentials?</h2>
                 <div class="options-grid card-options" data-question-id="essentials" data-select-type="multiple">
-                    <div class="option-card" role="button" tabindex="0" data-value="Browsing"><i class="fas fa-globe"></i><div><span>Browsing & Email</span><p>Chrome, Outlook</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Streaming"><i class="fas fa-film"></i><div><span>Streaming Movies & Music</span><p>Netflix, Spotify</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Office Apps"><i class="fas fa-file-word"></i><div><span>Office Applications</span><p>Word, Excel, PowerPoint</p></div></div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Light Gaming"><i class="fas fa-ghost"></i><div><span>Light Gaming</span><p>Minecraft, Stardew Valley</p></div></div>
+                    <div class="option-card" data-value="Browsing"><i class="fas fa-globe"></i><div><span>Browsing & Email</span><p>Chrome, Outlook</p></div></div>
+                    <div class="option-card" data-value="Streaming"><i class="fas fa-film"></i><div><span>Streaming Movies & Music</span><p>Netflix, Spotify</p></div></div>
+                    <div class="option-card" data-value="Office Apps"><i class="fas fa-file-word"></i><div><span>Office Applications</span><p>Word, Excel, PowerPoint</p></div></div>
+                    <div class="option-card" data-value="Light Gaming"><i class="fas fa-ghost"></i><div><span>Light Gaming</span><p>Minecraft, Stardew Valley</p></div></div>
                 </div>
             </div>
 
@@ -180,7 +140,7 @@
             <div class="step" data-step-id="caseSize" style="display: none;">
                 <h2>What size PC are you looking for?</h2>
                 <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single">
-                    <div class="option-card" role="button" tabindex="0" data-value="Small">
+                    <div class="option-card" data-value="Small">
                         <svg class="pc-icon" viewBox="0 0 60 80" aria-label="Compact PC">
                             <rect class="case" x="5" y="5" width="50" height="70" rx="8"/>
                             <circle class="cutout" cx="14" cy="13" r="3"/>
@@ -188,7 +148,7 @@
                         </svg>
                         <div><span>Compact</span><p>For small desks and tight spaces.</p></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Medium">
+                    <div class="option-card" data-value="Medium">
                         <svg class="pc-icon" viewBox="0 0 70 120" aria-label="Mid Tower PC">
                             <rect class="case" x="5" y="5" width="60" height="110" rx="9"/>
                             <circle class="cutout" cx="18" cy="14" r="3"/>
@@ -197,7 +157,7 @@
                         </svg>
                         <div><span>Mid-Tower</span><p>The perfect balance of size and performance.</p></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="Large">
+                    <div class="option-card" data-value="Large">
                         <svg class="pc-icon" viewBox="0 0 70 150" aria-label="Full Tower PC">
                             <rect class="case" x="5" y="5" width="60" height="140" rx="10"/>
                             <circle class="cutout" cx="18" cy="14" r="3"/>
@@ -210,7 +170,7 @@
                 </div>
                 <div class="or-separator"><span>Or</span></div>
                 <div class="options-grid card-options" data-question-id="caseSize" data-select-type="single-exclusive">
-                    <div class="option-card" role="button" tabindex="0" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
+                    <div class="option-card" data-value="Not Sure"><i class="fas fa-question-circle"></i><div><span>I'm not sure</span></div></div>
                 </div>
             </div>
 
@@ -218,7 +178,7 @@
             <div class="step" data-step-id="budget" style="display: none;">
                 <h2>And finally, your budget?</h2>
                 <div class="options-grid card-options" data-question-id="budget" data-select-type="single">
-                    <div class="option-card" role="button" tabindex="0" data-value="1500-2500">
+                    <div class="option-card" data-value="1500-2500">
                         <div>
                             <span>$1500 - $2500</span>
                             <div class="expandable-content">
@@ -230,13 +190,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="2500-4500">
+                    <div class="option-card" data-value="2500-4500">
                         <div><span>$2500 - $4500</span></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="4500-7000">
+                    <div class="option-card" data-value="4500-7000">
                         <div><span>$4500 - $7000</span></div>
                     </div>
-                    <div class="option-card" role="button" tabindex="0" data-value="7000+">
+                    <div class="option-card" data-value="7000+">
                         <div><span>$7000+</span></div>
                     </div>
                 </div>
@@ -251,26 +211,43 @@
 
     <!-- Results Section -->
     <div id="results-container" style="display: none;">
-<div id="perceptual-loader" class="perceptual-loader indeterminate" style="display: none;">
-          <div class="staged">
-            <div class="staged-row">
-              <div class="staged-text" id="staged-text">Finding your perfect match…</div>
-              <div class="staged-pct" id="staged-pct">10%</div>
+        <div id="perceptual-loader" class="perceptual-loader-new" style="display: none;">
+            <div class="staged">
+                <div class="staged-row">
+                    <div class="staged-text" id="staged-text">Finding your perfect match…</div>
+                </div>
+                <div class="bar" role="progressbar" aria-busy="true" aria-valuetext="Preparing results">
+                    <div class="fill" id="staged-fill"></div>
+                </div>
+                <p class="staged-hint" id="staged-hint" aria-live="polite"></p>
             </div>
-<div class="bar" role="progressbar" aria-busy="true" aria-valuetext="Preparing results"><div class="fill" id="staged-fill"></div></div>
-            <p class="staged-hint" id="staged-hint" aria-live="polite"></p>
-          </div>
-          <div class="loader-extras">
-            <ul id="loader-checklist" class="loader-checklist">
-              <li data-ms="10000"><span>Analyze your choices</span></li>
-              <li data-ms="30000"><span>Match CPU/GPU and RAM</span></li>
-              <li data-ms="55000"><span>Filter availability and prices</span></li>
-              <li data-ms="75000"><span>Assemble top picks</span></li>
-              <li data-ms="85000"><span>Final quality checks</span></li>
-            </ul>
+    <p class="loader-subtitle">Building recommendations…</p>
+    <div class="loader-layout">
+        <!-- Timeline first, full width -->
+        <div class="timeline-column">
+            <div class="timeline-card" id="timeline-card" data-collapsed="true">
+                <button id="timeline-toggle" class="timeline-toggle" aria-expanded="false" aria-controls="loader-checklist" title="Show full timeline">
+                    <i class="fas fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+                </button>
+                <div class="timeline-container">
+                    <div class="timeline-progress"></div>
+                    <ul id="loader-checklist" class="loader-checklist-new">
+                        <li data-ms="1000"><span>Analyzing all available products</span></li>
+                        <li data-ms="8000"><span>Identifying best pre-built match</span></li>
+                        <li data-ms="16000"><span>Exploring higher-tier pre-built options</span></li>
+                        <li data-ms="24000"><span>Highlighting best-value pre-built</span></li>
+                        <li data-ms="32000"><span>Custom build – our top recommendation</span></li>
+                        <li data-ms="40000"><span>Custom build – best value</span></li>
+                        <li data-ms="48000"><span>Custom build – enhanced option</span></li>
+                        <li data-ms="56000"><span>Summarizing recommendation for you</span></li>
+                    </ul>
+                </div>
+            </div>
             <button id="loader-cancel" class="loader-cancel" type="button">Cancel and edit answers</button>
-          </div>
-          <div class="skeleton-grid" aria-hidden="true">
+        </div>
+
+        <!-- Then the 3-up skeleton gallery mirroring final cards -->
+        <div class="skeleton-gallery">
             <div class="skeleton-card">
               <div class="sk-img shimmer"></div>
               <div class="sk-badge shimmer"></div>
@@ -278,6 +255,10 @@
               <div class="sk-price shimmer"></div>
               <div class="sk-btn shimmer"></div>
               <ul class="sk-specs">
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
@@ -293,6 +274,10 @@
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
               </ul>
             </div>
             <div class="skeleton-card">
@@ -305,13 +290,18 @@
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
                 <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
+                <li class="shimmer"></li>
               </ul>
             </div>
-          </div>
+        </div>
+    </div>
         </div>
         <div class="results-toggle-buttons">
-            <button id="rtsBtn" class="toggle-button active" aria-pressed="true">Ready to Ship</button>
-            <button id="customBtn" class="toggle-button" aria-pressed="false">Custom Builds</button>
+            <button id="rtsBtn" class="toggle-button active">Ready to Ship</button>
+            <button id="customBtn" class="toggle-button">Custom Builds</button>
         </div>
         <div id="results" class="results-grid" style="display: none;"></div>
         <div id="mobile-results-container" style="display: none;">

@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsContainer = document.getElementById('results-container');
     const loader = document.getElementById('perceptual-loader');
     const stagedText = document.getElementById('staged-text');
-    const stagedPct = document.getElementById('staged-pct');
     const stagedFill = document.getElementById('staged-fill');
     const stagedHint = document.getElementById('staged-hint');
     const resultsGrid = document.getElementById('results');
@@ -273,184 +272,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Perceptual loader controls (extended for long waits)
-    function startPerceptualLoader() {
-        if (!loader) return;
-        loader.style.display = 'block';
-
-        // Local history utilities for ETA (rolling median of last 5 runs)
-        const HISTORY_KEY = 'qm_rec_durations';
-        const maxHistory = 5;
-        const readHistory = () => {
-            try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; }
-        };
-        const writeHistory = (arr) => {
-            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(-maxHistory))); } catch {}
-        };
-        const median = (arr) => {
-            if (!arr.length) return 90000;
-            const s = [...arr].sort((a,b)=>a-b);
-            const mid = Math.floor(s.length/2);
-            return s.length % 2 ? s[mid] : Math.round((s[mid-1] + s[mid]) / 2);
-        };
-
-        loader._startTs = Date.now();
-        loader._predictedMs = median(readHistory()) || 90000;
-        loader._lastMicroTs = 0;
-
-        const micro = [
-            'Analyzing your choices…',
-            'Matching CPU ↔ GPU…',
-            'Checking thermals…',
-            'Verifying prices…',
-            'Ensuring compatibility…',
-            'Ranking value…',
-            'Looking at stock…',
-            'Simulating performance…',
-        ];
-        let microIdx = 0;
-
-        // Initial staged jumps for early momentum
-        const stagedSeq = [
-            { msg: 'Finding your perfect match…', pct: 15, dur: 500 },
-            { msg: 'Comparing components…', pct: 40, dur: 700 },
-            { msg: 'Running benchmarks…', pct: 60, dur: 700 },
-            { msg: 'Polishing recommendations…', pct: 80, dur: 600 },
-        ];
-        let i = 0;
-        function runStaged() {
-            if (!loader || loader.style.display === 'none') return;
-            if (i < stagedSeq.length) {
-                const s = stagedSeq[i++];
-                if (stagedText) stagedText.textContent = s.msg;
-                if (stagedPct) stagedPct.textContent = s.pct + '%';
-                if (stagedFill) stagedFill.style.width = s.pct + '%';
-                loader._stagedTimer = setTimeout(runStaged, s.dur);
-            } else {
-                beginTrickle();
-            }
-        }
-        runStaged();
-
-        // Long-wait beats (reassurance copy)
-        if (loader._beatTimers) loader._beatTimers.forEach(clearTimeout);
-        loader._beatTimers = [
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Still working… matching components and stock'; }, 30000),
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Almost done—ranking best value'; }, 60000),
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Finalising picks…'; }, 80000),
-        ];
-
-        // Reset hint initially
-        if (stagedHint) stagedHint.textContent = '';
-
-        function beginTrickle() {
-            const tick = () => {
-                if (!loader || loader.style.display === 'none') return;
-                const now = Date.now();
-                const elapsed = now - loader._startTs;
-                const predicted = loader._predictedMs || 90000;
-
-                // Time-based percent towards 97% with subtle jitter
-                const base = Math.min(97, Math.floor((elapsed / predicted) * 97));
-                const current = parseInt((stagedPct?.textContent || '0').replace('%','')) || 0;
-                const jitter = Math.random() * 0.6 + 0.2; // 0.2–0.8%
-                const target = Math.max(current, Math.min(97, base + (current < base ? 0 : jitter)));
-
-                if (stagedPct) stagedPct.textContent = target.toFixed(0) + '%';
-                if (stagedFill) stagedFill.style.width = target + '%';
-
-                // Live ETA / final checks
-                const remaining = Math.max(0, predicted - elapsed);
-                if (target >= 97 || elapsed >= predicted) {
-                    if (stagedHint) stagedHint.textContent = 'Final checks…';
-                } else if (stagedHint) {
-                    const sec = Math.ceil(remaining / 1000);
-                    const m = Math.floor(sec / 60);
-                    const s = sec % 60;
-                    const parts = [];
-                    if (m) parts.push(`${m}m`);
-                    parts.push(`${s}s`);
-                    stagedHint.textContent = `About ${parts.join(' ')} remaining…`;
-                }
-
-                // Rotate believable microcopy every ~2s
-                if (now - (loader._lastMicroTs || 0) > 2000) {
-                    loader._lastMicroTs = now;
-                    if (stagedText) {
-                        stagedText.textContent = micro[microIdx++ % micro.length];
-                    }
-                }
-
-                // Checklist ticks
-                const items = document.querySelectorAll('#loader-checklist li');
-                items.forEach(li => {
-                    const ms = parseInt(li.getAttribute('data-ms') || '0', 10);
-                    if (elapsed >= ms) li.classList.add('done');
-                });
-
-                loader._trickleTimer = setTimeout(tick, 1000 + Math.random() * 400);
-            };
-            tick();
-        }
-
-        // Wire cancel once
-        const cancelBtn = document.getElementById('loader-cancel');
-        if (cancelBtn && !loader._cancelWired) {
-            loader._cancelWired = true;
-            cancelBtn.addEventListener('click', () => {
-                stopPerceptualLoader(true); // cancel mode
-                // Restore quiz UI
-                resultsContainer.style.display = 'none';
-                quizContainer.style.display = 'block';
-                const nav = document.querySelector('.navigation');
-                if (nav) nav.style.display = 'flex';
-                const toggle = document.querySelector('.results-toggle-buttons');
-                if (toggle) toggle.style.display = 'none';
-            });
-        }
-    }
-
-    function stopPerceptualLoader(wasCancelled = false) {
-        if (!loader) return;
-
-        // Clear timers
-        clearTimeout(messageInterval);
-        if (loader._stagedTimer) clearTimeout(loader._stagedTimer);
-        if (loader._trickleTimer) clearTimeout(loader._trickleTimer);
-        if (loader._beatTimers) loader._beatTimers.forEach(clearTimeout);
-
-        // Persist actual duration for future ETA unless user cancelled
-        if (!wasCancelled) {
-            try {
-                const HISTORY_KEY = 'qm_rec_durations';
-                const read = () => { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; } };
-                const write = (arr) => { try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(-5))); } catch {} };
-                const start = loader._startTs || Date.now();
-                const dur = Date.now() - start;
-                const arr = read();
-                arr.push(dur);
-                write(arr);
-            } catch {}
-        }
-
-        // Finish animation and hide
-        if (stagedText && !wasCancelled) stagedText.textContent = 'Ready!';
-        if (stagedPct && !wasCancelled) stagedPct.textContent = '100%';
-        if (stagedFill && !wasCancelled) stagedFill.style.width = '100%';
-
-        setTimeout(() => {
-            loader.style.display = 'none';
-            if (stagedHint) stagedHint.textContent = '';
-            document.querySelectorAll('#loader-checklist li').forEach(li => li.classList.remove('done'));
-        }, wasCancelled ? 0 : 500);
-    }
 
     // New premium, honest loader (indeterminate-first) and abortable fetch
     function startLoader() {
         if (!loader) return;
         loader.style.display = 'block';
-        loader.classList.add('indeterminate');
-        loader.classList.remove('determinate');
+
+        // Start the timeline animation
+        loader._startTs = Date.now();
+        const timelineProgress = loader.querySelector('.timeline-progress');
+        const tick = () => {
+            if (!loader || loader.style.display === 'none') return;
+            const elapsed = Date.now() - loader._startTs;
+            const items = loader.querySelectorAll('.loader-checklist-new li');
+            let activeIndex = -1;
+            items.forEach((li, index) => {
+                const ms = parseInt(li.getAttribute('data-ms') || '0', 10);
+                if (elapsed >= ms) {
+                    activeIndex = index;
+                }
+            });
+
+            items.forEach((li, index) => {
+                if (index < activeIndex) {
+                    li.classList.add('done');
+                    li.classList.remove('active');
+                } else if (index === activeIndex) {
+                    li.classList.add('active');
+                    li.classList.remove('done');
+                } else {
+                    li.classList.remove('active', 'done');
+                }
+            });
+
+            // Keep preview calm; do not animate/highlight cards.
+            // Instead, mirror the current step above the progress bar.
+            if (stagedText && activeIndex >= 0) {
+                const active = items[activeIndex];
+                const label = active?.querySelector('span')?.textContent || active?.textContent || '';
+                if (label) stagedText.textContent = label;
+            }
+
+            if (timelineProgress && activeIndex > -1 && items.length > 0) {
+                const itemHeight = items[0].offsetHeight + parseInt(getComputedStyle(items[0]).marginBottom);
+                const progressHeight = (activeIndex * itemHeight) + (itemHeight / 2);
+                timelineProgress.style.setProperty('--progress-height', `${progressHeight}px`);
+            }
+
+            loader._timelineTimer = setTimeout(tick, 1000);
+        };
+        tick();
 
         // ARIA
         const bar = loader.querySelector('.bar');
@@ -475,19 +346,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typical > 0) {
                 const sec = Math.ceil(typical / 1000);
                 const m = Math.floor(sec / 60), s = sec % 60;
-                stagedHint.textContent = `Typically ${m ? m + 'm ' : ''}${s}s.`;
+                stagedHint.textContent = `Most recommendations are ready in about ${m ? m + 'm ' : ''}${s}s. Complex answers can take a little longer.`;
             } else {
-                stagedHint.textContent = '';
+                stagedHint.textContent = 'Most recommendations are ready in about 1–2 minutes. Complex answers can take a little longer.';
             }
         }
 
-        // Single copy scheduler
+        // Header text mirrors the active checklist item; set an initial default.
+        if (stagedText) stagedText.textContent = 'Preparing your results…';
+        // No rotating copy to avoid a "fake" feel.
         if (loader._copyTimer) clearInterval(loader._copyTimer);
-        let idx = 0;
-        if (stagedText) stagedText.textContent = LOADER_CFG.copy[0];
-        loader._copyTimer = setInterval(() => {
-            if (stagedText) stagedText.textContent = LOADER_CFG.copy[++idx % LOADER_CFG.copy.length];
-        }, 3000);
 
         // Slow network hint
         if (loader._slowTimer) clearTimeout(loader._slowTimer);
@@ -511,6 +379,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (toggle) toggle.style.display = 'none';
             });
         }
+
+        // Expand/collapse timeline card
+        const timelineCard = document.getElementById('timeline-card');
+        const timelineToggle = document.getElementById('timeline-toggle');
+        if (timelineCard) {
+            // Ensure collapsed at start
+            timelineCard.setAttribute('data-collapsed', 'true');
+        }
+        if (timelineCard && timelineToggle && !timelineToggle._wired) {
+            timelineToggle._wired = true;
+            const setIcon = (expanded) => {
+                timelineToggle.setAttribute('aria-expanded', String(expanded));
+                timelineToggle.innerHTML = expanded
+                    ? '<i class="fas fa-down-left-and-up-right-to-center" aria-hidden="true"></i>'
+                    : '<i class="fas fa-up-right-and-down-left-from-center" aria-hidden="true"></i>';
+            };
+            setIcon(false);
+            timelineToggle.addEventListener('click', () => {
+                const isCollapsed = timelineCard.getAttribute('data-collapsed') !== 'false';
+                const expanded = isCollapsed; // toggling to expanded
+                timelineCard.setAttribute('data-collapsed', String(!expanded));
+                setIcon(expanded);
+            });
+        }
     }
 
     function stopLoader(wasCancelled = false) {
@@ -522,6 +414,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Timers
         if (loader._copyTimer) clearInterval(loader._copyTimer);
         if (loader._slowTimer) clearTimeout(loader._slowTimer);
+        if (loader._timelineTimer) clearTimeout(loader._timelineTimer);
+        const timelineProgress = loader.querySelector('.timeline-progress');
+        if (timelineProgress) {
+            timelineProgress.style.setProperty('--progress-height', '0px');
+        }
+        document.querySelectorAll('.loader-checklist-new li').forEach(li => {
+            li.classList.remove('active', 'done');
+        });
+        // Clear any highlighted skeleton card
+        const highlighted = loader.querySelectorAll('.skeleton-gallery .skeleton-card.highlight');
+        highlighted.forEach(c => c.classList.remove('highlight'));
 
         const finalize = () => {
             // Persist actual duration for future typical display unless cancelled
@@ -559,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.style.display = 'block';
 
         const toggle = document.querySelector('.results-toggle-buttons');
-        if (toggle) toggle.style.display = 'inline-flex';
+        if (toggle) toggle.style.display = 'none';
         if (rtsBtn) rtsBtn.disabled = true;
         if (customBtn) customBtn.disabled = true;
 
@@ -846,4 +749,18 @@ document.addEventListener('DOMContentLoaded', () => {
     determineStepOrder();
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
+
+    // Prevent programmatic click on submit button
+    let programmaticClick = false;
+    submitBtn.addEventListener('mousedown', () => {
+        programmaticClick = true;
+    });
+    submitBtn.addEventListener('mouseup', () => {
+        programmaticClick = false;
+    });
+    submitBtn.addEventListener('click', (e) => {
+        if (programmaticClick) {
+            e.stopImmediatePropagation();
+        }
+    });
 });

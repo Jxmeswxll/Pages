@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
+    const progressBar = document.querySelector('.progress-bar');
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
@@ -78,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextStepElement = allSteps.find(step => step.dataset.stepId === stepId);
         if (nextStepElement) {
             nextStepElement.style.display = 'block';
+            const h2 = nextStepElement.querySelector('h2');
+            if (h2) {
+                h2.setAttribute('tabindex', '-1');
+                setTimeout(() => h2.focus(), 0);
+            }
         }
 
         if (stepId === 'budget') {
@@ -91,8 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateProgress() {
         const totalSteps = currentStepOrder.length;
-        const progressPercentage = totalSteps > 1 ? (currentStepIndex / (totalSteps - 1)) * 100 : 0;
+        const progressPercentage = totalSteps > 1 ? Math.round((currentStepIndex / (totalSteps - 1)) * 100) : 0;
         progress.style.width = `${progressPercentage}%`;
+        if (progressBar) {
+            progressBar.setAttribute('aria-valuenow', progressPercentage);
+        }
     }
 
     function updateButtons() {
@@ -172,6 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         selectCard(card);
+    });
+
+    quiz.addEventListener('keydown', (e) => {
+        const card = e.target.closest('.option-card[role="button"]');
+        if (!card) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+        }
     });
 
     function selectCard(card) {
@@ -272,178 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showStep(currentStepOrder[prevStepIndex]);
         }
     });
-
-    // Perceptual loader controls (extended for long waits)
-    function startPerceptualLoader() {
-        if (!loader) return;
-        loader.style.display = 'block';
-
-        // Local history utilities for ETA (rolling median of last 5 runs)
-        const HISTORY_KEY = 'qm_rec_durations';
-        const maxHistory = 5;
-        const readHistory = () => {
-            try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; }
-        };
-        const writeHistory = (arr) => {
-            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(-maxHistory))); } catch {}
-        };
-        const median = (arr) => {
-            if (!arr.length) return 90000;
-            const s = [...arr].sort((a,b)=>a-b);
-            const mid = Math.floor(s.length/2);
-            return s.length % 2 ? s[mid] : Math.round((s[mid-1] + s[mid]) / 2);
-        };
-
-        loader._startTs = Date.now();
-        loader._predictedMs = median(readHistory()) || 90000;
-        loader._lastMicroTs = 0;
-
-        const micro = [
-            'Analyzing your choices…',
-            'Matching CPU ↔ GPU…',
-            'Checking thermals…',
-            'Verifying prices…',
-            'Ensuring compatibility…',
-            'Ranking value…',
-            'Looking at stock…',
-            'Simulating performance…',
-        ];
-        let microIdx = 0;
-
-        // Initial staged jumps for early momentum
-        const stagedSeq = [
-            { msg: 'Finding your perfect match…', pct: 15, dur: 500 },
-            { msg: 'Comparing components…', pct: 40, dur: 700 },
-            { msg: 'Running benchmarks…', pct: 60, dur: 700 },
-            { msg: 'Polishing recommendations…', pct: 80, dur: 600 },
-        ];
-        let i = 0;
-        function runStaged() {
-            if (!loader || loader.style.display === 'none') return;
-            if (i < stagedSeq.length) {
-                const s = stagedSeq[i++];
-                if (stagedText) stagedText.textContent = s.msg;
-                if (stagedPct) stagedPct.textContent = s.pct + '%';
-                if (stagedFill) stagedFill.style.width = s.pct + '%';
-                loader._stagedTimer = setTimeout(runStaged, s.dur);
-            } else {
-                beginTrickle();
-            }
-        }
-        runStaged();
-
-        // Long-wait beats (reassurance copy)
-        if (loader._beatTimers) loader._beatTimers.forEach(clearTimeout);
-        loader._beatTimers = [
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Still working… matching components and stock'; }, 30000),
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Almost done—ranking best value'; }, 60000),
-            setTimeout(() => { if (stagedText) stagedText.textContent = 'Finalising picks…'; }, 80000),
-        ];
-
-        // Reset hint initially
-        if (stagedHint) stagedHint.textContent = '';
-
-        function beginTrickle() {
-            const tick = () => {
-                if (!loader || loader.style.display === 'none') return;
-                const now = Date.now();
-                const elapsed = now - loader._startTs;
-                const predicted = loader._predictedMs || 90000;
-
-                // Time-based percent towards 97% with subtle jitter
-                const base = Math.min(97, Math.floor((elapsed / predicted) * 97));
-                const current = parseInt((stagedPct?.textContent || '0').replace('%','')) || 0;
-                const jitter = Math.random() * 0.6 + 0.2; // 0.2–0.8%
-                const target = Math.max(current, Math.min(97, base + (current < base ? 0 : jitter)));
-
-                if (stagedPct) stagedPct.textContent = target.toFixed(0) + '%';
-                if (stagedFill) stagedFill.style.width = target + '%';
-
-                // Live ETA / final checks
-                const remaining = Math.max(0, predicted - elapsed);
-                if (target >= 97 || elapsed >= predicted) {
-                    if (stagedHint) stagedHint.textContent = 'Final checks…';
-                } else if (stagedHint) {
-                    const sec = Math.ceil(remaining / 1000);
-                    const m = Math.floor(sec / 60);
-                    const s = sec % 60;
-                    const parts = [];
-                    if (m) parts.push(`${m}m`);
-                    parts.push(`${s}s`);
-                    stagedHint.textContent = `About ${parts.join(' ')} remaining…`;
-                }
-
-                // Rotate believable microcopy every ~2s
-                if (now - (loader._lastMicroTs || 0) > 2000) {
-                    loader._lastMicroTs = now;
-                    if (stagedText) {
-                        stagedText.textContent = micro[microIdx++ % micro.length];
-                    }
-                }
-
-                // Checklist ticks
-                const items = document.querySelectorAll('#loader-checklist li');
-                items.forEach(li => {
-                    const ms = parseInt(li.getAttribute('data-ms') || '0', 10);
-                    if (elapsed >= ms) li.classList.add('done');
-                });
-
-                loader._trickleTimer = setTimeout(tick, 1000 + Math.random() * 400);
-            };
-            tick();
-        }
-
-        // Wire cancel once
-        const cancelBtn = document.getElementById('loader-cancel');
-        if (cancelBtn && !loader._cancelWired) {
-            loader._cancelWired = true;
-            cancelBtn.addEventListener('click', () => {
-                stopPerceptualLoader(true); // cancel mode
-                // Restore quiz UI
-                resultsContainer.style.display = 'none';
-                quizContainer.style.display = 'block';
-                const nav = document.querySelector('.navigation');
-                if (nav) nav.style.display = 'flex';
-                const toggle = document.querySelector('.results-toggle-buttons');
-                if (toggle) toggle.style.display = 'none';
-            });
-        }
-    }
-
-    function stopPerceptualLoader(wasCancelled = false) {
-        if (!loader) return;
-
-        // Clear timers
-        clearTimeout(messageInterval);
-        if (loader._stagedTimer) clearTimeout(loader._stagedTimer);
-        if (loader._trickleTimer) clearTimeout(loader._trickleTimer);
-        if (loader._beatTimers) loader._beatTimers.forEach(clearTimeout);
-
-        // Persist actual duration for future ETA unless user cancelled
-        if (!wasCancelled) {
-            try {
-                const HISTORY_KEY = 'qm_rec_durations';
-                const read = () => { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; } };
-                const write = (arr) => { try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(-5))); } catch {} };
-                const start = loader._startTs || Date.now();
-                const dur = Date.now() - start;
-                const arr = read();
-                arr.push(dur);
-                write(arr);
-            } catch {}
-        }
-
-        // Finish animation and hide
-        if (stagedText && !wasCancelled) stagedText.textContent = 'Ready!';
-        if (stagedPct && !wasCancelled) stagedPct.textContent = '100%';
-        if (stagedFill && !wasCancelled) stagedFill.style.width = '100%';
-
-        setTimeout(() => {
-            loader.style.display = 'none';
-            if (stagedHint) stagedHint.textContent = '';
-            document.querySelectorAll('#loader-checklist li').forEach(li => li.classList.remove('done'));
-        }, wasCancelled ? 0 : 500);
-    }
 
     // New premium, honest loader (indeterminate-first) and abortable fetch
     function startLoader() {
@@ -708,6 +554,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayDesktopGrid(recs) {
         resultsGrid.innerHTML = '';
+        const safeText = (s) => document.createTextNode(String(s));
+        const safeUrl = (u) => {
+            try {
+                const url = new URL(u);
+                return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
+            } catch {
+                return '#';
+            }
+        };
+
         recs.forEach(pc => {
             const card = document.createElement('div');
             card.className = 'result-card';
@@ -715,29 +571,79 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (pc.recommendationLevel === 'Best Value') card.classList.add('best-value');
             else if (pc.recommendationLevel === 'Level Up') card.classList.add('level-up');
 
-            const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
-            const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
-            const productUrl = pc.productUrl;
-            const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
-            
-            const priceHTML = currentView === 'RTS' 
-                ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
-                : `<p class="price">${pc.price}</p>`;
+            const productUrl = safeUrl(pc.productUrl);
 
-            const buttonHTML = currentView === 'RTS'
-                ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
-                : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
+            const imageLink = document.createElement('a');
+            imageLink.href = productUrl;
+            imageLink.target = '_blank';
+            imageLink.rel = 'noopener noreferrer';
+            imageLink.className = 'result-image-link';
+            const img = document.createElement('img');
+            img.src = safeUrl(pc.imageUrl);
+            img.alt = pc.name;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.width = 1200;
+            img.height = 800;
+            imageLink.appendChild(img);
 
-            card.innerHTML = `
-                <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}" loading="lazy" decoding="async"></a>
-                <div class="result-card-content">
-                    ${badgeHTML}
-                    <div class="title-container"><h3>${pc.name}</h3></div>
-                    <div class="price-container">${priceHTML}${strikethroughHTML}</div>
-                    ${buttonHTML}
-                    <div class="details">${detailsHTML}</div>
-                    <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
-                </div>`;
+            const content = document.createElement('div');
+            content.className = 'result-card-content';
+
+            const badge = document.createElement('div');
+            badge.className = 'recommendation-badge';
+            badge.appendChild(safeText(pc.recommendationLevel));
+
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'title-container';
+            const title = document.createElement('h3');
+            title.appendChild(safeText(pc.name));
+            titleContainer.appendChild(title);
+
+            const priceContainer = document.createElement('div');
+            priceContainer.className = 'price-container';
+            const price = document.createElement('p');
+            price.className = 'price';
+            const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+            price.appendChild(safeText(priceText));
+            priceContainer.appendChild(price);
+
+            if (pc.strikethroughPrice) {
+                const strikethrough = document.createElement('p');
+                strikethrough.className = 'strikethrough-price';
+                strikethrough.appendChild(safeText(pc.strikethroughPrice));
+                priceContainer.appendChild(strikethrough);
+            }
+
+            const buyButton = document.createElement('a');
+            buyButton.href = productUrl;
+            buyButton.target = '_blank';
+            buyButton.rel = 'noopener noreferrer';
+            buyButton.className = 'buy-now-button-desktop';
+            buyButton.appendChild(safeText(currentView === 'RTS' ? 'Buy Now' : 'Customise Now'));
+
+            const details = document.createElement('div');
+            details.className = 'details';
+            const detailsFrag = document.createDocumentFragment();
+            Object.entries(pc.details).forEach(([k, v]) => {
+                const p = document.createElement('p');
+                const strong = document.createElement('strong');
+                strong.appendChild(safeText(k.charAt(0).toUpperCase() + k.slice(1) + ': '));
+                p.appendChild(strong);
+                p.appendChild(safeText(v));
+                detailsFrag.appendChild(p);
+            });
+            details.appendChild(detailsFrag);
+
+            const viewButton = document.createElement('a');
+            viewButton.href = productUrl;
+            viewButton.target = '_blank';
+            viewButton.rel = 'noopener noreferrer';
+            viewButton.className = 'view-product-button';
+            viewButton.appendChild(safeText('View Product'));
+
+            content.append(badge, titleContainer, priceContainer, buyButton, details, viewButton);
+            card.append(imageLink, content);
             resultsGrid.appendChild(card);
         });
     }
@@ -790,35 +696,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateMobileView(pc) {
         if (!pc) return;
-        const productUrl = pc.productUrl;
-        document.getElementById('mobile-product-title').textContent = pc.name;
+        const safeText = (s) => document.createTextNode(String(s));
+        const safeUrl = (u) => {
+            try {
+                const url = new URL(u);
+                return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
+            } catch {
+                return '#';
+            }
+        };
+
+        const productUrl = safeUrl(pc.productUrl);
+        const titleEl = document.getElementById('mobile-product-title');
+        titleEl.innerHTML = '';
+        titleEl.appendChild(safeText(pc.name));
+
         const priceTag = document.querySelector('.mobile-price-tag');
-        
+        priceTag.innerHTML = '';
         const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
-        priceTag.innerHTML = pc.strikethroughPrice
-            ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
-            : `${priceText}`;
+        priceTag.appendChild(safeText(priceText));
+        if (pc.strikethroughPrice) {
+            const strikethrough = document.createElement('span');
+            strikethrough.className = 'strikethrough-price';
+            strikethrough.appendChild(safeText(pc.strikethroughPrice));
+            priceTag.appendChild(document.createTextNode(' '));
+            priceTag.appendChild(strikethrough);
+        }
 
         const buyButton = document.getElementById('mobile-buy-button');
         buyButton.href = productUrl;
+        buyButton.rel = 'noopener noreferrer';
         buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
 
         const mobileImg = document.getElementById('mobile-product-image');
         mobileImg.loading = 'lazy';
         mobileImg.decoding = 'async';
-        mobileImg.src = pc.imageUrl;
-        
+        mobileImg.src = safeUrl(pc.imageUrl);
+        mobileImg.width = 1200;
+        mobileImg.height = 800;
+
         const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = `<h3>Specifications</h3>` + Object.entries(pc.details).map(([key, value]) => 
-            `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
-        ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
+        specsContainer.innerHTML = '';
+        const h3 = document.createElement('h3');
+        h3.appendChild(safeText('Specifications'));
+        specsContainer.appendChild(h3);
+        const detailsFrag = document.createDocumentFragment();
+        Object.entries(pc.details).forEach(([k, v]) => {
+            const p = document.createElement('p');
+            const strong = document.createElement('strong');
+            strong.appendChild(safeText(k.charAt(0).toUpperCase() + k.slice(1) + ': '));
+            p.appendChild(strong);
+            p.appendChild(safeText(v));
+            detailsFrag.appendChild(p);
+        });
+        specsContainer.appendChild(detailsFrag);
+        const viewButton = document.createElement('a');
+        viewButton.href = productUrl;
+        viewButton.target = '_blank';
+        viewButton.rel = 'noopener noreferrer';
+        viewButton.className = 'view-product-button-mobile';
+        viewButton.appendChild(safeText('View Product'));
+        specsContainer.appendChild(viewButton);
     }
 
     rtsBtn.addEventListener('click', () => {
         if (currentView === 'RTS') return;
         currentView = 'RTS';
         rtsBtn.classList.add('active');
+        rtsBtn.setAttribute('aria-pressed', 'true');
         customBtn.classList.remove('active');
+        customBtn.setAttribute('aria-pressed', 'false');
         displayResults();
     });
 
@@ -826,7 +773,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentView === 'Custom') return;
         currentView = 'Custom';
         customBtn.classList.add('active');
+        customBtn.setAttribute('aria-pressed', 'true');
         rtsBtn.classList.remove('active');
+        rtsBtn.setAttribute('aria-pressed', 'false');
         displayResults();
     });
 

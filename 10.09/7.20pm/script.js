@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = document.getElementById('progress');
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
+    const newLoader = document.getElementById('new-loader');
 
     const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
 
@@ -563,10 +564,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rtsBtn) rtsBtn.disabled = true;
         if (customBtn) customBtn.disabled = true;
 
-        if (loader) loader.style.display = 'block';
+        if (newLoader) newLoader.style.display = 'flex';
         resultsGrid.style.display = 'none';
 
-        startLoader();
+        startNewLoader();
 
         // Abortable fetch with hard timeout
         abortController = new AbortController();
@@ -847,3 +848,58 @@ document.addEventListener('DOMContentLoaded', () => {
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
 });
+
+function startNewLoader() {
+    const loader = document.getElementById('new-loader');
+    if (!loader) return;
+
+    const statusImage = document.getElementById('status-image');
+    const loadingStatus = document.getElementById('loading-status');
+    const timelineFill = document.getElementById('timeline-fill');
+    const timelinePercentage = document.getElementById('timeline-percentage');
+
+    const statuses = [
+        { time: 0, text: 'Analyzing all available products', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 10, text: 'Identifying best pre-built match', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 20, text: 'Exploring higher-tier pre-built options', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 30, text: 'Highlighting best-value pre-built', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 40, text: 'Custom build – our top recommendation', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 50, text: 'Summarizing recommendation for you', image: 'https://i.imgur.com/8h6wY6b.png' },
+        { time: 60, text: 'Done!', image: 'https://i.imgur.com/8h6wY6b.png' }
+    ];
+
+    let startTime = Date.now();
+    let duration = 60000; // 60 seconds
+
+    function updateLoader() {
+        let elapsedTime = Date.now() - startTime;
+        let progress = Math.min((elapsedTime / duration) * 100, 100);
+
+        timelineFill.style.width = progress + '%';
+        timelinePercentage.textContent = Math.round(progress) + '%';
+
+        let currentStatus = statuses[0];
+        for (let i = 0; i < statuses.length; i++) {
+            if (elapsedTime >= statuses[i].time * 1000) {
+                currentStatus = statuses[i];
+            }
+        }
+
+        if (loadingStatus.textContent !== currentStatus.text) {
+            loadingStatus.textContent = currentStatus.text;
+            statusImage.style.opacity = 0;
+            setTimeout(() => {
+                statusImage.src = currentStatus.image;
+                statusImage.style.opacity = 1;
+            }, 500);
+        }
+
+        if (elapsedTime < duration) {
+            requestAnimationFrame(updateLoader);
+        }
+    }
+
+    statusImage.src = statuses[0].image;
+    loader.style.display = 'flex';
+    requestAnimationFrame(updateLoader);
+}

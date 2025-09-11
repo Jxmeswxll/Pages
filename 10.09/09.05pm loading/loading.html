@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#111" />
+  <title>Aftershock — Finding Your Perfect Build</title>
+  <link rel="stylesheet" href="loading.css" />
+</head>
+<body>
+  <div id="results-container" aria-label="Loading your personalised recommendations">
+    <!-- Brand + context -->
+    <header class="as-header" aria-hidden="true">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-name">AFTERSHOCK</span>
+      </div>
+      <h1 class="title">Dialing in your perfect build</h1>
+      <p class="lede">
+        We compare current local stock, pricing, and real‑world benchmarks to shortlist the best rigs for you.
+        It takes about a minute because we actually run the numbers.
+      </p>
+      <div class="explain-chips">
+        <span class="chip">No upsell fluff</span>
+        <span class="chip">Live stock & price checks</span>
+        <span class="chip">Benchmarks that matter</span>
+      </div>
+    </header>
+
+    <!-- Perceptual loader + skeleton preview -->
+    <div id="perceptual-loader" class="perceptual-loader determinate" data-total-ms="60000">
+      <div class="staged">
+        <div class="staged-row">
+          <div class="staged-text" id="staged-text">Warming up the benchmark engine…</div>
+          <div class="staged-pct" id="staged-pct" aria-live="polite">3%</div>
+        </div>
+        <div
+          class="bar"
+          role="progressbar"
+          aria-busy="true"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="3"
+          aria-valuetext="Starting up"
+        >
+          <div class="fill" id="staged-fill" style="width: 3%"></div>
+        </div>
+        <p class="staged-hint" id="staged-hint" aria-live="polite">This usually takes about 60s.</p>
+        <p class="eta" id="eta" aria-live="polite" data-label="ETA">ETA ~ 0:57</p>
+      </div>
+
+      <div class="loader-extras">
+        <ul id="loader-checklist" class="loader-checklist" aria-label="What we are doing right now">
+          <li data-ms="5000"><span>Load current GPU/CPU benchmarks</span></li>
+          <li data-ms="12000"><span>Match performance to your use‑case</span></li>
+          <li data-ms="22000"><span>Filter by live stock and local pricing</span></li>
+          <li data-ms="35000"><span>Balance performance vs. budget</span></li>
+          <li data-ms="48000"><span>Assemble top 3 picks</span></li>
+          <li data-ms="58000"><span>Final quality checks</span></li>
+        </ul>
+
+        <div class="controls">
+          <button id="loader-cancel" class="loader-cancel" type="button" aria-label="Cancel and go back">Cancel</button>
+          <a id="loader-continue" class="loader-continue" href="#" hidden>View my results</a>
+        </div>
+      </div>
+
+      <div class="skeleton-grid" aria-hidden="true">
+        <div class="skeleton-card">
+          <div class="sk-img shimmer"></div>
+          <div class="sk-badge shimmer"></div>
+          <div class="sk-title shimmer"></div>
+          <div class="sk-price shimmer"></div>
+          <div class="sk-btn shimmer"></div>
+          <ul class="sk-specs">
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+          </ul>
+        </div>
+        <div class="skeleton-card">
+          <div class="sk-img shimmer"></div>
+          <div class="sk-badge shimmer"></div>
+          <div class="sk-title shimmer"></div>
+          <div class="sk-price shimmer"></div>
+          <div class="sk-btn shimmer"></div>
+          <ul class="sk-specs">
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+          </ul>
+        </div>
+        <div class="skeleton-card">
+          <div class="sk-img shimmer"></div>
+          <div class="sk-badge shimmer"></div>
+          <div class="sk-title shimmer"></div>
+          <div class="sk-price shimmer"></div>
+          <div class="sk-btn shimmer"></div>
+          <ul class="sk-specs">
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+            <li class="shimmer"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="loading.js"></script>
+</body>
+</html>

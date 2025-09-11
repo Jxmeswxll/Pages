@@ -273,8 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Perceptual loader controls (extended for long waits)
-    function startPerceptualLoader() {
+    function startLoader() {
         if (!loader) return;
         loader.style.display = 'block';
 
@@ -398,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cancelBtn && !loader._cancelWired) {
             loader._cancelWired = true;
             cancelBtn.addEventListener('click', () => {
-                stopPerceptualLoader(true); // cancel mode
+                stopLoader(true); // cancel mode
                 // Restore quiz UI
                 resultsContainer.style.display = 'none';
                 quizContainer.style.display = 'block';
@@ -410,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function stopPerceptualLoader(wasCancelled = false) {
+    function stopLoader(wasCancelled = false) {
         if (!loader) return;
 
         // Clear timers
@@ -443,112 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stagedHint) stagedHint.textContent = '';
             document.querySelectorAll('#loader-checklist li').forEach(li => li.classList.remove('done'));
         }, wasCancelled ? 0 : 500);
-    }
-
-    // New premium, honest loader (indeterminate-first) and abortable fetch
-    function startLoader() {
-        if (!loader) return;
-        loader.style.display = 'block';
-        loader.classList.add('indeterminate');
-        loader.classList.remove('determinate');
-
-        // ARIA
-        const bar = loader.querySelector('.bar');
-        if (bar) {
-            bar.setAttribute('aria-busy', 'true');
-            bar.setAttribute('aria-valuetext', 'Preparing results');
-        }
-
-        // History-based typical duration (display only)
-        const HISTORY_KEY = 'qm_rec_durations';
-        const readHistory = () => { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; } };
-        const median = (arr) => {
-            if (!arr.length) return 0;
-            const s = [...arr].sort((a,b)=>a-b);
-            const mid = Math.floor(s.length/2);
-            return s.length % 2 ? s[mid] : Math.round((s[mid-1] + s[mid]) / 2);
-        };
-
-        loader._startTs = Date.now();
-        const typical = median(readHistory());
-        if (stagedHint) {
-            if (typical > 0) {
-                const sec = Math.ceil(typical / 1000);
-                const m = Math.floor(sec / 60), s = sec % 60;
-                stagedHint.textContent = `Typically ${m ? m + 'm ' : ''}${s}s.`;
-            } else {
-                stagedHint.textContent = '';
-            }
-        }
-
-        // Single copy scheduler
-        if (loader._copyTimer) clearInterval(loader._copyTimer);
-        let idx = 0;
-        if (stagedText) stagedText.textContent = LOADER_CFG.copy[0];
-        loader._copyTimer = setInterval(() => {
-            if (stagedText) stagedText.textContent = LOADER_CFG.copy[++idx % LOADER_CFG.copy.length];
-        }, 3000);
-
-        // Slow network hint
-        if (loader._slowTimer) clearTimeout(loader._slowTimer);
-        loader._slowTimer = setTimeout(() => {
-            if (stagedText) stagedText.textContent = 'Still working—network looks slow';
-        }, LOADER_CFG.slowBeatMs);
-
-        // Wire cancel to abort once (separate flag from legacy)
-        const cancelBtn = document.getElementById('loader-cancel');
-        if (cancelBtn && !loader._cancelWired2) {
-            loader._cancelWired2 = true;
-            cancelBtn.addEventListener('click', () => {
-                try { abortController?.abort(); } catch {}
-                stopLoader(true);
-                // Restore quiz UI
-                resultsContainer.style.display = 'none';
-                quizContainer.style.display = 'block';
-                const nav = document.querySelector('.navigation');
-                if (nav) nav.style.display = 'flex';
-                const toggle = document.querySelector('.results-toggle-buttons');
-                if (toggle) toggle.style.display = 'none';
-            });
-        }
-    }
-
-    function stopLoader(wasCancelled = false) {
-        if (!loader) return;
-
-        const elapsed = Date.now() - (loader._startTs || Date.now());
-        const waitMore = Math.max(0, LOADER_CFG.minShowMs - elapsed);
-
-        // Timers
-        if (loader._copyTimer) clearInterval(loader._copyTimer);
-        if (loader._slowTimer) clearTimeout(loader._slowTimer);
-
-        const finalize = () => {
-            // Persist actual duration for future typical display unless cancelled
-            if (!wasCancelled) {
-                try {
-                    const HISTORY_KEY = 'qm_rec_durations';
-                    const read = () => { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; } };
-                    const write = (arr) => { try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(-5))); } catch {}
-                    };
-                    const arr = read();
-                    arr.push(Date.now() - (loader._startTs || Date.now()));
-                    write(arr);
-                } catch {}
-            }
-            loader.style.display = 'none';
-            if (stagedHint) stagedHint.textContent = '';
-            loader.classList.remove('indeterminate', 'determinate');
-            const bar = loader.querySelector('.bar');
-            if (bar) {
-                bar.setAttribute('aria-busy', 'false');
-                bar.removeAttribute('aria-valuenow');
-                bar.setAttribute('aria-valuetext', '');
-            }
-        };
-
-        if (!wasCancelled && stagedText) stagedText.textContent = 'Ready!';
-        setTimeout(finalize, waitMore + (wasCancelled ? 0 : 200));
     }
 
     submitBtn.addEventListener('click', () => {
@@ -846,4 +739,18 @@ document.addEventListener('DOMContentLoaded', () => {
     determineStepOrder();
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
+
+    // Prevent programmatic click on submit button
+    let programmaticClick = false;
+    submitBtn.addEventListener('mousedown', () => {
+        programmaticClick = true;
+    });
+    submitBtn.addEventListener('mouseup', () => {
+        programmaticClick = false;
+    });
+    submitBtn.addEventListener('click', (e) => {
+        if (programmaticClick) {
+            e.stopImmediatePropagation();
+        }
+    });
 });
