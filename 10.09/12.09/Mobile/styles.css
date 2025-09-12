@@ -537,7 +537,7 @@ button:disabled {
 }
 
 .strikethrough-price {
-    font-size: 0.9em;
+    font-size: 0.7em;
     color: var(--subtle-text-color);
     text-decoration: line-through;
 }
@@ -811,9 +811,10 @@ button:disabled {
     .mobile-results-card {
         background-color: var(--card-background);
         border-radius: var(--border-radius);
-        margin-top: 20px;
+        margin-top: 40px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
+        overflow: visible;
+        position: relative;
     }
 
     .hero-image {
@@ -830,13 +831,17 @@ button:disabled {
     }
 
     #mobile-recommendation-badge {
-        margin-bottom: 15px;
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
     }
 
     #mobile-product-title {
-        font-size: 1.5em;
+        font-size: 1.2em;
         font-weight: 600;
-        margin: 0;
+        margin: 10px 0 0;
     }
 
     .price-container {

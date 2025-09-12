@@ -894,24 +894,15 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileImg.src = pc.imageUrl;
 
         const highlightSpecsContainer = document.querySelector('.highlight-specs');
-        const keySpecs = {
-            CPU: pc.details.cpu || pc.details.CPU,
-            GPU: pc.details.gpu || pc.details.GPU,
-            RAM: pc.details.ram || pc.details.RAM,
-            Storage: pc.details.storage || pc.details.Storage
-        };
+        highlightSpecsContainer.innerHTML = ''; // Clear previous specs
 
-        let specsHTML = '<ul class="specs-list">';
-        for (const [key, value] of Object.entries(keySpecs)) {
-            if (value) {
-                specsHTML += `<li><strong>${key}</strong>${value}</li>`;
-            }
+        const specString = pc.details.KeySpecs;
+        if (specString && typeof specString === 'string') {
+            highlightSpecsContainer.innerHTML = `<p>${specString}</p>`;
         }
-        specsHTML += '</ul>';
-        highlightSpecsContainer.innerHTML = specsHTML;
         
         const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = Object.entries(pc.details).map(([key, value]) => 
+        specsContainer.innerHTML = Object.entries(pc.details).filter(([key]) => key !== 'KeySpecs').map(([key, value]) =>
             `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
         ).join('');
 
