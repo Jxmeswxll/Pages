@@ -835,9 +835,10 @@ document.addEventListener('DOMContentLoaded', () => {
         function handleSwipe() {
             const deltaX = touchendX - touchstartX;
             const deltaY = touchendY - touchstartY;
+            const minSwipeDistance = 50; // Minimum horizontal distance for a swipe
 
-            // Only treat as a swipe if horizontal movement is significantly greater than vertical
-            if (Math.abs(deltaX) > Math.abs(deltaY) + 10) {
+            // Only treat as a swipe if horizontal movement is significant and greater than vertical movement
+            if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX < 0) { // Swiped left
                     if (currentIndex < sortedPcs.length - 1) {
                         updateActive(currentIndex + 1);
