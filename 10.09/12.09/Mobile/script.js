@@ -753,7 +753,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div id="mobile-recommendation-pills"></div>
                 <div id="mobile-pagination-dots"></div>
                 <div class="highlight-specs">
-                    </div>
+                    <ul class="specs-list"></ul>
+                </div>
                 <div class="full-specs">
                     <div class="specs-toggle">Full Specifications <i class="fas fa-chevron-down"></i></div>
                     <div id="mobile-product-specs" class="mobile-specs-block" style="display: none;"></div>
@@ -819,22 +820,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let touchendY = 0;
         let isScrolling = false;
 
-        function handleSwipe(e) {
+        function handleSwipe() {
             const deltaX = touchendX - touchstartX;
             const deltaY = touchendY - touchstartY;
-            const minSwipeDistance = 50;
 
-            if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (e.cancelable) {
-                    e.preventDefault();
-                }
-                if (deltaX < 0) { // Swiped left
-                    if (currentIndex < sortedPcs.length - 1) {
-                        updateActive(currentIndex + 1);
-                    }
-                } else { // Swiped right
-                    if (currentIndex > 0) {
-                        updateActive(currentIndex - 1);
+            if (Math.abs(deltaX) > Math.abs(deltaY)) { // Horizontal swipe
+                if (Math.abs(deltaX) > 30) { // Threshold
+                    if (deltaX < 0) { // Left
+                        if (currentIndex < sortedPcs.length - 1) updateActive(currentIndex + 1);
+                    } else { // Right
+                        if (currentIndex > 0) updateActive(currentIndex - 1);
                     }
                 }
             }
@@ -842,25 +837,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (mobileResultsCard) {
             mobileResultsCard.addEventListener('touchstart', e => {
-                touchstartX = e.changedTouches[0].screenX;
-                touchstartY = e.changedTouches[0].screenY;
-                isScrolling = false;
-            }, { passive: true });
-
-            mobileResultsCard.addEventListener('touchmove', e => {
-                if (isScrolling) return;
-                const deltaY = e.changedTouches[0].screenY - touchstartY;
-                if (Math.abs(deltaY) > 10) {
-                    isScrolling = true;
-                }
+                touchstartX = e.changedTouches[0].clientX;
+                touchstartY = e.changedTouches[0].clientY;
             }, { passive: true });
 
             mobileResultsCard.addEventListener('touchend', e => {
-                if (isScrolling) return;
-                touchendX = e.changedTouches[0].screenX;
-                touchendY = e.changedTouches[0].screenY;
-                handleSwipe(e);
-            }, { passive: false });
+                touchendX = e.changedTouches[0].clientX;
+                touchendY = e.changedTouches[0].clientY;
+                handleSwipe();
+            }, { passive: true });
         }
 
         const specsToggle = document.querySelector('.specs-toggle');
@@ -892,12 +877,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileImg = document.getElementById('mobile-product-image');
         mobileImg.src = pc.imageUrl;
 
-        const highlightSpecsContainer = document.querySelector('.highlight-specs');
+        const highlightSpecsContainer = document.querySelector('.highlight-specs .specs-list');
         highlightSpecsContainer.innerHTML = ''; // Clear previous specs
 
         const specString = pc.details.KeySpecs;
         if (specString && typeof specString === 'string') {
-            highlightSpecsContainer.innerHTML = `<p>${specString}</p>`;
+            const specs = specString.split('|').map(s => s.trim());
+            const specMapping = {
+                'Ryzen': 'CPU',
+                'Intel': 'CPU',
+                'RTX': 'Graphics',
+                'Radeon': 'Graphics',
+                'DDR': 'RAM',
+                'NVMe': 'Storage',
+                'SSD': 'Storage'
+            };
+
+            specs.forEach(spec => {
+                let title = 'Component';
+                for (const key in specMapping) {
+                    if (spec.includes(key)) {
+                        title = specMapping[key];
+                        break;
+                    }
+                }
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${title}</strong> ${spec}`;
+                highlightSpecsContainer.appendChild(li);
+            });
         }
         
         const specsContainer = document.getElementById('mobile-product-specs');
