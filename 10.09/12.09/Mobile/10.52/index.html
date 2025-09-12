@@ -255,18 +255,23 @@
         </div>
         <div id="results" class="results-grid" style="display: none;"></div>
         <div id="mobile-results-container" style="display: none;">
-            <h2 id="mobile-product-title"></h2>
-            <div id="mobile-recommendation-pills"></div>
-            <div class="mobile-product-view">
-                <p class="mobile-price-tag"></p>
-                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
+            <div class="mobile-product-card">
+                <div class="mobile-card-header">
+                    <div class="best-value-badge"></div>
+                    <h2 id="mobile-product-title"></h2>
+                    <p id="mobile-product-subtitle"></p>
+                </div>
                 <img src="" id="mobile-product-image" alt="Recommended PC">
+                <div class="mobile-price-section">
+                    <p class="mobile-price-tag"></p>
+                    <p class="mobile-save-amount"></p>
+                </div>
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Add to Cart</a>
                 <div id="mobile-product-specs" class="mobile-specs-block"></div>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <div class="sticky-buy"></div>
 </body>
 </html>

@@ -47,31 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function determineStepOrder() {
         const primaryUse = answers.primaryUse || [];
-        let conditionalSteps = [];
+        let newOrder = ['primaryUse', 'pcType'];
 
         if (primaryUse.includes('Gaming')) {
-            conditionalSteps.push('games', 'resolution');
+            newOrder.push('games', 'resolution');
         }
-        if (primaryUse.includes('Work')) {
-            conditionalSteps.push('work');
-        }
-        if (primaryUse.includes('Study')) {
-            conditionalSteps.push('study');
-        }
-        if (primaryUse.includes('Essentials')) {
-            conditionalSteps.push('essentials');
-        }
-
-        const uniqueConditionalSteps = [...new Set(conditionalSteps)];
-        
-        let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
+        // Add other conditional steps based on primary use if they exist
+        // For now, we only have 'games' and 'resolution' as conditional
 
         if (answers.pcType && answers.pcType[0] === 'Desktop') {
-            baseOrder.push('caseSize');
+            newOrder.push('caseSize');
         }
         
-        baseOrder.push('budget');
-        currentStepOrder = baseOrder;
+        newOrder.push('budget');
+        
+        // Remove duplicates, keeping the first occurrence
+        currentStepOrder = [...new Set(newOrder)];
     }
 
     function showStep(stepId) {
@@ -229,16 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         updateButtons();
-
-        if (isSingle) {
-            setTimeout(() => {
-                nextBtn.click();
-            }, 200);
-        }
-
-        if (navigator.vibrate) {
-            navigator.vibrate(50);
-        }
     }
 
     function updateBudgetOptions() {
@@ -519,7 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Restore quiz UI
                 resultsContainer.style.display = 'none';
                 quizContainer.style.display = 'block';
-                document.body.classList.remove('showing-results');
                 const nav = document.querySelector('.navigation');
                 if (nav) nav.style.display = 'flex';
                 const toggle = document.querySelector('.results-toggle-buttons');
@@ -572,7 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
         quizContainer.style.display = 'none';
         document.querySelector('.navigation').style.display = 'none';
         resultsContainer.style.display = 'block';
-        document.body.classList.add('showing-results');
 
         const toggle = document.querySelector('.results-toggle-buttons');
         if (toggle) toggle.style.display = 'inline-flex';
@@ -734,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
             const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
             const productUrl = pc.productUrl;
-            const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><i class="fas fa-microchip"></i> <strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
+            const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
             
             const priceHTML = currentView === 'RTS' 
                 ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
@@ -745,12 +724,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
 
             card.innerHTML = `
-                <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}" loading="lazy" decoding="async" srcset="${pc.imageUrl.replace('.png', '-300.png')} 300w, ${pc.imageUrl.replace('.png', '-600.png')} 600w, ${pc.imageUrl} 900w" sizes="(max-width: 600px) 300px, (max-width: 900px) 600px, 900px"></a>
+                <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}" loading="lazy" decoding="async"></a>
                 <div class="result-card-content">
                     ${badgeHTML}
                     <div class="title-container"><h3>${pc.name}</h3></div>
                     <div class="price-container">${priceHTML}${strikethroughHTML}</div>
-                    <div class="trust-signals">✔ Ships in 24h • ✚ Free 30-day returns • 🛡 2-yr warranty</div>
                     ${buttonHTML}
                     <div class="details">${detailsHTML}</div>
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
@@ -760,116 +738,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayMobileSingleView(recs) {
-        const mobileResultsContainer = document.getElementById('mobile-results-container');
-        mobileResultsContainer.innerHTML = `
-            <h2 id="mobile-product-title"></h2>
-            <div id="mobile-recommendation-pills"></div>
-            <div class="card-carousel"></div>
-            <div class="pagination-dots"></div>
-            <div id="mobile-product-specs" class="mobile-specs-block"></div>
-        `;
-
-        const carousel = mobileResultsContainer.querySelector('.card-carousel');
-        recs.forEach(pc => {
-            const slide = document.createElement('div');
-            slide.className = 'slide';
-            slide.innerHTML = `
-                <div class="mobile-product-view">
-                    <p class="mobile-price-tag"></p>
-                    <a href="${pc.productUrl}" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
-                    <img src="${pc.imageUrl}" id="mobile-product-image" alt="Recommended PC" loading="lazy" decoding="async" srcset="${pc.imageUrl.replace('.png', '-300.png')} 300w, ${pc.imageUrl.replace('.png', '-600.png')} 600w, ${pc.imageUrl} 900w" sizes="(max-width: 600px) 300px, (max-width: 900px) 600px, 900px">
-                </div>
-            `;
-            carousel.appendChild(slide);
-        });
-
-        const pillsContainer = document.getElementById('mobile-recommendation-pills');
-        pillsContainer.innerHTML = '';
-
-        const dotsContainer = mobileResultsContainer.querySelector('.pagination-dots');
-        dotsContainer.innerHTML = '';
-
-        const order = ['Best Value', 'Our Recommendation', 'Level Up'];
-        const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
-        
-        let initialIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
-        if (initialIndex === -1) initialIndex = 0;
-
-        sortedPcs.forEach((pc, index) => {
-            const pill = document.createElement('button');
-            pill.className = 'mobile-pill';
-            pill.textContent = pc.recommendationLevel;
-            pill.dataset.index = index;
-            if (index === initialIndex) {
-                pill.classList.add('active');
-            }
-            pillsContainer.appendChild(pill);
-
-            const dot = document.createElement('button');
-            dot.dataset.index = index;
-            if (index === initialIndex) {
-                dot.setAttribute('aria-current', 'true');
-            }
-            dotsContainer.appendChild(dot);
-        });
-
-        updateMobileView(sortedPcs[initialIndex]);
-
-        pillsContainer.addEventListener('click', (e) => {
-            if (e.target.matches('.mobile-pill')) {
-                const index = e.target.dataset.index;
-                carousel.children[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-            }
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const index = Array.from(carousel.children).indexOf(entry.target);
-                    updateMobileView(sortedPcs[index]);
-                    pillsContainer.querySelectorAll('.mobile-pill').forEach(p => p.classList.remove('active'));
-                    pillsContainer.children[index].classList.add('active');
-                    dotsContainer.querySelectorAll('button').forEach(d => d.removeAttribute('aria-current'));
-                    dotsContainer.children[index].setAttribute('aria-current', 'true');
-                }
-            });
-        }, { threshold: 0.5 });
-
-        Array.from(carousel.children).forEach(slide => observer.observe(slide));
+        // For now, we'll just display the first recommendation.
+        // You can add a carousel or other navigation later if you want.
+        updateMobileView(recs[0]);
     }
 
     function updateMobileView(pc) {
         if (!pc) return;
         const productUrl = pc.productUrl;
+        const bestValueBadge = document.querySelector('.best-value-badge');
+        bestValueBadge.textContent = pc.recommendationLevel;
+
         document.getElementById('mobile-product-title').textContent = pc.name;
-        const priceTag = document.querySelector('.mobile-price-tag');
+        document.getElementById('mobile-product-subtitle').textContent = `${pc.details.cpu} | ${pc.details.gpu}`;
         
+        const priceTag = document.querySelector('.mobile-price-tag');
         const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
-        priceTag.innerHTML = pc.strikethroughPrice
-            ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
-            : `${priceText}`;
+        priceTag.innerHTML = `${priceText}`;
+        if (pc.strikethroughPrice) {
+            priceTag.innerHTML += ` <span class="strikethrough-price">${pc.strikethroughPrice}</span>`;
+            const price = parseFloat(priceText.replace(/[^0-9.-]+/g,""));
+            const strikethroughPrice = parseFloat(pc.strikethroughPrice.replace(/[^0-9.-]+/g,""));
+            const savings = strikethroughPrice - price;
+            if (savings > 0) {
+                document.querySelector('.mobile-save-amount').textContent = `You save $${savings.toFixed(2)}`;
+            }
+        }
 
         const buyButton = document.getElementById('mobile-buy-button');
         buyButton.href = productUrl;
-        buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
+        buyButton.textContent = 'Add to Cart';
 
         const mobileImg = document.getElementById('mobile-product-image');
         mobileImg.loading = 'lazy';
         mobileImg.decoding = 'async';
         mobileImg.src = pc.imageUrl;
-        mobileImg.srcset = `${pc.imageUrl.replace('.png', '-300.png')} 300w, ${pc.imageUrl.replace('.png', '-600.png')} 600w, ${pc.imageUrl} 900w`;
-        mobileImg.sizes = '(max-width: 600px) 300px, (max-width: 900px) 600px, 900px';
         
         const specsContainer = document.getElementById('mobile-product-specs');
         specsContainer.innerHTML = `<h3>Specifications</h3>` + Object.entries(pc.details).map(([key, value]) => 
-            `<p><i class="fas fa-microchip"></i> <strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
+            `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
         ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
-
-        const stickyBuyContainer = document.querySelector('.sticky-buy');
-        stickyBuyContainer.innerHTML = `
-            <div class="trust-signals">30-day returns • 2-year local warranty</div>
-            <a href="${productUrl}" class="btn" target="_blank">${currentView === 'RTS' ? 'Buy Now' : 'Customise Now'}</a>
-        `;
     }
 
     rtsBtn.addEventListener('click', () => {
@@ -897,16 +805,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 250);
     });
-
-    const resultsToggle = document.querySelector('.results-toggle-buttons');
-    if (resultsToggle) {
-        resultsToggle.style.display = 'none';
-        window.addEventListener('scroll', () => {
-            if (resultsContainer.style.display !== 'none') {
-                resultsToggle.style.display = 'inline-flex';
-            }
-        }, { once: true });
-    }
 
     allSteps.forEach((step, index) => {
         if (index > 0) step.style.display = 'none';
@@ -946,14 +844,4 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('There was a network issue submitting your email. Please try again.');
         });
     });
-
-    if (window.visualViewport) {
-      const adjust = () => {
-        const kbOpen = visualViewport.height < window.innerHeight;
-        document.documentElement.style.setProperty('--kb-pad',
-          kbOpen ? `${window.innerHeight - visualViewport.height + 8}px` : '0px');
-      };
-      visualViewport.addEventListener('resize', adjust);
-      adjust();
-    }
 });
