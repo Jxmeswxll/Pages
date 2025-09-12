@@ -734,7 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
                 </div>`;
             resultsGrid.appendChild(card);
-        }
+        });
     }
 
     function displayMobileSingleView(recs) {
@@ -817,6 +817,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let touchendX = 0;
         let touchstartY = 0;
         let touchendY = 0;
+        let isScrolling = false;
 
         function handleSwipe(e) {
             const deltaX = touchendX - touchstartX;
@@ -843,9 +844,19 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileResultsCard.addEventListener('touchstart', e => {
                 touchstartX = e.changedTouches[0].screenX;
                 touchstartY = e.changedTouches[0].screenY;
+                isScrolling = false;
+            }, { passive: true });
+
+            mobileResultsCard.addEventListener('touchmove', e => {
+                if (isScrolling) return;
+                const deltaY = e.changedTouches[0].screenY - touchstartY;
+                if (Math.abs(deltaY) > 10) {
+                    isScrolling = true;
+                }
             }, { passive: true });
 
             mobileResultsCard.addEventListener('touchend', e => {
+                if (isScrolling) return;
                 touchendX = e.changedTouches[0].screenX;
                 touchendY = e.changedTouches[0].screenY;
                 handleSwipe(e);
