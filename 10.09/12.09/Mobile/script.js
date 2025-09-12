@@ -133,6 +133,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    quiz.addEventListener('touchstart', (e) => {
+        const card = e.target.closest('.option-card');
+        if (card) {
+            card.classList.add('touched');
+        }
+    }, { passive: true });
+
+    quiz.addEventListener('touchend', (e) => {
+        const card = e.target.closest('.option-card');
+        if (card) {
+            card.classList.remove('touched');
+        }
+    });
+
     quiz.addEventListener('click', (e) => {
         const card = e.target.closest('.option-card');
         if (!card) return;
@@ -812,30 +826,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        const mobileResultsCard = document.querySelector('.mobile-results-card');
         let touchstartX = 0;
         let touchendX = 0;
+        let touchstartY = 0;
+        let touchendY = 0;
 
         function handleSwipe() {
-            if (touchendX < touchstartX) {
-                if (currentIndex < sortedPcs.length - 1) {
-                    updateActive(currentIndex + 1);
-                }
-            }
-            if (touchendX > touchstartX) {
-                if (currentIndex > 0) {
-                    updateActive(currentIndex - 1);
+            const deltaX = touchendX - touchstartX;
+            const deltaY = touchendY - touchstartY;
+
+            // Only treat as a swipe if horizontal movement is significantly greater than vertical
+            if (Math.abs(deltaX) > Math.abs(deltaY) + 10) {
+                if (deltaX < 0) { // Swiped left
+                    if (currentIndex < sortedPcs.length - 1) {
+                        updateActive(currentIndex + 1);
+                    }
+                } else { // Swiped right
+                    if (currentIndex > 0) {
+                        updateActive(currentIndex - 1);
+                    }
                 }
             }
         }
 
-        mobileResultsContainer.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+        if (mobileResultsCard) {
+            mobileResultsCard.addEventListener('touchstart', e => {
+                touchstartX = e.changedTouches[0].screenX;
+                touchstartY = e.changedTouches[0].screenY;
+            }, { passive: true });
 
-        mobileResultsContainer.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
+            mobileResultsCard.addEventListener('touchend', e => {
+                touchendX = e.changedTouches[0].screenX;
+                touchendY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, { passive: true });
+        }
 
         const specsToggle = document.querySelector('.specs-toggle');
         const specsContent = document.getElementById('mobile-product-specs');
@@ -867,20 +893,21 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileImg.src = pc.imageUrl;
 
         const highlightSpecsContainer = document.querySelector('.highlight-specs');
-        highlightSpecsContainer.innerHTML = `
-            <div class="spec-item">
-                <i class="fas fa-microchip"></i>
-                <span>${pc.details.cpu || pc.details.CPU}</span>
-            </div>
-            <div class="spec-item">
-                <i class="fas fa-memory"></i>
-                <span>${pc.details.ram || pc.details.RAM}</span>
-            </div>
-            <div class="spec-item">
-                <i class="fas fa-hdd"></i>
-                <span>${pc.details.storage || pc.details.Storage}</span>
-            </div>
-        `;
+        const keySpecs = {
+            CPU: pc.details.cpu || pc.details.CPU,
+            GPU: pc.details.gpu || pc.details.GPU,
+            RAM: pc.details.ram || pc.details.RAM,
+            Storage: pc.details.storage || pc.details.Storage
+        };
+
+        let specsHTML = '<ul class="specs-list">';
+        for (const [key, value] of Object.entries(keySpecs)) {
+            if (value) {
+                specsHTML += `<li><strong>${key}</strong>${value}</li>`;
+            }
+        }
+        specsHTML += '</ul>';
+        highlightSpecsContainer.innerHTML = specsHTML;
         
         const specsContainer = document.getElementById('mobile-product-specs');
         specsContainer.innerHTML = Object.entries(pc.details).map(([key, value]) => 
