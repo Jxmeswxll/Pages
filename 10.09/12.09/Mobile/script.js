@@ -133,20 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    quiz.addEventListener('touchstart', (e) => {
-        const card = e.target.closest('.option-card');
-        if (card) {
-            card.classList.add('touched');
-        }
-    }, { passive: true });
-
-    quiz.addEventListener('touchend', (e) => {
-        const card = e.target.closest('.option-card');
-        if (card) {
-            card.classList.remove('touched');
-        }
-    });
-
     quiz.addEventListener('click', (e) => {
         const card = e.target.closest('.option-card');
         if (!card) return;
@@ -748,7 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
                 </div>`;
             resultsGrid.appendChild(card);
-        });
+        }
     }
 
     function displayMobileSingleView(recs) {
@@ -832,13 +818,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let touchstartY = 0;
         let touchendY = 0;
 
-        function handleSwipe() {
+        function handleSwipe(e) {
             const deltaX = touchendX - touchstartX;
             const deltaY = touchendY - touchstartY;
-            const minSwipeDistance = 50; // Minimum horizontal distance for a swipe
+            const minSwipeDistance = 50;
 
-            // Only treat as a swipe if horizontal movement is significant and greater than vertical movement
             if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (e.cancelable) {
+                    e.preventDefault();
+                }
                 if (deltaX < 0) { // Swiped left
                     if (currentIndex < sortedPcs.length - 1) {
                         updateActive(currentIndex + 1);
@@ -860,8 +848,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileResultsCard.addEventListener('touchend', e => {
                 touchendX = e.changedTouches[0].screenX;
                 touchendY = e.changedTouches[0].screenY;
-                handleSwipe();
-            }, { passive: true });
+                handleSwipe(e);
+            }, { passive: false });
         }
 
         const specsToggle = document.querySelector('.specs-toggle');
@@ -902,7 +890,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = Object.entries(pc.details).filter(([key]) => key !== 'KeySpecs').map(([key, value]) =>
+        specsContainer.innerHTML = Object.entries(pc.details).map(([key, value]) =>
             `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
         ).join('');
 
