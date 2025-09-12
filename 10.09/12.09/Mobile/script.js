@@ -917,16 +917,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const trustMicrocopyContainer = document.querySelector('.trust-microcopy');
         trustMicrocopyContainer.innerHTML = `
             <div class="trust-item">
-                <i class="fas fa-box-open"></i>
-                <span>In Stock, Ready to Ship</span>
+                <i class="fas fa-truck"></i>
+                <span>NEXT DAY DISPATCH AVAILABLE</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-award"></i>
+                <span>AWARD-WINNING CUSTOM PC COMPANY</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-microchip"></i>
+                <span>FULL TRANSPARENCY ON PC COMPONENTS</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-headset"></i>
+                <span>UNMATCHED SERVICE AND SUPPORT</span>
             </div>
             <div class="trust-item">
                 <i class="fas fa-shield-alt"></i>
-                <span>3 Year Warranty</span>
-            </div>
-            <div class="trust-item">
-                <i class="fas fa-undo"></i>
-                <span>Easy Returns</span>
+                <span>3 YEAR DESKTOP WARRANTY AND LIFETIME SUPPORT</span>
             </div>
         `;
     }

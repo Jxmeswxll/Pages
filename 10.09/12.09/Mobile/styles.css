@@ -537,7 +537,7 @@ button:disabled {
 }
 
 .strikethrough-price {
-    font-size: 1.3em;
+    font-size: 1.1em;
     color: var(--subtle-text-color);
     text-decoration: line-through;
 }
@@ -817,13 +817,15 @@ button:disabled {
     }
 
     .hero-image {
-        width: 100%;
+        width: calc(100% - 40px);
         height: auto;
         display: block;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
     .product-info {
-        padding: 20px;
+        padding: 0 20px 20px;
         text-align: center;
     }
 
@@ -832,7 +834,7 @@ button:disabled {
     }
 
     #mobile-product-title {
-        font-size: 1.8em;
+        font-size: 1.5em;
         font-weight: 600;
         margin: 0;
     }
@@ -842,7 +844,7 @@ button:disabled {
         justify-content: center;
         align-items: baseline;
         gap: 10px;
-        margin-top: 10px;
+        margin-top: 5px;
     }
 
     #mobile-price-tag {
@@ -937,10 +939,11 @@ button:disabled {
     }
 
     .trust-microcopy {
-        display: flex;
-        justify-content: space-around;
         padding: 20px;
         background-color: #1c1c1e;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
     }
 
     .trust-item {
