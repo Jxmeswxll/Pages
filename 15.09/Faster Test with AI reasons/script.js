@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('user-email');
     const emailSuccessMessage = document.getElementById('email-success-message');
 
-    const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/77e31501-ad94-4b2a-8890-307db60ac35b';
+    const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/1a4306e6-57eb-4c90-8cf4-5e7d28449850';
     const emailWebhookUrl = 'https://jameswall.app.n8n.cloud/webhook-test/ee3fe09d-c32c-49e3-b316-65fe9a89b956';
 
     let currentStepIndex = 0;
@@ -47,22 +47,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function determineStepOrder() {
         const primaryUse = answers.primaryUse || [];
-        let newOrder = ['primaryUse', 'pcType'];
+        let conditionalSteps = [];
 
         if (primaryUse.includes('Gaming')) {
-            newOrder.push('games', 'resolution');
+            conditionalSteps.push('games', 'resolution');
         }
-        // Add other conditional steps based on primary use if they exist
-        // For now, we only have 'games' and 'resolution' as conditional
+        if (primaryUse.includes('Work')) {
+            conditionalSteps.push('work');
+        }
+        if (primaryUse.includes('Study')) {
+            conditionalSteps.push('study');
+        }
+        if (primaryUse.includes('Essentials')) {
+            conditionalSteps.push('essentials');
+        }
+
+        const uniqueConditionalSteps = [...new Set(conditionalSteps)];
+        
+        let baseOrder = ['primaryUse', 'pcType', ...uniqueConditionalSteps];
 
         if (answers.pcType && answers.pcType[0] === 'Desktop') {
-            newOrder.push('caseSize');
+            baseOrder.push('caseSize');
         }
         
-        newOrder.push('budget');
-        
-        // Remove duplicates, keeping the first occurrence
-        currentStepOrder = [...new Set(newOrder)];
+        baseOrder.push('budget');
+        currentStepOrder = baseOrder;
     }
 
     function showStep(stepId) {
