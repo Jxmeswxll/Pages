@@ -11,13 +11,16 @@
 <body>
     <div class="quiz-wrapper">
         <div class="quiz-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span class="progress-text" id="progress-text"></span>
             </div>
         <div id="quiz">
             <!-- Step 1: Primary Use -->
             <div class="step" data-step-id="primaryUse">
-                <h2>Tell us, what will you use your PC for?</h2>
+                <h2>What will you use your PC for?</h2>
                 <div class="options-grid card-options" data-question-id="primaryUse" data-select-type="multiple">
                     <div class="option-card" data-value="Gaming"><i class="fas fa-gamepad"></i><div><span>Gaming</span><p>From competitive shooters to epic RPGs.</p></div></div>
                     <div class="option-card" data-value="Work"><i class="fas fa-briefcase"></i><div><span>Work</span><p>For creative, technical, or business tasks.</p></div></div>
@@ -71,7 +74,7 @@
 
 <!-- Conditional Step: Resolution -->
 <div class="step" data-step-id="resolution" style="display: none;">
-    <h2>What's your target resolution?</h2>
+    <h2>What resolution is your monitor?</h2>
     <div class="options-grid card-options" data-question-id="resolution" data-select-type="single">
         <div class="option-card" data-value="1080p">
             <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="resolution-icon">
@@ -227,9 +230,7 @@
         <div id="perceptual-loader" class="perceptual-loader indeterminate" style="display: none;">
           <div class="staged">
             <div class="staged-row">
-              <div class="staged-text" id="staged-text">Finding your perfect match…</div>
-              <div class="staged-pct" id="staged-pct">10%</div>
-            </div>
+               </div>
 <div class="bar" role="progressbar" aria-busy="true" aria-valuetext="Preparing results"><div class="fill" id="staged-fill"></div></div>
             <p class="staged-hint" id="staged-hint" aria-live="polite"></p>
           </div>

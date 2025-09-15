@@ -64,6 +64,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .quiz-wrapper {
@@ -86,13 +87,25 @@ body {
     position: relative;
 }
 
+.progress-wrapper {
+    margin-bottom: 40px;
+}
+
 .progress-bar {
     width: 100%;
     background-color: var(--disabled-bg-color);
     border-radius: 5px;
-    margin-bottom: 50px;
     overflow: hidden;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.progress-text {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: var(--subtle-text-color);
+    font-weight: 500;
 }
 
 .progress {
@@ -109,8 +122,8 @@ body {
 
 .step h2 {
     font-size: 2.5em;
-    font-weight: 700;
-    margin-bottom: 15px;
+    font-weight: 600;
+    margin-bottom: 13px;
     line-height: 1.2;
 }
 
@@ -118,6 +131,7 @@ body {
     color: var(--subtle-text-color);
     margin-bottom: 40px;
     font-size: 1.1em;
+    margin-bottom: 5px;
 }
 
 .options-grid {
@@ -304,7 +318,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     max-height: 400px; /* Adjust as needed */
     overflow-y: auto;
-    padding-right: 10px; /* For scrollbar */
+    padding: 10px;
 }
 
 .game-cards .option-card {
@@ -557,6 +571,13 @@ button:disabled {
     line-height: 1.4;
 }
 
+.recommendation-reason {
+    font-size: 1em;
+    color: var(--subtle-text-color);
+    margin: -10px 0 15px;
+    line-height: 1.5;
+}
+
 .price-container {
     display: flex;
     align-items: center;
@@ -792,6 +813,11 @@ button:disabled {
 }
 
 @media (max-width: 767px) {
+    .options-grid.game-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
     body {
         height: auto;
         padding-bottom: 100px; /* Safe area for nav */
@@ -889,7 +915,7 @@ button:disabled {
     }
 
     #mobile-product-title {
-        font-size: 1.2em;
+        font-size: 1.5em;
         font-weight: 600;
         margin: 10px 0 0;
     }
@@ -897,14 +923,13 @@ button:disabled {
     .price-container {
         display: flex;
         justify-content: center;
-        align-items: baseline;
+        align-items: center;
         gap: 10px;
-        margin-top: 5px;
+        margin-top: 15px;
     }
 
-    #mobile-price-tag {
-        font-size: 1.5em;
-        font-weight: 700;
+    .product-info .price {
+        font-size: 2.5em;
     }
 
   
@@ -1184,7 +1209,6 @@ button:disabled {
 .perceptual-loader .staged-hint{color:var(--lighter-subtle-text-color);font-size:.9em;margin-top:8px;text-align:center}
 
 .skeleton-grid {
-  padding: 0 20px;
 }
 .skeleton-card {
   background-color: var(--card-background);

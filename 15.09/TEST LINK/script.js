@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const submitBtn = document.getElementById('submitBtn');
     const progress = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
@@ -90,6 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalSteps = currentStepOrder.length;
         const progressPercentage = totalSteps > 1 ? (currentStepIndex / (totalSteps - 1)) * 100 : 0;
         progress.style.width = `${progressPercentage}%`;
+
+        if (progressText) {
+            progressText.textContent = `Step ${currentStepIndex + 1} of ${totalSteps}`;
+        }
     }
 
     function updateButtons() {
@@ -294,17 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return s.length % 2 ? s[mid] : Math.round((s[mid-1] + s[mid]) / 2);
         };
 
-        loader._startTs = Date.now();
-        const typical = median(readHistory());
-        if (stagedHint) {
-            if (typical > 0) {
-                const sec = Math.ceil(typical / 1000);
-                const m = Math.floor(sec / 60), s = sec % 60;
-                stagedHint.textContent = `Typically ${m ? m + 'm ' : ''}${s}s.`;
-            } else {
-                stagedHint.textContent = '';
-            }
-        }
 
         // Single copy scheduler
         if (loader._copyTimer) clearInterval(loader._copyTimer);
@@ -567,11 +561,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
                 : `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Customise Now</a>`;
 
+            const reasonHTML = pc.reason ? `<p class="recommendation-reason">${pc.reason}</p>` : '';
+
             card.innerHTML = `
                 <a href="${productUrl}" target="_blank" class="result-image-link"><img src="${pc.imageUrl}" alt="${pc.name}" loading="lazy" decoding="async"></a>
                 <div class="result-card-content">
                     ${badgeHTML}
                     <div class="title-container"><h3>${pc.name}</h3></div>
+                    ${reasonHTML}
                     ${priceHTML}
                     ${buttonHTML}
                     <div class="details">${detailsHTML}</div>
@@ -589,19 +586,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-info">
                     <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
                     <h2 id="mobile-product-title"></h2>
-                    <div class="price-container">
-                        <p id="mobile-price-tag"></p>
-                        <p class="monthly-price">or from $XX/mo</p>
+                    <p id="mobile-reason-container" class="recommendation-reason"></p>
+                    <div id="mobile-price-container" class="price-container">
                     </div>
                 </div>
-                <div id="mobile-recommendation-pills"></div>
                 <div id="mobile-pagination-dots"></div>
-                <div class="highlight-specs">
-                    <ul class="specs-list"></ul>
-                </div>
                 <div class="full-specs">
-                    <div class="specs-toggle">Full Specifications <i class="fas fa-chevron-down"></i></div>
-                    <div id="mobile-product-specs" class="mobile-specs-block" style="display: none;"></div>
+                    <div id="mobile-product-specs" class="mobile-specs-block"></div>
                 </div>
                 <div class="trust-microcopy">
                     </div>
@@ -611,10 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        const pillsContainer = document.getElementById('mobile-recommendation-pills');
         const dotsContainer = document.getElementById('mobile-pagination-dots');
-        const productView = document.querySelector('.mobile-product-view');
-        pillsContainer.innerHTML = '';
         dotsContainer.innerHTML = '';
 
         const order = ['Best Value', 'Our Recommendation', 'Level Up'];
@@ -624,12 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentIndex === -1) currentIndex = 0;
 
         sortedPcs.forEach((pc, index) => {
-            const pill = document.createElement('button');
-            pill.className = 'mobile-pill';
-            pill.textContent = pc.recommendationLevel;
-            pill.dataset.index = index;
-            pillsContainer.appendChild(pill);
-
             const dot = document.createElement('div');
             dot.className = 'pagination-dot';
             dot.dataset.index = index;
@@ -639,17 +621,10 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateActive(index) {
             currentIndex = parseInt(index);
             updateMobileView(sortedPcs[currentIndex]);
-            pillsContainer.querySelectorAll('.mobile-pill').forEach((p, i) => p.classList.toggle('active', i === currentIndex));
             dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
         }
 
         updateActive(currentIndex);
-
-        pillsContainer.addEventListener('click', (e) => {
-            if (e.target.matches('.mobile-pill')) {
-                updateActive(e.target.dataset.index);
-            }
-        });
 
         dotsContainer.addEventListener('click', (e) => {
             if (e.target.matches('.pagination-dot')) {
@@ -692,14 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { passive: true });
         }
 
-        const specsToggle = document.querySelector('.specs-toggle');
-        const specsContent = document.getElementById('mobile-product-specs');
-        specsToggle.addEventListener('click', () => {
-            const isVisible = specsContent.style.display === 'block';
-            specsContent.style.display = isVisible ? 'none' : 'block';
-            specsToggle.querySelector('i').classList.toggle('fa-chevron-down', isVisible);
-            specsToggle.querySelector('i').classList.toggle('fa-chevron-up', !isVisible);
-        });
     }
 
     function updateMobileView(pc) {
@@ -708,11 +675,35 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mobile-product-title').textContent = pc.name;
         document.getElementById('mobile-recommendation-badge').textContent = pc.recommendationLevel;
 
-        const priceTag = document.getElementById('mobile-price-tag');
-        const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
-        priceTag.innerHTML = pc.strikethroughPrice
-            ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
-            : `${priceText}`;
+        const reasonContainer = document.getElementById('mobile-reason-container');
+        if (pc.reason) {
+            reasonContainer.textContent = pc.reason;
+            reasonContainer.style.display = 'block';
+        } else {
+            reasonContainer.style.display = 'none';
+        }
+
+        const priceContainer = document.getElementById('mobile-price-container');
+        if (priceContainer) {
+            let priceHTML = '';
+            if (pc.price && pc.strikethroughPrice) {
+                const priceNum = parseFloat(pc.price.replace(/[^0-9.-]+/g,""));
+                const strikethroughPriceNum = parseFloat(pc.strikethroughPrice.replace(/[^0-9.-]+/g,""));
+                if (!isNaN(priceNum) && !isNaN(strikethroughPriceNum)) {
+                    const savings = strikethroughPriceNum - priceNum;
+                    priceHTML = `
+                        <p class="price">$${priceNum}</p>
+                        <div class="price-details">
+                            <p class="strikethrough-price">$${strikethroughPriceNum}</p>
+                            <p class="saving">You save $${savings}</p>
+                        </div>`;
+                }
+            } else if (pc.price) {
+                const priceDisplay = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+                priceHTML = `<p class="price">${priceDisplay}</p>`;
+            }
+            priceContainer.innerHTML = priceHTML;
+        }
 
         const buyButton = document.getElementById('mobile-buy-button');
         buyButton.href = productUrl;
@@ -721,36 +712,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileImg = document.getElementById('mobile-product-image');
         mobileImg.src = pc.imageUrl;
 
-        const highlightSpecsContainer = document.querySelector('.highlight-specs .specs-list');
-        highlightSpecsContainer.innerHTML = ''; // Clear previous specs
-
-        const specString = pc.details.KeySpecs;
-        if (specString && typeof specString === 'string') {
-            const specs = specString.split('|').map(s => s.trim());
-            const specMapping = {
-                'Ryzen': 'CPU',
-                'Intel': 'CPU',
-                'RTX': 'Graphics',
-                'Radeon': 'Graphics',
-                'DDR': 'RAM',
-                'NVMe': 'Storage',
-                'SSD': 'Storage'
-            };
-
-            specs.forEach(spec => {
-                let title = 'Component';
-                for (const key in specMapping) {
-                    if (spec.includes(key)) {
-                        title = specMapping[key];
-                        break;
-                    }
-                }
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${title}</strong> ${spec}`;
-                highlightSpecsContainer.appendChild(li);
-            });
-        }
-        
         const specsContainer = document.getElementById('mobile-product-specs');
         specsContainer.innerHTML = Object.entries(pc.details).map(([key, value]) =>
             `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
