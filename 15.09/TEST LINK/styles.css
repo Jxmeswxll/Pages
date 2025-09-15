@@ -42,6 +42,14 @@
     --disabled-text-color: #555;
     --container-width: 700px;
     --border-radius: 12px;
+    /* Shared results geometry */
+    --results-grid-gap: 30px;
+    --card-min-width: 350px;
+    --card-padding: 25px;
+    --card-radius: 20px;
+    /* Skeleton tuning (calibrate after testing) */
+    --skeleton-img-height: 230px;
+    --card-approx-min-height: 540px;
 }
 
 body {
@@ -469,9 +477,10 @@ button:disabled {
     100% { opacity: 0.7; }
 }
 
-.results-grid {
+.results-grid,
+.skeleton-grid {
     display: grid;
-    gap: 30px;
+    gap: var(--results-grid-gap);
     align-items: stretch;
     justify-content: center;
     grid-auto-rows: 1fr;
@@ -480,18 +489,18 @@ button:disabled {
 
 .result-card {
     background-color: var(--card-background);
-    border-radius: 20px;
+    border-radius: var(--card-radius);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border-color);
-    padding: 25px;
+    padding: var(--card-padding);
     text-align: left;
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     width: 100%;
     box-sizing: border-box; /* Prevents padding and border from adding to the width */
     position: relative; /* Add this to enable z-index */
-    min-width: 350px; /* Add this to prevent cards from becoming too narrow */
+    min-width: var(--card-min-width);
 }
 
 .result-card:hover {
@@ -767,14 +776,18 @@ button:disabled {
 
 /* Mobile Optimizations */
 @media (min-width: 1200px) {
-    .results-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .results-grid,
+    .skeleton-grid {
+        grid-template-columns:
+          repeat(3, minmax(var(--card-min-width), 1fr));
     }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-    .results-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .results-grid,
+    .skeleton-grid {
+        grid-template-columns:
+          repeat(2, minmax(var(--card-min-width), 1fr));
     }
 }
 
@@ -1160,19 +1173,35 @@ button:disabled {
 }
 
 /* Perceptual loader + skeletons (scoped) */
-.perceptual-loader{margin:20px auto 30px;max-width:1400px;padding:0 20px;box-sizing:border-box}
+.perceptual-loader{margin:20px auto 30px;max-width:1400px;box-sizing:border-box}
 .perceptual-loader .staged{margin:0 auto 18px;max-width:700px}
 .perceptual-loader .staged-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .perceptual-loader .staged-text{color:var(--subtle-text-color)}
 .perceptual-loader .staged-pct{color:var(--text-color);font-weight:700;display:none}
 .perceptual-loader.determinate .staged-pct{display:inline}
 .perceptual-loader .bar{height:8px;background:#2a2a2e;border-radius:999px;overflow:hidden;position:relative}
-.perceptual-loader .fill{height:100%;width:30%;background:linear-gradient(90deg,#3b82f6,#22c55e);border-radius:inherit;transform:translateX(-100%)}
+.perceptual-loader .fill{height:100%;width:30%;background-color: var(--accent-color);border-radius:inherit;transform:translateX(-100%)}
 .perceptual-loader .staged-hint{color:var(--lighter-subtle-text-color);font-size:.9em;margin-top:8px;text-align:center}
 
-.skeleton-grid{display:grid;gap:20px;grid-template-columns:repeat(3,1fr);padding:0 20px}
-.skeleton-card{background-color:var(--card-background);border:1px solid var(--border-color);border-radius:20px;padding:20px;width:100%;box-sizing:border-box}
-.sk-img{height:180px;border-radius:12px;background:#2a2a2e;margin-bottom:14px}
+.skeleton-grid {
+  padding: 0 20px;
+}
+.skeleton-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  width: 100%;
+  box-sizing: border-box;
+  min-width: var(--card-min-width);
+  min-height: var(--card-approx-min-height);
+}
+.sk-img {
+  height: var(--skeleton-img-height);
+  border-radius: 12px;
+  background: #2a2a2e;
+  margin-bottom: 14px;
+}
 .sk-badge{height:26px;width:140px;border-radius:999px;background:#2a2a2e;margin:10px 0}
 .sk-title{height:22px;width:70%;border-radius:8px;background:#2a2a2e;margin:10px 0}
 .sk-price{height:28px;width:40%;border-radius:8px;background:#2a2a2e;margin:10px 0 14px}
@@ -1185,7 +1214,6 @@ button:disabled {
 .perceptual-loader.indeterminate .fill{animation:indeterminate-move 1.2s linear infinite}
 @keyframes indeterminate-move{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
 .toggle-button[disabled]{opacity:.5;pointer-events:none}
-@media (max-width:1199px){.skeleton-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:767px){.skeleton-grid{grid-template-columns:1fr}.skeleton-card:not(:first-child){display:none}}
 
 /* Loader checklist + cancel */
