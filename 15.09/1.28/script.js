@@ -579,164 +579,130 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
             resultsGrid.appendChild(card);
         });
+
+        const trustMicrocopyContainer = document.getElementById('trust-microcopy-desktop-container');
+        trustMicrocopyContainer.innerHTML = `
+            <div class="trust-item">
+                <i class="fas fa-truck"></i>
+                <span>NEXT DAY DISPATCH AVAILABLE</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-award"></i>
+                <span>AWARD-WINNING CUSTOM PC COMPANY</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-microchip"></i>
+                <span>FULL TRANSPARENCY ON PC COMPONENTS</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-headset"></i>
+                <span>UNMATCHED SERVICE AND SUPPORT</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>3 YEAR DESKTOP WARRANTY AND LIFETIME SUPPORT</span>
+            </div>
+        `;
+        trustMicrocopyContainer.style.display = 'grid';
     }
 
     function displayMobileSingleView(recs) {
         const mobileResultsContainer = document.getElementById('mobile-results-container');
-        mobileResultsContainer.innerHTML = `
-            <div class="mobile-results-card">
-                <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
-                <h2 id="mobile-product-title"></h2>
-                <div class="mobile-price-container">
-                    <p id="mobile-price-tag"></p>
-                    <div class="price-details">
-                        <p id="mobile-strikethrough-price"></p>
-                        <p id="mobile-saving"></p>
-                    </div>
-                </div>
-                <img src="" id="mobile-product-image" alt="Recommended PC" class="hero-image">
-                <div id="mobile-recommendation-pills"></div>
-                <div id="mobile-pagination-dots"></div>
-                
-                <div id="mobile-product-specs" class="mobile-specs-block"></div>
-                <p id="mobile-reason" class="reason-text"></p>
-            </div>
-            <div class="sticky-buy-bar">
-                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy Now</a>
-            </div>
-        `;
+        const mobileSpecsContainer = document.getElementById('mobile-product-specs');
+        const stickyBuyBar = document.querySelector('.sticky-buy-bar');
 
-        const pillsContainer = document.getElementById('mobile-recommendation-pills');
-        const dotsContainer = document.getElementById('mobile-pagination-dots');
-        const productView = document.querySelector('.mobile-product-view');
-        pillsContainer.innerHTML = '';
-        dotsContainer.innerHTML = '';
+        mobileResultsContainer.innerHTML = '';
+        mobileSpecsContainer.innerHTML = '';
 
         const order = ['Best Value', 'Our Recommendation', 'Level Up'];
         const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
-        
+
+        sortedPcs.forEach(pc => {
+            const card = document.createElement('div');
+            card.className = 'mobile-results-card';
+            
+            let priceHTML = '';
+            if (pc.price && pc.strikethroughPrice) {
+                const priceNum = parseFloat(pc.price.replace(/[^0-9.-]+/g,""));
+                const strikethroughPriceNum = parseFloat(pc.strikethroughPrice.replace(/[^0-9.-]+/g,""));
+                if (!isNaN(priceNum) && !isNaN(strikethroughPriceNum)) {
+                    const savings = strikethroughPriceNum - priceNum;
+                    priceHTML = `
+                        <div class="mobile-price-container">
+                          <p class="mobile-price">$${priceNum}</p>
+                          <div class="price-details">
+                            <p class="mobile-strikethrough-price">$${strikethroughPriceNum}</p>
+                            <p class="mobile-saving">You save $${savings}</p>
+                          </div>
+                        </div>`;
+                }
+            } else if (pc.price) {
+                const priceDisplay = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+                priceHTML = `<div class="mobile-price-container"><p class="mobile-price">${priceDisplay}</p></div>`;
+            }
+
+            card.innerHTML = `
+                <div class="recommendation-badge">${pc.recommendationLevel}</div>
+                <h2 class="mobile-product-title">${pc.name}</h2>
+                ${priceHTML}
+                <div class="mobile-product-view">
+                    <img src="${pc.imageUrl}" alt="${pc.name}" class="mobile-product-image">
+                    <div class="pagination-dots"></div>
+                </div>
+            `;
+            mobileResultsContainer.appendChild(card);
+        });
+
         let currentIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
         if (currentIndex === -1) currentIndex = 0;
 
-        sortedPcs.forEach((pc, index) => {
-            const pill = document.createElement('button');
-            pill.className = 'mobile-pill';
-            pill.textContent = pc.recommendationLevel;
-            pill.dataset.index = index;
-            pillsContainer.appendChild(pill);
-
-            const dot = document.createElement('div');
-            dot.className = 'pagination-dot';
-            dot.dataset.index = index;
-            dotsContainer.appendChild(dot);
-        });
-
         function updateActive(index) {
             currentIndex = parseInt(index);
-            updateMobileView(sortedPcs[currentIndex]);
-            pillsContainer.querySelectorAll('.mobile-pill').forEach((p, i) => p.classList.toggle('active', i === currentIndex));
-            dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+            const allCards = mobileResultsContainer.querySelectorAll('.mobile-results-card');
+            allCards.forEach((card, i) => {
+                card.style.display = i === currentIndex ? 'block' : 'none';
+            });
+            updateMobileSpecs(sortedPcs[currentIndex]);
+            updatePaginationDots(sortedPcs.length, currentIndex);
         }
+        
+        mobileResultsContainer.addEventListener('scroll', () => {
+            const cardWidth = mobileResultsContainer.querySelector('.mobile-results-card').offsetWidth;
+            const scrollLeft = mobileResultsContainer.scrollLeft;
+            const newIndex = Math.round(scrollLeft / cardWidth);
+            if (newIndex !== currentIndex) {
+                updateActive(newIndex);
+            }
+        });
 
         updateActive(currentIndex);
-
-        pillsContainer.addEventListener('click', (e) => {
-            if (e.target.matches('.mobile-pill')) {
-                updateActive(e.target.dataset.index);
-            }
-        });
-
-        dotsContainer.addEventListener('click', (e) => {
-            if (e.target.matches('.pagination-dot')) {
-                updateActive(e.target.dataset.index);
-            }
-        });
-
-        const mobileResultsCard = document.querySelector('.mobile-results-card');
-        if (mobileResultsCard) {
-            let touchstartX = 0;
-            let touchendX = 0;
-            let touchstartY = 0;
-            let touchendY = 0;
-
-            function handleSwipe() {
-                const deltaX = touchendX - touchstartX;
-                const deltaY = touchendY - touchstartY;
-
-                if (Math.abs(deltaX) > Math.abs(deltaY)) { // Horizontal swipe
-                    if (Math.abs(deltaX) > 30) { // Threshold
-                        if (deltaX < 0) { // Left
-                            if (currentIndex < sortedPcs.length - 1) updateActive(currentIndex + 1);
-                        } else { // Right
-                            if (currentIndex > 0) updateActive(currentIndex - 1);
-                        }
-                    }
-                }
-            }
-
-            mobileResultsCard.addEventListener('touchstart', e => {
-                touchstartX = e.changedTouches[0].clientX;
-                touchstartY = e.changedTouches[0].clientY;
-            }, { passive: true });
-
-            mobileResultsCard.addEventListener('touchend', e => {
-                touchendX = e.changedTouches[0].clientX;
-                touchendY = e.changedTouches[0].clientY;
-                handleSwipe();
-            }, { passive: true });
-
-            mobileResultsCard.addEventListener('click', (e) => {
-                const toggle = e.target.closest('.specs-toggle');
-                if (toggle) {
-                    const content = toggle.nextElementSibling;
-                    const icon = toggle.querySelector('i');
-                    const isVisible = content.style.display === 'block';
-                    
-                    content.style.display = isVisible ? 'none' : 'block';
-                    icon.classList.toggle('fa-chevron-down', isVisible);
-                    icon.classList.toggle('fa-chevron-up', !isVisible);
-                }
-            });
-        }
+        stickyBuyBar.style.display = 'block';
+        mobileSpecsContainer.style.display = 'block';
     }
 
-    function updateMobileView(pc) {
+    function updatePaginationDots(total, activeIndex) {
+        const dotsContainers = document.querySelectorAll('.pagination-dots');
+        dotsContainers.forEach(container => {
+            container.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'pagination-dot';
+                if (i === activeIndex) {
+                    dot.classList.add('active');
+                }
+                container.appendChild(dot);
+            }
+        });
+    }
+
+    function updateMobileSpecs(pc) {
         if (!pc) return;
         const productUrl = pc.productUrl;
-        document.getElementById('mobile-product-title').textContent = pc.name;
-        document.getElementById('mobile-recommendation-badge').textContent = pc.recommendationLevel;
-
-        const priceTag = document.getElementById('mobile-price-tag');
-        const strikethroughPriceEl = document.getElementById('mobile-strikethrough-price');
-        const savingEl = document.getElementById('mobile-saving');
-
-        const priceText = currentView === 'RTS' ? (pc.price || '').replace('Starting From ', '') : pc.price;
-        priceTag.textContent = priceText;
-
-        if (pc.price && pc.strikethroughPrice) {
-            const priceNum = parseFloat(pc.price.replace(/[^0-9.-]+/g, ""));
-            const strikethroughPriceNum = parseFloat(pc.strikethroughPrice.replace(/[^0-9.-]+/g, ""));
-            if (!isNaN(priceNum) && !isNaN(strikethroughPriceNum)) {
-                const savings = strikethroughPriceNum - priceNum;
-                strikethroughPriceEl.textContent = `$${strikethroughPriceNum}`;
-                savingEl.textContent = `You save $${savings}`;
-                strikethroughPriceEl.style.display = 'block';
-                savingEl.style.display = 'block';
-            }
-        } else {
-            strikethroughPriceEl.style.display = 'none';
-            savingEl.style.display = 'none';
-        }
-
+        const mobileSpecsContainer = document.getElementById('mobile-product-specs');
         const buyButton = document.getElementById('mobile-buy-button');
+
         buyButton.href = productUrl;
         buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
-
-        const mobileImg = document.getElementById('mobile-product-image');
-        mobileImg.src = pc.imageUrl;
-
-        const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = ''; // Clear previous specs
 
         const specGroups = {
             Performance: ['CPU', 'Graphics', 'RAM', 'Motherboard'],
@@ -745,9 +711,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const pcDetails = pc.details || {};
-        delete pcDetails.KeySpecs; // Remove redundant KeySpecs
+        delete pcDetails.KeySpecs;
 
-        // Create HTML for each group
+        let specsHTML = '';
         for (const groupName in specGroups) {
             const groupSpecs = specGroups[groupName];
             let groupHTML = `<div class="spec-group">`;
@@ -762,7 +728,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Add remaining specs to "Other"
             if (groupName === 'Other') {
                 const allGroupedSpecs = Object.values(specGroups).flat();
                 for (const key in pcDetails) {
@@ -775,17 +740,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
             groupHTML += `</div></div>`;
             if (specsFoundInGroup) {
-                specsContainer.innerHTML += groupHTML;
+                specsHTML += groupHTML;
             }
         }
-        
-        const reasonEl = document.getElementById('mobile-reason');
+
+        let reasonHTML = '';
         if (pc.reason) {
-            reasonEl.textContent = pc.reason;
-            reasonEl.style.display = 'block';
-        } else {
-            reasonEl.style.display = 'none';
+            reasonHTML = `<p class="reason-text">${pc.reason}</p>`;
         }
+
+        const trustMicrocopyHTML = `
+            <div id="trust-microcopy-mobile" class="trust-microcopy">
+                <div class="trust-item">
+                    <i class="fas fa-truck"></i>
+                    <span>NEXT DAY DISPATCH AVAILABLE</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-award"></i>
+                    <span>AWARD-WINNING CUSTOM PC COMPANY</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>FULL TRANSPARENCY ON PC COMPONENTS</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-headset"></i>
+                    <span>UNMATCHED SERVICE AND SUPPORT</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>3 YEAR DESKTOP WARRANTY AND LIFETIME SUPPORT</span>
+                </div>
+            </div>
+        `;
+
+        mobileSpecsContainer.innerHTML = specsHTML + reasonHTML + trustMicrocopyHTML;
     }
 
     rtsBtn.addEventListener('click', () => {
