@@ -456,6 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showFinalResults(recommendationData) {
         setTimeout(() => {
             stopLoader();
+            document.getElementById('perceptual-loader').style.display = 'none';
             const toggle = document.querySelector('.results-toggle-buttons');
             if (toggle) toggle.style.display = 'inline-flex';
             if (rtsBtn) rtsBtn.disabled = false;
@@ -582,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileResultsContainer = document.getElementById('mobile-results-container');
         mobileResultsContainer.innerHTML = `
             <div class="mobile-results-card">
+                <div id="mobile-pagination-dots"></div>
                 <img src="" id="mobile-product-image" alt="Recommended PC" class="hero-image">
                 <div class="product-info">
                     <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
@@ -590,7 +592,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div id="mobile-price-container" class="price-container">
                     </div>
                 </div>
-                <div id="mobile-pagination-dots"></div>
                 <div class="full-specs">
                     <div id="mobile-product-specs" class="mobile-specs-block"></div>
                 </div>

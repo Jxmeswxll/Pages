@@ -123,7 +123,7 @@ body {
 .step h2 {
     font-size: 2.5em;
     font-weight: 600;
-    margin-bottom: 13px;
+    margin-bottom: 25px;
     line-height: 1.2;
 }
 
@@ -403,7 +403,7 @@ button:disabled {
 .results-toggle-buttons {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     background-color: var(--card-background);
     border-radius: 50px;
     padding: 5px;
@@ -902,7 +902,7 @@ button:disabled {
     }
 
     .product-info {
-        padding: 0 20px 20px;
+        padding: 0 20px 10px;
         text-align: center;
     }
 
@@ -1077,7 +1077,7 @@ button:disabled {
         display: flex;
         justify-content: center;
         gap: 8px;
-        padding: 10px 0;
+        padding: 20px 0 10px;
     }
 
     .pagination-dot {
@@ -1127,8 +1127,8 @@ button:disabled {
     }
 
     #mobile-product-specs {
-        padding: 20px;
-        margin-top: 20px;
+        padding: 10px 20px 20px;
+        margin-top: 10px;
         background-color: var(--card-background);
         border-radius: var(--border-radius);
         text-align: left;
@@ -1198,8 +1198,8 @@ button:disabled {
 }
 
 /* Perceptual loader + skeletons (scoped) */
-.perceptual-loader{margin:20px auto 30px;max-width:1400px;box-sizing:border-box}
-.perceptual-loader .staged{margin:0 auto 18px;max-width:700px}
+.perceptual-loader{margin:20px auto 50px;max-width:1400px;box-sizing:border-box}
+.perceptual-loader .staged{margin:0 auto 30px;max-width:700px}
 .perceptual-loader .staged-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .perceptual-loader .staged-text{color:var(--subtle-text-color)}
 .perceptual-loader .staged-pct{color:var(--text-color);font-weight:700;display:none}
