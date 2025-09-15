@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsContainer = document.getElementById('results-container');
     const loader = document.getElementById('perceptual-loader');
     const stagedText = document.getElementById('staged-text');
-    const stagedFill = document.getElementById('staged-fill');
     const stagedHint = document.getElementById('staged-hint');
     const resultsGrid = document.getElementById('results');
     const nextBtn = document.getElementById('nextBtn');
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
-    const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/41f4c517-afe6-48ce-8cc7-bc77306eebc2';
+    const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/2be1f73d-4b4a-4f65-a9f0-03c726f7e9d3';
 
     let currentStepIndex = 0;
     let stepHistory = [];
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStepOrder = ['primaryUse'];
     let allRecommendations = {};
     let currentView = 'RTS';
-    let messageInterval;
     let abortController = null;
 
     const LOADER_CFG = {
@@ -219,9 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (questionId === 'primaryUse' || questionId === 'pcType' || questionId === 'resolution') {
-            determineStepOrder();
-        }
+    if (questionId === 'primaryUse' || questionId === 'pcType' || questionId === 'resolution') {
+        determineStepOrder();
+    }
         
         updateButtons();
     }
@@ -272,56 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     // New premium, honest loader (indeterminate-first) and abortable fetch
     function startLoader() {
         if (!loader) return;
         loader.style.display = 'block';
-
-        // Start the timeline animation
-        loader._startTs = Date.now();
-        const timelineProgress = loader.querySelector('.timeline-progress');
-        const tick = () => {
-            if (!loader || loader.style.display === 'none') return;
-            const elapsed = Date.now() - loader._startTs;
-            const items = loader.querySelectorAll('.loader-checklist-new li');
-            let activeIndex = -1;
-            items.forEach((li, index) => {
-                const ms = parseInt(li.getAttribute('data-ms') || '0', 10);
-                if (elapsed >= ms) {
-                    activeIndex = index;
-                }
-            });
-
-            items.forEach((li, index) => {
-                if (index < activeIndex) {
-                    li.classList.add('done');
-                    li.classList.remove('active');
-                } else if (index === activeIndex) {
-                    li.classList.add('active');
-                    li.classList.remove('done');
-                } else {
-                    li.classList.remove('active', 'done');
-                }
-            });
-
-            // Keep preview calm; do not animate/highlight cards.
-            // Instead, mirror the current step above the progress bar.
-            if (stagedText && activeIndex >= 0) {
-                const active = items[activeIndex];
-                const label = active?.querySelector('span')?.textContent || active?.textContent || '';
-                if (label) stagedText.textContent = label;
-            }
-
-            if (timelineProgress && activeIndex > -1 && items.length > 0) {
-                const itemHeight = items[0].offsetHeight + parseInt(getComputedStyle(items[0]).marginBottom);
-                const progressHeight = (activeIndex * itemHeight) + (itemHeight / 2);
-                timelineProgress.style.setProperty('--progress-height', `${progressHeight}px`);
-            }
-
-            loader._timelineTimer = setTimeout(tick, 1000);
-        };
-        tick();
+        loader.classList.add('indeterminate');
+        loader.classList.remove('determinate');
 
         // ARIA
         const bar = loader.querySelector('.bar');
@@ -346,16 +300,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typical > 0) {
                 const sec = Math.ceil(typical / 1000);
                 const m = Math.floor(sec / 60), s = sec % 60;
-                stagedHint.textContent = `Most recommendations are ready in about ${m ? m + 'm ' : ''}${s}s. Complex answers can take a little longer.`;
+                stagedHint.textContent = `Typically ${m ? m + 'm ' : ''}${s}s.`;
             } else {
-                stagedHint.textContent = 'Most recommendations are ready in about 1–2 minutes. Complex answers can take a little longer.';
+                stagedHint.textContent = '';
             }
         }
 
-        // Header text mirrors the active checklist item; set an initial default.
-        if (stagedText) stagedText.textContent = 'Preparing your results…';
-        // No rotating copy to avoid a "fake" feel.
+        // Single copy scheduler
         if (loader._copyTimer) clearInterval(loader._copyTimer);
+        let idx = 0;
+        if (stagedText) stagedText.textContent = LOADER_CFG.copy[0];
+        loader._copyTimer = setInterval(() => {
+            if (stagedText) stagedText.textContent = LOADER_CFG.copy[++idx % LOADER_CFG.copy.length];
+        }, 3000);
 
         // Slow network hint
         if (loader._slowTimer) clearTimeout(loader._slowTimer);
@@ -379,30 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (toggle) toggle.style.display = 'none';
             });
         }
-
-        // Expand/collapse timeline card
-        const timelineCard = document.getElementById('timeline-card');
-        const timelineToggle = document.getElementById('timeline-toggle');
-        if (timelineCard) {
-            // Ensure collapsed at start
-            timelineCard.setAttribute('data-collapsed', 'true');
-        }
-        if (timelineCard && timelineToggle && !timelineToggle._wired) {
-            timelineToggle._wired = true;
-            const setIcon = (expanded) => {
-                timelineToggle.setAttribute('aria-expanded', String(expanded));
-                timelineToggle.innerHTML = expanded
-                    ? '<i class="fas fa-down-left-and-up-right-to-center" aria-hidden="true"></i>'
-                    : '<i class="fas fa-up-right-and-down-left-from-center" aria-hidden="true"></i>';
-            };
-            setIcon(false);
-            timelineToggle.addEventListener('click', () => {
-                const isCollapsed = timelineCard.getAttribute('data-collapsed') !== 'false';
-                const expanded = isCollapsed; // toggling to expanded
-                timelineCard.setAttribute('data-collapsed', String(!expanded));
-                setIcon(expanded);
-            });
-        }
     }
 
     function stopLoader(wasCancelled = false) {
@@ -414,17 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Timers
         if (loader._copyTimer) clearInterval(loader._copyTimer);
         if (loader._slowTimer) clearTimeout(loader._slowTimer);
-        if (loader._timelineTimer) clearTimeout(loader._timelineTimer);
-        const timelineProgress = loader.querySelector('.timeline-progress');
-        if (timelineProgress) {
-            timelineProgress.style.setProperty('--progress-height', '0px');
-        }
-        document.querySelectorAll('.loader-checklist-new li').forEach(li => {
-            li.classList.remove('active', 'done');
-        });
-        // Clear any highlighted skeleton card
-        const highlighted = loader.querySelectorAll('.skeleton-gallery .skeleton-card.highlight');
-        highlighted.forEach(c => c.classList.remove('highlight'));
 
         const finalize = () => {
             // Persist actual duration for future typical display unless cancelled
@@ -462,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.style.display = 'block';
 
         const toggle = document.querySelector('.results-toggle-buttons');
-        if (toggle) toggle.style.display = 'none';
+        if (toggle) toggle.style.display = 'inline-flex';
         if (rtsBtn) rtsBtn.disabled = true;
         if (customBtn) customBtn.disabled = true;
 
@@ -538,8 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showFinalResults(recommendationData) {
-        clearTimeout(messageInterval);
-    
         setTimeout(() => {
             stopLoader();
             const toggle = document.querySelector('.results-toggle-buttons');
@@ -619,13 +539,29 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (pc.recommendationLevel === 'Level Up') card.classList.add('level-up');
 
             const badgeHTML = `<div class="recommendation-badge">${pc.recommendationLevel}</div>`;
-            const strikethroughHTML = pc.strikethroughPrice ? `<p class="strikethrough-price">${pc.strikethroughPrice}</p>` : '';
             const productUrl = pc.productUrl;
             const detailsHTML = Object.entries(pc.details).map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`).join('');
             
-            const priceHTML = currentView === 'RTS' 
-                ? `<p class="price">${pc.price.replace('Starting From ', '')}</p>` 
-                : `<p class="price">${pc.price}</p>`;
+            let priceHTML = '';
+            if (pc.price && pc.strikethroughPrice) {
+                const priceNum = parseFloat(pc.price.replace(/[^0-9.-]+/g,""));
+                const strikethroughPriceNum = parseFloat(pc.strikethroughPrice.replace(/[^0-9.-]+/g,""));
+                if (!isNaN(priceNum) && !isNaN(strikethroughPriceNum)) {
+                    const savings = strikethroughPriceNum - priceNum;
+                    priceHTML = `
+                        <div class="price-container">
+                          <p class="price">$${priceNum}</p>
+                          <div class="price-details">
+                            <p class="strikethrough-price">$${strikethroughPriceNum}</p>
+                            <p class="saving">You save $${savings}</p>
+                          </div>
+                        </div>`;
+                }
+            } else if (pc.price) {
+                const priceDisplay = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
+                priceHTML = `<div class="price-container"><p class="price">${priceDisplay}</p></div>`;
+            }
+
 
             const buttonHTML = currentView === 'RTS'
                 ? `<a href="${productUrl}" target="_blank" class="buy-now-button-desktop">Buy Now</a>`
@@ -636,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="result-card-content">
                     ${badgeHTML}
                     <div class="title-container"><h3>${pc.name}</h3></div>
-                    <div class="price-container">${priceHTML}${strikethroughHTML}</div>
+                    ${priceHTML}
                     ${buttonHTML}
                     <div class="details">${detailsHTML}</div>
                     <a href="${productUrl}" target="_blank" class="view-product-button">View Product</a>
@@ -648,46 +584,121 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayMobileSingleView(recs) {
         const mobileResultsContainer = document.getElementById('mobile-results-container');
         mobileResultsContainer.innerHTML = `
-            <h2 id="mobile-product-title"></h2>
-            <div id="mobile-recommendation-pills"></div>
-            <div class="mobile-product-view">
-                <p class="mobile-price-tag"></p>
-                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
-                <img src="" id="mobile-product-image" alt="Recommended PC">
-                <div id="mobile-product-specs" class="mobile-specs-block"></div>
+            <div class="mobile-results-card">
+                <img src="" id="mobile-product-image" alt="Recommended PC" class="hero-image">
+                <div class="product-info">
+                    <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
+                    <h2 id="mobile-product-title"></h2>
+                    <div class="price-container">
+                        <p id="mobile-price-tag"></p>
+                        <p class="monthly-price">or from $XX/mo</p>
+                    </div>
+                </div>
+                <div id="mobile-recommendation-pills"></div>
+                <div id="mobile-pagination-dots"></div>
+                <div class="highlight-specs">
+                    <ul class="specs-list"></ul>
+                </div>
+                <div class="full-specs">
+                    <div class="specs-toggle">Full Specifications <i class="fas fa-chevron-down"></i></div>
+                    <div id="mobile-product-specs" class="mobile-specs-block" style="display: none;"></div>
+                </div>
+                <div class="trust-microcopy">
+                    </div>
+            </div>
+            <div class="sticky-buy-bar">
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy Now</a>
             </div>
         `;
 
         const pillsContainer = document.getElementById('mobile-recommendation-pills');
+        const dotsContainer = document.getElementById('mobile-pagination-dots');
+        const productView = document.querySelector('.mobile-product-view');
         pillsContainer.innerHTML = '';
+        dotsContainer.innerHTML = '';
 
         const order = ['Best Value', 'Our Recommendation', 'Level Up'];
         const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
         
-        let initialIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
-        if (initialIndex === -1) initialIndex = 0;
+        let currentIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
+        if (currentIndex === -1) currentIndex = 0;
 
         sortedPcs.forEach((pc, index) => {
             const pill = document.createElement('button');
             pill.className = 'mobile-pill';
             pill.textContent = pc.recommendationLevel;
             pill.dataset.index = index;
-            if (index === initialIndex) {
-                pill.classList.add('active');
-            }
             pillsContainer.appendChild(pill);
+
+            const dot = document.createElement('div');
+            dot.className = 'pagination-dot';
+            dot.dataset.index = index;
+            dotsContainer.appendChild(dot);
         });
 
-        updateMobileView(sortedPcs[initialIndex]);
+        function updateActive(index) {
+            currentIndex = parseInt(index);
+            updateMobileView(sortedPcs[currentIndex]);
+            pillsContainer.querySelectorAll('.mobile-pill').forEach((p, i) => p.classList.toggle('active', i === currentIndex));
+            dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+        }
+
+        updateActive(currentIndex);
 
         pillsContainer.addEventListener('click', (e) => {
             if (e.target.matches('.mobile-pill')) {
-                const index = e.target.dataset.index;
-                updateMobileView(sortedPcs[index]);
-
-                pillsContainer.querySelectorAll('.mobile-pill').forEach(p => p.classList.remove('active'));
-                e.target.classList.add('active');
+                updateActive(e.target.dataset.index);
             }
+        });
+
+        dotsContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.pagination-dot')) {
+                updateActive(e.target.dataset.index);
+            }
+        });
+
+        const mobileResultsCard = document.querySelector('.mobile-results-card');
+        let touchstartX = 0;
+        let touchendX = 0;
+        let touchstartY = 0;
+        let touchendY = 0;
+        let isScrolling = false;
+
+        function handleSwipe() {
+            const deltaX = touchendX - touchstartX;
+            const deltaY = touchendY - touchstartY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) { // Horizontal swipe
+                if (Math.abs(deltaX) > 30) { // Threshold
+                    if (deltaX < 0) { // Left
+                        if (currentIndex < sortedPcs.length - 1) updateActive(currentIndex + 1);
+                    } else { // Right
+                        if (currentIndex > 0) updateActive(currentIndex - 1);
+                    }
+                }
+            }
+        }
+
+        if (mobileResultsCard) {
+            mobileResultsCard.addEventListener('touchstart', e => {
+                touchstartX = e.changedTouches[0].clientX;
+                touchstartY = e.changedTouches[0].clientY;
+            }, { passive: true });
+
+            mobileResultsCard.addEventListener('touchend', e => {
+                touchendX = e.changedTouches[0].clientX;
+                touchendY = e.changedTouches[0].clientY;
+                handleSwipe();
+            }, { passive: true });
+        }
+
+        const specsToggle = document.querySelector('.specs-toggle');
+        const specsContent = document.getElementById('mobile-product-specs');
+        specsToggle.addEventListener('click', () => {
+            const isVisible = specsContent.style.display === 'block';
+            specsContent.style.display = isVisible ? 'none' : 'block';
+            specsToggle.querySelector('i').classList.toggle('fa-chevron-down', isVisible);
+            specsToggle.querySelector('i').classList.toggle('fa-chevron-up', !isVisible);
         });
     }
 
@@ -695,8 +706,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!pc) return;
         const productUrl = pc.productUrl;
         document.getElementById('mobile-product-title').textContent = pc.name;
-        const priceTag = document.querySelector('.mobile-price-tag');
-        
+        document.getElementById('mobile-recommendation-badge').textContent = pc.recommendationLevel;
+
+        const priceTag = document.getElementById('mobile-price-tag');
         const priceText = currentView === 'RTS' ? pc.price.replace('Starting From ', '') : pc.price;
         priceTag.innerHTML = pc.strikethroughPrice
             ? `${priceText} <span class="strikethrough-price">${pc.strikethroughPrice}</span>`
@@ -707,14 +719,66 @@ document.addEventListener('DOMContentLoaded', () => {
         buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
 
         const mobileImg = document.getElementById('mobile-product-image');
-        mobileImg.loading = 'lazy';
-        mobileImg.decoding = 'async';
         mobileImg.src = pc.imageUrl;
+
+        const highlightSpecsContainer = document.querySelector('.highlight-specs .specs-list');
+        highlightSpecsContainer.innerHTML = ''; // Clear previous specs
+
+        const specString = pc.details.KeySpecs;
+        if (specString && typeof specString === 'string') {
+            const specs = specString.split('|').map(s => s.trim());
+            const specMapping = {
+                'Ryzen': 'CPU',
+                'Intel': 'CPU',
+                'RTX': 'Graphics',
+                'Radeon': 'Graphics',
+                'DDR': 'RAM',
+                'NVMe': 'Storage',
+                'SSD': 'Storage'
+            };
+
+            specs.forEach(spec => {
+                let title = 'Component';
+                for (const key in specMapping) {
+                    if (spec.includes(key)) {
+                        title = specMapping[key];
+                        break;
+                    }
+                }
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${title}</strong> ${spec}`;
+                highlightSpecsContainer.appendChild(li);
+            });
+        }
         
         const specsContainer = document.getElementById('mobile-product-specs');
-        specsContainer.innerHTML = `<h3>Specifications</h3>` + Object.entries(pc.details).map(([key, value]) => 
+        specsContainer.innerHTML = Object.entries(pc.details).map(([key, value]) =>
             `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`
-        ).join('') + `<a href="${productUrl}" target="_blank" class="view-product-button-mobile">View Product</a>`;
+        ).join('');
+
+        const trustMicrocopyContainer = document.querySelector('.trust-microcopy');
+        trustMicrocopyContainer.innerHTML = `
+            <div class="trust-item">
+                <i class="fas fa-truck"></i>
+                <span>NEXT DAY DISPATCH AVAILABLE</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-award"></i>
+                <span>AWARD-WINNING CUSTOM PC COMPANY</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-microchip"></i>
+                <span>FULL TRANSPARENCY ON PC COMPONENTS</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-headset"></i>
+                <span>UNMATCHED SERVICE AND SUPPORT</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>3 YEAR DESKTOP WARRANTY AND LIFETIME SUPPORT</span>
+            </div>
+        `;
     }
 
     rtsBtn.addEventListener('click', () => {
@@ -749,18 +813,4 @@ document.addEventListener('DOMContentLoaded', () => {
     determineStepOrder();
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
-
-    // Prevent programmatic click on submit button
-    let programmaticClick = false;
-    submitBtn.addEventListener('mousedown', () => {
-        programmaticClick = true;
-    });
-    submitBtn.addEventListener('mouseup', () => {
-        programmaticClick = false;
-    });
-    submitBtn.addEventListener('click', (e) => {
-        if (programmaticClick) {
-            e.stopImmediatePropagation();
-        }
-    });
 });
