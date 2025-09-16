@@ -2,25 +2,25 @@
 
 @font-face {
   font-family: "BigNoodle";
-  src: url("./fonts/big_noodle_titling.ttf") format("truetype");
+  src: url("./Fonts/big_noodle_titling.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "BigNoodleOblique";
-  src: url("./fonts/big_noodle_titling_oblique.ttf") format("truetype");
+  src: url("./Fonts/big_noodle_titling_oblique.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Eurostile";
-  src: url("./fonts/eurostile.ttf") format("truetype");
+  src: url("./Fonts/eurostile.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "EurostileNormal";
-  src: url("./fonts/EuroStyleNormal.ttf") format("truetype");
+  src: url("./Fonts/EuroStyleNormal.ttf") format("truetype");
   font-display: swap;
 }
 
