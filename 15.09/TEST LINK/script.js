@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rtsBtn = document.getElementById('rtsBtn');
     const customBtn = document.getElementById('customBtn');
 
-    const webhookUrl = 'https://jameswall.app.n8n.cloud/webhook/2be1f73d-4b4a-4f65-a9f0-03c726f7e9d3';
+    const webhookUrl = 'https://aftershockpc.app.n8n.cloud/webhook/2be1f73d-4b4a-4f65-a9f0-03c726f7e9d3';
 
     let currentStepIndex = 0;
     let stepHistory = [];
