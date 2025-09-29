@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FPS Lookup (1080p / 1440p / 4K)</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f1220;
+        --panel: #171a2b;
+        --text: #e8eaf2;
+        --muted: #a6accd;
+        --accent: #7aa2ff;
+        --ok: #2ecc71;
+        --warn: #f1c40f;
+        --err: #e74c3c;
+        --border: #2a2f4a;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial,
+          sans-serif;
+        background: linear-gradient(180deg, #0b0e1a, #0f1220 30%);
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      header h1 {
+        margin: 0 0 8px 0;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      header p {
+        margin: 0 0 20px 0;
+        color: var(--muted);
+      }
+
+      .panel {
+        background: rgba(23, 26, 43, 0.8);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        backdrop-filter: blur(6px);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #0f1326;
+        color: var(--text);
+        outline: none;
+      }
+
+      .results {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        background: #12162b;
+      }
+
+      .card h3 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+
+      .fps-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        align-items: center;
+      }
+
+      .fps-pill {
+        padding: 8px 10px;
+        border-radius: 8px;
+        text-align: center;
+        background: #0e1326;
+        border: 1px solid var(--border);
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .sources {
+        margin-top: 8px;
+        font-size: 13px;
+      }
+
+      .sources a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        color: #fff;
+        background: #2a3366;
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 999px;
+        margin-right: 6px;
+      }
+
+      .empty {
+        padding: 16px;
+        text-align: center;
+        color: var(--muted);
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        background: #0f1326;
+      }
+
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .fps-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>FPS Lookup</h1>
+        <p>
+          Select CPU, GPU, and Game to see average FPS at 1080p, 1440p, and 4K.
+          Multiple sources are shown when available.
+        </p>
+      </header>
+
+      <div class="panel">
+        <div class="grid">
+          <div>
+            <label for="cpu">CPU</label>
+            <select id="cpu"></select>
+          </div>
+          <div>
+            <label for="gpu">GPU</label>
+            <select id="gpu"></select>
+          </div>
+          <div>
+            <label for="game">Game</label>
+            <select id="game"></select>
+          </div>
+        </div>
+
+        <div class="results" id="results"></div>
+      </div>
+    </div>
+
+    <script>
+      // SAMPLE DATA STORE (replace with scraped data later)
+      // Schema per row:
+      // {
+      //   cpu, gpu, game,
+      //   avg_1080p, avg_1440p, avg_4k,
+      //   settings, source_url, method, date_scraped
+      // }
+      const DATA = [
+        {
+          cpu: "R5 7800X3D",
+          gpu: "RTX 5070 Ti",
+          game: "Cyberpunk 2077 (Ultra, no RT)",
+          avg_1080p: 125,
+          avg_1440p: 92,
+          avg_4k: 51,
+          settings: "Ultra raster, no RT, native",
+          source_url: "https://www.youtube.com/watch?v=VlvXsbXNSOw",
+          method: "youtube_manual",
+          date_scraped: "2025-09-29",
+        },
+        {
+          cpu: "R5 7700",
+          gpu: "RTX 5070 Ti",
+          game: "Cyberpunk 2077 (Ultra, no RT)",
+          avg_1080p: 120,
+          avg_1440p: 90,
+          avg_4k: 50,
+          settings: "Ultra raster, no RT, native",
+          source_url: "https://www.youtube.com/watch?v=VlvXsbXNSOw",
+          method: "youtube_inferred",
+          date_scraped: "2025-09-29",
+        },
+        {
+          cpu: "R5 7600",
+          gpu: "RTX 5080",
+          game: "Cyberpunk 2077 (Ultra, no RT)",
+          avg_1080p: 160,
+          avg_1440p: 120,
+          avg_4k: 70,
+          settings: "Ultra raster, no RT, native",
+          source_url:
+            "https://www.techpowerup.com/review/nvidia-geforce-rtx-5080-founders-edition/33.html",
+          method: "site_chart",
+          date_scraped: "2025-09-29",
+        },
+        {
+          cpu: "R5 7800X3D",
+          gpu: "RTX 5070 Ti",
+          game: "Fortnite (DX12, Epic, no RT)",
+          avg_1080p: 210,
+          avg_1440p: 160,
+          avg_4k: 90,
+          settings: "DX12, Epic, native",
+          source_url: "https://www.youtube.com/watch?v=MrrggOB24To",
+          method: "youtube_manual",
+          date_scraped: "2025-09-29",
+        },
+      ];
+
+      // Utility: unique list from array by key
+      function uniqueBy(arr, key) {
+        return [...new Set(arr.map((x) => x[key]))];
+      }
+
+      // Populate dropdowns
+      const cpuSelect = document.getElementById("cpu");
+      const gpuSelect = document.getElementById("gpu");
+      const gameSelect = document.getElementById("game");
+      const resultsEl = document.getElementById("results");
+
+      function populateSelect(select, values) {
+        select.innerHTML = "";
+        const optAll = document.createElement("option");
+        optAll.value = "";
+        optAll.textContent = "All";
+        select.appendChild(optAll);
+        values.forEach((v) => {
+          const o = document.createElement("option");
+          o.value = v;
+          o.textContent = v;
+          select.appendChild(o);
+        });
+      }
+
+      function refreshFilters() {
+        // Update options based on existing data
+        const cpus = uniqueBy(DATA, "cpu").sort();
+        const gpus = uniqueBy(DATA, "gpu").sort();
+        const games = uniqueBy(DATA, "game").sort();
+
+        populateSelect(cpuSelect, cpus);
+        populateSelect(gpuSelect, gpus);
+        populateSelect(gameSelect, games);
+      }
+
+      // Median helper
+      function median(nums) {
+        if (!nums.length) return null;
+        const arr = [...nums].sort((a, b) => a - b);
+        const mid = Math.floor(arr.length / 2);
+        if (arr.length % 2 === 0) {
+          return Math.round((arr[mid - 1] + arr[mid]) / 2);
+        }
+        return arr[mid];
+      }
+
+      // Render results
+      function render() {
+        const cpu = cpuSelect.value;
+        const gpu = gpuSelect.value;
+        const game = gameSelect.value;
+
+        // Filter data
+        const filtered = DATA.filter(
+          (r) =>
+            (cpu ? r.cpu === cpu : true) &&
+            (gpu ? r.gpu === gpu : true) &&
+            (game ? r.game === game : true)
+        );
+
+        resultsEl.innerHTML = "";
+
+        if (!filtered.length) {
+          resultsEl.innerHTML =
+            '<div class="empty">No results found for the current selection.</div>';
+          return;
+        }
+
+        // Group by exact (cpu,gpu,game)
+        const groups = {};
+        for (const row of filtered) {
+          const key = `${row.cpu} | ${row.gpu} | ${row.game}`;
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(row);
+        }
+
+        Object.entries(groups).forEach(([key, rows]) => {
+          // Aggregate across sources (simple median)
+          const agg1080 = median(
+            rows.map((r) => r.avg_1080p).filter((x) => Number.isFinite(x))
+          );
+          const agg1440 = median(
+            rows.map((r) => r.avg_1440p).filter((x) => Number.isFinite(x))
+          );
+          const agg4k = median(
+            rows.map((r) => r.avg_4k).filter((x) => Number.isFinite(x))
+          );
+
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const [cCpu, cGpu, cGame] = key.split(" | ");
+
+          card.innerHTML = `
+            <h3>${cCpu} • ${cGpu}<br/><span class="muted">${cGame}</span></h3>
+            <div class="fps-row" style="margin-bottom:10px;">
+              <div class="fps-pill"><strong>1080p</strong><br/>${
+                agg1080 ?? "—"
+              } fps</div>
+              <div class="fps-pill"><strong>1440p</strong><br/>${
+                agg1440 ?? "—"
+              } fps</div>
+              <div class="fps-pill"><strong>4K</strong><br/>${
+                agg4k ?? "—"
+              } fps</div>
+              <div class="fps-pill">
+                <span class="badge">${
+                  rows.length
+                } source${rows.length > 1 ? "s" : ""}</span>
+                <div class="muted">median of sources</div>
+              </div>
+            </div>
+            <div class="sources">
+              ${rows
+                .map(
+                  (r, i) => `
+                <div style="margin-bottom:6px;">
+                  <span class="badge">${r.method}</span>
+                  <a href="${r.source_url}" target="_blank" rel="noopener">
+                    Source ${i + 1}
+                  </a>
+                  <span class="muted"> • ${r.settings || "—"} • ${
+                    r.date_scraped || ""
+                  }</span><br/>
+                  <span class="muted">1080p ${r.avg_1080p ?? "—"} • 1440p ${
+                    r.avg_1440p ?? "—"
+                  } • 4K ${r.avg_4k ?? "—"}</span>
+                </div>`
+                )
+                .join("")}
+            </div>
+          `;
+
+          resultsEl.appendChild(card);
+        });
+      }
+
+      // Wire up
+      refreshFilters();
+      render();
+
+      [cpuSelect, gpuSelect, gameSelect].forEach((el) =>
+        el.addEventListener("change", render)
+      );
+
+      // HOW TO INTEGRATE REAL SCRAPED DATA
+      // 1) Replace DATA with your fetched rows.
+      // 2) Call refreshFilters(); render();
+      // Example fetch pattern (serve a data.json next to this HTML):
+      // fetch('data.json').then(r => r.json()).then(rows => {
+      //   DATA.length = 0;
+      //   DATA.push(...rows);
+      //   refreshFilters();
+      //   render();
+      // });
+    </script>
+  </body>
+</html>

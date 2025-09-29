@@ -1,0 +1,317 @@
+[
+  {
+    "game": "Valorant",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 420.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Red Dead Redemption 2",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 130.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Microsoft Flight Sim",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 85.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "GTA 5",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 170.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Fortnite",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 190.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Cyberpunk 2077",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 115.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Warzone 2",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 155.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Valorant",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 420.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Red Dead Redemption 2",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 130.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Microsoft Flight Sim",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 85.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "GTA 5",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 170.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Fortnite",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 190.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Cyberpunk 2077",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 115.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Warzone 2",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070",
+    "resolution": "1080p",
+    "avg_fps": 155.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Valorant",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 420.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Red Dead Redemption 2",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 130.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Microsoft Flight Sim",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 85.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "GTA 5",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 170.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Fortnite",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 190.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Cyberpunk 2077",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 115.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Warzone 2",
+    "cpu": "R5 7800X3D",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 155.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Valorant",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 420.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Red Dead Redemption 2",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 130.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Microsoft Flight Sim",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 85.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "GTA 5",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 170.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Fortnite",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 190.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Cyberpunk 2077",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 115.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Warzone 2",
+    "cpu": "R5 7700",
+    "gpu": "RTX 5070 Ti",
+    "resolution": "1080p",
+    "avg_fps": 155.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Valorant",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 420.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Red Dead Redemption 2",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 130.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Microsoft Flight Sim",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 85.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "GTA 5",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 170.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Fortnite",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 190.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Cyberpunk 2077",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 115.0,
+    "n_sources": 1,
+    "sources": []
+  },
+  {
+    "game": "Warzone 2",
+    "cpu": "R5 7600",
+    "gpu": "RTX 5080",
+    "resolution": "1080p",
+    "avg_fps": 155.0,
+    "n_sources": 1,
+    "sources": []
+  }
+]
