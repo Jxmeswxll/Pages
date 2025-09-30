@@ -604,6 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         const dotsContainer = document.getElementById('mobile-pagination-dots');
+        const carouselContent = document.getElementById('mobile-carousel-content');
         dotsContainer.innerHTML = '';
 
         const order = ['Best Value', 'Our Recommendation', 'Level Up'];
@@ -619,10 +620,17 @@ document.addEventListener('DOMContentLoaded', () => {
             dotsContainer.appendChild(dot);
         });
 
-        function updateActive(index) {
-            currentIndex = parseInt(index);
-            updateMobileView(sortedPcs[currentIndex]);
-            dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+        function updateActive(index, direction) {
+            if (!carouselContent) return;
+            
+            carouselContent.classList.add('fade-out');
+
+            setTimeout(() => {
+                currentIndex = parseInt(index);
+                updateMobileView(sortedPcs[currentIndex]);
+                dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+                carouselContent.classList.remove('fade-out');
+            }, 300);
         }
 
         updateActive(currentIndex);
@@ -633,41 +641,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const mobileResultsCard = document.querySelector('.mobile-results-card');
-        let touchstartX = 0;
-        let touchendX = 0;
-        let touchstartY = 0;
-        let touchendY = 0;
-        let isScrolling = false;
+        document.querySelector('.prev-btn').addEventListener('click', () => {
+            const newIndex = currentIndex > 0 ? currentIndex - 1 : sortedPcs.length - 1;
+            updateActive(newIndex, 'prev');
+        });
 
-        function handleSwipe() {
-            const deltaX = touchendX - touchstartX;
-            const deltaY = touchendY - touchstartY;
-
-            if (Math.abs(deltaX) > Math.abs(deltaY)) { // Horizontal swipe
-                if (Math.abs(deltaX) > 30) { // Threshold
-                    if (deltaX < 0) { // Left
-                        if (currentIndex < sortedPcs.length - 1) updateActive(currentIndex + 1);
-                    } else { // Right
-                        if (currentIndex > 0) updateActive(currentIndex - 1);
-                    }
-                }
-            }
-        }
-
-        if (mobileResultsCard) {
-            mobileResultsCard.addEventListener('touchstart', e => {
-                touchstartX = e.changedTouches[0].clientX;
-                touchstartY = e.changedTouches[0].clientY;
-            }, { passive: true });
-
-            mobileResultsCard.addEventListener('touchend', e => {
-                touchendX = e.changedTouches[0].clientX;
-                touchendY = e.changedTouches[0].clientY;
-                handleSwipe();
-            }, { passive: true });
-        }
-
+        document.querySelector('.next-btn').addEventListener('click', () => {
+            const newIndex = currentIndex < sortedPcs.length - 1 ? currentIndex + 1 : 0;
+            updateActive(newIndex, 'next');
+        });
     }
 
     function updateMobileView(pc) {
