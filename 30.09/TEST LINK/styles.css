@@ -1094,7 +1094,6 @@ button:disabled {
 
     .carousel-btn {
         position: absolute;
-        bottom: 10px;
         transform: translateY(-50%);
         background-color: rgba(44, 44, 46, 0.6);
         color: var(--text-color);
