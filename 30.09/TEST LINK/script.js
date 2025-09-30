@@ -506,6 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let currentIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
         if (currentIndex === -1) currentIndex = 0;
+        let isAnimating = false;
 
         sortedPcs.forEach((pc, index) => {
             const dot = document.createElement('div');
@@ -515,7 +516,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function updateActive(index, direction) {
-            if (!carouselContent) return;
+            if (!carouselContent || isAnimating) return;
+            isAnimating = true;
             
             carouselContent.classList.add('fade-out');
 
@@ -524,6 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateMobileView(sortedPcs[currentIndex]);
                 dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
                 carouselContent.classList.remove('fade-out');
+                isAnimating = false;
             }, 300);
         }
 
