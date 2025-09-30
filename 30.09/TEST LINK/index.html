@@ -270,18 +270,29 @@
 
         <div id="results" class="results-grid" style="display: none;"></div>
         <div id="mobile-results-container" style="display: none;">
-            <h2 id="mobile-product-title"></h2>
-            <div id="mobile-recommendation-pills"></div>
             <div class="mobile-product-view">
                 <button class="carousel-btn prev-btn" aria-label="Previous Recommendation"><i class="fas fa-chevron-left"></i></button>
                 <div id="mobile-carousel-content">
-                    <div id="mobile-pagination-dots"></div>
-                    <p class="mobile-price-tag"></p>
-                    <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy</a>
-                    <img src="" id="mobile-product-image" alt="Recommended PC">
-                    <div id="mobile-product-specs" class="mobile-specs-block"></div>
+                    <div class="mobile-results-card">
+                        <img src="" id="mobile-product-image" alt="Recommended PC" class="hero-image">
+                        <div id="mobile-pagination-dots"></div>
+                        <div class="product-info">
+                            <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
+                            <h2 id="mobile-product-title"></h2>
+                            <p id="mobile-reason-container" class="recommendation-reason"></p>
+                            <div id="mobile-price-container" class="price-container"></div>
+                            <a href="#" id="mobile-details-button" class="view-product-button-mobile" target="_blank">View Details</a>
+                        </div>
+                        <div class="full-specs">
+                            <div id="mobile-product-specs" class="mobile-specs-block"></div>
+                        </div>
+                        <div class="trust-microcopy"></div>
+                    </div>
                 </div>
                 <button class="carousel-btn next-btn" aria-label="Next Recommendation"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="sticky-buy-bar">
+                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy Now</a>
             </div>
         </div>
     </div>

@@ -495,31 +495,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayMobileSingleView(recs) {
-        const mobileResultsContainer = document.getElementById('mobile-results-container');
-        mobileResultsContainer.innerHTML = `
-            <div class="mobile-results-card">
-                <div id="mobile-pagination-dots"></div>
-                <img src="" id="mobile-product-image" alt="Recommended PC" class="hero-image">
-                <div class="product-info">
-                    <div id="mobile-recommendation-badge" class="recommendation-badge"></div>
-                    <h2 id="mobile-product-title"></h2>
-                    <p id="mobile-reason-container" class="recommendation-reason"></p>
-                    <div id="mobile-price-container" class="price-container">
-                    </div>
-                </div>
-                <div class="full-specs">
-                    <div id="mobile-product-specs" class="mobile-specs-block"></div>
-                </div>
-                <div class="trust-microcopy">
-                    </div>
-            </div>
-            <div class="sticky-buy-bar">
-                <a href="#" id="mobile-buy-button" class="buy-button" target="_blank">Buy Now</a>
-            </div>
-        `;
-
         const dotsContainer = document.getElementById('mobile-pagination-dots');
         const carouselContent = document.getElementById('mobile-carousel-content');
+        if (!dotsContainer || !carouselContent) return;
+        
         dotsContainer.innerHTML = '';
 
         const order = ['Best Value', 'Our Recommendation', 'Level Up'];
@@ -606,6 +585,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const buyButton = document.getElementById('mobile-buy-button');
         buyButton.href = productUrl;
         buyButton.textContent = currentView === 'RTS' ? 'Buy Now' : 'Customise Now';
+
+        const detailsButton = document.getElementById('mobile-details-button');
+        if (detailsButton) {
+            detailsButton.href = productUrl;
+        }
 
         const mobileImg = document.getElementById('mobile-product-image');
         mobileImg.src = pc.imageUrl;
