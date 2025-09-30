@@ -511,36 +511,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextBtn) nextBtn.style.top = `${buttonTop}px`;
     };
 
-    function displayMobileSingleView(recs) {
+    let mobileCarouselState = {
+        sortedPcs: [],
+        currentIndex: 0,
+        isAnimating: false
+    };
+
+    function setupMobileCarousel() {
         const dotsContainer = document.getElementById('mobile-pagination-dots');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
         const carouselContent = document.getElementById('mobile-carousel-content');
-        if (!dotsContainer || !carouselContent) return;
-        
-        dotsContainer.innerHTML = '';
-
-        const order = ['Best Value', 'Our Recommendation', 'Level Up'];
-        const sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
-        
-        let currentIndex = sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
-        if (currentIndex === -1) currentIndex = 0;
-        let isAnimating = false;
-
-        sortedPcs.forEach((pc, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'pagination-dot';
-            dot.dataset.index = index;
-            dotsContainer.appendChild(dot);
-        });
 
         function setActiveCard(index) {
-            currentIndex = parseInt(index);
-            updateMobileView(sortedPcs[currentIndex]);
-            dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+            mobileCarouselState.currentIndex = parseInt(index);
+            updateMobileView(mobileCarouselState.sortedPcs[mobileCarouselState.currentIndex]);
+            dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === mobileCarouselState.currentIndex));
         }
 
-        function updateActive(index, direction) {
-            if (!carouselContent || isAnimating) return;
-            isAnimating = true;
+        function updateActive(index) {
+            if (!carouselContent || mobileCarouselState.isAnimating) return;
+            mobileCarouselState.isAnimating = true;
             
             carouselContent.classList.add('fade-out');
 
@@ -548,32 +539,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 setActiveCard(index);
                 carouselContent.classList.remove('fade-out');
                 carouselContent.removeEventListener('transitionend', handleTransitionEnd);
-                isAnimating = false;
+                mobileCarouselState.isAnimating = false;
             };
 
             carouselContent.addEventListener('transitionend', handleTransitionEnd);
         }
 
-        setActiveCard(currentIndex);
-
         dotsContainer.addEventListener('click', (e) => {
             if (e.target.matches('.pagination-dot')) {
                 const newIndex = e.target.dataset.index;
-                if (newIndex != currentIndex) {
+                if (newIndex != mobileCarouselState.currentIndex) {
                     updateActive(newIndex);
                 }
             }
         });
 
-        document.querySelector('.prev-btn').addEventListener('click', () => {
-            const newIndex = currentIndex > 0 ? currentIndex - 1 : sortedPcs.length - 1;
-            updateActive(newIndex, 'prev');
+        prevBtn.addEventListener('click', () => {
+            const newIndex = mobileCarouselState.currentIndex > 0 ? mobileCarouselState.currentIndex - 1 : mobileCarouselState.sortedPcs.length - 1;
+            updateActive(newIndex);
         });
 
-        document.querySelector('.next-btn').addEventListener('click', () => {
-            const newIndex = currentIndex < sortedPcs.length - 1 ? currentIndex + 1 : 0;
-            updateActive(newIndex, 'next');
+        nextBtn.addEventListener('click', () => {
+            const newIndex = mobileCarouselState.currentIndex < mobileCarouselState.sortedPcs.length - 1 ? mobileCarouselState.currentIndex + 1 : 0;
+            updateActive(newIndex);
         });
+    }
+
+    function displayMobileSingleView(recs) {
+        const dotsContainer = document.getElementById('mobile-pagination-dots');
+        if (!dotsContainer) return;
+        
+        dotsContainer.innerHTML = '';
+
+        const order = ['Best Value', 'Our Recommendation', 'Level Up'];
+        mobileCarouselState.sortedPcs = [...recs].sort((a, b) => order.indexOf(a.recommendationLevel) - order.indexOf(b.recommendationLevel));
+        
+        let initialIndex = mobileCarouselState.sortedPcs.findIndex(p => p.recommendationLevel === 'Our Recommendation');
+        if (initialIndex === -1) initialIndex = 0;
+        
+        mobileCarouselState.sortedPcs.forEach((pc, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'pagination-dot';
+            dot.dataset.index = index;
+            dotsContainer.appendChild(dot);
+        });
+
+        // Directly set the initial card without animation
+        mobileCarouselState.currentIndex = parseInt(initialIndex);
+        updateMobileView(mobileCarouselState.sortedPcs[mobileCarouselState.currentIndex]);
+        dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === mobileCarouselState.currentIndex));
     }
 
     function updateMobileView(pc) {
@@ -692,4 +706,5 @@ document.addEventListener('DOMContentLoaded', () => {
     determineStepOrder();
     updateButtons();
     document.querySelector('.results-toggle-buttons').style.display = 'none';
+    setupMobileCarousel();
 });
