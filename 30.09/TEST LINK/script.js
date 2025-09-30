@@ -555,12 +555,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         prevBtn.addEventListener('click', () => {
-            const newIndex = mobileCarouselState.currentIndex > 0 ? mobileCarouselState.currentIndex - 1 : mobileCarouselState.sortedPcs.length - 1;
+            if (mobileCarouselState.sortedPcs.length === 0) return;
+            const newIndex = (mobileCarouselState.currentIndex - 1 + mobileCarouselState.sortedPcs.length) % mobileCarouselState.sortedPcs.length;
             updateActive(newIndex);
         });
 
         nextBtn.addEventListener('click', () => {
-            const newIndex = mobileCarouselState.currentIndex < mobileCarouselState.sortedPcs.length - 1 ? mobileCarouselState.currentIndex + 1 : 0;
+            if (mobileCarouselState.sortedPcs.length === 0) return;
+            const newIndex = (mobileCarouselState.currentIndex + 1) % mobileCarouselState.sortedPcs.length;
             updateActive(newIndex);
         });
     }
