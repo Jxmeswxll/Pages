@@ -521,13 +521,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             carouselContent.classList.add('fade-out');
 
-            setTimeout(() => {
+            const handleTransitionEnd = () => {
                 currentIndex = parseInt(index);
                 updateMobileView(sortedPcs[currentIndex]);
                 dotsContainer.querySelectorAll('.pagination-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
                 carouselContent.classList.remove('fade-out');
+                
+                // Remove the event listener so it doesn't fire multiple times
+                carouselContent.removeEventListener('transitionend', handleTransitionEnd);
+                
                 isAnimating = false;
-            }, 300);
+            };
+
+            carouselContent.addEventListener('transitionend', handleTransitionEnd);
         }
 
         updateActive(currentIndex);
