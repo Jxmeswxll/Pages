@@ -1,0 +1,970 @@
+<!DOCTYPE html><html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Lux PC Spec Concierge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* RESET */
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+
+/* THEME */
+  :root {
+    /* Palette: warm, refined neutrals with an accent not blue/purple */
+    --bg: #faf8f5;
+    --panel: #ffffff;
+    --ink: #1f1b16;
+    --subtle-ink: #5b5348;
+    --muted: #e9e4de;
+    --accent: #c46a1f; /* Burnt Sienna/Cognac – luxury, not purple/blue */
+    --accent-ink: #6e3a10;
+    --success: #2a7c4c;
+    --danger: #a8322e;
+    --focus: #d29f6b; /* soft highlight */
+    --shadow: 0 10px 30px rgba(31, 27, 22, 0.08);
+    --ring: 0 0 0 3px rgba(210, 159, 107, 0.28);
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    background: radial-gradient(1200px 800px at 70% -10%, #fff 0%, #f7f3ee 45%, var(--bg) 100%);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+      Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: 1.4;
+  }
+
+  /* LUX HEADER */
+  .shell {
+    max-width: 960px;
+    margin: 24px auto 48px;
+    padding: 0 20px;
+  }
+
+  .brandbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 18px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, #ffffff 0%, #fbf9f6 100%);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--muted);
+  }
+  .mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background:
+      conic-gradient(from 210deg, #e3d8c8 0 25%, #f3ede5 0 50%, #d9c7b3 0 75%, #e9dfd2 0 100%);
+    box-shadow: inset 0 0 0 2px rgba(31,27,22,0.06), 0 2px 6px rgba(31,27,22,0.08);
+  }
+  .title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: 18px;
+  }
+  .subtitle {
+    color: var(--subtle-ink);
+    font-size: 13px;
+  }
+  .spacer { flex: 1; }
+  .badge {
+    font-size: 12px;
+    color: var(--accent-ink);
+    background: rgba(196,106,31,0.10);
+    border: 1px solid rgba(196,106,31,0.22);
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+
+  /* LAYOUT */
+  .grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 24px;
+    margin-top: 22px;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* LEFT PANEL: CREATIVE DIRECTION */
+  .context {
+    background: var(--panel);
+    border: 1px solid var(--muted);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .context h2 {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle-ink);
+    margin: 0 0 12px;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f6f1ea;
+    border: 1px solid #e9dfd2;
+    color: #6b5e50;
+    margin: 6px 6px 0 0;
+  }
+  .note {
+    font-size: 13px;
+    color: var(--subtle-ink);
+    margin-top: 12px;
+  }
+  .legend {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f9f5ef 100%);
+    border: 1px solid #efe6da;
+  }
+  .legend b { color: var(--accent-ink); }
+
+  /* CHAT PANEL */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--muted);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 70vh;
+  }
+  .hero {
+    padding: 18px 18px 10px;
+    border-bottom: 1px solid var(--muted);
+  }
+  .hero h1 {
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+  .hero p {
+    margin: 0;
+    color: var(--subtle-ink);
+    font-size: 14px;
+  }
+
+  /* MESSAGES */
+  .scroll {
+    padding: 18px;
+    overflow: auto;
+    scroll-behavior: smooth;
+  }
+  .msg {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f0e7da, #e3d5c2);
+    border: 1px solid #e0d4c5;
+    flex: 0 0 auto;
+  }
+  .avatar.user {
+    background: linear-gradient(135deg, #efeae3, #ddd0c0);
+  }
+  .bubble {
+    max-width: 80%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #efe5d8;
+    background: #fffdfa;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .bubble.assistant {
+    background: linear-gradient(180deg, #fff 0%, #fbf7f1 100%);
+  }
+  .bubble .kicker {
+    display: block;
+    font-size: 11px;
+    color: var(--subtle-ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* QUICK REPLIES / CHIPS */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .chip {
+    border: 1px solid #e6dbcd;
+    background: #f8f3ec;
+    color: #4a4035;
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 120ms ease, background 120ms ease, box-shadow 120ms ease;
+  }
+  .chip:hover { transform: translateY(-1px); box-shadow: 0 6px 12px rgba(31,27,22,0.08); }
+  .chip:focus-visible { outline: none; box-shadow: var(--ring); }
+
+  /* INPUT */
+  .composer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 12px;
+    border-top: 1px solid var(--muted);
+    background: linear-gradient(180deg, #fcfaf7 0%, #f7f3ee 100%);
+  }
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e7ddd0;
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px 10px;
+  }
+  .field input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: var(--ink);
+    background: transparent;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #d07b35 0%, #c46a1f 90%);
+    color: #fff;
+    border: 1px solid #b8611c;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  }
+  .cta:hover { transform: translateY(-1px); box-shadow: 0 10px 18px rgba(196,106,31,0.25); filter: saturate(1.02); }
+  .cta:active { transform: translateY(0); }
+  .cta:focus-visible { outline: none; box-shadow: var(--ring); }
+
+  /* PROGRESS */
+  .progress {
+    height: 6px;
+    background: #f0e8dd;
+    border-top: 1px solid #efe4d7;
+    position: relative;
+  }
+  .bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    background: linear-gradient(90deg, #e3b288, #c46a1f);
+    border-right: 1px solid #a85419;
+    transition: width 420ms cubic-bezier(.2,.7,.2,1);
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* ACCESSIBILITY */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+
+  /* CURSOR */
+  body { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><circle cx="8" cy="8" r="6" fill="%23c46a1f"/></svg>') 6 6, auto; }
+
+  /* ICONS (Lucide-like minimal via CSS shapes fallback) */
+  .icon {
+    width: 16px; height: 16px; position: relative; display: inline-block; flex: 0 0 16px;
+  }
+  .icon-send::before {
+    content: ""; position: absolute; right: 0; top: 50%;
+    width: 0; height: 0; border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent; border-left: 10px solid #fff; transform: translateY(-50%);
+  }
+  .icon-cpu::before, .icon-gpu::before, .icon-ram::before, .icon-ssd::before {
+    content: ""; position: absolute; inset: 2px; border: 2px solid currentColor; border-radius: 3px;
+  }
+  .icon-cpu::after {
+    content: ""; position: absolute; inset: -2px; border: 2px dashed currentColor; border-radius: 4px; opacity: .6;
+  }
+
+  /* TOAST / SOUND TOGGLE */
+  .topright {
+    position: fixed; right: 18px; bottom: 18px; display: flex; flex-direction: column; gap: 10px;
+    z-index: 20;
+  }
+  .toast {
+    background: #fffdf8; border: 1px solid #efe3d4; border-radius: 12px; padding: 10px 12px;
+    color: var(--ink); box-shadow: var(--shadow); font-size: 13px;
+  }
+  .sound {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px;
+    border: 1px solid #eadfce; background: #fff; cursor: pointer; color: #574b3f;
+  }
+  .sound .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+  }
+
+  /* KEY ANIMATIONS */
+  @keyframes floatIn {
+    from { transform: translateY(6px); opacity: 0; } to { transform: translateY(0); opacity: 1; }
+  }
+  .msg { animation: floatIn 240ms ease both; }
+
+  /* SELECTS & CONTROLS */
+  .control {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; margin-top: 8px;
+  }
+  select, input[type="number"], input[type="range"] {
+    border: 1px solid #e7ddd0; background: #fff; color: var(--ink);
+    border-radius: 10px; padding: 8px 10px; font-size: 13px;
+  }
+  input[type="range"] { width: 160px; accent-color: var(--accent); }
+
+  .inline-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .btn {
+    border: 1px solid #e6dbcd; background: #fff; color: #3e352c;
+    padding: 8px 10px; border-radius: 10px; font-size: 13px; cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 12px rgba(31,27,22,0.08); }
+  .btn.active { background: #f7efe6; border-color: #e3d6c4; color: var(--accent-ink); }
+
+  /* SUMMARY CARD */
+  .summary {
+    background: #fffdf9; border: 1px solid #efe4d8; border-radius: 12px; padding: 12px; font-size: 13px; color: #3c332a;
+  }
+  .summary h3 { margin: 0 0 8px; font-size: 14px; }
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 8px; }
+  .kv b { color: #544a3f; }
+</style>
+
+</head>
+  <body>
+    <div class="shell">
+      <div class="brandbar" aria-label="Brand header">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <div class="title">Aurum Spec Concierge</div>
+          <div class="subtitle">Chat-based configurator for a gaming + work PC</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="badge">Tailored in under 3 minutes</div>
+      </div>
+<div class="grid">
+    <!-- LEFT CONTEXT: creative direction and rationale subtly visible -->
+    <aside class="context" aria-label="Design context">
+      <h2>Creative Direction</h2>
+      <div class="pill">Purpose: capture PC requirements elegantly</div>
+      <div class="pill">Epicenter: chat bubbles + quick chips</div>
+      <div class="pill">Memorable: tactile chips + sonic haptics</div>
+      <div class="pill">Differentiator: luxury warmth, no gamer RGB</div>
+      <div class="note">
+        We focus on decisive questions with progressive disclosure. Primary content is the
+        current assistant bubble and actionable chips. Subtle: meta notes, badges.
+      </div>
+      <div class="legend">
+        <b>Interaction</b>: micro-raises on hover, soft progress bar, chip snap sound, smart
+        autoscroll. Minimal latency illusions with staged assistant messages.
+      </div>
+    </aside>
+
+    <!-- RIGHT: Chat Quiz -->
+    <section class="panel" aria-label="Chat quiz">
+      <div class="hero">
+        <h1>Let’s define your perfect gaming PC</h1>
+        <p>Answer a few precise questions. We’ll balance performance, acoustics, and budget.</p>
+      </div>
+
+      <div class="scroll" id="log" aria-live="polite" aria-atomic="false">
+        <!-- Assistant greeting -->
+      </div>
+
+      <div class="composer">
+        <div class="field">
+          <span class="icon icon-cpu" aria-hidden="true"></span>
+          <input id="input" type="text" placeholder="Type your answer or pick a chip…" />
+        </div>
+        <button class="cta" id="send" aria-label="Send">
+          <span class="icon icon-send" aria-hidden="true"></span> Send
+        </button>
+      </div>
+
+      <div class="progress" aria-label="Progress">
+        <div class="bar" id="bar"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- UI Hints -->
+<div class="topright">
+  <div class="sound" id="soundToggle" role="switch" aria-checked="true">
+    <div class="dot" id="soundDot"></div>
+    Sound effects
+  </div>
+  <div class="toast" id="toast" style="display:none;">Saved your preferences</div>
+</div>
+
+<!-- AUDIO: subtle, short -->
+<audio id="sfx-tap" preload="auto">
+  <source src="data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAAAAAAAABAACAgICAgP8AAP8AAACAgICA" type="audio/wav" />
+</audio>
+<audio id="sfx-send" preload="auto">
+  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAAAAAAAABAACAgP8A//8AAP8AgICA" type="audio/wav" />
+</audio>
+<audio id="sfx-pop" preload="auto">
+  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAAAAAAAABAACAgICAAP8A//8A" type="audio/wav" />
+</audio>
+
+<script>
+  // Utilities
+  const $ = (s, r = document) => r.querySelector(s);
+  const log = $("#log");
+  const input = $("#input");
+  const sendBtn = $("#send");
+  const bar = $("#bar");
+  const sTap = $("#sfx-tap");
+  const sSend = $("#sfx-send");
+  const sPop = $("#sfx-pop");
+  const soundToggle = $("#soundToggle");
+  const soundDot = $("#soundDot");
+  let soundOn = true;
+
+  const play = (a) => { if (!soundOn || !a) return; try { a.currentTime = 0; a.play(); } catch(e){} };
+
+  soundToggle.addEventListener("click", () => {
+    soundOn = !soundOn;
+    soundDot.style.background = soundOn ? "var(--success)" : "#9a8f83";
+    soundToggle.setAttribute("aria-checked", String(soundOn));
+    toast(soundOn ? "Sound on" : "Sound off");
+  });
+
+  const toast = (t) => {
+    const el = $("#toast");
+    el.textContent = t;
+    el.style.display = "block";
+    setTimeout(() => el.style.display = "none", 1600);
+  };
+
+  const scrolldown = () => { log.scrollTop = log.scrollHeight; };
+
+  const addMsg = (role, html) => {
+    const wrap = document.createElement("div");
+    wrap.className = "msg";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar " + (role === "user" ? "user" : "assistant");
+    const bubble = document.createElement("div");
+    bubble.className = "bubble " + (role === "assistant" ? "assistant" : "user");
+    bubble.innerHTML = html;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    log.appendChild(wrap);
+    play(role === "assistant" ? sPop : sTap);
+    scrolldown();
+    return bubble;
+  };
+
+  const addChips = (options) => {
+    const row = document.createElement("div");
+    row.className = "chips";
+    options.forEach(opt => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.textContent = opt.label;
+      chip.addEventListener("click", () => {
+        pick(opt.value ?? opt.label);
+      });
+      row.appendChild(chip);
+    });
+    log.lastElementChild?.appendChild(row);
+  };
+
+  const addControls = (controls) => {
+    const ctr = document.createElement("div");
+    ctr.className = "inline-buttons";
+    controls.forEach(c => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn";
+      btn.textContent = c.label;
+      btn.addEventListener("click", () => {
+        [...ctr.children].forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        pick(c.value);
+      });
+      ctr.appendChild(btn);
+    });
+    log.lastElementChild?.appendChild(ctr);
+  };
+
+  // Question flow
+  const steps = [
+    {
+      id: "goal",
+      ask: "First, what matters most to you?",
+      options: [
+        { label: "Highest FPS", value: "fps" },
+        { label: "Quiet & cool", value: "quiet" },
+        { label: "Balanced", value: "balanced" },
+        { label: "Creator performance", value: "creator" }
+      ]
+    },
+    {
+      id: "games",
+      ask: "Which games do you play most? Include your resolution.",
+      helper: "Examples: Valorant 1080p 240Hz, Cyberpunk 2077 1440p 144Hz, Starfield 4K DLSS",
+      free: true
+    },
+    {
+      id: "work",
+      ask: "Will this PC also be used for work?",
+      options: [
+        { label: "Yes", value: "yes" },
+        { label: "No", value: "no" }
+      ]
+    },
+    {
+      id: "workDetail",
+      when: (s) => s.work === "yes",
+      ask: "What kind of work? Be specific.",
+      options: [
+        { label: "Software dev", value: "dev" },
+        { label: "3D/CAD", value: "3d" },
+        { label: "Video editing", value: "video" },
+        { label: "Music production", value: "audio" },
+        { label: "Data/ML", value: "ml" },
+        { label: "Office & web", value: "office" },
+        { label: "Other", value: "other" }
+      ]
+    },
+    {
+      id: "workApps",
+      when: (s) => s.work === "yes",
+      ask: "Which apps or engines do you use?",
+      helper: "e.g., Unreal, Blender, SolidWorks, Premiere, DaVinci, Ableton, PyTorch, MATLAB, Docker",
+      free: true
+    },
+    {
+      id: "monitor",
+      ask: "What display do you target?",
+      options: [
+        { label: "1080p 240–360Hz", value: "1080-highHz" },
+        { label: "1440p 144–240Hz", value: "1440-highHz" },
+        { label: "4K 120–165Hz", value: "4k-highHz" },
+        { label: "Ultra‑wide", value: "ultrawide" },
+        { label: "Multiple monitors", value: "multi" }
+      ]
+    },
+    {
+      id: "rt",
+      ask: "Ray tracing importance?",
+      options: [
+        { label: "Must-have", value: "must" },
+        { label: "Nice to have", value: "nice" },
+        { label: "Off is fine", value: "off" }
+      ]
+    },
+    {
+      id: "budget",
+      ask: "What’s your target budget (USD)?",
+      control: "range",
+      min: 800, max: 6000, step: 100, default: 2200
+    },
+    {
+      id: "noise",
+      ask: "Noise tolerance under load?",
+      options: [
+        { label: "Whisper-quiet", value: "silent" },
+        { label: "Moderate hum", value: "moderate" },
+        { label: "Don’t care", value: "dontcare" }
+      ]
+    },
+    {
+      id: "size",
+      ask: "Preferred case size?",
+      options: [
+        { label: "Compact (mATX/ITX)", value: "small" },
+        { label: "Mid-tower (ATX)", value: "mid" },
+        { label: "Full-tower", value: "full" }
+      ]
+    },
+    {
+      id: "looks",
+      ask: "Aesthetic preference?",
+      options: [
+        { label: "Minimal, neutral", value: "minimal" },
+        { label: "Showpiece (glass)", value: "show" },
+        { label: "Tool-like, no RGB", value: "tool" }
+      ]
+    },
+    {
+      id: "storage",
+      ask: "Storage needs?",
+      options: [
+        { label: "1TB", value: "1tb" },
+        { label: "2TB", value: "2tb" },
+        { label: "4TB+", value: "4tb" },
+        { label: "Separate work/game drives", value: "split" }
+      ]
+    },
+    {
+      id: "brandBias",
+      ask: "Any brand or ecosystem preferences?",
+      options: [
+        { label: "NVIDIA + Intel", value: "nv-intel" },
+        { label: "NVIDIA + AMD CPU", value: "nv-amd" },
+        { label: "AMD GPU + AMD CPU", value: "amd-amd" },
+        { label: "Open to best value", value: "open" }
+      ]
+    },
+    {
+      id: "timeline",
+      ask: "When do you plan to buy?",
+      options: [
+        { label: "Now (0–2 weeks)", value: "now" },
+        { label: "Soon (1–2 months)", value: "soon" },
+        { label: "Flexible (3+ months)", value: "later" }
+      ]
+    },
+    {
+      id: "extras",
+      ask: "Any must‑haves?",
+      helper: "Wi‑Fi 6E, 10GbE, capture card, quiet AIO, specific case, OS, warranty, peripherals…",
+      free: true
+    }
+  ];
+
+  const state = {};
+  let index = 0;
+
+  const totalSteps = () => steps.filter(s => !s.when || s.when(state)).length;
+  const progress = () => {
+    const done = Object.keys(state).length;
+    const pct = Math.max(6, Math.round((done / totalSteps()) * 100));
+    bar.style.width = pct + "%";
+  };
+
+  const showBudgetControl = (min, max, step, def) => {
+    const wrap = document.createElement("div");
+    wrap.className = "control";
+    const num = document.createElement("input");
+    num.type = "number";
+    num.min = String(min); num.max = String(max); num.step = String(step);
+    num.value = String(def);
+    const range = document.createElement("input");
+    range.type = "range";
+    range.min = String(min); range.max = String(max); range.step = String(step); range.value = String(def);
+    wrap.appendChild(num); wrap.appendChild(range);
+    range.addEventListener("input", () => { num.value = range.value; });
+    num.addEventListener("input", () => { range.value = num.value; });
+    const done = document.createElement("button");
+    done.type = "button"; done.className = "btn"; done.textContent = "Set budget";
+    done.addEventListener("click", () => { pick(Number(num.value)); });
+    wrap.appendChild(done);
+    log.lastElementChild?.appendChild(wrap);
+  };
+
+  const ask = () => {
+    // Skip conditional steps if not applicable
+    while (index < steps.length && steps[index].when && !steps[index].when(state)) {
+      index++;
+    }
+    if (index >= steps.length) return summarize();
+
+    const s = steps[index];
+    const b = addMsg("assistant", `
+      <span class="kicker">Question ${Object.keys(state).length + 1} of ${totalSteps()}</span>
+      ${s.ask}${s.helper ? `<div class="note" style="margin-top:6px">${s.helper}</div>` : ""}
+    `);
+    if (s.options) {
+      addChips(s.options);
+    }
+    if (s.control === "range") {
+      showBudgetControl(s.min, s.max, s.step, s.default);
+    }
+    if (s.free) {
+      // Allow typing; also suggest examples as chips to reduce friction
+      if (s.id === "games") {
+        addChips([
+          { label: "Valorant 1080p 240Hz" },
+          { label: "Cyberpunk 2077 1440p 144Hz" },
+          { label: "Starfield 4K" }
+        ]);
+      } else if (s.id === "workApps") {
+        addChips([
+          { label: "Unreal Engine" },
+          { label: "Blender" },
+          { label: "Premiere Pro" },
+          { label: "DaVinci Resolve" }
+        ]);
+      } else if (s.id === "extras") {
+        addChips([
+          { label: "Wi‑Fi 6E" },
+          { label: "10Gb Ethernet" },
+          { label: "Quiet AIO" },
+          { label: "Capture card" }
+        ]);
+      }
+    }
+    play(sPop);
+  };
+
+  const pick = (value) => {
+    const s = steps[index];
+    addMsg("user", typeof value === "string" ? value : String(value));
+    state[s.id] = value;
+    index++;
+    progress();
+    setTimeout(ask, 260);
+    play(sSend);
+  };
+
+  const handleSubmit = () => {
+    const v = input.value.trim();
+    if (!v) return;
+    const s = steps[index];
+    addMsg("user", v);
+    state[s.id] = v;
+    input.value = "";
+    index++;
+    progress();
+    setTimeout(ask, 260);
+    play(sSend);
+  };
+
+  sendBtn.addEventListener("click", handleSubmit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleSubmit();
+  });
+
+  const summarize = () => {
+    // Build a brief spec recommendation from state
+    const rec = deriveRecommendation(state);
+    addMsg("assistant", `
+      <span class="kicker">Summary</span>
+      Here’s a tailored baseline. We’ll finalize parts after availability check.
+      <div class="summary" style="margin-top:10px">
+        <h3>Recommended Direction</h3>
+        <div class="kv">
+          <div><b>Profile</b></div><div>${rec.profile}</div>
+          <div><b>Target Display</b></div><div>${rec.display}</div>
+          <div><b>CPU</b></div><div>${rec.cpu}</div>
+          <div><b>GPU</b></div><div>${rec.gpu}</div>
+          <div><b>RAM</b></div><div>${rec.ram}</div>
+          <div><b>Storage</b></div><div>${rec.storage}</div>
+          <div><b>Cooling</b></div><div>${rec.cooling}</div>
+          <div><b>Case</b></div><div>${rec.case}</div>
+          <div><b>PSU</b></div><div>${rec.psu}</div>
+          <div><b>OS</b></div><div>${rec.os}</div>
+          <div><b>Est. Budget</b></div><div>$${rec.budget}</div>
+        </div>
+      </div>
+    `);
+    addControls([
+      { label: "Refine answers", value: "refine" },
+      { label: "Export spec", value: "export" },
+      { label: "Start over", value: "restart" }
+    ]);
+  };
+
+  const deriveRecommendation = (s) => {
+    // Heuristics based on answers
+    const budget = Number(s.budget || 2200);
+    const disp = s.monitor || "1440p 144Hz";
+    const rt = s.rt || "nice";
+    const work = s.work === "yes";
+    const workKind = s.workDetail || "";
+    const noise = s.noise || "moderate";
+
+    // CPU
+    let cpu = "Intel Core i7 class (latest gen)";
+    if (workKind === "ml" || workKind === "video") cpu = "Intel Core i9 / Ryzen 9 class";
+    if (budget < 1300) cpu = "Intel Core i5 / Ryzen 5 class";
+
+    // GPU
+    let gpu = "GeForce RTX 4070 Super class";
+    if (disp === "4k-highHz") gpu = "GeForce RTX 4080 class";
+    if (disp === "1080-highHz") gpu = "GeForce RTX 4070 Ti Super class";
+    if (rt === "must") gpu = "GeForce RTX 4080 class";
+    if (budget < 1300) gpu = "GeForce RTX 4060 Ti / RX 7700 XT class";
+
+    // RAM
+    let ram = workKind === "ml" || workKind === "video" || workKind === "3d" ? "64GB DDR5" : "32GB DDR5";
+    if (budget < 1200) ram = "16GB DDR5 (upgradable)";
+
+    // Storage
+    let storage = "2TB NVMe Gen4";
+    if (s.storage === "4tb") storage = "4TB NVMe Gen4";
+    if (s.storage === "1tb") storage = "1TB NVMe Gen4";
+    if (s.storage === "split") storage = "1TB OS/Work + 2TB Games (separate NVMe)";
+
+    // Cooling
+    let cooling = noise === "silent" ? "High-fin tower air or 280mm AIO, low-RPM curve" : "240mm AIO or premium air";
+    if (budget < 1200) cooling = "Efficient tower air cooler";
+
+    // Case
+    let kase = "Minimalist airflow mid‑tower";
+    if (s.size === "small") kase = "Compact SFF with mesh panels";
+    if (s.size === "full") kase = "Full‑tower with acoustic damping";
+
+    // PSU
+    let psu = "750–850W 80+ Gold, semi‑passive";
+    if (gpu.includes("4080")) psu = "850–1000W 80+ Gold, semi‑passive";
+
+    // OS
+    let os = "Windows 11 Pro";
+
+    // Profile
+    let profile = "Balanced gaming + creator";
+    if (s.goal === "fps") profile = "Esports FPS optimizer";
+    if (s.goal === "quiet") profile = "Whisper‑quiet performance";
+    if (s.goal === "creator") profile = "Creator‑first workstation";
+    if (!work && s.goal === "balanced") profile = "Refined gaming build";
+
+    // Display string
+    const displayMap = {
+      "1080-highHz": "1080p high refresh",
+      "1440-highHz": "1440p high refresh",
+      "4k-highHz": "4K high refresh",
+      "ultrawide": "Ultra‑wide",
+      "multi": "Multi‑monitor"
+    };
+    const display = displayMap[disp] || disp;
+
+    // Budget echo
+    const budgetEcho = budget ? Math.max(800, Math.min(6000, budget)) : 2200;
+
+    return {
+      profile,
+      display,
+      cpu,
+      gpu,
+      ram,
+      storage,
+      cooling,
+      case: kase,
+      psu,
+      os,
+      budget: budgetEcho
+    };
+  };
+
+  // Handle post-summary actions
+  log.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.classList.contains("btn")) {
+      const label = t.textContent?.toLowerCase();
+      if (label?.includes("start over")) {
+        Object.keys(state).forEach(k => delete state[k]);
+        index = 0;
+        log.innerHTML = "";
+        bar.style.width = "0%";
+        greet();
+        play(sPop);
+      } else if (label?.includes("export")) {
+        const rec = deriveRecommendation(state);
+        const spec = [
+          `Profile: ${rec.profile}`,
+          `Display: ${rec.display}`,
+          `CPU: ${rec.cpu}`,
+          `GPU: ${rec.gpu}`,
+          `RAM: ${rec.ram}`,
+          `Storage: ${rec.storage}`,
+          `Cooling: ${rec.cooling}`,
+          `Case: ${rec.case}`,
+          `PSU: ${rec.psu}`,
+          `OS: ${rec.os}`,
+          `Est. Budget: $${rec.budget}`
+        ].join("\n");
+        navigator.clipboard.writeText(spec).then(() => toast("Spec copied"));
+      } else if (label?.includes("refine")) {
+        addMsg("assistant", "Which answer would you like to change? For example: “budget 2500” or “monitor 4K”.");
+      }
+    }
+  });
+
+  // Simple refinement via natural key=value in input
+  const refineParse = (txt) => {
+    const pairs = [
+      { keys: ["budget", "price"], id: "budget" },
+      { keys: ["monitor", "display", "resolution"], id: "monitor" },
+      { keys: ["goal", "priority"], id: "goal" },
+      { keys: ["noise", "acoustics"], id: "noise" },
+      { keys: ["size", "case"], id: "size" },
+      { keys: ["rt", "ray"], id: "rt" },
+      { keys: ["storage", "drive"], id: "storage" },
+      { keys: ["work"], id: "work" },
+      { keys: ["apps", "workapps"], id: "workApps" }
+    ];
+    for (const p of pairs) {
+      if (p.keys.some(k => txt.toLowerCase().startsWith(k))) {
+        const val = txt.split(/\s+/).slice(1).join(" ").trim();
+        return { id: p.id, value: /^\d+$/.test(val) ? Number(val) : (val || txt) };
+      }
+    }
+    return null;
+  };
+
+  // Greet and begin
+  const greet = () => {
+    addMsg("assistant", `
+      <span class="kicker">Welcome</span>
+      I’ll ask targeted questions to sculpt your gaming/work PC. You can click chips
+      or type freely. Ready?
+    `);
+    addChips([{ label: "Begin" }]);
+  };
+
+  // Intercept first "Begin"
+  log.addEventListener("click", (e) => {
+    const t = e.target;
+    if (t instanceof HTMLElement && t.classList.contains("chip") && t.textContent === "Begin" && index === 0 && Object.keys(state).length === 0) {
+      index = 0;
+      ask();
+    }
+  });
+
+  // Allow freeform refine at any time if summary shown
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && Object.keys(state).length >= totalSteps()) {
+      const t = input.value.trim();
+      const parsed = refineParse(t);
+      if (parsed) {
+        addMsg("user", t);
+        state[parsed.id] = parsed.value;
+        input.value = "";
+        summarize();
+        play(sSend);
+        e.preventDefault();
+      }
+    }
+  });
+
+  // Init
+  greet();
+  progress();
+</script>
+</body>
+</html>
