@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamber & SimForce — Design Catalogue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1a1a1a;
+            --bg-card-alt: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --text-dim: #888;
+            --accent-red: #dc2626;
+            --accent-red-hover: #b91c1c;
+            --accent-red-dark: #991b1b;
+            --accent-green: #22c55e;
+            --accent-green-light: #4ade80;
+            --accent-green-bright: #5dd55d;
+            --accent-blue: #2196f3;
+            --accent-cyan: #00bcd4;
+            --accent-orange: #ff9800;
+            --accent-purple: #9c27b0;
+            --accent-gold: #ffd700;
+            --accent-yellow: #fbbf24;
+            --border-color: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --border-subtle: #222;
+            --glow-red: rgba(220, 38, 38, 0.15);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.5; }
+
+        /* ===== CATALOGUE HERO ===== */
+        .hero { background: linear-gradient(180deg, #0f0f0f 0%, var(--bg-dark) 100%); padding: 50px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; background: linear-gradient(135deg, #fff 0%, var(--accent-red) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-secondary); font-size: 1rem; }
+
+        /* ===== DESIGN ROW ===== */
+        .design-row { position: relative; max-width: 1100px; margin: 0 auto; padding: 40px 20px; border-bottom: 1px solid var(--border-color); }
+        .design-row:last-of-type { border-bottom: none; }
+        .row-number { position: absolute; top: 16px; left: 20px; width: 28px; height: 28px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); z-index: 5; }
+
+        /* ===== GRID OVERRIDE (2 cols) ===== */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+        /* ===== FOOTER ===== */
+        .catalogue-footer { text-align: center; padding: 50px 20px; color: var(--text-muted); font-size: 0.85rem; }
+
+        /* =========================================
+           VARIANT A: Clean & Focused (abv1-a)
+           ========================================= */
+        .abv1-a .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .abv1-a .card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .abv1-a .image-container { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+        .abv1-a .product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .abv1-a .card:hover .product-image { transform: scale(1.05); }
+        .abv1-a .badges-top { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .abv1-a .badges-left, .abv1-a .badges-right { display: flex; flex-direction: column; gap: 6px; }
+        .abv1-a .badge { padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .abv1-a .badge-sale { background: var(--accent-red); color: white; }
+        .abv1-a .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-a .badge-yellow { background: var(--accent-yellow); color: #000; }
+        .abv1-a .badge-orange { background: var(--accent-orange); color: white; }
+        .abv1-a .gpu-badge { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-a .sale-badge-img { background: var(--accent-yellow); color: #000; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+        .abv1-a .discount-corner { position: absolute; top: 12px; right: 12px; background: var(--accent-yellow); color: #000; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; }
+        .abv1-a .content { padding: 20px; }
+        .abv1-a .product-name { font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; }
+        .abv1-a .specs-line { font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 16px; }
+        .abv1-a .specs-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .abv1-a .spec-pill { background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; gap: 6px; }
+        .abv1-a .price-section { margin-bottom: 16px; }
+        .abv1-a .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-a .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 10px; }
+        .abv1-a .savings { color: var(--accent-green); font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+        .abv1-a .btn-primary { width: 100%; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+        .abv1-a .btn-primary:hover { background: var(--accent-red-hover); box-shadow: 0 8px 30px rgba(220, 38, 38, 0.4); transform: translateY(-2px); }
+
+        /* =========================================
+           VARIANT B: Performance Visualization (abv1-b)
+           ========================================= */
+        .abv1-b .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .abv1-b .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-b .header-bar { background: rgba(199, 62, 62, 0.15); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .abv1-b .header-left { display: flex; align-items: center; gap: 10px; }
+        .abv1-b .header-text { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .abv1-b .stock-text { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--text-secondary); }
+        .abv1-b .image-container { position: relative; aspect-ratio: 16/10; }
+        .abv1-b .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-b .gpu-badge-overlay { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.85); padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-b .discount-badge { position: absolute; top: 12px; right: 12px; background: var(--accent-yellow); color: #000; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; }
+        .abv1-b .content { padding: 20px; }
+        .abv1-b .product-name { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; }
+        .abv1-b .tagline { font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 16px; }
+        .abv1-b .performance-bars { margin-bottom: 20px; }
+        .abv1-b .perf-row { margin-bottom: 12px; }
+        .abv1-b .perf-label { display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+        .abv1-b .perf-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+        .abv1-b .perf-fill { height: 100%; background: linear-gradient(90deg, var(--accent-red), #ff6b6b); border-radius: 3px; }
+        .abv1-b .specs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .abv1-b .spec-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; text-align: center; }
+        .abv1-b .spec-box-value { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+        .abv1-b .spec-box-label { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; color: var(--text-muted); }
+        .abv1-b .price-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .abv1-b .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-b .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 10px; }
+        .abv1-b .discount-pill { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .abv1-b .btn-primary { width: 100%; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+        .abv1-b .btn-primary:hover { background: var(--accent-red-hover); }
+        .abv1-b .delivery-note { text-align: center; color: var(--accent-green); font-size: 0.8rem; font-family: 'Rajdhani', sans-serif; margin-top: 12px; }
+
+        /* =========================================
+           VARIANT C: Detailed Specifications (abv1-c)
+           ========================================= */
+        .abv1-c .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .abv1-c .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-c .badges-header { padding: 16px 16px 0; display: flex; gap: 8px; }
+        .abv1-c .badge { padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .abv1-c .badge-sale { background: var(--accent-red); color: white; }
+        .abv1-c .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-c .content { padding: 16px; }
+        .abv1-c .product-name { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; }
+        .abv1-c .subtitle { font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 16px; }
+        .abv1-c .image-container { position: relative; aspect-ratio: 16/10; margin-bottom: 16px; border-radius: 8px; overflow: hidden; }
+        .abv1-c .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-c .gpu-badge { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.85); padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-c .specs-list { margin-bottom: 16px; }
+        .abv1-c .spec-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+        .abv1-c .spec-item:last-child { border-bottom: none; }
+        .abv1-c .spec-icon { width: 32px; height: 32px; background: rgba(199, 62, 62, 0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .abv1-c .spec-content { flex: 1; }
+        .abv1-c .spec-label { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .abv1-c .spec-value { font-size: 0.9rem; }
+        .abv1-c .price-section { background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+        .abv1-c .price-row { display: flex; align-items: center; gap: 12px; }
+        .abv1-c .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-c .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; }
+        .abv1-c .savings-note { color: var(--accent-green); font-size: 0.85rem; font-family: 'Rajdhani', sans-serif; margin-top: 4px; }
+        .abv1-c .btn-primary { width: 100%; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+
+        /* =========================================
+           VARIANT D: Compact Quick View (abv1-d)
+           ========================================= */
+        .abv1-d .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .abv1-d .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-d .top-bar { display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(199, 62, 62, 0.1); border-bottom: 1px solid var(--border-color); }
+        .abv1-d .badge { padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .abv1-d .badge-sale { background: var(--accent-red); color: white; }
+        .abv1-d .badge-orange { background: var(--accent-orange); color: white; }
+        .abv1-d .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-d .image-container { position: relative; aspect-ratio: 1/1; }
+        .abv1-d .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-d .content { padding: 16px; }
+        .abv1-d .product-name { font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; }
+        .abv1-d .quick-specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+        .abv1-d .quick-spec { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: var(--text-secondary); background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; text-align: center; }
+        .abv1-d .quick-spec strong { color: var(--text-primary); display: block; font-size: 0.9rem; }
+        .abv1-d .price-section { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .abv1-d .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-d .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; }
+        .abv1-d .btn-buy { width: 100%; padding: 14px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+        /* =========================================
+           VARIANT E: Hero Image Overlay (abv1-e)
+           ========================================= */
+        .abv1-e .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); position: relative; transition: all 0.3s ease; }
+        .abv1-e .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-e .image-container { position: relative; aspect-ratio: 3/4; }
+        .abv1-e .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-e .overlay-gradient { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, transparent 40%, rgba(10,10,15,0.95) 100%); }
+        .abv1-e .badges-floating { position: absolute; top: 16px; left: 16px; display: flex; flex-direction: column; gap: 8px; }
+        .abv1-e .badge { padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .abv1-e .badge-sale { background: var(--accent-red); color: white; }
+        .abv1-e .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .abv1-e .badge-yellow { background: var(--accent-yellow); color: #000; }
+        .abv1-e .content-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; }
+        .abv1-e .product-name { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-family: 'Orbitron', sans-serif; }
+        .abv1-e .specs-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .abv1-e .spec-tag { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .abv1-e .price-section { margin-bottom: 16px; }
+        .abv1-e .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-e .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 10px; }
+        .abv1-e .btn-primary { width: 100%; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+
+        /* =========================================
+           VARIANT F: Comparison Table (abv1-f)
+           ========================================= */
+        .abv1-f .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .abv1-f .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-f .image-container { position: relative; aspect-ratio: 16/10; }
+        .abv1-f .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-f .gpu-tag { position: absolute; bottom: 12px; left: 12px; background: var(--accent-green); color: #000; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; }
+        .abv1-f .content { padding: 20px; }
+        .abv1-f .product-name { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; }
+        .abv1-f .subtitle { font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; }
+        .abv1-f .comparison-table { width: 100%; margin-bottom: 16px; }
+        .abv1-f .comp-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-family: 'Rajdhani', sans-serif; }
+        .abv1-f .comp-label { color: var(--text-muted); font-size: 0.85rem; }
+        .abv1-f .comp-value { font-weight: 600; font-size: 0.9rem; }
+        .abv1-f .price-section { margin-bottom: 16px; }
+        .abv1-f .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-f .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 10px; }
+        .abv1-f .price-action { display: flex; gap: 12px; align-items: center; }
+        .abv1-f .btn-primary { flex: 1; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+        .abv1-f .btn-wishlist { width: 48px; height: 48px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .abv1-f .btn-wishlist:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+        /* =========================================
+           VARIANT G: Minimal List View (abv1-g)
+           ========================================= */
+        .abv1-g .card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .abv1-g .card:hover { border-color: rgba(255,255,255,0.15); }
+        .abv1-g .image-section { position: relative; aspect-ratio: 16/10; }
+        .abv1-g .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abv1-g .top-badges { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; }
+        .abv1-g .badge { padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .abv1-g .badge-sale { background: var(--accent-red); color: white; }
+        .abv1-g .badge-yellow { background: var(--accent-yellow); color: #000; }
+        .abv1-g .content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .abv1-g .product-name { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; font-family: 'Orbitron', sans-serif; }
+        .abv1-g .spec-list-minimal { flex: 1; }
+        .abv1-g .spec-item-min { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; }
+        .abv1-g .spec-item-min:last-child { border-bottom: none; }
+        .abv1-g .spec-label-min { color: var(--text-muted); }
+        .abv1-g .spec-value-min { font-weight: 600; }
+        .abv1-g .price-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+        .abv1-g .price-current { font-size: 1.6rem; font-weight: 800; }
+        .abv1-g .price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 10px; }
+        .abv1-g .savings { color: var(--accent-green); font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+        .abv1-g .btn-primary { width: 100%; padding: 16px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; }
+
+        /* =========================================
+           FILE 2: gpv1-a Visual Focus
+           ========================================= */
+        .gpv1-a .card { background: var(--bg-card); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.3s ease; display: flex; flex-direction: column; position: relative; }
+        .gpv1-a .card:hover { transform: translateY(-8px); border-color: var(--accent-red); box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15); }
+        .gpv1-a .badge { position: absolute; top: 0; left: 0; right: 0; background: var(--accent-red); color: white; text-align: center; padding: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; z-index: 10; }
+        .gpv1-a .image-wrap { position: relative; padding-top: 100%; background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%); overflow: hidden; }
+        .gpv1-a .image-wrap img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; height: auto; object-fit: contain; transition: transform 0.4s ease; }
+        .gpv1-a .card:hover .image-wrap img { transform: translate(-50%, -50%) scale(1.08); }
+        .gpv1-a .gpu-badge { position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.8); border-left: 3px solid var(--accent-green); padding: 6px 12px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .gpv1-a .content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .gpv1-a .title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .gpv1-a .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 20px; }
+        .gpv1-a .spec-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+        .gpv1-a .chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 4px 10px; font-size: 0.7rem; color: var(--text-secondary); border-radius: 2px; }
+        .gpv1-a .price-row { margin-top: auto; display: flex; align-items: baseline; gap: 10px; margin-bottom: 15px; }
+        .gpv1-a .price { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 700; }
+        .gpv1-a .was-price { font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; }
+        .gpv1-a .save-badge { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; }
+        .gpv1-a .btn { width: 100%; background: var(--accent-red); color: white; border: none; padding: 14px; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+        .gpv1-a .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .gpv1-a .btn:hover { background: var(--accent-red-hover); }
+        .gpv1-a .btn:hover::before { left: 100%; }
+        .gpv1-a .shipping { text-align: center; padding: 10px; font-size: 0.75rem; color: var(--accent-green); display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        /* =========================================
+           FILE 2: gpv1-b Spec-Driven
+           ========================================= */
+        .gpv1-b .card { background: var(--bg-card); border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative; }
+        .gpv1-b .card:hover { border-color: var(--accent-green); }
+        .gpv1-b .card-header { background: linear-gradient(180deg, #1a1a1a 0%, var(--bg-card) 100%); padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .gpv1-b .badge-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .gpv1-b .badge { background: var(--accent-red); color: white; padding: 4px 12px; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .gpv1-b .stock-status { font-size: 0.7rem; font-weight: 600; color: var(--accent-green); display: flex; align-items: center; gap: 5px; }
+        .gpv1-b .title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .gpv1-b .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+        .gpv1-b .image-area { padding: 20px; background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%); display: flex; align-items: center; justify-content: center; height: 200px; }
+        .gpv1-b .image-area img { max-height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+        .gpv1-b .perf-section { padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .gpv1-b .perf-row { margin-bottom: 12px; }
+        .gpv1-b .perf-row:last-child { margin-bottom: 0; }
+        .gpv1-b .perf-label { display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; letter-spacing: 0.05em; }
+        .gpv1-b .perf-bar-bg { height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; }
+        .gpv1-b .perf-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-green) 0%, var(--accent-green-light) 100%); border-radius: 3px; }
+        .gpv1-b .specs-grid { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-bottom: 1px solid var(--border-color); }
+        .gpv1-b .spec-item { display: flex; flex-direction: column; }
+        .gpv1-b .spec-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+        .gpv1-b .spec-value { font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
+        .gpv1-b .card-footer { margin-top: auto; padding: 15px; background: #0f0f0f; }
+        .gpv1-b .price-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .gpv1-b .price-block { display: flex; flex-direction: column; }
+        .gpv1-b .price-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+        .gpv1-b .price { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; }
+        .gpv1-b .was-save { text-align: right; }
+        .gpv1-b .was-price { font-size: 0.8rem; color: var(--text-muted); text-decoration: line-through; }
+        .gpv1-b .save-text { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; }
+        .gpv1-b .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .gpv1-b .btn { padding: 12px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; border: none; transition: all 0.2s; }
+        .gpv1-b .btn-primary { background: var(--accent-red); color: white; }
+        .gpv1-b .btn-primary:hover { background: var(--accent-red-hover); }
+        .gpv1-b .btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .gpv1-b .btn-secondary:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+        /* =========================================
+           FILE 2: gpv1-c Urgency & Social Proof
+           ========================================= */
+        .gpv1-c .card { background: var(--bg-card); border: 2px solid transparent; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; }
+        .gpv1-c .card:hover { border-color: var(--accent-red); transform: translateY(-4px); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.2); }
+        .gpv1-c .urgency-bar { background: linear-gradient(90deg, var(--accent-red-dark) 0%, var(--accent-red) 100%); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .gpv1-c .urgency-text { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        .gpv1-c .pulse { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        .gpv1-c .image-section { position: relative; padding: 20px; background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%); display: flex; align-items: center; justify-content: center; height: 220px; }
+        .gpv1-c .image-section img { max-height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+        .gpv1-c .savings-badge { position: absolute; top: 15px; right: 15px; background: var(--accent-green); color: #000; padding: 6px 12px; border-radius: 20px; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 800; }
+        .gpv1-c .content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .gpv1-c .title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+        .gpv1-c .subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; }
+        .gpv1-c .key-points { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .gpv1-c .point { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--text-secondary); }
+        .gpv1-c .point-icon { color: var(--accent-green); font-weight: bold; }
+        .gpv1-c .price-section { margin-top: auto; background: rgba(255,255,255,0.03); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .gpv1-c .price-row { display: flex; align-items: baseline; justify-content: center; gap: 15px; margin-bottom: 5px; }
+        .gpv1-c .was-price { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; }
+        .gpv1-c .current-price { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 800; }
+        .gpv1-c .you-save { text-align: center; font-size: 0.85rem; color: var(--accent-green); font-weight: 600; }
+        .gpv1-c .btn { width: 100%; background: linear-gradient(90deg, var(--accent-red) 0%, var(--accent-red-hover) 100%); color: white; border: none; padding: 16px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+        .gpv1-c .btn:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3); }
+        .gpv1-c .trust-bar { display: flex; justify-content: center; gap: 20px; padding: 12px; font-size: 0.7rem; color: var(--text-muted); }
+
+        /* =========================================
+           FILE 3: gpv2-a Minimalist Showcase
+           ========================================= */
+        .gpv2-a .card { background: var(--bg-card); border-radius: 8px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; border: 1px solid transparent; }
+        .gpv2-a .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); border-color: var(--border-color); }
+        .gpv2-a .image-container { position: relative; padding-top: 100%; background: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 70%); }
+        .gpv2-a .image-container img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; transition: transform 0.3s ease; }
+        .gpv2-a .card:hover .image-container img { transform: translate(-50%, -50%) scale(1.05); }
+        .gpv2-a .content { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; }
+        .gpv2-a .title { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+        .gpv2-a .top-spec { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; }
+        .gpv2-a .price-container { margin-top: auto; margin-bottom: 20px; }
+        .gpv2-a .price { font-size: 1.8rem; font-weight: 700; font-family: 'Rajdhani', sans-serif; }
+        .gpv2-a .save { font-size: 0.85rem; color: var(--accent-green); }
+        .gpv2-a .btn { background: transparent; border: 1px solid var(--text-primary); color: var(--text-primary); padding: 12px; text-transform: uppercase; font-weight: 600; width: 100%; cursor: pointer; transition: all 0.2s; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+        .gpv2-a .btn:hover { background: var(--text-primary); color: var(--bg-dark); }
+
+        /* =========================================
+           FILE 3: gpv2-b Performance Grid
+           ========================================= */
+        .gpv2-b .card { background: #151515; border: 1px solid #333; display: flex; flex-direction: column; position: relative; }
+        .gpv2-b .header { padding: 15px; background: #1f1f1f; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .gpv2-b .title { font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; font-weight: 700; text-transform: uppercase; }
+        .gpv2-b .image-area { padding: 20px; background: radial-gradient(circle, #252525 0%, #151515 100%); text-align: center; height: 250px; display: flex; align-items: center; justify-content: center; }
+        .gpv2-b .image-area img { max-height: 100%; width: auto; }
+        .gpv2-b .specs-table { padding: 15px; font-size: 0.9rem; border-bottom: 1px solid #333; }
+        .gpv2-b .spec-row { display: flex; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #222; }
+        .gpv2-b .spec-row:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+        .gpv2-b .spec-label { color: var(--text-secondary); font-weight: 500; }
+        .gpv2-b .spec-val { font-weight: 600; text-align: right; }
+        .gpv2-b .performance-bar-container { padding: 15px; }
+        .gpv2-b .perf-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .gpv2-b .perf-track { height: 6px; background: #333; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+        .gpv2-b .perf-fill { height: 100%; background: linear-gradient(90deg, var(--accent-red), #ff4d4d); }
+        .gpv2-b .footer { margin-top: auto; padding: 20px 15px; background: #111; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .gpv2-b .price { font-size: 1.6rem; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: #fff; }
+        .gpv2-b .btn { background: var(--accent-red); color: white; border: none; padding: 10px 20px; font-weight: 700; text-transform: uppercase; font-family: 'Rajdhani', sans-serif; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 20%); transition: background 0.2s; }
+        .gpv2-b .btn:hover { background: var(--accent-red-hover); }
+
+        /* =========================================
+           FILE 3: gpv2-c Flash Sale
+           ========================================= */
+        .gpv2-c .card { background: #181818; border-radius: 12px; position: relative; border: 2px solid transparent; transition: border-color 0.2s; display: flex; flex-direction: column; padding: 20px; }
+        .gpv2-c .card:hover { border-color: var(--accent-red); }
+        .gpv2-c .badge { position: absolute; top: 20px; left: 20px; background: var(--accent-red); color: white; padding: 4px 12px; font-size: 0.8rem; font-weight: 700; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .gpv2-c .stock-badge { position: absolute; top: 20px; right: 20px; background: rgba(74, 222, 128, 0.1); color: var(--accent-green); padding: 4px 8px; font-size: 0.75rem; font-weight: 600; border-radius: 4px; border: 1px solid var(--accent-green); }
+        .gpv2-c .image-wrapper { height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .gpv2-c .image-wrapper img { max-height: 100%; width: auto; }
+        .gpv2-c .title { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 5px; text-transform: uppercase; }
+        .gpv2-c .subtitle { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px; display: block; }
+        .gpv2-c .key-specs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .gpv2-c .chip { background: #2a2a2a; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; color: #ddd; }
+        .gpv2-c .pricing { display: flex; align-items: baseline; gap: 10px; margin-top: auto; }
+        .gpv2-c .current-price { font-size: 1.8rem; font-weight: 800; color: white; font-family: 'Rajdhani', sans-serif; }
+        .gpv2-c .old-price { text-decoration: line-through; color: var(--text-secondary); font-size: 1rem; }
+        .gpv2-c .btn-buy { margin-top: 15px; width: 100%; background: white; color: black; border: none; padding: 14px; font-weight: 800; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+        .gpv2-c .btn-buy:hover { background: #ddd; transform: scale(1.02); }
+        .gpv2-c .guarantee { text-align: center; margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        /* =========================================
+           FILE 4: abcv1-a Urgency & Social Proof (converted from inline)
+           ========================================= */
+        @keyframes pulse-dot { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .abcv1-a .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; transition: all 0.25s ease; position: relative; cursor: pointer; }
+        .abcv1-a .image-container { position: relative; overflow: hidden; aspect-ratio: 4/3; background: #0d0d0d; }
+        .abcv1-a .product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .abcv1-a .stock-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(181, 52, 43, 0.92); padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+        .abcv1-a .pulse-dot { width: 7px; height: 7px; background: var(--accent-green-bright); border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse-dot 1.8s infinite; }
+        .abcv1-a .price-drop-tag { position: absolute; top: 10px; left: 10px; background: var(--accent-green); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+        .abcv1-a .rating-row { display: flex; align-items: center; gap: 2px; padding: 14px 16px 0; }
+        .abcv1-a .stars { color: var(--accent-gold); font-size: 13px; }
+        .abcv1-a .review-count { font-size: 11px; color: var(--text-secondary); margin-left: 6px; }
+        .abcv1-a .content { padding: 10px 16px 18px; }
+        .abcv1-a .product-name { font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; }
+        .abcv1-a .specs-line { font-size: 12px; color: var(--text-secondary); letter-spacing: 0.5px; margin-bottom: 12px; }
+        .abcv1-a .social-proof { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
+        .abcv1-a .avatar-stack { display: flex; }
+        .abcv1-a .avatar { width: 20px; height: 20px; border-radius: 50%; background: #333; border: 2px solid var(--bg-card); margin-left: -6px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #aaa; font-weight: 700; }
+        .abcv1-a .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+        .abcv1-a .price-current { font-size: 26px; font-weight: 800; }
+        .abcv1-a .price-original { font-size: 14px; color: var(--text-muted); text-decoration: line-through; }
+        .abcv1-a .savings { font-size: 11px; color: var(--accent-green-bright); font-weight: 600; margin-bottom: 14px; }
+        .abcv1-a .btn-cart { width: 100%; padding: 13px; background: var(--accent-red); border: none; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+        /* =========================================
+           FILE 4: abcv1-b Spec-Forward Comparison (converted from inline)
+           ========================================= */
+        .abcv1-b .card { background: var(--bg-card); border: 1px solid var(--border-color); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .abcv1-b .tier-ribbon { background: linear-gradient(135deg, var(--accent-red), #8b1a1a); text-align: center; padding: 6px; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+        .abcv1-b .image-container { position: relative; aspect-ratio: 4/3; background: #0d0d0d; overflow: hidden; }
+        .abcv1-b .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .abcv1-b .gpu-tag { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); padding: 4px 10px; font-size: 11px; font-weight: 700; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; }
+        .abcv1-b .content { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .abcv1-b .product-name { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; }
+        .abcv1-b .specs-line { font-size: 11px; color: var(--text-secondary); letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color); }
+        .abcv1-b .perf-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .abcv1-b .perf-meta { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; justify-content: space-between; }
+        .abcv1-b .perf-track { height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+        .abcv1-b .perf-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+        .abcv1-b .perf-fill-gpu { background: linear-gradient(90deg, var(--accent-green), var(--accent-green-bright)); }
+        .abcv1-b .perf-fill-cpu { background: linear-gradient(90deg, #2196f3, #64b5f6); }
+        .abcv1-b .spec-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+        .abcv1-b .chip { font-size: 10px; padding: 4px 8px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 3px; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .abcv1-b .price-section { margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 14px; }
+        .abcv1-b .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+        .abcv1-b .currency { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+        .abcv1-b .price-current { font-size: 28px; font-weight: 800; }
+        .abcv1-b .price-original { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+        .abcv1-b .savings { font-size: 11px; color: var(--accent-green-bright); font-weight: 600; margin-bottom: 14px; display: block; }
+        .abcv1-b .btn-group { display: flex; gap: 8px; }
+        .abcv1-b .btn-view { flex: 1; padding: 12px; background: transparent; border: 1px solid var(--text-muted); color: var(--text-primary); font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+        .abcv1-b .btn-cart { flex: 2; padding: 12px; background: var(--accent-green); border: none; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>Chamber & SimForce</h1>
+        <p>Design Catalogue — 15 unique card designs, side by side</p>
+    </section>
+
+    <!-- ROW 1: Clean & Focused (abv1-a) -->
+    <div class="design-row" id="row-1">
+        <div class="row-number">1</div>
+        <div class="abv1-a">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8">
+                        <div class="badges-top">
+                            <div class="badges-left">
+                                <span class="badge badge-sale">Price Drop</span>
+                                <span class="gpu-badge">RTX 5070 Ti</span>
+                            </div>
+                            <div class="badges-right">
+                                <span class="sale-badge-img">SALE</span>
+                            </div>
+                        </div>
+                        <div class="discount-corner">-$555</div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <p class="specs-line">R7 7700 | RTX 5070 Ti | 32GB RAM</p>
+                        <div class="specs-pills">
+                            <span class="spec-pill"><span class="icon">🖥</span> 8 Cores</span>
+                            <span class="spec-pill"><span class="icon">💾</span> 32GB DDR5</span>
+                            <span class="spec-pill"><span class="icon">💿</span> 1TB NVMe</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price-current">$3,145</span>
+                            <span class="price-original">$3,700</span>
+                            <div class="savings">You save $555</div>
+                        </div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="badges-top">
+                            <div class="badges-left">
+                                <span class="badge" style="background: #7c3aed;">Best Value</span>
+                                <span class="gpu-badge">RTX 5070</span>
+                            </div>
+                            <div class="badges-right">
+                                <span class="sale-badge-img">SALE</span>
+                            </div>
+                        </div>
+                        <div class="discount-corner">-$505</div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <p class="specs-line">R7 7700 | RTX 5070 | 32GB RAM</p>
+                        <div class="specs-pills">
+                            <span class="spec-pill"><span class="icon">🖥</span> 8 Cores</span>
+                            <span class="spec-pill"><span class="icon">💾</span> 32GB DDR5</span>
+                            <span class="spec-pill"><span class="icon">💿</span> 1TB NVMe</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price-current">$2,995</span>
+                            <span class="price-original">$3,500</span>
+                            <div class="savings">You save $505</div>
+                        </div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 2: Performance Visualization (abv1-b) -->
+    <div class="design-row" id="row-2">
+        <div class="row-number">2</div>
+        <div class="abv1-b">
+            <div class="grid">
+                <div class="card">
+                    <div class="header-bar">
+                        <div class="header-left"><span class="icon">🔥</span><span class="header-text" style="color: var(--accent-red);">Selling Fast</span></div>
+                        <span class="stock-text">Only 3 left</span>
+                    </div>
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8">
+                        <span class="gpu-badge-overlay">GEFORCE RTX 5070 Ti</span>
+                        <div class="discount-badge">-$555</div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <p class="tagline">Ultimate 1440p Gaming Beast</p>
+                        <div class="performance-bars">
+                            <div class="perf-row"><div class="perf-label"><span>Graphics Power</span><span>98%</span></div><div class="perf-bar"><div class="perf-fill" style="width: 98%"></div></div></div>
+                            <div class="perf-row"><div class="perf-label"><span>Processing Speed</span><span>92%</span></div><div class="perf-bar"><div class="perf-fill" style="width: 92%"></div></div></div>
+                        </div>
+                        <div class="specs-grid">
+                            <div class="spec-box"><div class="spec-box-value">RTX 5070 Ti</div><div class="spec-box-label">16GB VRAM</div></div>
+                            <div class="spec-box"><div class="spec-box-value">32GB</div><div class="spec-box-label">DDR5 6000</div></div>
+                            <div class="spec-box"><div class="spec-box-value">R7 7700</div><div class="spec-box-label">8 Cores</div></div>
+                            <div class="spec-box"><div class="spec-box-value">1TB</div><div class="spec-box-label">Gen4 NVMe</div></div>
+                        </div>
+                        <div class="price-row"><div><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div><span class="discount-pill">15% OFF</span></div>
+                        <button class="btn-primary">⚡ Buy Now</button>
+                        <div class="delivery-note">✓ Free Next-Day Delivery</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header-bar">
+                        <div class="header-left"><span class="icon">🏆</span><span class="header-text" style="color: #a855f7;">Best Seller</span></div>
+                        <span class="stock-text">Only 5 left</span>
+                    </div>
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <span class="gpu-badge-overlay">GEFORCE RTX 5070</span>
+                        <div class="discount-badge">-$505</div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <p class="tagline">1440p Gaming Sweet Spot</p>
+                        <div class="performance-bars">
+                            <div class="perf-row"><div class="perf-label"><span>Graphics Power</span><span>90%</span></div><div class="perf-bar"><div class="perf-fill" style="width: 90%"></div></div></div>
+                            <div class="perf-row"><div class="perf-label"><span>Processing Speed</span><span>92%</span></div><div class="perf-bar"><div class="perf-fill" style="width: 92%"></div></div></div>
+                        </div>
+                        <div class="specs-grid">
+                            <div class="spec-box"><div class="spec-box-value">RTX 5070</div><div class="spec-box-label">12GB VRAM</div></div>
+                            <div class="spec-box"><div class="spec-box-value">32GB</div><div class="spec-box-label">DDR5 RGB</div></div>
+                            <div class="spec-box"><div class="spec-box-value">R7 7700</div><div class="spec-box-label">8 Cores</div></div>
+                            <div class="spec-box"><div class="spec-box-value">1TB</div><div class="spec-box-label">Gen4 NVMe</div></div>
+                        </div>
+                        <div class="price-row"><div><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div><span class="discount-pill">14% OFF</span></div>
+                        <button class="btn-primary">⚡ Buy Now</button>
+                        <div class="delivery-note">✓ Free Next-Day Delivery</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 3: Detailed Specifications (abv1-c) -->
+    <div class="design-row" id="row-3">
+        <div class="row-number">3</div>
+        <div class="abv1-c">
+            <div class="grid">
+                <div class="card">
+                    <div class="badges-header"><span class="badge badge-sale">Sale</span><span class="badge badge-green">Best Value</span></div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <p class="subtitle">High-Performance Gaming PC</p>
+                        <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8"><span class="gpu-badge">GEFORCE RTX 5070 Ti</span></div>
+                        <div class="specs-list">
+                            <div class="spec-item"><div class="spec-icon">⚙️</div><div class="spec-content"><div class="spec-label">Processor</div><div class="spec-value">AMD Ryzen 7 7700 | 5.3 GHz | 8C/16T</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">🎮</div><div class="spec-content"><div class="spec-label">Graphics</div><div class="spec-value">Zotac RTX 5070 Ti Solid Core OC 16GB</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">💾</div><div class="spec-content"><div class="spec-label">Memory</div><div class="spec-value">32GB Lexar Thor RGB 6000MHz (2×16GB)</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">💿</div><div class="spec-content"><div class="spec-label">Storage</div><div class="spec-value">1TB Gen4 Lexar NQ790 NVMe (R 7000MB/s)</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">🪟</div><div class="spec-content"><div class="spec-label">OS</div><div class="spec-value">Windows 11 Home (Activated)</div></div></div>
+                        </div>
+                        <div class="price-section"><div class="price-row"><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div><div class="savings-note">Save $555 AUD</div></div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="badges-header"><span class="badge badge-sale">Sale</span><span class="badge badge-green">Popular</span></div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <p class="subtitle">All-Round Gaming PC</p>
+                        <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"><span class="gpu-badge">GEFORCE RTX 5070</span></div>
+                        <div class="specs-list">
+                            <div class="spec-item"><div class="spec-icon">⚙️</div><div class="spec-content"><div class="spec-label">Processor</div><div class="spec-value">AMD Ryzen 7 7700 | 5.3 GHz | 8C/16T</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">🎮</div><div class="spec-content"><div class="spec-label">Graphics</div><div class="spec-value">Gigabyte RTX 5070 Windforce OC 12GB</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">💾</div><div class="spec-content"><div class="spec-label">Memory</div><div class="spec-value">32GB Silicon Power XPOWER Storm RGB</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">💿</div><div class="spec-content"><div class="spec-label">Storage</div><div class="spec-value">1TB Gen4 Silicon Power US75 NVMe</div></div></div>
+                            <div class="spec-item"><div class="spec-icon">🪟</div><div class="spec-content"><div class="spec-label">OS</div><div class="spec-value">Windows 11 Home (Activated)</div></div></div>
+                        </div>
+                        <div class="price-section"><div class="price-row"><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div><div class="savings-note">Save $505 AUD • Ships Next Day</div></div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 4: Compact Quick View (abv1-d) -->
+    <div class="design-row" id="row-4">
+        <div class="row-number">4</div>
+        <div class="abv1-d">
+            <div class="grid">
+                <div class="card">
+                    <div class="top-bar"><span class="badge badge-sale">Sale</span><span class="stock-text" style="color: var(--accent-red);">Only 3 left</span></div>
+                    <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8"></div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <div class="quick-specs">
+                            <div class="quick-spec"><strong>RTX 5070 Ti</strong>16GB VRAM</div>
+                            <div class="quick-spec"><strong>32GB</strong>DDR5 RGB</div>
+                            <div class="quick-spec"><strong>R7 7700</strong>8 Cores</div>
+                            <div class="quick-spec"><strong>1TB</strong>NVMe Gen4</div>
+                        </div>
+                        <div class="price-section"><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div>
+                        <button class="btn-buy">⚡ Buy Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="top-bar"><span class="badge" style="background: #7c3aed;">Popular</span><span class="stock-text">Only 5 left</span></div>
+                    <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"></div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <div class="quick-specs">
+                            <div class="quick-spec"><strong>RTX 5070</strong>12GB VRAM</div>
+                            <div class="quick-spec"><strong>32GB</strong>DDR5 RGB</div>
+                            <div class="quick-spec"><strong>R7 7700</strong>8 Cores</div>
+                            <div class="quick-spec"><strong>1TB</strong>NVMe Gen4</div>
+                        </div>
+                        <div class="price-section"><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div>
+                        <button class="btn-buy">⚡ Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 5: Hero Image Overlay (abv1-e) -->
+    <div class="design-row" id="row-5">
+        <div class="row-number">5</div>
+        <div class="abv1-e">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8">
+                        <div class="overlay-gradient"></div>
+                        <div class="badges-floating"><span class="badge badge-sale">Price Drop</span><span class="badge badge-yellow">-$555</span></div>
+                        <div class="content-overlay">
+                            <h3 class="product-name">Chamber : LVL 8</h3>
+                            <div class="specs-tags"><span class="spec-tag">RTX 5070 Ti</span><span class="spec-tag">R7 7700</span><span class="spec-tag">32GB DDR5</span></div>
+                            <div class="price-section"><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div>
+                            <button class="btn-primary">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="overlay-gradient"></div>
+                        <div class="badges-floating"><span class="badge" style="background: #7c3aed;">Best Value</span><span class="badge badge-yellow">-$505</span></div>
+                        <div class="content-overlay">
+                            <h3 class="product-name">SimForce</h3>
+                            <div class="specs-tags"><span class="spec-tag">RTX 5070</span><span class="spec-tag">R7 7700</span><span class="spec-tag">32GB DDR5</span></div>
+                            <div class="price-section"><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div>
+                            <button class="btn-primary">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 6: Comparison Table (abv1-f) -->
+    <div class="design-row" id="row-6">
+        <div class="row-number">6</div>
+        <div class="abv1-f">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8"><span class="gpu-tag">RTX 5070 Ti</span></div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <p class="subtitle">Ultimate 1440p Gaming</p>
+                        <div class="comparison-table">
+                            <div class="comp-row"><span class="comp-label">Processor</span><span class="comp-value">R7 7700</span></div>
+                            <div class="comp-row"><span class="comp-label">Graphics</span><span class="comp-value">RTX 5070 Ti 16GB</span></div>
+                            <div class="comp-row"><span class="comp-label">Memory</span><span class="comp-value">32GB DDR5</span></div>
+                            <div class="comp-row"><span class="comp-label">Storage</span><span class="comp-value">1TB NVMe</span></div>
+                            <div class="comp-row"><span class="comp-label">Cooling</span><span class="comp-value">Liquid Cooled</span></div>
+                        </div>
+                        <div class="price-section" style="margin-bottom: 16px;"><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div>
+                        <div class="price-action"><button class="btn-primary" style="flex: 1;">🛒 Add to Cart</button><button class="btn-wishlist">♡</button></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-container"><img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"><span class="gpu-tag">RTX 5070</span></div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <p class="subtitle">1440p Sweet Spot</p>
+                        <div class="comparison-table">
+                            <div class="comp-row"><span class="comp-label">Processor</span><span class="comp-value">R7 7700</span></div>
+                            <div class="comp-row"><span class="comp-label">Graphics</span><span class="comp-value">RTX 5070 12GB</span></div>
+                            <div class="comp-row"><span class="comp-label">Memory</span><span class="comp-value">32GB DDR5</span></div>
+                            <div class="comp-row"><span class="comp-label">Storage</span><span class="comp-value">1TB NVMe</span></div>
+                            <div class="comp-row"><span class="comp-label">Cooling</span><span class="comp-value">Air Cooled</span></div>
+                        </div>
+                        <div class="price-section" style="margin-bottom: 16px;"><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div>
+                        <div class="price-action"><button class="btn-primary" style="flex: 1;">🛒 Add to Cart</button><button class="btn-wishlist">♡</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 7: Minimal List View (abv1-g) -->
+    <div class="design-row" id="row-7">
+        <div class="row-number">7</div>
+        <div class="abv1-g">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-section">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL8">
+                        <div class="top-badges"><span class="badge badge-sale">Sale</span><span class="badge badge-yellow">-$555</span></div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">Chamber : LVL 8</h3>
+                        <div class="spec-list-minimal">
+                            <div class="spec-item-min"><span class="spec-label-min">GPU</span><span class="spec-value-min">RTX 5070 Ti 16GB</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">CPU</span><span class="spec-value-min">AMD Ryzen 7 7700</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">RAM</span><span class="spec-value-min">32GB DDR5-6000</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">Storage</span><span class="spec-value-min">1TB NVMe Gen4</span></div>
+                        </div>
+                        <div class="price-section"><span class="price-current">$3,145</span><span class="price-original">$3,700</span><div class="savings">You save $555</div></div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-section">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="top-badges"><span class="badge" style="background: #7c3aed;">Popular</span><span class="badge badge-yellow">-$505</span></div>
+                    </div>
+                    <div class="content">
+                        <h3 class="product-name">SimForce</h3>
+                        <div class="spec-list-minimal">
+                            <div class="spec-item-min"><span class="spec-label-min">GPU</span><span class="spec-value-min">RTX 5070 12GB</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">CPU</span><span class="spec-value-min">AMD Ryzen 7 7700</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">RAM</span><span class="spec-value-min">32GB DDR5-5600</span></div>
+                            <div class="spec-item-min"><span class="spec-label-min">Storage</span><span class="spec-value-min">1TB NVMe Gen4</span></div>
+                        </div>
+                        <div class="price-section"><span class="price-current">$2,995</span><span class="price-original">$3,500</span><div class="savings">You save $505</div></div>
+                        <button class="btn-primary">🛒 Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 8: Visual Focus (gpv1-a) -->
+    <div class="design-row" id="row-8">
+        <div class="row-number">8</div>
+        <div class="gpv1-a">
+            <div class="grid">
+                <div class="card">
+                    <div class="badge">Price Drop!</div>
+                    <div class="image-wrap">
+                        <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber Lvl 8">
+                        <div class="gpu-badge nvidia">GEFORCE RTX 5070 Ti</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Chamber : LVL 8</div>
+                        <div class="subtitle">R7 7700 | RTX 5070 Ti | 32GB RAM</div>
+                        <div class="spec-chips"><span class="chip">32GB DDR5</span><span class="chip">1TB NVMe</span><span class="chip">RGB</span></div>
+                        <div class="price-row"><span class="price">$3,145</span><span class="was-price">$3,700</span></div>
+                        <div class="save-badge">You save $555</div>
+                    </div>
+                    <button class="btn">Add to Cart</button>
+                    <div class="shipping"><span>⚡</span> Next Day Dispatch</div>
+                </div>
+                <div class="card">
+                    <div class="badge">Restocked!</div>
+                    <div class="image-wrap">
+                        <img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="gpu-badge nvidia">GEFORCE RTX 5070</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">SimForce</div>
+                        <div class="subtitle">R7 7700 | RTX 5070 | 32GB RAM</div>
+                        <div class="spec-chips"><span class="chip">32GB DDR5</span><span class="chip">1TB NVMe</span><span class="chip">Win 11</span></div>
+                        <div class="price-row"><span class="price">$2,995</span><span class="was-price">$3,500</span></div>
+                        <div class="save-badge">You save $505</div>
+                    </div>
+                    <button class="btn">Add to Cart</button>
+                    <div class="shipping"><span>⚡</span> Next Day Dispatch</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 9: Spec-Driven (gpv1-b) -->
+    <div class="design-row" id="row-9">
+        <div class="row-number">9</div>
+        <div class="gpv1-b">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="badge-row"><span class="badge">Price Drop!</span><span class="stock-status"><span>●</span> In Stock</span></div>
+                        <div class="title">Chamber : LVL 8</div>
+                        <div class="subtitle">R7 7700 | RTX 5070 Ti | 32GB RAM</div>
+                    </div>
+                    <div class="image-area"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber Lvl 8"></div>
+                    <div class="perf-section">
+                        <div class="perf-row"><div class="perf-label"><span>Graphics Performance</span><span>Outstanding</span></div><div class="perf-bar-bg"><div class="perf-bar-fill" style="width: 92%;"></div></div></div>
+                        <div class="perf-row"><div class="perf-label"><span>Processing Speed</span><span>High</span></div><div class="perf-bar-bg"><div class="perf-bar-fill" style="width: 82%;"></div></div></div>
+                    </div>
+                    <div class="specs-grid">
+                        <div class="spec-item"><span class="spec-label">GPU</span><span class="spec-value">RTX 5070 Ti 16GB</span></div>
+                        <div class="spec-item"><span class="spec-label">CPU</span><span class="spec-value">Ryzen 7 7700</span></div>
+                        <div class="spec-item"><span class="spec-label">RAM</span><span class="spec-value">32GB DDR5</span></div>
+                        <div class="spec-item"><span class="spec-label">Storage</span><span class="spec-value">1TB NVMe</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price-row"><div class="price-block"><span class="price-label">Now</span><span class="price">$3,145</span></div><div class="was-save"><div class="was-price">$3,700</div><div class="save-text">Save $555</div></div></div>
+                        <div class="btn-group"><button class="btn btn-primary">Add to Cart</button><button class="btn btn-secondary">Details</button></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="badge-row"><span class="badge">Restocked!</span><span class="stock-status"><span>●</span> In Stock</span></div>
+                        <div class="title">SimForce</div>
+                        <div class="subtitle">R7 7700 | RTX 5070 | 32GB RAM</div>
+                    </div>
+                    <div class="image-area"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"></div>
+                    <div class="perf-section">
+                        <div class="perf-row"><div class="perf-label"><span>Graphics Performance</span><span>Excellent</span></div><div class="perf-bar-bg"><div class="perf-bar-fill" style="width: 88%;"></div></div></div>
+                        <div class="perf-row"><div class="perf-label"><span>Processing Speed</span><span>High</span></div><div class="perf-bar-bg"><div class="perf-bar-fill" style="width: 82%;"></div></div></div>
+                    </div>
+                    <div class="specs-grid">
+                        <div class="spec-item"><span class="spec-label">GPU</span><span class="spec-value">RTX 5070 12GB</span></div>
+                        <div class="spec-item"><span class="spec-label">CPU</span><span class="spec-value">Ryzen 7 7700</span></div>
+                        <div class="spec-item"><span class="spec-label">RAM</span><span class="spec-value">32GB DDR5</span></div>
+                        <div class="spec-item"><span class="spec-label">Storage</span><span class="spec-value">1TB NVMe</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price-row"><div class="price-block"><span class="price-label">Now</span><span class="price">$2,995</span></div><div class="was-save"><div class="was-price">$3,500</div><div class="save-text">Save $505</div></div></div>
+                        <div class="btn-group"><button class="btn btn-primary">Add to Cart</button><button class="btn btn-secondary">Details</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 10: Urgency & Social Proof (gpv1-c) -->
+    <div class="design-row" id="row-10">
+        <div class="row-number">10</div>
+        <div class="gpv1-c">
+            <div class="grid">
+                <div class="card">
+                    <div class="urgency-bar"><span class="urgency-text">⚡ Only 3 Left</span><div class="pulse"></div></div>
+                    <div class="image-section"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL 8"><div class="savings-badge">SAVE $555</div></div>
+                    <div class="content">
+                        <div class="title">Chamber : LVL 8</div>
+                        <div class="subtitle">RTX 5070 Ti | Ryzen 7 7700 | 32GB</div>
+                        <div class="key-points">
+                            <div class="point"><span class="point-icon">✓</span><span>Next Day Dispatch</span></div>
+                            <div class="point"><span class="point-icon">✓</span><span>Windows 11 Activated</span></div>
+                            <div class="point"><span class="point-icon">✓</span><span>2 Year Warranty</span></div>
+                        </div>
+                        <div class="price-section"><div class="price-row"><span class="was-price">$3,700</span><span class="current-price">$3,145</span></div><div class="you-save">You save $555 today</div></div>
+                        <button class="btn">🛒 ADD TO CART NOW</button>
+                    </div>
+                    <div class="trust-bar"><span>🔒 Secure</span><span>⚡ Fast Ship</span><span>✓ Warranty</span></div>
+                </div>
+                <div class="card">
+                    <div class="urgency-bar"><span class="urgency-text">⚡ Only 4 Left</span><div class="pulse"></div></div>
+                    <div class="image-section"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"><div class="savings-badge">SAVE $505</div></div>
+                    <div class="content">
+                        <div class="title">SimForce</div>
+                        <div class="subtitle">RTX 5070 | Ryzen 7 7700 | 32GB</div>
+                        <div class="key-points">
+                            <div class="point"><span class="point-icon">✓</span><span>1440p Gaming Ready</span></div>
+                            <div class="point"><span class="point-icon">✓</span><span>Simulation Optimized</span></div>
+                            <div class="point"><span class="point-icon">✓</span><span>Great Performance/$</span></div>
+                        </div>
+                        <div class="price-section"><div class="price-row"><span class="was-price">$3,500</span><span class="current-price">$2,995</span></div><div class="you-save">You save $505 today</div></div>
+                        <button class="btn">🛒 ADD TO CART NOW</button>
+                    </div>
+                    <div class="trust-bar"><span>🔒 Secure</span><span>⚡ Fast Ship</span><span>✓ Warranty</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 11: Minimalist Showcase (gpv2-a) -->
+    <div class="design-row" id="row-11">
+        <div class="row-number">11</div>
+        <div class="gpv2-a">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-container"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber Level 8"></div>
+                    <div class="content">
+                        <div class="title">Chamber : LVL 8</div>
+                        <div class="top-spec">RTX 5070 Ti | Ryzen 7 7700</div>
+                        <div class="price-container"><div class="price">A$3,145</div><div class="save">Save $555</div></div>
+                        <button class="btn">View Details</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-container"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"></div>
+                    <div class="content">
+                        <div class="title">SimForce</div>
+                        <div class="top-spec">RTX 5070 | Ryzen 7 7700</div>
+                        <div class="price-container"><div class="price">A$2,995</div><div class="save">Save $505</div></div>
+                        <button class="btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 12: Performance Grid (gpv2-b) -->
+    <div class="design-row" id="row-12">
+        <div class="row-number">12</div>
+        <div class="gpv2-b">
+            <div class="grid">
+                <div class="card">
+                    <div class="header"><div class="title">Chamber : LVL 8</div><div style="color: #4ade80; font-size: 0.8rem; font-weight: bold;">POPULAR</div></div>
+                    <div class="image-area"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber"></div>
+                    <div class="specs-table">
+                        <div class="spec-row"><span class="spec-label">GPU</span><span class="spec-val">RTX 5070 Ti</span></div>
+                        <div class="spec-row"><span class="spec-label">CPU</span><span class="spec-val">Ryzen 7 7700</span></div>
+                        <div class="spec-row"><span class="spec-label">RAM</span><span class="spec-val">32GB DDR5</span></div>
+                    </div>
+                    <div class="performance-bar-container"><span class="perf-label">1440p High Performance</span><div class="perf-track"><div class="perf-fill" style="width: 88%;"></div></div></div>
+                    <div class="footer"><div class="price">$3,145</div><button class="btn">Add to Cart</button></div>
+                </div>
+                <div class="card">
+                    <div class="header"><div class="title">SimForce</div><div style="color: #4ade80; font-size: 0.8rem; font-weight: bold;">READY TO SHIP</div></div>
+                    <div class="image-area"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"></div>
+                    <div class="specs-table">
+                        <div class="spec-row"><span class="spec-label">GPU</span><span class="spec-val">RTX 5070</span></div>
+                        <div class="spec-row"><span class="spec-label">CPU</span><span class="spec-val">Ryzen 7 7700</span></div>
+                        <div class="spec-row"><span class="spec-label">RAM</span><span class="spec-val">32GB DDR5</span></div>
+                    </div>
+                    <div class="performance-bar-container"><span class="perf-label">1440p Gaming Performance</span><div class="perf-track"><div class="perf-fill" style="width: 85%;"></div></div></div>
+                    <div class="footer"><div class="price">$2,995</div><button class="btn">Add to Cart</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 13: Flash Sale (gpv2-c) -->
+    <div class="design-row" id="row-13">
+        <div class="row-number">13</div>
+        <div class="gpv2-c">
+            <div class="grid">
+                <div class="card">
+                    <div class="badge">Sale</div>
+                    <div class="stock-badge">In Stock</div>
+                    <div class="image-wrapper"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber"></div>
+                    <span class="subtitle">Ryzen 7 7700 | RTX 5070 Ti</span>
+                    <div class="title">Chamber Level 8</div>
+                    <div class="key-specs"><span class="chip">Ray Tracing</span><span class="chip">32GB RAM</span></div>
+                    <div class="pricing"><span class="current-price">$3,145</span><span class="old-price">$3,700</span></div>
+                    <button class="btn-buy">Secure Yours</button>
+                    <div class="guarantee"><span>⚡ Ships Tomorrow</span></div>
+                </div>
+                <div class="card">
+                    <div class="badge">Price Drop</div>
+                    <div class="stock-badge">In Stock</div>
+                    <div class="image-wrapper"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce"></div>
+                    <span class="subtitle">Ryzen 7 7700 | RTX 5070</span>
+                    <div class="title">SimForce Edition</div>
+                    <div class="key-specs"><span class="chip">32GB RAM</span><span class="chip">1TB SSD</span><span class="chip">Win 11</span></div>
+                    <div class="pricing"><span class="current-price">$2,995</span><span class="old-price">$3,500</span></div>
+                    <button class="btn-buy">Secure Yours</button>
+                    <div class="guarantee"><span>⚡ Ships Tomorrow</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 14: Urgency & Social Proof (abcv1-a) -->
+    <div class="design-row" id="row-14">
+        <div class="row-number">14</div>
+        <div class="abcv1-a">
+            <div class="grid">
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL 8">
+                        <div class="stock-bar"><span><span class="pulse-dot"></span> 3 LEFT IN STOCK</span><span>RTX 5070 Ti</span></div>
+                        <div class="price-drop-tag">PRICE DROP</div>
+                    </div>
+                    <div class="rating-row"><span class="stars">★★★★★</span><span class="review-count">(47 reviews)</span></div>
+                    <div class="content">
+                        <div class="product-name">Chamber : LVL 8</div>
+                        <div class="specs-line">R7 7700 | RTX 5070 Ti | 32GB RAM</div>
+                        <div class="social-proof">
+                            <div class="avatar-stack"><div class="avatar">M</div><div class="avatar">J</div><div class="avatar">S</div></div>
+                            12 bought in the last 24h
+                        </div>
+                        <div class="price-row"><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div>
+                        <div class="savings">You save $555</div>
+                        <button class="btn-cart">ADD TO CART</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="stock-bar"><span><span class="pulse-dot"></span> 4 LEFT IN STOCK</span><span>RTX 5070</span></div>
+                        <div class="price-drop-tag">BEST VALUE</div>
+                    </div>
+                    <div class="rating-row"><span class="stars">★★★★★</span><span class="review-count">(38 reviews)</span></div>
+                    <div class="content">
+                        <div class="product-name">SimForce</div>
+                        <div class="specs-line">R7 7700 | RTX 5070 | 32GB RAM</div>
+                        <div class="social-proof">
+                            <div class="avatar-stack"><div class="avatar">A</div><div class="avatar">K</div><div class="avatar">D</div></div>
+                            9 bought in the last 24h
+                        </div>
+                        <div class="price-row"><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div>
+                        <div class="savings">You save $505</div>
+                        <button class="btn-cart">ADD TO CART</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 15: Spec-Forward Comparison (abcv1-b) -->
+    <div class="design-row" id="row-15">
+        <div class="row-number">15</div>
+        <div class="abcv1-b">
+            <div class="grid">
+                <div class="card">
+                    <div class="tier-ribbon">MID-HIGH TIER</div>
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_CHAMBER-LVL8_R77700_RTX5070Ti_32GBRAM-V4.jpg?v=1769134855" alt="Chamber LVL 8">
+                        <div class="gpu-tag">RTX 5070 Ti</div>
+                    </div>
+                    <div class="content">
+                        <div class="product-name">Chamber : LVL 8</div>
+                        <div class="specs-line">R7 7700 | RTX 5070 Ti | 32GB RAM</div>
+                        <div class="perf-bars">
+                            <div><div class="perf-meta"><span>GPU PERFORMANCE</span><span>75%</span></div><div class="perf-track"><div class="perf-fill perf-fill-gpu" style="width: 75%;"></div></div></div>
+                            <div><div class="perf-meta"><span>CPU PERFORMANCE</span><span>72%</span></div><div class="perf-track"><div class="perf-fill perf-fill-cpu" style="width: 72%;"></div></div></div>
+                        </div>
+                        <div class="spec-chips"><span class="chip">8 Cores</span><span class="chip">32GB DDR5</span><span class="chip">1TB NVMe</span></div>
+                        <div class="price-section">
+                            <div class="price-row"><span class="currency">AUD</span><span class="price-current">$3,145</span><span class="price-original">$3,700</span></div>
+                            <span class="savings">You save $555</span>
+                            <div class="btn-group"><button class="btn-view">VIEW</button><button class="btn-cart">ADD TO CART</button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="tier-ribbon">MID TIER</div>
+                    <div class="image-container">
+                        <img class="product-image" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS_SimForce_R77700_RTX5070_32GBRAM.jpg?v=1769134893" alt="SimForce">
+                        <div class="gpu-tag">RTX 5070</div>
+                    </div>
+                    <div class="content">
+                        <div class="product-name">SimForce</div>
+                        <div class="specs-line">R7 7700 | RTX 5070 | 32GB RAM</div>
+                        <div class="perf-bars">
+                            <div><div class="perf-meta"><span>GPU PERFORMANCE</span><span>68%</span></div><div class="perf-track"><div class="perf-fill perf-fill-gpu" style="width: 68%;"></div></div></div>
+                            <div><div class="perf-meta"><span>CPU PERFORMANCE</span><span>72%</span></div><div class="perf-track"><div class="perf-fill perf-fill-cpu" style="width: 72%;"></div></div></div>
+                        </div>
+                        <div class="spec-chips"><span class="chip">8 Cores</span><span class="chip">32GB DDR5</span><span class="chip">1TB NVMe</span></div>
+                        <div class="price-section">
+                            <div class="price-row"><span class="currency">AUD</span><span class="price-current">$2,995</span><span class="price-original">$3,500</span></div>
+                            <span class="savings">You save $505</span>
+                            <div class="btn-group"><button class="btn-view">VIEW</button><button class="btn-cart">ADD TO CART</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="catalogue-footer">
+        <p>Chamber & SimForce — Design Catalogue</p>
+        <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.6;">15 unique card designs extracted from the complete collection</p>
+    </section>
+
+</body>
+</html>
