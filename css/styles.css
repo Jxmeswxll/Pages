@@ -3,7 +3,9 @@
    ============================================ */
 
 /* --- CSS Reset --- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -57,7 +59,12 @@ button {
 }
 
 /* --- Base Typography --- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-headline);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -65,9 +72,17 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 900;
 }
 
-h1 { font-size: clamp(2rem, 6vw, 4.5rem); }
-h2 { font-size: clamp(1.6rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); }
+h1 {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+}
 
 p {
   font-family: var(--font-body);
@@ -218,7 +233,7 @@ p {
   padding: 24px;
   flex-direction: column;
   gap: 24px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav__mobile-menu.active {
@@ -241,9 +256,9 @@ p {
   height: 100vh;
   min-height: 600px;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   overflow: hidden;
 }
 
@@ -278,35 +293,36 @@ p {
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(16, 24, 32, 0.5) 0%,
-    rgba(16, 24, 32, 0.3) 40%,
-    rgba(16, 24, 32, 0.7) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(16, 24, 32, 0.93) 0%,
+      rgba(16, 24, 32, 0.90) 40%,
+      rgba(16, 24, 32, 0.98) 100%);
   z-index: 1;
 }
 
 .hero__content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
-  padding: 0 48px 80px 48px;
+  max-width: 700px;
+  padding: 0 48px;
+  margin: 0 auto;
 }
 
 .hero__title {
   margin-bottom: 20px;
   color: var(--white);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero__subtitle {
   font-size: clamp(0.95rem, 2vw, 1.2rem);
-  color: var(--light-grey);
+  color: #D1D5DB;
   margin-bottom: 40px;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.7;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .hero__cta {
@@ -362,6 +378,13 @@ p {
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  overflow: hidden;
+}
+
+.feature-tile__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .feature-tile__content h3 {
@@ -404,10 +427,11 @@ p {
 }
 
 .proof__logo-item {
-  width: 160px;
-  height: 64px;
+  width: 180px;
+  height: 100px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -416,7 +440,16 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   text-align: center;
-  padding: 8px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.proof__logo-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Car builds gallery */
@@ -440,7 +473,22 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   text-align: center;
-  padding: 16px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.proof__gallery-item span {
+  position: relative;
+  z-index: 2;
+}
+
+.proof__gallery-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .proof__gallery-item span {
@@ -514,6 +562,13 @@ p {
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  overflow: hidden;
+}
+
+.product-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-card__body {
@@ -658,6 +713,13 @@ p {
   letter-spacing: 0.1em;
   text-align: center;
   padding: 12px;
+  overflow: hidden;
+}
+
+.engineering__grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ============================================
@@ -849,4 +911,39 @@ p {
   .features__grid {
     gap: 100px;
   }
+}
+
+/* ============================================
+   HERO CTA GLOW
+   ============================================ */
+.hero__cta {
+  box-shadow: 0 4px 24px rgba(218, 41, 28, 0.4);
+}
+
+.hero__cta:hover {
+  box-shadow: 0 8px 32px rgba(218, 41, 28, 0.6);
+}
+
+/* ============================================
+   PLACEHOLDER STYLING — so empty slots look
+   intentional, not broken
+   ============================================ */
+.product-card__image:not(:has(img)),
+.engineering__grid-item:not(:has(img)),
+.proof__gallery-item:not(:has(img)),
+.feature-tile__image:not(:has(img)) {
+  font-size: 0;
+  color: transparent;
+}
+
+.product-card__image:not(:has(img))::after,
+.engineering__grid-item:not(:has(img))::after,
+.proof__gallery-item:not(:has(img))::after,
+.feature-tile__image:not(:has(img))::after {
+  content: 'COMING SOON';
+  font-size: 0.6875rem;
+  color: var(--grey);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-family: var(--font-body);
 }
