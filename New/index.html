@@ -1,488 +1,1208 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
+
+
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFTERSHOCK PC — The Race-Spec Collection</title>
-  <meta name="description"
-    content="Engineered for the track. Built for your desk. Australia's ultimate custom PC experience.">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:wght@400;500;700&display=swap"
-    rel="stylesheet">
+<meta charset="UTF-8">
 
-  <link rel="stylesheet" href="css/styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AFTERSHOCK PC — The Race-Spec Collection</title>
+
+<meta name="description"
+
+content="Engineered for the track. Built for your desk. Australia's ultimate custom PC experience.">
+
+
+
+
+
+<!-- Google Fonts -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:wght@400;500;700&display=swap"
+
+rel="stylesheet">
+
+
+
+
+
+<style>
+
+/* === CSS Reset === */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body { font-family: 'Roboto', sans-serif; color: var(--white); background: var(--slate-black); line-height: 1.6; overflow-x: hidden; }
+
+img { max-width: 100%; display: block; }
+
+a { text-decoration: none; color: inherit; }
+
+ul { list-style: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; }
+
+
+
+
+
+/* === Brand Tokens === */
+
+:root {
+
+--slate-black: #101820;
+
+--red: #DA291C;
+
+--red-hover: #b8221a;
+
+--white: #F1F2F1;
+
+--light-grey: #AAAAAA;
+
+--grey: #666666;
+
+--font-headline: 'Eurostile', 'Archivo Black', sans-serif;
+
+--font-body: 'Roboto', sans-serif;
+
+--max-width: 1440px;
+
+    }
+
+
+
+
+
+/* === Typography === */
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-headline); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.15; font-weight: 900; }
+
+h1 { font-size: clamp(2rem, 6vw, 4.5rem); }
+
+h2 { font-size: clamp(1.6rem, 4vw, 3rem); }
+
+h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); }
+
+p { font-family: var(--font-body); color: var(--light-grey); line-height: 1.7; }
+
+
+
+
+
+/* === Full-bleed sections (break out of Prismic parent) === */
+
+.hero, .features, .gallery, .testimonials, .products, .cta-bottom { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+
+
+
+/* === Utility === */
+
+.container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+.btn { display: inline-block; padding: 16px 48px; font-family: var(--font-headline); font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; border: none; border-radius: 6px; cursor: pointer; transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease; }
+
+.btn--red { background: var(--red); color: var(--white); box-shadow: 0 4px 24px rgba(218, 41, 28, 0.3); }
+
+.btn--red:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(218, 41, 28, 0.5); }
+
+.btn--outline { background: transparent; color: var(--white); border: 2px solid var(--white); }
+
+.btn--outline:hover { background: var(--white); color: var(--slate-black); box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1); }
+
+.section-label { font-family: var(--font-body); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--red); margin-bottom: 12px; font-weight: 500; text-shadow: 0 0 20px rgba(218, 41, 28, 0.3); }
+
+
+
+
+
+/* === Hero === */
+
+.hero { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+
+.hero__media { position: absolute; inset: 0; background: var(--slate-black); z-index: 0; }
+
+.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+
+.hero__overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(16, 24, 32, 0.82) 0%, rgba(16, 24, 32, 0.78) 40%, rgba(16, 24, 32, 0.92) 100%); z-index: 1; }
+
+.hero__content { position: relative; z-index: 2; max-width: 700px; padding: 0 48px; margin: 0 auto; }
+
+.hero__title { margin-bottom: 20px; color: var(--white); text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5); }
+
+.hero__subtitle { font-size: clamp(0.95rem, 2vw, 1.2rem); color: #D1D5DB; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4); }
+
+.hero__ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+
+.hero__cta { margin-top: 8px; }
+
+
+
+
+
+/* === Features === */
+
+.features { background: radial-gradient(ellipse at 50% 0%, rgba(25, 45, 65, 0.4) 0%, transparent 70%), linear-gradient(180deg, #101820 0%, #0c1420 100%); padding: 100px 0; }
+
+.features__header { text-align: center; margin-bottom: 56px; }
+
+.features__header h2 { color: var(--white); text-shadow: 0 0 40px rgba(218, 41, 28, 0.15); }
+
+.features__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+
+.feature-card { text-align: center; padding: 32px 20px; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; background: rgba(255, 255, 255, 0.02); }
+
+.feature-card__icon { font-size: 2rem; margin-bottom: 16px; line-height: 1; }
+
+.feature-card__icon svg { width: 40px; height: 40px; margin: 0 auto; }
+
+.feature-card h3 { color: var(--white); margin-bottom: 10px; font-size: clamp(0.9rem, 1.5vw, 1.1rem); }
+
+.feature-card p { color: var(--light-grey); font-size: 0.9rem; line-height: 1.6; }
+
+@media (max-width: 768px) { .features__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+
+@media (max-width: 480px) { .features__grid { grid-template-columns: 1fr; } }
+
+
+
+
+
+
+
+
+
+
+/* === Gallery === */
+
+.gallery { background: radial-gradient(ellipse at 50% 0%, rgba(218, 41, 28, 0.04) 0%, transparent 50%), linear-gradient(180deg, #0d1117 0%, #101820 100%); padding: 100px 0; position: relative; }
+
+.gallery::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent); }
+
+.gallery__header { text-align: center; margin-bottom: 48px; }
+
+.gallery__header h2 { color: var(--white); text-shadow: 0 0 40px rgba(218, 41, 28, 0.15); }
+
+.gallery__grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+.gallery__item { position: relative; aspect-ratio: 4 / 3; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; overflow: hidden; transition: border-color 0.3s ease, transform 0.2s ease; grid-column: span 2; }
+
+.gallery__item:nth-child(n+4) { grid-column: span 3; }
+
+.gallery__item:hover { border-color: rgba(218, 41, 28, 0.3); transform: translateY(-2px); }
+
+.gallery__item img, .gallery__video { width: 100%; height: 100%; object-fit: cover; }
+
+.gallery__caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px 16px 14px; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); pointer-events: none; }
+
+.gallery__caption-title { font-family: var(--font-headline); font-size: 0.8rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.3; }
+
+.gallery__caption-sub { font-family: var(--font-body); font-size: 0.7rem; color: var(--light-grey); margin-top: 2px; }
+
+
+
+
+
+/* === Testimonials === */
+
+.testimonials { background: radial-gradient(ellipse at 50% 0%, rgba(218, 41, 28, 0.04) 0%, transparent 50%), linear-gradient(180deg, #0d1117 0%, #101820 100%); padding: 100px 0; position: relative; }
+
+.testimonials::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent); }
+
+.testimonials__header { text-align: center; margin-bottom: 48px; }
+
+.testimonials__header h2 { color: var(--white); text-shadow: 0 0 40px rgba(218, 41, 28, 0.15); }
+
+
+
+
+
+/* Hero quote */
+
+.review-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 40px; margin-bottom: 32px; cursor: pointer; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+
+.review-hero:hover { border-color: rgba(218, 41, 28, 0.4); box-shadow: 0 12px 48px rgba(218, 41, 28, 0.12); }
+
+.review-hero__video-thumb { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; }
+
+.review-hero__video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.3s ease; }
+
+.review-hero:hover .review-hero__video-thumb img { opacity: 1; }
+
+.review-hero__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--white); background: rgba(0, 0, 0, 0.15); transition: background 0.3s ease; }
+
+.review-hero:hover .review-hero__play { background: rgba(0, 0, 0, 0.3); }
+
+.review-hero__quote { font-family: var(--font-body); font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--white); line-height: 1.7; font-style: italic; margin-bottom: 24px; }
+
+.review-hero__attr { display: flex; flex-direction: column; gap: 4px; }
+
+.review-hero__name { font-family: var(--font-headline); font-size: 1rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.review-hero__role { font-family: var(--font-body); font-size: 0.8125rem; color: var(--red); letter-spacing: 0.04em; }
+
+
+
+
+
+/* Review grid */
+
+.review-grid--trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+.review-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; cursor: pointer; transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; overflow: hidden; display: flex; flex-direction: column; }
+
+.review-card:hover { border-color: rgba(218, 41, 28, 0.4); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(218, 41, 28, 0.12); }
+
+.review-card__thumb { position: relative; aspect-ratio: 16 / 9; overflow: hidden; flex-shrink: 0; }
+
+.review-card__thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: opacity 0.3s ease; }
+
+.review-card:hover .review-card__thumb img { opacity: 1; }
+
+.review-card__thumb--placeholder { background: linear-gradient(135deg, #1a2332, #0d1117); }
+
+.review-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--white); background: rgba(0, 0, 0, 0.15); transition: background 0.3s ease; }
+
+.review-card:hover .review-card__play { background: rgba(0, 0, 0, 0.3); }
+
+.review-card__inner { padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+
+.review-card__logo { width: 72px; height: 40px; object-fit: contain; object-position: left; border-radius: 4px; opacity: 0.85; flex-shrink: 0; }
+
+.review-card__name { font-family: var(--font-headline); font-size: 0.9rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.review-card__quote { font-family: var(--font-body); font-size: 0.9375rem; color: var(--light-grey); line-height: 1.65; font-style: italic; flex: 1; }
+
+.review-card__tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 0.6875rem; color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; margin-top: auto; }
+
+.review-card__tag::before { content: '\25B6'; font-size: 0.5rem; }
+
+
+
+
+
+/* Video modal */
+
+.video-modal { display: none; position: fixed; inset: 0; z-index: 2000; align-items: center; justify-content: center; }
+
+.video-modal--active { display: flex; }
+
+.video-modal__overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); }
+
+.video-modal__content { position: relative; width: 90%; max-width: 800px; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; }
+
+.video-modal__close { position: absolute; top: -40px; right: 0; background: none; color: var(--white); font-size: 2rem; line-height: 1; z-index: 10; padding: 4px 12px; }
+
+.video-modal__close:hover { color: var(--red); }
+
+.video-modal__player { width: 100%; height: 100%; }
+
+.video-modal__player iframe { width: 100%; height: 100%; }
+
+.video-modal__placeholder { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: var(--grey); font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+
+
+
+
+/* === Products === */
+
+.products { background: radial-gradient(ellipse at 50% 20%, rgba(20, 40, 65, 0.35) 0%, transparent 70%), linear-gradient(180deg, #101820 0%, #0a1018 100%); padding: 120px 0; }
+
+.products__header { text-align: center; margin-bottom: 64px; }
+
+.products__header h2 { color: var(--white); text-shadow: 0 0 40px rgba(218, 41, 28, 0.15); }
+
+.products__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 80px; }
+
+.product-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; flex-direction: column; transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; }
+
+.product-card:hover { border-color: rgba(218, 41, 28, 0.4); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(218, 41, 28, 0.15), 0 0 0 1px rgba(218, 41, 28, 0.3); }
+
+.product-card__badge { position: absolute; top: 16px; right: 16px; background: var(--red); color: var(--white); font-family: var(--font-headline); font-size: 0.625rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 6px 14px; z-index: 2; }
+
+.product-card__image { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #1a2332, #0d1117); border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+.product-card__body { padding: 28px 24px; flex: 1; display: flex; flex-direction: column; }
+
+.product-card__tier { font-family: var(--font-body); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--red); margin-bottom: 8px; }
+
+.product-card__name { font-family: var(--font-headline); font-size: 1.75rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+
+.product-card__tagline { font-size: 0.9375rem; color: var(--light-grey); margin-bottom: 20px; }
+
+.product-card__specs { list-style: none; margin-bottom: 24px; flex: 1; }
+
+.product-card__specs li { font-size: 0.8125rem; color: var(--grey); padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+
+.product-card__specs li::before { content: '\2014'; margin-right: 8px; color: var(--red); }
+
+.product-card__price { font-family: var(--font-headline); font-size: 1.5rem; color: var(--white); margin-bottom: 20px; letter-spacing: 0.04em; }
+
+.product-card__shipping { font-family: var(--font-body); font-size: 0.75rem; color: var(--grey); margin-bottom: 16px; letter-spacing: 0.02em; }
+
+.product-card__cta { width: 100%; text-align: center; }
+
+
+
+
+
+/* Product card image variants */
+
+.product-card__image--halo, .product-card__image--chicane, .product-card__image--sector { position: relative; overflow: hidden; }
+
+.product-card__image--halo { background: linear-gradient(135deg, #1a2a3a 0%, #0f1a26 40%, #1e2d3d 100%); }
+
+.product-card__image--chicane { background: linear-gradient(135deg, #1a2332 0%, #1c1020 40%, #2a1a30 100%); }
+
+.product-card__image--sector { background: linear-gradient(135deg, #2a1a1a 0%, #1a0a0a 40%, #301818 100%); }
+
+.product-card__image-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+
+.product-card__gpu-label { font-family: var(--font-headline); font-size: clamp(1.5rem, 4vw, 2.5rem); color: rgba(255, 255, 255, 0.06); text-transform: uppercase; letter-spacing: 0.15em; white-space: nowrap; }
+
+.product-card__image--halo::before, .product-card__image--chicane::before, .product-card__image--sector::before { content: ''; position: absolute; top: -50%; right: -20%; width: 1px; height: 200%; background: linear-gradient(to bottom, transparent, rgba(218, 41, 28, 0.3), transparent); transform: rotate(-25deg); z-index: 1; }
+
+.product-card__image--sector::after { content: ''; position: absolute; top: -50%; left: 30%; width: 1px; height: 200%; background: linear-gradient(to bottom, transparent, rgba(218, 41, 28, 0.15), transparent); transform: rotate(-25deg); z-index: 1; }
+
+
+
+
+
+/* Watercooling details */
+
+.product-card__watercooling { margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; overflow: hidden; }
+
+.product-card__watercooling summary { font-family: var(--font-headline); font-size: 0.75rem; color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; padding: 12px 16px; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+
+.product-card__watercooling summary::-webkit-details-marker { display: none; }
+
+.product-card__watercooling summary::before { content: '+'; font-size: 1rem; color: var(--red); font-weight: 700; }
+
+.product-card__watercooling[open] summary::before { content: '\2212'; }
+
+.product-card__specs--wc { margin-bottom: 0; padding: 0 16px 12px; }
+
+.product-card__specs--wc li { font-size: 0.75rem; color: var(--grey); padding: 4px 0; }
+
+
+
+
+
+/* CTA tracks */
+
+.products__tracks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.track-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 28px 20px; text-align: center; transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; }
+
+.track-card:hover { border-color: rgba(218, 41, 28, 0.4); background: rgba(218, 41, 28, 0.04); box-shadow: 0 4px 20px rgba(218, 41, 28, 0.12); }
+
+.track-card__title { font-family: var(--font-headline); font-size: 1rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+
+.track-card__desc { font-size: 0.8125rem; color: var(--grey); }
+
+
+
+/* === Sim Rigs === */
+
+.sim-rigs { margin-bottom: 80px; }
+
+.sim-rigs__label { font-family: var(--font-body); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--grey); text-align: center; margin-bottom: 24px; }
+
+.sim-rigs__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+.sim-rig { display: grid; grid-template-columns: 1fr 1fr; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; overflow: hidden; transition: border-color 0.3s ease, transform 0.2s ease; text-decoration: none; }
+
+.sim-rig:hover { border-color: rgba(218, 41, 28, 0.3); transform: translateY(-2px); }
+
+.sim-rig__image { aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, #1a2332, #0d1117); }
+
+.sim-rig__image img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+
+.sim-rig__info { padding: 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+
+.sim-rig__name { font-family: var(--font-headline); font-size: 0.85rem; color: var(--white); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.sim-rig__price { font-family: var(--font-headline); font-size: 0.9rem; color: var(--white); letter-spacing: 0.04em; }
+
+.sim-rig__cta { font-family: var(--font-body); font-size: 0.75rem; color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; margin-top: 4px; }
+
+@media (max-width: 768px) { .sim-rigs__grid { grid-template-columns: 1fr; } .sim-rig { grid-template-columns: 120px 1fr; } }
+
+
+
+/* === CTA Bottom === */
+
+.cta-bottom { background: radial-gradient(ellipse at 50% 0%, rgba(218, 41, 28, 0.04) 0%, transparent 50%), linear-gradient(180deg, #101820 0%, #0c1420 100%); padding: 80px 0; text-align: center; position: relative; }
+
+.cta-bottom::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent); }
+
+.cta-bottom h2 { color: var(--white); margin-bottom: 16px; text-shadow: 0 0 40px rgba(218, 41, 28, 0.15); }
+
+.cta-bottom p { max-width: 500px; margin: 0 auto 32px; }
+
+
+
+
+
+
+
+
+
+
+/* === Scroll Reveal (CSS-only) === */
+
+@keyframes revealUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes revealScale { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+
+.reveal { animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+
+.reveal-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+
+.reveal-stagger > *:nth-child(3) { animation-delay: 0.2s; }
+
+.reveal-stagger > *:nth-child(4) { animation-delay: 0.3s; }
+
+.reveal--scale { animation: revealScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+
+/* Fallback for browsers without scroll-driven animations */
+
+@supports not (animation-timeline: view()) { .reveal, .reveal--scale { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { .reveal, .reveal--scale { animation: none; opacity: 1; transform: none; } }
+
+
+
+
+
+/* === Responsive === */
+
+@media (max-width: 768px) {
+
+.hero { height: auto; min-height: 560px; padding: 96px 0 72px; }
+
+.hero__video { object-position: center bottom; }
+
+.hero__content { padding: 0 24px; }
+
+.hero__subtitle { margin-bottom: 28px; line-height: 1.6; }
+
+.hero__ctas { width: 100%; gap: 10px; }
+
+.hero__cta { width: 100%; max-width: 420px; margin-top: 0; }
+
+.features, .gallery, .testimonials, .products { padding: 72px 0; }
+
+.cta-bottom { padding: 64px 0; }
+
+.features__header, .gallery__header, .testimonials__header, .products__header { margin-bottom: 32px; }
+
+.features__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+.feature-card { padding: 22px 14px; }
+
+.feature-card p { font-size: 0.85rem; line-height: 1.5; }
+
+.gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+.gallery__item { grid-column: span 1; aspect-ratio: 1 / 1; border-radius: 8px; }
+
+.gallery__item:nth-child(n+4) { grid-column: span 1; }
+
+.gallery__item:last-child { grid-column: 1 / -1; }
+
+.gallery__caption { padding: 24px 12px 10px; }
+
+.review-hero { grid-template-columns: 1fr; gap: 20px; padding: 20px; margin-bottom: 16px; border-radius: 12px; }
+
+.review-hero__quote { font-size: 1rem; line-height: 1.6; margin-bottom: 16px; }
+
+.review-grid--trio { grid-template-columns: 1fr; gap: 12px; }
+
+.review-card__inner { padding: 18px 16px; }
+
+.products__grid { grid-template-columns: 1fr; gap: 20px; margin-bottom: 48px; }
+
+.product-card__name { font-size: 1.45rem; }
+
+.product-card__body { padding: 22px 18px; }
+
+.product-card__price { font-size: 1.3rem; margin-bottom: 14px; }
+
+.product-card__specs li { font-size: 0.78rem; }
+
+.sim-rigs { margin-bottom: 48px; }
+
+.sim-rigs__label { margin-bottom: 14px; }
+
+.products__tracks { grid-template-columns: 1fr; gap: 10px; }
+
+.track-card { padding: 20px 16px; }
+
+.video-modal__content { width: calc(100% - 24px); border-radius: 10px; }
+
+.video-modal__close { top: -36px; right: -4px; }
+
+}
+
+@media (max-width: 480px) {
+
+.hero { min-height: 520px; padding: 84px 0 64px; }
+
+.hero__content { padding: 0 16px; }
+
+.hero__title { margin-bottom: 14px; }
+
+.hero__subtitle { font-size: 0.93rem; margin-bottom: 22px; }
+
+.container { padding: 0 16px; }
+
+.section-label { letter-spacing: 0.16em; font-size: 0.68rem; }
+
+h2 { letter-spacing: 0.05em; }
+
+.features, .gallery, .testimonials, .products { padding: 60px 0; }
+
+.feature-card { padding: 20px 12px; }
+
+.review-card__quote { font-size: 0.88rem; line-height: 1.55; }
+
+.product-card__tier { letter-spacing: 0.14em; }
+
+.product-card__specs li { padding: 5px 0; }
+
+.btn { width: 100%; text-align: center; padding: 14px 22px; letter-spacing: 0.12em; }
+
+}
+
+@media (max-width: 375px) {
+
+.container { padding: 0 14px; }
+
+.btn { font-size: 0.78rem; }
+
+.product-card__body { padding: 18px 14px; }
+
+.gallery__caption-title { font-size: 0.72rem; }
+
+.gallery__caption-sub { font-size: 0.64rem; }
+
+}
+
+
+</style>
+
 </head>
+
+
+
+
 
 <body>
 
-  <!-- ============================================
-       1. STICKY NAV
-       ============================================ -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#" class="nav__logo">AFTER<span>SHOCK</span></a>
-      <ul class="nav__links">
-        <li><a href="#products">Builds</a></li>
-        <li><a href="#products">Custom</a></li>
-        <li><a href="#contact">Corporate</a></li>
-      </ul>
-      <button class="nav__hamburger" id="hamburger" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-    <div class="nav__mobile-menu" id="mobile-menu">
-      <a href="#products">Builds</a>
-      <a href="#products">Custom</a>
-      <a href="#contact">Corporate</a>
-    </div>
-  </nav>
 
-  <!-- ============================================
-       2. HERO
-       ============================================ -->
-  <!-- Event Banner -->
-  <div class="event-banner" id="event-banner">
-    <div class="event-banner__inner">
-      <span class="event-banner__flag">🏁</span>
-      <p class="event-banner__text"><strong>Australian GP Weekend</strong> — Order at the track &amp; receive a free Race-Spec livery upgrade</p>
-      <span class="event-banner__flag">🏁</span>
-    </div>
-  </div>
 
-  <section class="hero" id="hero">
-    <div class="hero__media">
-      <video class="hero__video" autoplay muted loop playsinline>
-        <source src="assets/0208 (1).mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="hero__overlay"></div>
-    <div class="hero__content">
-      <h1 class="hero__title">The Race-Spec Collection.</h1>
-      <p class="hero__subtitle">Engineered for the track. Built for your desk. Melbourne-built custom gaming PCs
-        for sim racers, teams, and corporate events.</p>
-      <div class="hero__ctas">
-        <a href="#products" class="btn btn--red hero__cta">Shop Builds</a>
-        <a href="#contact" class="btn btn--outline hero__cta">Corporate Enquiries</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- ============================================
-       3. FEATURES & BENEFITS
-       ============================================ -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="features__header reveal">
-        <p class="section-label">Why Aftershock</p>
-        <h2>Built Different.</h2>
-      </div>
-      <div class="features__grid">
 
-        <!-- Tile 1 -->
-        <div class="feature-tile">
-          <div class="feature-tile__image reveal--left"><img src="assets/hf_20260211_023632_2dc9498e-e9a8-4f28-a72d-6d7d81e125e3.png"
-              alt="Aftershock team members"></div>
-          <div class="feature-tile__content reveal--right">
-            <h3>Master-Built in Melbourne</h3>
-            <p>Every system hand-assembled by our senior technicians and subjected to a gruelling 24-hour stress test
-              before it ships. No shortcuts.</p>
-          </div>
-        </div>
+<!-- HERO -->
 
-        <!-- Tile 2 -->
-        <div class="feature-tile">
-          <div class="feature-tile__image reveal--right"><img
-              src="assets/hf_20260211_033132_1e50e774-e4c6-487b-8674-30bc5f2c3476.jpeg" alt="Person sim racing"></div>
-          <div class="feature-tile__content reveal--left">
-            <h3>Tailored for Sim Racing</h3>
-            <p>Parts selected and configured specifically for maximum sim-racing performance. Frame-perfect input, zero
-              compromise.</p>
-          </div>
-        </div>
+<section class="hero" id="hero">
 
-        <!-- Tile 3 -->
-        <div class="feature-tile">
-          <div class="feature-tile__image reveal--left feature-tile__image--livery">
-            <div class="livery-preview">
-              <div class="livery-preview__swatch livery-preview__swatch--carbon"></div>
-              <div class="livery-preview__swatch livery-preview__swatch--red"></div>
-              <div class="livery-preview__swatch livery-preview__swatch--matte"></div>
-              <span class="livery-preview__label">Custom Livery Options</span>
-            </div>
-          </div>
-          <div class="feature-tile__content reveal--right">
-            <h3>Race-Spec Livery</h3>
-            <p>Limited edition carbon fibre themed internals. Each build carries a unique livery — your machine, your
-              identity on the grid.</p>
-          </div>
-        </div>
+<div class="hero__media">
 
-        <!-- Tile 4 -->
-        <div class="feature-tile">
-          <div class="feature-tile__image reveal--right"><img
-              src="assets/hf_20260211_031035_b114d51f-1a4c-4522-88b9-d63888e57381.jpeg"
-              alt="Aftershock staff helping customer"></div>
-          <div class="feature-tile__content reveal--left">
-            <h3>3-Year Warranty</h3>
-            <p>Lifetime support with a local pit crew. If something goes wrong, our Melbourne-based team has your back —
-              for life.</p>
-          </div>
-        </div>
+<video class="hero__video" autoplay muted loop playsinline preload="metadata">
 
-      </div>
-    </div>
-  </section>
+<source src="https://cdn.shopify.com/videos/c/o/v/02a702528e67480995a78b9c5e908bef.webm" type="video/webm">
 
-  <!-- ============================================
-       4. AUTHORITY / SOCIAL PROOF
-       ============================================ -->
-  <section class="proof" id="proof">
-    <div class="container">
-      <div class="proof__header reveal">
-        <p class="section-label">Trusted By</p>
-        <h2>On the Grid.</h2>
-      </div>
+</video>
 
-      <!-- Logo strip -->
-      <div class="proof__logos reveal-stagger">
-        <div class="proof__logo-item reveal"><img src="assets/NLR.jpg" alt="Next Level Racing"></div>
-        <div class="proof__logo-item reveal"><img src="assets/brad-jones-racing-team-logo-png_seeklogo-403665.png"
-            alt="Brad Jones Racing"></div>
-        <div class="proof__logo-item reveal"><img src="assets/Tickford racing.png" alt="Tickford Racing"></div>
-      </div>
+</div>
 
-      <!-- Car builds gallery — only showing completed builds -->
-      <div class="proof__gallery proof__gallery--single reveal-stagger">
-        <div class="proof__gallery-item reveal--scale">
-          <span>Lamborghini PC Build</span>
-          <img src="assets/Screenshot 2026-02-11 at 14.50.29.png" alt="Lamborghini PC Build">
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="hero__overlay"></div>
 
-  <!-- ============================================
-       4b. TESTIMONIALS
-       ============================================ -->
-  <section class="testimonials" id="testimonials">
-    <div class="container">
-      <div class="testimonials__header reveal">
-        <p class="section-label">Reviews</p>
-        <h2>What Our Customers Say.</h2>
-      </div>
-      <div class="testimonials__grid reveal-stagger">
-        <div class="testimonial-card reveal">
-          <div class="testimonial-card__stars">★★★★★</div>
-          <p class="testimonial-card__quote">"Ordered the mid-range build for my sim setup. The cable management is immaculate and it runs iRacing on triples without breaking a sweat. Worth every cent over building it myself."</p>
-          <div class="testimonial-card__author">
-            <p class="testimonial-card__name">Marcus T.</p>
-            <p class="testimonial-card__detail">Chicane Build — Melbourne, VIC</p>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="testimonial-card__stars">★★★★★</div>
-          <p class="testimonial-card__quote">"We bought four rigs for our office entertainment space. Aftershock handled the whole setup — delivery, install, and even configured the sim software. Clients love it."</p>
-          <div class="testimonial-card__author">
-            <p class="testimonial-card__name">Sarah L.</p>
-            <p class="testimonial-card__detail">Corporate Fleet — Sydney, NSW</p>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="testimonial-card__stars">★★★★★</div>
-          <p class="testimonial-card__quote">"The 24-hour stress test they do isn't marketing fluff — they sent me the full thermal report. CPU stayed under 68°C across the board. These guys know what they're doing."</p>
-          <div class="testimonial-card__author">
-            <p class="testimonial-card__name">James K.</p>
-            <p class="testimonial-card__detail">Sector Build — Brisbane, QLD</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="hero__content">
 
-  <!-- ============================================
-       5. PRODUCT SPOTLIGHT
-       ============================================ -->
-  <section class="products" id="products">
-    <div class="container">
-      <div class="products__header reveal">
-        <p class="section-label">Race-Spec Builds</p>
-        <h2>Choose Your Line.</h2>
-      </div>
+<h1 class="hero__title">The Race-Spec Collection.</h1>
 
-      <div class="products__grid reveal-stagger">
+<p class="hero__subtitle">Track-proven performance. Desk-ready precision.
 
-        <!-- HALO -->
-        <div class="product-card reveal">
-          <div class="product-card__image product-card__image--halo">
-            <div class="product-card__image-inner">
-              <div class="product-card__gpu-label">RTX 4070 Super</div>
-            </div>
-          </div>
-          <div class="product-card__body">
-            <p class="product-card__tier">Entry</p>
-            <h3 class="product-card__name">Halo</h3>
-            <p class="product-card__tagline">High-frame-rate stability at a competitive price.</p>
-            <ul class="product-card__specs">
-              <li>RTX 4070 Super 12GB</li>
-              <li>Intel i5-14600K</li>
-              <li>32GB DDR5-5600</li>
-              <li>1TB NVMe Gen4 SSD</li>
-              <li>B760M Motherboard</li>
-              <li>750W 80+ Gold PSU</li>
-              <li>240mm AIO Liquid Cooler</li>
-            </ul>
-            <p class="product-card__price">$2,499</p>
-            <p class="product-card__shipping">Ships in 7–10 business days</p>
-            <a href="mailto:sales@aftershockpc.com.au?subject=Halo%20Race-Spec%20Build%20Enquiry" class="btn btn--red product-card__cta">Request Quote</a>
-          </div>
-        </div>
+Melbourne-built PCs trusted by professional race teams and sim racers nationwide.</p>
 
-        <!-- CHICANE -->
-        <div class="product-card reveal">
-          <div class="product-card__image product-card__image--chicane">
-            <div class="product-card__image-inner">
-              <div class="product-card__gpu-label">RTX 4070 Ti Super</div>
-            </div>
-          </div>
-          <div class="product-card__body">
-            <p class="product-card__tier">Mid-Range</p>
-            <h3 class="product-card__name">Chicane</h3>
-            <p class="product-card__tagline">Red Bull Gaming Garage spec. Bullrush VIP Suites ready.</p>
-            <ul class="product-card__specs">
-              <li>RTX 4070 Ti Super 16GB</li>
-              <li>Intel i7-14700K</li>
-              <li>32GB DDR5-6000</li>
-              <li>2TB NVMe Gen4 SSD</li>
-              <li>Z790 Motherboard</li>
-              <li>850W 80+ Gold PSU</li>
-              <li>360mm AIO Liquid Cooler</li>
-            </ul>
-            <p class="product-card__price">$3,499</p>
-            <p class="product-card__shipping">Ships in 7–10 business days</p>
-            <a href="mailto:sales@aftershockpc.com.au?subject=Chicane%20Race-Spec%20Build%20Enquiry" class="btn btn--red product-card__cta">Request Quote</a>
-          </div>
-        </div>
+<div class="hero__ctas">
 
-        <!-- SECTOR -->
-        <div class="product-card reveal">
-          <div class="product-card__badge">GP Weekend Exclusive</div>
-          <div class="product-card__image product-card__image--sector">
-            <div class="product-card__image-inner">
-              <div class="product-card__gpu-label">RTX 4090</div>
-            </div>
-          </div>
-          <div class="product-card__body">
-            <p class="product-card__tier">Flagship</p>
-            <h3 class="product-card__name">Sector</h3>
-            <p class="product-card__tagline">No compromises. The fastest lap on your desk.</p>
-            <ul class="product-card__specs">
-              <li>RTX 4090 24GB</li>
-              <li>Intel i9-14900K</li>
-              <li>64GB DDR5-6000</li>
-              <li>4TB NVMe Gen4 SSD</li>
-              <li>Z790 ROG Motherboard</li>
-              <li>1000W 80+ Platinum PSU</li>
-              <li>360mm AIO Liquid Cooler</li>
-            </ul>
-            <p class="product-card__price">$5,999</p>
-            <p class="product-card__shipping">Ships in 7–10 business days</p>
-            <a href="mailto:sales@aftershockpc.com.au?subject=Sector%20Race-Spec%20Build%20Enquiry" class="btn btn--red product-card__cta">Request Quote</a>
-          </div>
-        </div>
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="btn btn--red hero__cta">Shop Builds</a>
 
-      </div>
+<a href="https://aftershockpc.com.au/pages/corporate" class="btn btn--outline hero__cta">Corporate Enquiries</a>
 
-      <!-- CTA Tracks -->
-      <div class="products__tracks reveal-stagger">
-        <a href="mailto:sales@aftershockpc.com.au?subject=Ready%20to%20Ship%20Enquiry" class="track-card reveal">
-          <p class="track-card__title">RTS</p>
-          <p class="track-card__desc">Ready to Ship &amp; Race</p>
-        </a>
-        <a href="mailto:sales@aftershockpc.com.au?subject=Custom%20PC%20Configuration%20Enquiry" class="track-card reveal">
-          <p class="track-card__title">Custom PC</p>
-          <p class="track-card__desc">Configure Your PC</p>
-        </a>
-        <a href="mailto:sales@aftershockpc.com.au?subject=Bundle%20Package%20Enquiry" class="track-card reveal">
-          <p class="track-card__title">Bundle</p>
-          <p class="track-card__desc">Jump into the Driver's Seat</p>
-        </a>
-        <a href="mailto:corporate@aftershockpc.com.au?subject=Corporate%20Fleet%20Enquiry" class="track-card reveal">
-          <p class="track-card__title">Corporate</p>
-          <p class="track-card__desc">Ready to Build a Team?</p>
-        </a>
-      </div>
-    </div>
-  </section>
+</div>
 
-  <!-- ============================================
-       5b. WHY PREBUILT
-       ============================================ -->
-  <section class="why-prebuilt" id="why-prebuilt">
-    <div class="container">
-      <div class="why-prebuilt__header reveal">
-        <p class="section-label">For the Skeptics</p>
-        <h2>Why Not Just Build It Yourself?</h2>
-      </div>
-      <div class="why-prebuilt__grid reveal-stagger">
-        <div class="why-prebuilt__item reveal">
-          <h3>3-Year Warranty</h3>
-          <p>Your DIY build has zero warranty as a system. Ours is covered end-to-end for 3 years — parts, labour, and diagnostics.</p>
-        </div>
-        <div class="why-prebuilt__item reveal">
-          <h3>Thermal Engineering</h3>
-          <p>We don't just mount a cooler and hope. Every build gets custom fan curves, optimised airflow paths, and a 24-hour thermal validation test.</p>
-        </div>
-        <div class="why-prebuilt__item reveal">
-          <h3>Race-Spec Livery</h3>
-          <p>Carbon fibre panels, custom cable sleeving, and team-style livery wraps — things you can't get from a PCPartPicker list.</p>
-        </div>
-        <div class="why-prebuilt__item reveal">
-          <h3>Zero Troubleshooting</h3>
-          <p>No DOA components, no BIOS compatibility issues, no 4 hours diagnosing a POST failure. It arrives race-ready.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+</div>
 
-  <!-- ============================================
-       6. ENGINEERING PROOF
-       ============================================ -->
-  <section class="engineering" id="engineering">
-    <div class="container">
-      <div class="engineering__inner">
-        <div class="engineering__content reveal--left">
-          <p class="section-label">Behind the Build</p>
-          <h2>The Benchmark for Performance.</h2>
-          <p>Every Race-Spec system is built to survive the 2026 Grand Prix season and beyond. We don't just assemble —
-            we engineer reliability into every cable route, thermal solution, and component choice.</p>
-          <p>From mil-spec wiring looms to competition-grade thermal compounds, these machines are built the way race
-            cars are: with zero tolerance for failure.</p>
-        </div>
-        <div class="engineering__grid reveal-stagger">
-          <div class="engineering__grid-item engineering__grid-item--labeled reveal--scale">
-            <div class="engineering__grid-icon">🔧</div>
-            <span>Hand-Routed Cabling</span>
-            <p>Every cable measured, sleeved, and tied — no zip-tie shortcuts</p>
-          </div>
-          <div class="engineering__grid-item engineering__grid-item--labeled reveal--scale">
-            <div class="engineering__grid-icon">🌡️</div>
-            <span>Thermal Validation</span>
-            <p>24-hour stress test with full thermal reporting — CPU &amp; GPU</p>
-          </div>
-          <div class="engineering__grid-item engineering__grid-item--labeled reveal--scale">
-            <div class="engineering__grid-icon">⚡</div>
-            <span>Component Matching</span>
-            <p>RAM, VRM, and power delivery matched for zero-bottleneck performance</p>
-          </div>
-          <div class="engineering__grid-item engineering__grid-item--labeled reveal--scale">
-            <div class="engineering__grid-icon">🛡️</div>
-            <span>Quality Assurance</span>
-            <p>Multi-point inspection and BIOS optimisation before dispatch</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+</section>
 
-  <!-- ============================================
-       7. FOOTER
-       ============================================ -->
-  <section class="footer-cta" id="contact">
-    <div class="container reveal">
-      <p class="section-label">Enterprise</p>
-      <h2>Workstation Solutions &amp; Priority Enquiries</h2>
-      <p>Bespoke workstation builds, corporate fleet setups, and priority configurations for teams that need to perform
-        at the highest level.</p>
-      <a href="mailto:corporate@aftershockpc.com.au" class="btn btn--red">Get in Touch</a>
-    </div>
-  </section>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__inner">
-        <div class="footer__left">
-          <p class="footer__copy">&copy; 2026 AFTERSHOCK PC Australia. All rights reserved.</p>
-          <p class="footer__address">Melbourne, Victoria, Australia &bull; ABN 12 345 678 901</p>
-        </div>
-        <div class="footer__socials">
-          <a href="https://www.instagram.com/aftershockpcau/" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://www.facebook.com/AftershockPCAU/" target="_blank" rel="noopener">Facebook</a>
-          <a href="https://www.youtube.com/@AftershockPC" target="_blank" rel="noopener">YouTube</a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <!-- ============================================
-       STICKY MOBILE BAR
-       ============================================ -->
-  <div class="sticky-bar" id="sticky-bar">
-    <div class="sticky-bar__info">
-      <span class="sticky-bar__name">Race-Spec Builds</span>
-      <span class="sticky-bar__price">From $2,499</span>
-    </div>
-    <a href="#products" class="btn btn--red">View Builds</a>
-  </div>
 
-  <!-- ============================================
-       INLINE JS — Nav scroll + hamburger
-       ============================================ -->
-  <script>
-    // Sticky nav scroll behavior
-    const nav = document.getElementById('nav');
-    const heroSection = document.getElementById('hero');
 
-    function handleScroll() {
-      if (window.scrollY > 60) {
-        nav.classList.add('nav--scrolled');
-      } else {
-        nav.classList.remove('nav--scrolled');
-      }
-    }
+<!-- FEATURES -->
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+<section class="features" id="features">
 
-    // Hamburger menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
+<div class="container">
 
-    hamburger.addEventListener('click', function () {
-      mobileMenu.classList.toggle('active');
-    });
+<div class="features__header reveal">
 
-    // Close mobile menu on link click
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        mobileMenu.classList.remove('active');
-      });
-    });
+<p class="section-label">Why Aftershock</p>
 
-    // Scroll-reveal via IntersectionObserver
-    (function () {
-      var revealEls = document.querySelectorAll('.reveal, .reveal--left, .reveal--right, .reveal--scale');
-      if (!('IntersectionObserver' in window)) {
-        // Fallback: show everything immediately
-        revealEls.forEach(function (el) { el.classList.add('reveal--visible'); });
-        return;
-      }
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('reveal--visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-      revealEls.forEach(function (el) { observer.observe(el); });
-    })();
-  </script>
+<h2>Built Different.</h2>
+
+</div>
+
+<div class="features__grid">
+
+<div class="feature-card reveal">
+
+<div class="feature-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg></div>
+
+<h3>Melbourne-Built</h3>
+
+<p>Hand-assembled by senior technicians. Stress tested before it ships.</p>
+
+</div>
+
+<div class="feature-card reveal">
+
+<div class="feature-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+
+<h3>Sim-Tuned</h3>
+
+<p>Every part selected for frame-perfect sim racing performance. Zero compromise.</p>
+
+</div>
+
+<div class="feature-card reveal">
+
+<div class="feature-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+
+<h3>Race Livery</h3>
+
+<p>Limited edition carbon fibre internals. Your machine, your identity on the grid.</p>
+
+</div>
+
+<div class="feature-card reveal">
+
+<div class="feature-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+
+<h3>3-Year Warranty</h3>
+
+<p>Local Melbourne support team. Something goes wrong, we've got your back.</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- GALLERY -->
+
+<section class="gallery" id="gallery">
+
+<div class="container">
+
+<div class="gallery__header reveal">
+
+<p class="section-label">From the Workshop</p>
+
+<h2>Builds, Setups & Collaborations</h2>
+
+</div>
+
+<div class="gallery__grid">
+
+<div class="gallery__item">
+<video class="gallery__video" autoplay muted loop playsinline preload="none"><source src="https://cdn.shopify.com/videos/c/o/v/9c89d22677284010b1e9ec42e8ebbbe6.webm" type="video/webm"></video>
+<div class="gallery__caption"><p class="gallery__caption-title">Next Level Racing</p><p class="gallery__caption-sub">Official partnership build</p></div>
+</div>
+
+<div class="gallery__item">
+<video class="gallery__video" autoplay muted loop playsinline preload="none"><source src="https://cdn.shopify.com/videos/c/o/v/82667e7625a2459a9070290a5e33fb5e.webm" type="video/webm"></video>
+<div class="gallery__caption"><p class="gallery__caption-title">Lamborghini PC</p><p class="gallery__caption-sub">Custom themed build</p></div>
+</div>
+
+<div class="gallery__item">
+<video class="gallery__video" autoplay muted loop playsinline preload="none"><source src="https://cdn.shopify.com/videos/c/o/v/4b95e5545fc4407b991046754c2b4e9d.webm" type="video/webm"></video>
+<div class="gallery__caption"><p class="gallery__caption-title">Hyundai Custom</p><p class="gallery__caption-sub">Customer commission</p></div>
+</div>
+
+<div class="gallery__item">
+<video class="gallery__video" autoplay muted loop playsinline preload="none"><source src="https://cdn.shopify.com/videos/c/o/v/c8091517c3bb437b90519fe3097b3308.webm" type="video/webm"></video>
+<div class="gallery__caption"><p class="gallery__caption-title">Brad Jones Racing</p><p class="gallery__caption-sub">Aftershock kit in the pits</p></div>
+</div>
+
+<div class="gallery__item">
+<img src="assets/_DSC0090.jpg" alt="Next Level Racing sim rig powered by Aftershock PC">
+<div class="gallery__caption"><p class="gallery__caption-title">Next Level Racing</p><p class="gallery__caption-sub">Sim rig powered by Aftershock PC</p></div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- PRODUCTS -->
+
+<section class="products" id="products">
+
+<div class="container">
+
+<div class="products__header reveal">
+
+<p class="section-label">Race-Spec Builds</p>
+
+<h2>Pick Your Grid Position.</h2>
+
+</div>
+
+<div class="products__grid reveal-stagger">
+
+<div class="product-card reveal">
+
+<div class="product-card__image product-card__image--halo">
+
+<div class="product-card__image-inner">
+
+<div class="product-card__gpu-label">RTX 5070</div>
+
+</div>
+
+</div>
+
+<div class="product-card__body">
+
+<p class="product-card__tier">Entry</p>
+
+<h3 class="product-card__name">Halo</h3>
+
+<p class="product-card__tagline">Solid lap times without breaking the bank.</p>
+
+<ul class="product-card__specs">
+
+<li>Gigabyte RTX 5070 Windforce OC 12GB</li>
+
+<li>AMD Ryzen 7 7700 (8C/16T, up to 5.3 GHz)</li>
+
+<li>32GB Kingston Fury Beast RGB 6000MHz CL36</li>
+
+<li>1TB Gen4 Lexar NQ790 NVMe</li>
+
+<li>ASUS B850M AYW Gaming Wi-Fi (DDR5)</li>
+
+<li>750W Inwin 80+ Gold PSU</li>
+
+<li>Aftershock IDC Glacier Mirror 240mm AIO</li>
+
+<li>Aftershock Chamber Case (Black)</li>
+
+<li>Windows 11 Home 64-bit</li>
+
+</ul>
+
+<p class="product-card__price">$2,795</p>
+
+<p class="product-card__shipping">Ships in 7–10 business days</p>
+
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="btn btn--red product-card__cta">Shop Now</a>
+
+</div>
+
+</div>
+
+<div class="product-card reveal">
+
+<div class="product-card__image product-card__image--chicane">
+
+<div class="product-card__image-inner">
+
+<div class="product-card__gpu-label">RTX 5070 Ti</div>
+
+</div>
+
+</div>
+
+<div class="product-card__body">
+
+<p class="product-card__tier">Mid-Range</p>
+
+<h3 class="product-card__name">Chicane</h3>
+
+<p class="product-card__tagline">Red Bull Gaming Garage spec. Bullrush VIP Suites ready.</p>
+
+<ul class="product-card__specs">
+
+<li>ASUS RTX 5070 Ti Prime OC 16GB</li>
+
+<li>AMD Ryzen 7 7800X3D (8C/16T, up to 5.0 GHz)</li>
+
+<li>32GB Kingston Fury Beast RGB 6000MHz CL36</li>
+
+<li>2TB Gen4 Lexar NQ790 NVMe</li>
+
+<li>Gigabyte B850 Eagle Wi-Fi 6E (DDR5)</li>
+
+<li>850W Inwin P85FII 80+ Gold PSU</li>
+
+<li>Aftershock IDC Glacier Mirror 360mm AIO</li>
+
+<li>Lian Li LanCool 207 Digital Case (Black)</li>
+
+<li>Aftershock Chrome RGB 120mm Fans + Spectra Hub</li>
+
+<li>Windows 11 Home 64-bit</li>
+
+</ul>
+
+<p class="product-card__price">$3,795</p>
+
+<p class="product-card__shipping">Ships in 7–10 business days</p>
+
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="btn btn--red product-card__cta">Shop Now</a>
+
+</div>
+
+</div>
+
+<div class="product-card reveal">
+
+<div class="product-card__badge">GP Weekend Exclusive</div>
+
+<div class="product-card__image product-card__image--sector">
+
+<div class="product-card__image-inner">
+
+<div class="product-card__gpu-label">RTX 5080</div>
+
+</div>
+
+</div>
+
+<div class="product-card__body">
+
+<p class="product-card__tier">Flagship</p>
+
+<h3 class="product-card__name">Sector</h3>
+
+<p class="product-card__tagline">No compromises. The fastest lap on your desk.</p>
+
+<ul class="product-card__specs">
+
+<li>Zotac RTX 5080 Solid OC 16GB (White)</li>
+
+<li>AMD Ryzen 7 9800X3D (8C/16T, up to 5.2 GHz)</li>
+
+<li>32GB Kingston Fury Beast RGB 6000MHz CL36</li>
+
+<li>2TB Gen4 Lexar NQ790 NVMe</li>
+
+<li>Gigabyte X870E AORUS PRO X3D (DDR5)</li>
+
+<li>1050W Inwin 80+ Platinum PSU (Modular, PCIe 5.0)</li>
+
+<li>Aftershock Chrome RGB 120mm Fans + Spectra Hub</li>
+
+<li>Thermaltake Core P6 Tempered Glass Case (Black)</li>
+
+<li>Windows 11 Home 64-bit</li>
+
+</ul>
+
+<details class="product-card__watercooling">
+
+<summary>Custom Watercooling Parts</summary>
+
+<ul class="product-card__specs product-card__specs--wc">
+
+<li>Alphacool Core 1 Aurora Black (CPU Block)</li>
+
+<li>Alphacool Core RTX 5080 Solid + AMP w/ Backplate (GPU Block)</li>
+
+<li>Alphacool Eisbecher Aurora D5 Acetal/Glas 150mm + VPP Apex D5 V2 (Pump/Res)</li>
+
+<li>Bykski Rigid Acrylic Tube 1mm ID x 14mm OD, 750mm (Clear)</li>
+
+<li>Alphacool NexXxoS HPE-30 Full Copper 360mm Radiator</li>
+
+<li>PC Coolant (Red)</li>
+
+<li>Aftershock Nerites Fittings: 14mm Straight, 8mm 90° Rotary, 8mm 45° Rotary, 7mm Straight Extension, 14mm Straight Extension, Plug Fitting (All Nickel)</li>
+
+</ul>
+
+</details>
+
+<p class="product-card__price">$6,995</p>
+
+<p class="product-card__shipping">Ships in 7–10 business days</p>
+
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="btn btn--red product-card__cta">Shop Now</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="sim-rigs reveal">
+
+<p class="sim-rigs__label">Complete Your Setup</p>
+
+<div class="sim-rigs__grid">
+
+<a href="https://aftershockpc.com.au/products/next-level-racing-essentials-bundle" class="sim-rig" target="_blank">
+<div class="sim-rig__image"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/e5.png?v=1751192669" alt="NLR Essentials Bundle"></div>
+<div class="sim-rig__info"><p class="sim-rig__name">NLR Essentials</p><p class="sim-rig__price">$928</p><span class="sim-rig__cta">View Bundle</span></div>
+</a>
+
+<a href="https://aftershockpc.com.au/products/next-level-racing-pro-bundle" class="sim-rig" target="_blank">
+<div class="sim-rig__image"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/3_3876f322-05cd-4f25-b7d8-fa4090d59a3f.png?v=1751192666" alt="NLR Pro Bundle"></div>
+<div class="sim-rig__info"><p class="sim-rig__name">NLR Enthusiast</p><p class="sim-rig__price">$2,525</p><span class="sim-rig__cta">View Bundle</span></div>
+</a>
+
+<a href="https://aftershockpc.com.au/products/next-level-racing-ultimate-bundle" class="sim-rig" target="_blank">
+<div class="sim-rig__image"><img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/nlr-ult.png?v=1751192664" alt="NLR Ultimate Bundle"></div>
+<div class="sim-rig__info"><p class="sim-rig__name">NLR Ultimate</p><p class="sim-rig__price">$4,049</p><span class="sim-rig__cta">View Bundle</span></div>
+</a>
+
+</div>
+
+</div>
+
+<div class="products__tracks reveal-stagger">
+
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="track-card reveal">
+
+<p class="track-card__title">Ready to Ship</p>
+
+<p class="track-card__desc">Ready to Ship Builds</p>
+
+</a>
+
+<a href="https://aftershockpc.com.au/ready-to-ship/desktops?category=sim+rigs" class="track-card reveal">
+
+<p class="track-card__title">Sim Rigs</p>
+
+<p class="track-card__desc">Browse Sim Rig Builds</p>
+
+</a>
+
+<a href="https://aftershockpc.com.au/pages/corporate" class="track-card reveal">
+
+<p class="track-card__title">Corporate</p>
+
+<p class="track-card__desc">Ready to Build a Team?</p>
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- TESTIMONIALS -->
+
+<section class="testimonials" id="testimonials">
+
+<div class="container">
+
+<div class="testimonials__header reveal">
+
+<p class="section-label">In Their Words</p>
+
+<h2>Trusted On &amp; Off the Grid.</h2>
+
+</div>
+
+<div class="review-hero reveal" role="button" tabindex="0" aria-label="Play Jack Doohan video" onclick="document.getElementById('video-modal-player').innerHTML='<iframe src=&quot;https://www.youtube.com/embed/jvfLYywaz5A?autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen style=&quot;width:100%;height:100%&quot;></iframe>';document.getElementById('video-modal').classList.add('video-modal--active');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+
+<div class="review-hero__video-thumb">
+
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/JACK_Thumb_cb125d97-30ba-4a43-964c-14f2f8fc874e.webp?v=1771294417" alt="Jack Doohan video">
+
+<div class="review-hero__play">&#9654;</div>
+
+</div>
+
+<div class="review-hero__content">
+
+<blockquote class="review-hero__quote">"I could never have even imagined this. I just wanted an awesome PC, and to get this... this is another level."</blockquote>
+
+<div class="review-hero__attr">
+
+<span class="review-hero__name">Jack Doohan</span>
+
+<span class="review-hero__role">F1 Driver</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="review-grid review-grid--trio reveal-stagger">
+
+<div class="review-card reveal" role="button" tabindex="0" aria-label="Play Brad Jones Racing video" onclick="document.getElementById('video-modal-player').innerHTML='<iframe src=&quot;https://www.youtube.com/embed/r2HtuO6To0E?autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen style=&quot;width:100%;height:100%&quot;></iframe>';document.getElementById('video-modal').classList.add('video-modal--active');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+
+<div class="review-card__thumb">
+
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/BJR_Thumbnail.webp?v=1771294420" alt="Brad Jones Racing video">
+
+<div class="review-card__play">&#9654;</div>
+
+</div>
+
+<div class="review-card__inner">
+
+<img class="review-card__logo" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/brad-jones-racing-team-logo-png_seeklogo-403665_13.08.22.webp?v=1771294414" alt="Brad Jones Racing">
+
+<p class="review-card__name">Brad Jones Racing</p>
+
+<p class="review-card__quote">"We rely heavily on our Aftershock PCs for data assessment, live telemetry, and post-processing analysis. I'd absolutely recommend Aftershock, you'll get exactly what you need every time."</p>
+
+<span class="review-card__tag">Watch Video</span>
+
+</div>
+
+</div>
+
+<div class="review-card reveal" role="button" tabindex="0" aria-label="Play Tickford Racing video" onclick="document.getElementById('video-modal-player').innerHTML='<iframe src=&quot;https://www.youtube.com/embed/SAYMrArjaMM?autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen style=&quot;width:100%;height:100%&quot;></iframe>';document.getElementById('video-modal').classList.add('video-modal--active');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+
+<div class="review-card__thumb">
+
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/Tickford_Thumb_982f2342-f18f-4ad0-a204-814a5b2b7d70.webp?v=1771294419" alt="Tickford Racing video">
+
+<div class="review-card__play">&#9654;</div>
+
+</div>
+
+<div class="review-card__inner">
+
+<img class="review-card__logo" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/Tickford_racing_1.webp?v=1771294415" alt="Tickford Racing">
+
+<p class="review-card__name">Tickford Racing</p>
+
+<p class="review-card__quote">"We use Aftershock computers in a whole host of circumstances... We design these Supercars using Aftershock computers, we do the graphics, we download the data from the cars at race events."</p>
+
+<span class="review-card__tag">Watch Video</span>
+
+</div>
+
+</div>
+
+<div class="review-card reveal" role="button" tabindex="0" aria-label="Open Next Level Racing video placeholder" onclick="document.getElementById('video-modal-player').innerHTML='<div class=&quot;video-modal__placeholder&quot;>Video coming soon</div>';document.getElementById('video-modal').classList.add('video-modal--active');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+
+<div class="review-card__thumb">
+
+<img src="assets/screenshot-2026-02-18-00-07-46.png" alt="Next Level Racing setup">
+
+<div class="review-card__play">&#9654;</div>
+
+</div>
+
+<div class="review-card__inner">
+
+<img class="review-card__logo" src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/NLR.webp?v=1771294416" alt="Next Level Racing">
+
+<p class="review-card__name">Next Level Racing</p>
+
+<p class="review-card__quote">"This partnership powers Next Level Racing experience every day, every rig in our HQ runs on an Aftershock PC"</p>
+
+<span class="review-card__tag">Watch Video</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="video-modal" id="video-modal">
+
+<div class="video-modal__overlay" onclick="document.getElementById('video-modal').classList.remove('video-modal--active');document.getElementById('video-modal-player').innerHTML='';"></div>
+
+<div class="video-modal__content">
+
+<button class="video-modal__close" onclick="document.getElementById('video-modal').classList.remove('video-modal--active');document.getElementById('video-modal-player').innerHTML='';">&times;</button>
+
+<div class="video-modal__player" id="video-modal-player"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- CTA -->
+
+<section class="cta-bottom" id="contact">
+
+<div class="container">
+
+<p class="section-label">Start Your Build</p>
+
+<h2>Let's Talk.</h2>
+
+<p>Single build or a full team fleet — let's make it happen.</p>
+
+<a href="https://aftershockpc.com.au/pages/corporate" class="btn btn--red">Contact Us</a>
+
+</div>
+
+</section>
+
+
+
+
 
 </body>
+
+
+
+
 
 </html>
