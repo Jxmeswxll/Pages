@@ -38,6 +38,18 @@ rel="stylesheet">
 
 <style>
 
+/* === Eurostile Fonts === */
+
+@font-face { font-family: 'EurostileOblique'; src: url('/fonts/Eurostile-Oblique.woff') format('truetype'); font-display: swap; }
+
+@font-face { font-family: 'EurostileBold'; src: url('/fonts/EurostileBold.woff') format('truetype'); font-display: swap; }
+
+@font-face { font-family: 'EurostileExtended'; src: url('/fonts/EurostileExtended-Roman.woff') format('truetype'); font-display: swap; }
+
+@font-face { font-family: 'EurostileNormal'; src: url('/fonts/EuroStyleNormal.woff') format('truetype'); font-display: swap; }
+
+
+
 /* === CSS Reset === */
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -74,7 +86,11 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
 --grey: #666666;
 
---font-headline: 'Eurostile', 'Archivo Black', sans-serif;
+--font-headline: 'EurostileBold', 'Eurostile', 'Archivo Black', sans-serif;
+
+--font-headline-extended: 'EurostileExtended', 'Eurostile', 'Archivo Black', sans-serif;
+
+--font-headline-oblique: 'EurostileOblique', 'Eurostile', 'Archivo Black', sans-serif;
 
 --font-body: 'Roboto', sans-serif;
 
@@ -122,7 +138,7 @@ p { font-family: var(--font-body); color: var(--light-grey); line-height: 1.7; }
 
 .btn--outline:hover { background: var(--white); color: var(--slate-black); box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1); }
 
-.section-label { font-family: var(--font-body); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--red); margin-bottom: 12px; font-weight: 500; text-shadow: 0 0 20px rgba(218, 41, 28, 0.3); }
+.section-label { font-family: var(--font-headline-extended); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--red); margin-bottom: 12px; font-weight: 500; text-shadow: 0 0 20px rgba(218, 41, 28, 0.3); }
 
 
 
@@ -378,6 +394,26 @@ p { font-family: var(--font-body); color: var(--light-grey); line-height: 1.7; }
 .product-card__image--sector::after { content: ''; position: absolute; top: -50%; left: 30%; width: 1px; height: 200%; background: linear-gradient(to bottom, transparent, rgba(218, 41, 28, 0.15), transparent); transform: rotate(-25deg); z-index: 1; }
 
 
+
+
+
+/* Performance block */
+
+.product-card__perf { margin: 0 0 20px; border: 1px solid rgba(218, 41, 28, 0.2); border-radius: 8px; padding: 14px 16px; background: rgba(218, 41, 28, 0.04); }
+
+.product-card__perf-headline { font-family: var(--font-headline-extended); font-size: 0.65rem; color: var(--red); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 12px; }
+
+.product-card__perf-configs { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+
+.product-card__perf-item { display: flex; justify-content: space-between; align-items: baseline; }
+
+.product-card__perf-config { font-family: var(--font-body); font-size: 0.8rem; color: var(--light-grey); }
+
+.product-card__perf-fps { font-family: var(--font-headline); font-size: 1rem; color: var(--white); letter-spacing: 0.04em; white-space: nowrap; }
+
+.product-card__perf-fps em { font-style: normal; font-family: var(--font-body); font-size: 0.62rem; color: var(--grey); letter-spacing: 0.1em; margin-left: 2px; }
+
+.product-card__perf-note { font-family: var(--font-body); font-size: 0.7rem; color: var(--grey); line-height: 1.5; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 8px; margin-top: 4px; }
 
 
 
@@ -758,7 +794,7 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 </div>
 
 <div class="gallery__item">
-<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/DSC0090_1.webp?v=1771377532" alt="Next Level Racing sim rig powered by Aftershock PC">
+<video class="gallery__video" autoplay muted loop playsinline preload="none"><source src="https://cdn.shopify.com/videos/c/o/v/9e4f7f5834e84a979636ccf719ef38a4.webm" type="video/webm"></video>
 <div class="gallery__caption"><p class="gallery__caption-title">Next Level Racing</p><p class="gallery__caption-sub">Sim rig powered by Aftershock PC</p></div>
 </div>
 
@@ -792,6 +828,8 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 
 <div class="product-card__image product-card__image--halo">
 
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS-AU-RACESPEC-S1-selector.webp?v=1772072664" alt="Halo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+
 <div class="product-card__image-inner">
 
 <div class="product-card__gpu-label">RTX 5070</div>
@@ -807,6 +845,15 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 <h3 class="product-card__name">Halo</h3>
 
 <p class="product-card__tagline">Solid lap times without breaking the bank.</p>
+
+<div class="product-card__perf">
+<p class="product-card__perf-headline">High-Performance Single Screen Build</p>
+<div class="product-card__perf-configs">
+<div class="product-card__perf-item"><span class="product-card__perf-config">Single 1440p</span><span class="product-card__perf-fps">180–240 <em>FPS</em></span></div>
+<div class="product-card__perf-item"><span class="product-card__perf-config">Triple 1440p (entry)</span><span class="product-card__perf-fps">90–120 <em>FPS</em></span></div>
+</div>
+<p class="product-card__perf-note">At high settings — max settings achievable with slightly lower frame rates.</p>
+</div>
 
 <ul class="product-card__specs">
 
@@ -844,6 +891,8 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 
 <div class="product-card__image product-card__image--chicane">
 
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS-AU-RACESPEC-S1-selector.webp?v=1772072664" alt="Chicane" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+
 <div class="product-card__image-inner">
 
 <div class="product-card__gpu-label">RTX 5070 Ti</div>
@@ -859,6 +908,14 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 <h3 class="product-card__name">Chicane</h3>
 
 <p class="product-card__tagline">Red Bull Gaming Garage spec. Bullrush VIP Suites ready.</p>
+
+<div class="product-card__perf">
+<p class="product-card__perf-headline">The Triple-Screen Specialist</p>
+<div class="product-card__perf-configs">
+<div class="product-card__perf-item"><span class="product-card__perf-config">Triple 1440p</span><span class="product-card__perf-fps">140–175 <em>FPS</em></span></div>
+</div>
+<p class="product-card__perf-note">At high settings — max settings achievable with slightly lower frame rates.</p>
+</div>
 
 <ul class="product-card__specs">
 
@@ -900,6 +957,8 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 
 <div class="product-card__image product-card__image--sector">
 
+<img src="https://cdn.shopify.com/s/files/1/0522/3320/7988/files/RTS-AU-RACESPEC-S1-selector.webp?v=1772072664" alt="Sector" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+
 <div class="product-card__image-inner">
 
 <div class="product-card__gpu-label">RTX 5080</div>
@@ -915,6 +974,15 @@ Melbourne-built PCs trusted by professional race teams and sim racers nationwide
 <h3 class="product-card__name">Sector</h3>
 
 <p class="product-card__tagline">No compromises. The fastest lap on your desk.</p>
+
+<div class="product-card__perf">
+<p class="product-card__perf-headline">The Flagship Model</p>
+<div class="product-card__perf-configs">
+<div class="product-card__perf-item"><span class="product-card__perf-config">Single 4K</span><span class="product-card__perf-fps">160–200 <em>FPS</em></span></div>
+<div class="product-card__perf-item"><span class="product-card__perf-config">Triple 4K</span><span class="product-card__perf-fps">85–110 <em>FPS</em></span></div>
+</div>
+<p class="product-card__perf-note">At high settings — max settings achievable with slightly lower frame rates.</p>
+</div>
 
 <ul class="product-card__specs">
 
