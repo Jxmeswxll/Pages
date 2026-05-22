@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Categorise Your Work — Web Team v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --planned:      #2e7d4f;
+  --planned-dot:  #41b86a;
+  --planned-bg:   #f0faf4;
+  --unplanned:    #c0392b;
+  --unplanned-dot:#e74c3c;
+  --unplanned-bg: #fdf2f1;
+  --change:       #b35c00;
+  --change-dot:   #e07b10;
+  --change-bg:    #fdf5ec;
+  --improve:      #1a5fa8;
+  --improve-dot:  #2d82d4;
+  --improve-bg:   #f0f6fd;
+  --ink:          #1a1c20;
+  --ink2:         #44474f;
+  --ink3:         #888c96;
+  --rule:         #e6e7eb;
+  --page:         #f0efe9;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  width: 780px;
+  margin: 0 auto 3px;
+  background: #fff;
+  padding: 0 0 60px;
+}
+.cover-band {
+  background: var(--ink);
+  padding: 44px 60px 40px;
+  margin-bottom: 44px;
+}
+.cover-band.slim {
+  padding: 28px 60px 24px;
+  margin-bottom: 36px;
+}
+.cover-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5a5d66;
+  margin-bottom: 18px;
+}
+.cover-band.slim .cover-eyebrow { margin-bottom: 10px; }
+.cover-title {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.cover-title span { color: #e8820c; }
+.cover-title.small { font-size: 22px; line-height: 1.2; }
+.cover-sub {
+  font-size: 14px;
+  color: #888c96;
+  margin-top: 14px;
+  max-width: 480px;
+  line-height: 1.65;
+}
+.inner { padding: 0 60px; }
+.sec {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 18px;
+  margin-top: 36px;
+}
+.sec:first-child { margin-top: 0; }
+.callout {
+  border-left: 3px solid var(--rule);
+  padding: 14px 18px;
+  background: #fafaf8;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+.callout.orange { border-color: #e8820c; background: #fffaf4; }
+.callout.blue   { border-color: var(--improve-dot); background: var(--improve-bg); }
+.callout.red    { border-color: var(--unplanned-dot); background: var(--unplanned-bg); }
+.callout strong { color: var(--ink); font-weight: 600; }
+.gap { margin-bottom: 28px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot-planned   { background: var(--planned-dot); }
+.dot-unplanned { background: var(--unplanned-dot); }
+.dot-change    { background: var(--change-dot); }
+.dot-improve   { background: var(--improve-dot); }
+
+/* RULES */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rule { border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; }
+.rule-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+.rule p { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+.rule strong { color: var(--ink); font-weight: 600; }
+
+/* WHO TABLE */
+.who-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.who-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3); padding: 9px 13px; background: #fafaf8; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.who-table td { padding: 12px 13px; border-bottom: 1px solid var(--rule); color: var(--ink2); vertical-align: top; line-height: 1.55; }
+.who-table tr:last-child td { border-bottom: none; }
+.who-table td:first-child { font-weight: 600; color: var(--ink); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; line-height: 1.7; margin-right: 3px; margin-bottom: 2px; }
+.tag-yes   { background: var(--planned-bg);   color: var(--planned); }
+.tag-check { background: var(--improve-bg);   color: var(--improve); }
+.tag-guess { background: var(--change-bg);    color: var(--change); }
+.tag-no    { background: #f2f2f2; color: #888; }
+
+/* DECISION TREE */
+.tree { background: #fafaf8; border: 1px solid var(--rule); border-radius: 8px; padding: 24px 28px; }
+.tree-step { display: flex; gap: 16px; align-items: flex-start; position: relative; }
+.tree-step:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 33px; width: 1px; height: calc(100% - 12px); background: var(--rule); }
+.tree-num { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+.tree-body { flex: 1; padding-bottom: 24px; padding-top: 4px; }
+.tree-body:last-child { padding-bottom: 0; }
+.tree-q { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 10px; line-height: 1.5; }
+.tree-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.tree-btn { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1.5px solid currentColor; }
+.btn-planned   { color: var(--planned);   background: var(--planned-bg); }
+.btn-unplanned { color: var(--unplanned); background: var(--unplanned-bg); }
+.btn-change    { color: var(--change);    background: var(--change-bg); }
+.btn-improve   { color: var(--improve);   background: var(--improve-bg); }
+.btn-no        { color: var(--ink3);      background: #f5f5f5; border-color: var(--rule); }
+.tree-note { font-size: 12px; color: var(--ink3); font-style: italic; line-height: 1.5; }
+
+/* CATEGORY CARDS */
+.cats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cat { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.cat-header { padding: 16px 18px 14px; }
+.cat-meta { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.cat-name-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.cat-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.cat-name { font-size: 18px; font-weight: 700; }
+.cat-name.planned   { color: var(--planned); }
+.cat-name.unplanned { color: var(--unplanned); }
+.cat-name.change    { color: var(--change); }
+.cat-name.improve   { color: var(--improve); }
+.cat-desc { font-size: 12.5px; color: var(--ink3); font-style: italic; line-height: 1.5; }
+.cat-divider { height: 1px; background: var(--rule); }
+.cat-list { list-style: none; padding: 10px 18px 14px; }
+.cat-list li { font-size: 12.5px; color: var(--ink2); padding: 4px 0; border-bottom: 1px solid var(--rule); display: flex; gap: 8px; line-height: 1.45; }
+.cat-list li:last-child { border-bottom: none; }
+.cat-list li::before { content: '→'; color: var(--ink3); flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+
+/* CONTRAST PAIRS */
+.pairs { display: flex; flex-direction: column; gap: 10px; }
+.pair { display: grid; grid-template-columns: 1fr 32px 1fr; align-items: center; }
+.pair-card { padding: 14px 16px; border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink2); }
+.pair-card.planned   { background: var(--planned-bg); }
+.pair-card.unplanned { background: var(--unplanned-bg); }
+.pair-card.change    { background: var(--change-bg); }
+.pair-card.improve   { background: var(--improve-bg); }
+.pair-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.pair-label.planned   { color: var(--planned); }
+.pair-label.unplanned { color: var(--unplanned); }
+.pair-label.change    { color: var(--change); }
+.pair-label.improve   { color: var(--improve); }
+.pair-vs { text-align: center; font-size: 10px; font-weight: 700; color: var(--ink3); }
+.pair-card strong { color: var(--ink); font-weight: 600; }
+
+/* TITLE GUIDE */
+.tq-header { display: grid; grid-template-columns: 88px 1fr 1fr; gap: 8px; padding: 0 2px; margin-bottom: 8px; }
+.tq-th { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); }
+.tq-row { display: grid; grid-template-columns: 88px 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: center; }
+.tq-badge { padding: 4px 10px; border-radius: 4px; font-size: 11.5px; font-weight: 700; text-align: center; }
+.tq-badge.planned   { background: var(--planned-bg);   color: var(--planned); }
+.tq-badge.unplanned { background: var(--unplanned-bg); color: var(--unplanned); }
+.tq-badge.change    { background: var(--change-bg);    color: var(--change); }
+.tq-badge.improve   { background: var(--improve-bg);   color: var(--improve); }
+.tq-bad  { font-size: 13px; padding: 8px 11px; background: var(--unplanned-bg); color: var(--unplanned); border-radius: 4px; }
+.tq-good { font-size: 13px; padding: 8px 11px; background: var(--planned-bg); color: var(--planned); border-radius: 4px; }
+
+/* CHAIN */
+.chain { margin-bottom: 24px; }
+.chain-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+.chain-steps { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+.chain-step { display: grid; grid-template-columns: 100px 1fr; }
+.chain-label { padding: 9px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.chain-label.planned   { color: var(--planned);   background: var(--planned-bg); }
+.chain-label.unplanned { color: var(--unplanned); background: var(--unplanned-bg); }
+.chain-label.change    { color: var(--change);    background: var(--change-bg); }
+.chain-label.improve   { color: var(--improve);   background: var(--improve-bg); }
+.chain-text { padding: 9px 14px; font-size: 13px; color: var(--ink2); background: #fafaf8; line-height: 1.55; border-bottom: 2px solid #fff; }
+.chain-lesson { background: #fafaf8; border: 1px solid var(--rule); border-radius: 6px; padding: 14px 18px; }
+.chain-lesson-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3); margin-bottom: 6px; }
+.chain-lesson p { font-size: 13px; color: var(--ink2); line-height: 1.65; }
+
+/* SUMMARY */
+.summary { background: var(--ink); border-radius: 8px; overflow: hidden; }
+.summary-title { padding: 20px 24px 16px; font-size: 15px; font-weight: 700; color: #e8820c; border-bottom: 1px solid #2a2c32; }
+.summary-row { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid #222428; }
+.summary-row:last-child { border-bottom: none; }
+.summary-name { padding: 14px 18px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.summary-name.planned   { color: #5ecf88; }
+.summary-name.unplanned { color: #f07060; }
+.summary-name.change    { color: #e8a050; }
+.summary-name.improve   { color: #60a8f0; }
+.summary-rule { padding: 14px 18px 14px 0; font-size: 13px; color: #9a9da6; display: flex; align-items: center; line-height: 1.55; }
+
+.page-footer { padding: 20px 60px 0; margin-top: 52px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1 ═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-band">
+    <div class="cover-eyebrow">Internal Guide · Web Team · v2</div>
+    <div class="cover-title">How to Categorise<br><span>Your Work</span></div>
+    <div class="cover-sub">A practical guide to the four work types. Use this every time you create a ClickUp ticket. Getting this right gives us real visibility into where our time goes.</div>
+  </div>
+  <div class="inner">
+
+    <div class="sec">The Most Important Idea</div>
+    <div class="callout orange gap">
+      The category is <strong>not about what the work looks like.</strong> It is about <strong>why it arrived</strong> and <strong>what it does for us.</strong> A bug fixed on a schedule is Planned. The same bug discovered broken on a Tuesday is Unplanned. Same artifact — different category.
+    </div>
+
+    <div class="sec">Why Bother — What The Data Buys You</div>
+    <div class="callout blue gap">
+      Projects fall behind because Unplanned work consumes capacity that was mentally allocated to Planned work — invisibly, with no record of why the plan slipped. <strong>After four weeks of proper logging you can say:</strong> 40% of our time went to fires, here are the components that keep breaking, here is the Improvement work we need to stop that. Without the data you are guessing. With it you have an argument.
+    </div>
+
+    <div class="sec">Three Rules Before You Create Any Ticket</div>
+    <div class="rules-grid">
+      <div class="rule">
+        <div class="rule-title">No Ticket = No Work</div>
+        <p>If it is not a ticket, nobody works on it. <strong>Threshold: any work that takes or took longer than 30 minutes needs a ticket.</strong> Below that is noise. Above that is data you need.</p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">Capacity Is Protected</div>
+        <p><strong>At least 50% of the team's time is reserved for Planned work</strong> each sprint. Consuming that with Change or Unplanned work requires explicit sign-off, not a Slack message.</p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">New Priority = Name The Trade-Off</div>
+        <p>Nothing new enters the sprint without <strong>explicitly naming what it displaces.</strong> Not "we'll fit it in." What specifically gets pushed out.</p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">Split Compound Work</div>
+        <p>If work spans two categories, <strong>create two tickets.</strong> Do not blend a refactor and an emergency fix into one.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>Web Team · Work Type Classification Guide · v2</span>
+    <span>Page 1 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 2 ═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-band slim">
+    <div class="cover-eyebrow">Page 2 of 5</div>
+    <div class="cover-title small">Who Creates Tickets &amp; The Inbox Model</div>
+  </div>
+  <div class="inner">
+
+    <div class="sec">Who Creates Tickets — And What They Are Responsible For</div>
+    <table class="who-table" style="margin-bottom:14px;">
+      <thead>
+        <tr>
+          <th style="width:150px">Who</th>
+          <th style="width:160px">Task Source (Work Type)</th>
+          <th>Their Responsibility</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Developer</td>
+          <td>
+            <span class="tag tag-yes">Classifies directly</span><br>
+            <span style="font-size:11px;color:var(--ink3);">Uses the decision tree</span>
+          </td>
+          <td style="font-size:13px;">Select the correct work type and write a specific title. You are closest to the work when it arrives — that is when classification is most accurate. If genuinely unsure, default to Unplanned and let triage correct it.</td>
+        </tr>
+        <tr>
+          <td>Requester<br><span style="font-weight:400;color:var(--ink3);font-size:12px;">Marketing, MD, etc.</span></td>
+          <td>
+            <span class="tag tag-guess">Best guess</span><br>
+            <span style="font-size:11px;color:var(--ink3);">Triage will correct</span>
+          </td>
+          <td style="font-size:13px;">Describe what you want and why as clearly as possible. Your work type selection will likely need correcting — that is expected and normal. <strong>Do not let uncertainty about the type stop you from submitting.</strong></td>
+        </tr>
+        <tr>
+          <td>Triage Person</td>
+          <td>
+            <span class="tag tag-check">Verifies all</span><br>
+            <span style="font-size:11px;color:var(--ink3);">Corrects if wrong</span>
+          </td>
+          <td style="font-size:13px;">Review every ticket in the inbox. Correct wrong work type selections, improve weak titles, route requester tickets. Flag anything that looks like a pattern.</td>
+        </tr>
+        <tr>
+          <td>You</td>
+          <td><span style="font-size:13px;color:var(--ink3);">Edge cases only</span></td>
+          <td style="font-size:13px;color:var(--ink3);">Disputes and boundary calls only. If developer and triage disagree on classification, you decide. Not a daily role.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout red gap">
+      <strong>Triage correcting requesters is part of the job, not a failure.</strong> Requesters submitting tickets with wrong work types is expected. The inbox review exists precisely to catch and fix this before the data is dirty.
+    </div>
+
+    <div class="sec">The Inbox Model</div>
+    <div class="rules-grid">
+      <div class="rule">
+        <div class="rule-title">Inbox Cadence</div>
+        <p>Triage person reviews the inbox <strong>at least once per working day.</strong> Developer tickets arrive mostly correct. Requester tickets need classification. Both need a title check.</p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">Fallback Rule</div>
+        <p>If unsure which type to select, <strong>submit anyway.</strong> Unplanned is the safe default for anything that interrupted you. Triage corrects everything else. <strong>Submitting wrong beats not submitting.</strong></p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">Triage Authority</div>
+        <p>Triage person can <strong>reassign work type and send a ticket back</strong> for a better title. The form is the only valid submission channel. Slack messages are not tickets.</p>
+      </div>
+      <div class="rule">
+        <div class="rule-title">Pattern Recognition</div>
+        <p>The triage person sees everything across all types. <strong>Three Unplanned tickets on the same component in two days</strong> should become an Improvement ticket before the fourth arrives.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>Web Team · Work Type Classification Guide · v2</span>
+    <span>Page 2 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 3 ═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-band slim">
+    <div class="cover-eyebrow">Page 3 of 5</div>
+    <div class="cover-title small">Decision Tree &amp; The Four Categories</div>
+  </div>
+  <div class="inner">
+
+    <div class="sec">Step 1 — Use This Decision Tree For Every Ticket</div>
+    <div class="tree" style="margin-bottom:36px;">
+      <div class="tree-step">
+        <div class="tree-num">1</div>
+        <div class="tree-body">
+          <div class="tree-q">Did this work arrive outside the planning cycle and force you to stop what you were doing?</div>
+          <div class="tree-btns">
+            <span class="tree-btn btn-unplanned"><span class="dot dot-unplanned"></span>Yes → Unplanned</span>
+            <span class="tree-btn btn-no">No → Q2</span>
+          </div>
+          <div class="tree-note">Urgency alone does not make something Unplanned. An urgent task you scheduled into the sprint is still Planned.</div>
+        </div>
+      </div>
+      <div class="tree-step">
+        <div class="tree-num">2</div>
+        <div class="tree-body">
+          <div class="tree-q">Is this a consciously chosen piece of work that creates a new capability, feature, or page that did not exist before?</div>
+          <div class="tree-btns">
+            <span class="tree-btn btn-planned"><span class="dot dot-planned"></span>Yes → Planned</span>
+            <span class="tree-btn btn-no">No → Q3</span>
+          </div>
+        </div>
+      </div>
+      <div class="tree-step">
+        <div class="tree-num">3</div>
+        <div class="tree-body">
+          <div class="tree-q">Is this operational work — keeping the site current, correct, or running — that creates no new capability for users?</div>
+          <div class="tree-btns">
+            <span class="tree-btn btn-change"><span class="dot dot-change"></span>Yes → Change</span>
+            <span class="tree-btn btn-no">No → Q4</span>
+          </div>
+          <div class="tree-note">It does not need to be recurring. A first-ever price update on a new product is still Change — operational, not new capability.</div>
+        </div>
+      </div>
+      <div class="tree-step">
+        <div class="tree-num">4</div>
+        <div class="tree-body">
+          <div class="tree-q">Is this internal only — no customer ever interacts with the output — and does it make the team's future work faster or cheaper?</div>
+          <div class="tree-btns">
+            <span class="tree-btn btn-improve"><span class="dot dot-improve"></span>Yes → Improvement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">Step 2 — The Four Categories</div>
+    <div class="cats">
+      <div class="cat">
+        <div class="cat-header">
+          <div class="cat-meta">Category 1</div>
+          <div class="cat-name-row"><div class="cat-dot" style="background:var(--planned-dot)"></div><div class="cat-name planned">Planned</div></div>
+          <div class="cat-desc">Roadmap work you chose. Builds something new for users.</div>
+        </div>
+        <div class="cat-divider"></div>
+        <ul class="cat-list">
+          <li>PC configurator / builder tool</li>
+          <li>New laptop product line page</li>
+          <li>Trade-in programme page</li>
+          <li>Product comparison feature</li>
+          <li>Wishlist / save build feature</li>
+          <li>Warranty portal for customers</li>
+          <li>Bundle deals section</li>
+          <li>Redesigned checkout flow</li>
+        </ul>
+      </div>
+      <div class="cat">
+        <div class="cat-header">
+          <div class="cat-meta">Category 2</div>
+          <div class="cat-name-row"><div class="cat-dot" style="background:var(--unplanned-dot)"></div><div class="cat-name unplanned">Unplanned</div></div>
+          <div class="cat-desc">Work that chose you. Arrived outside the planning cycle. Interrupted everything.</div>
+        </div>
+        <div class="cat-divider"></div>
+        <ul class="cat-list">
+          <li>Checkout broken, orders failing</li>
+          <li>Payment gateway is down</li>
+          <li>Product images not loading</li>
+          <li>Price showing incorrectly</li>
+          <li>Add to cart not working</li>
+          <li>Order confirmation emails not sending</li>
+          <li>Site down during campaign launch</li>
+          <li>Configurator crashing on GPU select</li>
+        </ul>
+      </div>
+      <div class="cat">
+        <div class="cat-header">
+          <div class="cat-meta">Category 3</div>
+          <div class="cat-name-row"><div class="cat-dot" style="background:var(--change-dot)"></div><div class="cat-name change">Change</div></div>
+          <div class="cat-desc">Routine operational tasks. Keeps things running. Builds nothing new.</div>
+        </div>
+        <div class="cat-divider"></div>
+        <ul class="cat-list">
+          <li>Homepage banner swap (new promo)</li>
+          <li>Adding a new PC / laptop SKU</li>
+          <li>Updating specs on a product page</li>
+          <li>Price change across product range</li>
+          <li>Updating stock availability</li>
+          <li>Seasonal sale assets (11.11, CNY)</li>
+          <li>Updating shipping rates or zones</li>
+          <li>Refreshing FPS / benchmark numbers</li>
+        </ul>
+      </div>
+      <div class="cat">
+        <div class="cat-header">
+          <div class="cat-meta">Category 4</div>
+          <div class="cat-name-row"><div class="cat-dot" style="background:var(--improve-dot)"></div><div class="cat-name improve">Improvement</div></div>
+          <div class="cat-desc">Internal. Users don't see it. Makes the team faster or cheaper in future.</div>
+        </div>
+        <div class="cat-divider"></div>
+        <ul class="cat-list">
+          <li>Improve page speed (Core Web Vitals)</li>
+          <li>Refactor old configurator code</li>
+          <li>Automated testing for checkout</li>
+          <li>Internal tool for product listings</li>
+          <li>Document the banner deploy process</li>
+          <li>Fix analytics gaps in GA4</li>
+          <li>Reduce image sizes / CDN optimisation</li>
+          <li>Clean up duplicate / unused code</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>Web Team · Work Type Classification Guide · v2</span>
+    <span>Page 3 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 4 ═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-band slim">
+    <div class="cover-eyebrow">Page 4 of 5</div>
+    <div class="cover-title small">Common Mistakes &amp; Title Quality</div>
+  </div>
+  <div class="inner">
+
+    <div class="sec">Common Mistakes — Pairs That Are Easy To Confuse</div>
+    <div class="pairs" style="margin-bottom:36px;">
+      <div class="pair">
+        <div class="pair-card unplanned">
+          <div class="pair-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          Checkout breaks at 11am. You stop everything to fix it right now. You did not plan this — it interrupted the day.
+        </div>
+        <div class="pair-vs">VS</div>
+        <div class="pair-card planned">
+          <div class="pair-label planned"><span class="dot dot-planned"></span>Planned</div>
+          You know checkout has an old bug. You schedule it for next sprint. <strong>You chose when to fix it.</strong>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-card change">
+          <div class="pair-label change"><span class="dot dot-change"></span>Change</div>
+          Swapping the banner for the 11.11 sale. Done every promotion. Nothing new is built.
+        </div>
+        <div class="pair-vs">VS</div>
+        <div class="pair-card planned">
+          <div class="pair-label planned"><span class="dot dot-planned"></span>Planned</div>
+          Building a CMS tool so marketing can swap banners themselves. <strong>New capability — did not exist before.</strong>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-card change">
+          <div class="pair-label change"><span class="dot dot-change"></span>Change</div>
+          Updating GPU prices after a supplier change. Operational. Customers see it. No new feature built.
+        </div>
+        <div class="pair-vs">VS</div>
+        <div class="pair-card improve">
+          <div class="pair-label improve"><span class="dot dot-improve"></span>Improvement</div>
+          Writing a script so prices auto-update from the supplier feed. <strong>Team benefit only — customers don't see the script.</strong>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-card unplanned">
+          <div class="pair-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          GA4 breaks after a deploy. You find out two days later. Data is lost. Must fix immediately.
+        </div>
+        <div class="pair-vs">VS</div>
+        <div class="pair-card improve">
+          <div class="pair-label improve"><span class="dot dot-improve"></span>Improvement</div>
+          You proactively schedule a tracking audit. <strong>You chose to do it. It is not urgent.</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">Title Quality — Good vs Bad, Per Category</div>
+    <div class="tq-header">
+      <div class="tq-th"></div>
+      <div class="tq-th">❌  Bad title</div>
+      <div class="tq-th">✓  Good title</div>
+    </div>
+    <div class="tq-row">
+      <div class="tq-badge planned">Planned</div>
+      <div class="tq-bad">New feature</div>
+      <div class="tq-good">Planned — PC configurator: add GPU compatibility filter</div>
+    </div>
+    <div class="tq-row">
+      <div class="tq-badge unplanned">Unplanned</div>
+      <div class="tq-bad">Fix checkout</div>
+      <div class="tq-good">Unplanned — checkout order total rounding error on MYR currency</div>
+    </div>
+    <div class="tq-row">
+      <div class="tq-badge change">Change</div>
+      <div class="tq-bad">Update page</div>
+      <div class="tq-good">Change — update RTX 5090 pricing across TITAN product range</div>
+    </div>
+    <div class="tq-row">
+      <div class="tq-badge improve">Improvement</div>
+      <div class="tq-bad">Code cleanup</div>
+      <div class="tq-good">Improvement — refactor configurator state management, remove legacy Redux</div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>Web Team · Work Type Classification Guide · v2</span>
+    <span>Page 4 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 5 ═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-band slim">
+    <div class="cover-eyebrow">Page 5 of 5</div>
+    <div class="cover-title small">Real Examples — How One Task Creates A Chain</div>
+  </div>
+  <div class="inner">
+
+    <p style="font-size:13.5px;color:var(--ink2);margin-bottom:24px;line-height:1.65;">One piece of work can create a chain reaction across categories. Notice how a Change or Planned task with no risk gate generates Unplanned work — and how Unplanned work reveals what Improvement is needed.</p>
+
+    <div class="chain">
+      <div class="chain-title">Example 1 — Russian Characters Removed From Code</div>
+      <div class="chain-steps">
+        <div class="chain-step">
+          <div class="chain-label change"><span class="dot dot-change"></span>Change</div>
+          <div class="chain-text">Remove Russian characters from the codebase. Looked like a trivial, routine cleanup task. No impact score. No test plan.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          <div class="chain-text">The change broke XML parsing. Not tested. Site broke without warning.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          <div class="chain-text">Emergency fix required. All planned work stopped. Team scrambled to diagnose and repair.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label improve"><span class="dot dot-improve"></span>Improvement</div>
+          <div class="chain-text">Add blast radius scoring to all Change tickets. High-blast-radius changes require a test plan before shipping.</div>
+        </div>
+      </div>
+      <div class="chain-lesson">
+        <div class="chain-lesson-label">What This Teaches Us</div>
+        <p>The Change looked trivial so no one assessed its risk. Any Change touching shared code, XML, or data pipelines must carry a blast radius score. If the score is High, it cannot ship without a test plan and review.</p>
+      </div>
+    </div>
+
+    <div class="chain" style="margin-top:24px;">
+      <div class="chain-title">Example 2 — New Features Slowing Pages</div>
+      <div class="chain-steps">
+        <div class="chain-step">
+          <div class="chain-label planned"><span class="dot dot-planned"></span>Planned</div>
+          <div class="chain-text">New features added to product pages across several sprints. Each one shipped and looked fine individually. No page speed gate on any ticket.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          <div class="chain-text">Pages become noticeably slow. Page speed scores drop. Nobody planned to deal with this — it accumulated silently.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          <div class="chain-text">Time spent investigating, diagnosing, and fixing performance. Roadmap work paused.</div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-label improve"><span class="dot dot-improve"></span>Improvement</div>
+          <div class="chain-text">Record page speed score before and after every Planned and Change ticket. If score drops beyond threshold, ticket cannot be marked Done without sign-off.</div>
+        </div>
+      </div>
+      <div class="chain-lesson">
+        <div class="chain-lesson-label">What This Teaches Us</div>
+        <p>Unplanned work is not only caused by bad Changes. Planned work shipped without a performance gate does the same damage. Page speed must be recorded in the ticket — before and after — not just checked when something feels slow.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div class="summary">
+        <div class="summary-title">One Rule Per Category — Memorise These Four</div>
+        <div class="summary-row">
+          <div class="summary-name planned"><span class="dot dot-planned"></span>Planned</div>
+          <div class="summary-rule">We chose this work and it creates something new for users.</div>
+        </div>
+        <div class="summary-row">
+          <div class="summary-name unplanned"><span class="dot dot-unplanned"></span>Unplanned</div>
+          <div class="summary-rule">The work chose us. It arrived outside the planning cycle and interrupted everything else.</div>
+        </div>
+        <div class="summary-row">
+          <div class="summary-name change"><span class="dot dot-change"></span>Change</div>
+          <div class="summary-rule">We do this regularly. It keeps things running, but nothing new is built.</div>
+        </div>
+        <div class="summary-row">
+          <div class="summary-name improve"><span class="dot dot-improve"></span>Improvement</div>
+          <div class="summary-rule">Users cannot see it. It makes the team's future work faster or cheaper.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>Web Team · Work Type Classification Guide · v2 · If unsure, ask before creating the ticket — not after.</span>
+    <span>Page 5 of 5</span>
+  </div>
+</div>
+
+</body>
+</html>
